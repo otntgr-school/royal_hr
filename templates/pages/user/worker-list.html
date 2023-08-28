@@ -1,0 +1,1379 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+{% load mytags %}
+<!--prettier-ignore-->
+
+{% block vendorcss %}
+<!-- BEGIN: Vendor CSS-->
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-pickadate.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/pickadate/pickadate.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/editors/quill/katex.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/editors/quill/monokai-sublime.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Inconsolata&amp;family=Roboto+Slab&amp;family=Slabo+27px&amp;family=Sofia&amp;family=Ubuntu+Mono&amp;display=swap">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/jkanban/jkanban.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/pages/app-kanban.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/forms/wizard/bs-stepper.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/form-wizard.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/extensions/jquery.rateyo.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/extensions/ext-component-ratings.css' %}">
+<link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/schedule.css' %}" />
+
+<!-- END: Vendor CSS-->
+{% endblock vendorcss %} {% block css %}
+
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="{% static 'app-assets/css/plugins/forms/form-validation.css' %}"
+/>
+{% endblock css %} {% block content %}
+<div class="content-body">
+	{% jsonloads choices.tree_data as s_options %}
+	<!-- users list start -->
+	<section class="app-user-list">
+		<div class="row">
+			<div class="col-lg-6 col-sm-6">
+				<div class="card">
+					<div
+						class="card-body d-flex align-items-center justify-content-between"
+					>
+						<div>
+							<h3 class="fw-bolder mb-75">{{info.total}}</h3>
+							<span>Нийт ажилчдын тоо</span>
+						</div>
+						<div class="avatar bg-light-primary p-50">
+							<span class="avatar-content">
+								<i
+									data-feather="user"
+									class="font-medium-4"
+								></i>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-6 col-sm-6">
+				<div class="card">
+					<div
+						class="card-body d-flex align-items-center justify-content-between"
+					>
+						<div>
+							<h3 class="fw-bolder mb-75">{{info.new_employees}}</h3>
+							<span>Шинээр нэмэгдсэн</span>
+						</div>
+						<div class="avatar bg-light-danger p-50">
+							<span class="avatar-content">
+								<i
+									data-feather="user-plus"
+									class="font-medium-4"
+								></i>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-4 col-sm-6">
+				<div class="card">
+					<div
+						class="card-body d-flex align-items-center justify-content-between"
+					>
+						<div>
+							<h3 class="fw-bolder mb-75">{{info.employee}}</h3>
+							<span>Үндсэн ажилчид</span>
+						</div>
+						<div class="avatar bg-light-success p-50">
+							<span class="avatar-content">
+								<i
+									data-feather="user-check"
+									class="font-medium-4"
+								></i>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-4 col-sm-6">
+				<div class="card">
+					<div
+						class="card-body d-flex align-items-center justify-content-between"
+					>
+						<div>
+							<h3 class="fw-bolder mb-75">{{info.contract}}</h3>
+							<span>Гэрээт ажилчид</span>
+						</div>
+						<div class="avatar bg-light-warning p-50">
+							<span class="avatar-content">
+								<i
+									data-feather="user-x"
+									class="font-medium-4"
+								></i>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-4 col-sm-6">
+				<div class="card">
+					<div
+						class="card-body d-flex align-items-center justify-content-between"
+					>
+						<div>
+							<h3 class="fw-bolder mb-75">{{info.parttime}}</h3>
+							<span>Түр ажилчид</span>
+						</div>
+						<div class="avatar bg-light-secondary p-50">
+							<span class="avatar-content">
+								<i
+									data-feather="user-x"
+									class="font-medium-4"
+								></i>
+							</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- list and filter start -->
+		<div class="card">
+			<div class="card-body border-bottom">
+				<h4 class="card-title">Ажилчдын жагсаалт</h4>
+				<div class="row">
+					<div class="col-md-4 user_role"></div>
+					<div class="col-md-4 user_plan"></div>
+					<div class="col-md-4 user_status"></div>
+				</div>
+			</div>
+			<div class="card-datatable table-responsive pt-0">
+
+				<table class="user-list-table table table-bordered">
+					<thead class="table-light">
+						<tr class="filter-container"></tr>
+						<tr>
+							<th></th>
+							<th>Ургийн овог</th>
+							<th>Овог</th>
+							<th>Нэр</th>
+							<th>Ажилтны ID</th>
+							<th>Салбар сургуулийн нэр</th>
+							<th>Тэнхимийн нэр</th>
+							<th>Ажлын байр</th>
+							<th>Цахим хаяг</th>
+							<th>Утасны дугаар</th>
+							<th>Хүйс</th>
+							<th>Регистр</th>
+							<th>ЭМДД</th>
+							<th>НДД №</th>
+							<th>Аймаг/хот</th>
+							<th>Сум/дүүрэг</th>
+							<th>Үйлдэл</th>
+						</tr>
+					</thead>
+					<tfoot>
+						<tr>
+							<th></th>
+							<th>Ургийн овог</th>
+							<th>Овог</th>
+							<th>Нэр</th>
+							<th>Ажилтны ID</th>
+							<th>Салбар сургуулийн нэр</th>
+							<th>Тэнхимийн нэр</th>
+							<th>Ажлын байр</th>
+							<th>Цахим хаяг</th>
+							<th>Утасны дугаар</th>
+							<th>Хүйс</th>
+							<th>Регистр</th>
+							<th>ЭМДД</th>
+							<th>НДД №</th>
+							<th>Аймаг/хот</th>
+							<th>Сум/дүүрэг</th>
+							<th>Үйлдэл</th>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+			<!-- Modal to add new user starts-->
+			<div class="modal modal-slide-in new-user-modal fade" id="modals-slide-in">
+				<div class="modal-dialog">
+					<form class="add-new-user modal-content pt-0">
+						<button
+							type="button"
+							class="btn-close"
+							data-bs-dismiss="modal"
+							aria-label="Close"
+						>
+							×
+						</button>
+						<div class="modal-header mb-1">
+							<h5 class="modal-title" id="exampleModalLabel">
+								Ажилтан нэмэх
+							</h5>
+						</div>
+						<div class="modal-body flex-grow-1">
+							<div class="mb-1">
+								<label
+									class="form-label"
+									for="basic-icon-default-fullname"
+									>Овог</label
+								>
+								<input
+									type="text"
+									class="form-control dt-full-name"
+									id="basic-icon-default-fullname"
+									placeholder="Овог"
+									name="user-fullname"
+								/>
+							</div>
+							<div class="mb-1">
+								<label
+									class="form-label"
+									for="basic-icon-default-uname"
+									>Нэр</label
+								>
+								<input
+									type="text"
+									id="basic-icon-default-uname"
+									class="form-control dt-uname"
+									placeholder="Нэр"
+									name="user-name"
+								/>
+							</div>
+							<div class="mb-1">
+								<label
+									class="form-label"
+									for="basic-icon-default-uname"
+									>Регистр</label
+								>
+								<input
+									type="text"
+									id="basic-icon-default-uname"
+									class="form-control dt-uname"
+									placeholder="Регистр"
+									name="user-name"
+								/>
+							</div>
+							<div class="mb-1">
+								<label
+									class="form-label"
+									for="basic-icon-default-email"
+									>Имэйл</label
+								>
+								<input
+									type="text"
+									id="basic-icon-default-email"
+									class="form-control dt-email"
+									placeholder="Имэйл"
+									name="user-email"
+								/>
+							</div>
+							<div class="mb-1">
+								<label
+									class="form-label"
+									for="basic-icon-default-contact"
+									>Гар утасны дугаар</label
+								>
+								<input
+									type="text"
+									id="basic-icon-default-contact"
+									class="form-control dt-contact"
+									placeholder="Гар утасны дугаар"
+									name="user-contact"
+								/>
+							</div>
+							<div class="mb-1">
+								<label
+									class="form-label"
+									for="basic-icon-default-company"
+									>Гэрийн утасны дугаар</label
+								>
+								<input
+									type="text"
+									id="basic-icon-default-company"
+									class="form-control dt-contact"
+									placeholder="Гэрийн утасны дугаар"
+									name="user-company"
+								/>
+							</div>
+							<div class="mb-1">
+								<label
+									class="form-label"
+									for="basic-icon-default-company"
+									>Гэрийн хаяг</label
+								>
+								<input
+									type="text"
+									id="basic-icon-default-company"
+									class="form-control dt-contact"
+									placeholder="Гэрийн утасны дугаар"
+									name="user-company"
+								/>
+							</div>
+							<button
+								type="submit"
+								class="btn btn-primary me-1 data-submit"
+							>
+								Хадгалах
+							</button>
+							<button
+								type="reset"
+								class="btn btn-outline-secondary"
+								data-bs-dismiss="modal"
+							>
+								Болих
+							</button>
+						</div>
+						{% if not 'work-list-create' in request.permissions %}
+                        <div class="inactive p-2">
+                            <p class="fs-18">Танд эрх байхгүй байна</p>
+						</div>
+					{% endif %}
+					</form>
+				</div>
+			</div>
+			<!-- Modal to add new user Ends-->
+		</div>
+		<!-- list and filter end -->
+	</section>
+	<div class="modal fade" id="worker-alert" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog modal-sm modal-dialog-centered modal-edit-user">
+			<div class="modal-content">
+				<div class="modal-header bg-transparent">
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body text-center">
+					<div class="text-center">
+						<i class="fas fa-exclamation-circle text-warning fs-40"></i>
+					</div>
+					<h6 class="mt-1 mb-1 fw-bolder">Анхааруулга<h6>
+					Та өөрийн мэдээллийг засах гэж байна. Засахдаа итгэлтэй байна уу?
+				</div>
+				<div class="modal-footer">
+					<button
+						class="btn btn-primary"
+						data-bs-dismiss="modal"
+						type="button"
+						onclick="sureEdit(event)"
+					>
+						<span>Тийм</span>
+					</button>
+					<button
+						class="btn btn-outline-secondary"
+						data-bs-dismiss="modal"
+					>
+						Үгүй
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div
+		class="modal modal-slide-in fade"
+		id="worder-edit-modal"
+	>
+		<div class="modal-dialog">
+			<div class="modal-content pt-0">
+				<button
+					type="button"
+					class="btn-close"
+					data-bs-dismiss="modal"
+					aria-label="Close"
+				>
+					×
+				</button>
+				<div class="modal-header mb-1">
+					<h5 class="modal-title" id="worder-edit-modal-title">
+					</h5>
+					<span style="visibility: hidden;" id="worder-edit-modal-id"></span>
+				</div>
+				<div class="row px-2">
+					{% include 'pages/user/modal-body/worker-edit.html' %}
+				</div>
+			</div>
+		</div>
+	</div>
+	{% include 'pages/user/modal-body/circle-page-create.html' %}
+	{% include 'pages/user/modal-body/command-info.html' %}
+	{% include 'pages/user/modal-body/definition-title.html' %}
+	<!-- users list ends -->
+
+	<div class="modal fade" id="referEarnModal" tabindex="-1" aria-labelledby="referEarnTitle" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered modal-lg modal-refer-earn modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header bg-transparent">
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body pb-5 px-sm-0">
+					<div class="px-sm-4 mx-50">
+						<div class="text-center mb-2">
+							<h1 class="mb-1">Шилжилт хөдөлгөөн</h1>
+						</div>
+						<h5>Өөрчлөлтийн бүртгэл</h4>
+						<div class="row">
+							<div class="col-lg-6">
+								<div class="mb-1">
+									<label class="form-label" for="first-name-icon">Шийдвэр</label>
+									<select class="select2 form-select">
+									</select>
+								</div>
+								<div class="mb-1">
+									<label class="form-label" for="first-name-icon">Үйлдэл</label>
+									<select class="select2 form-select">
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="mb-1">
+									<label class="form-label" for="first-name-icon">Шийдвэрийн огноо</label>
+									<input type="text" class="form-control flatpickr-basic" placeholder="YYYY-MM-DD" />
+								</div>
+								<div class="mb-1">
+									<label class="form-label" for="first-name-icon">Үйлдлийн шалтгаан</label>
+									<select class="select2 form-select">
+									</select>
+								</div>
+							</div>
+						</div>
+						<hr />
+						<div class="row">
+							<h5>Өөрчлөлтийн дэлгэрэнгүй</h5>
+							<div class="col-lg-6">
+								<div class="mb-1">
+									<label class="form-label" for="first-name-icon">Ажилтны нэр</label>
+									<input type="text" class="form-control" readonly="readonly" value="admin">
+								</div>
+								<div class="mb-1">
+									<label class="form-label" for="first-name-icon">Харьяалагдах нэгж</label>
+									<input type="text" class="form-control" readonly="readonly" value="Хүний нөөц">
+								</div>
+								<div class="mb-1">
+									<label class="form-label" for="first-name-icon">Хаашаа</label>
+									<select class="select2 form-select">
+									</select>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="mb-1">
+									<label class="form-label" for="first-name-icon">Байгууллага</label>
+									<input type="text" class="form-control" readonly="readonly" value="Номин ххк">
+								</div>
+								<div class="mb-1">
+									<label class="form-label" for="first-name-icon">Одоогийн албан тушаал</label>
+									<input type="text" class="form-control" readonly="readonly" value="Системийн админ">
+								</div>
+								<div class="mb-1">
+									<label class="form-label" for="first-name-icon">Бүртгэгдсэн огноо</label>
+                                    <input type="text" class="form-control flatpickr-basic" placeholder="YYYY-MM-DD" />
+								</div>
+							</div>
+						</div>
+						<div class="col-12 text-center mt-2 pt-50">
+							<button type="submit" class="btn btn-primary me-1 waves-effect waves-float waves-light">Хадгалах</button>
+							<button type="button" class="btn btn-outline-secondary waves-effect" data-bs-dismiss="modal" aria-label="Close">
+								Болих
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+{% endblock content %}
+<!--prettier-ignore-->
+{% block js %}
+<!-- BEGIN: Page Vendor JS-->
+<!-- BEGIN: Page Vendor JS-->
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.buttons.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jszip.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/pdfmake.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/vfs_fonts.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.html5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.print.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/tables/table-datatables-advanced.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/cleave.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/addons/cleave-phone.us.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/extensions/jstree.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/tables/table-datatables-fixedColumns.min.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.date.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.time.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/legacy.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/wizard/bs-stepper.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/repeater/jquery.repeater.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/extensions/jquery.rateyo.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/pickers/form-pickers.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/editors/quill/katex.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/editors/quill/highlight.min.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/jkanban/jkanban.min.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/forms/wizard/bs-stepper.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/repeater/jquery.repeater.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/extensions/jquery.rateyo.min.js' %}"></script>
+
+<script src="{% static 'assets/js/browser.js' %}"></script>
+
+<script src="{% static 'assets/js/pages/worker/scripts.js' %}"></script>
+<!-- END: Page Vendor JS-->
+
+<!-- BEGIN: Page JS-->
+<!-- <script src="{% static 'app-assets/js/scripts/pages/app-user-list.js' %}"></script> -->
+<!-- END: Page JS-->
+
+<!-- DATATABLE Script -->
+<script>
+	const SUB_ORGS = [{% for sub_org in sub_org.sub_org_list %} {"id": "{{sub_org.id}}", "name": "{{sub_org.name}}"}, {%endfor%}]
+
+	$( document ).ready(function() {
+		document.getElementById('command_empty').style.display= "none"
+		document.getElementById('commandInputs').style.display= "none"
+		document.getElementById('fire_commandInputs').style.display= "none"
+	});
+
+	let clickedRow = null															//Datatable-ийн сүүлд дарагдсан мөрийн id хадгалан хувьсагч
+	var commandList = null															//Тушаалын жагсаалтыг хадгалах хувьсагч
+	let commandTable = null															//Тушаалын dataTable
+	let selectedCommand = null														//Сонгогдсон тушаалын хадгалах хувьсагч
+	const employeePos = JSON.parse('{{ choices.employee_pos|safe }}')				//Back-аас ирсэн байгуулгын ажилтны мэдээлэлийн жагсаалт
+	const positionsDirector = JSON.parse('{{ choices.positions_director_list|safe }}')	//Back-аас ирсэн байгуулгын ажилтны мэдээлэлийн жагсаалт
+	const defaultOption2 = new Option("-----------------", ``)						//Select field-ийн null утгатай хувьсагч
+	let fullName =null																//Тухайн ажилтны бүтэн нэрийг хадгалах хувьсагч
+	var selectedFieldId = null
+	var clickedEmployeeId = null
+	var deleteSlip = []
+	var typeCommand = null
+
+	var chosedDefinition = null
+
+	cloneFooter(
+		".user-list-table",
+		[
+			1, 2, 3, 4,
+			5, 6, 7, 8,
+			9, 10, 11, 12,
+			13, 14, 15
+		],
+		{
+			5: {
+				type: "select",
+				options: SUB_ORGS,
+			}
+		}
+	)
+	const dt = $(".user-list-table").DataTable({
+		processing: false,
+		dom: 'lBfrtip',
+		serverSide: true,
+		fixedColumns: {
+			left: "{% if request.user_agent.is_mobile %}0{% else %}4{% endif %}",
+			right: 1,
+		},
+		scrollCollapse: true,
+        scrollX: true,
+		scrollY: "650px",
+		ajax: { url: "/worker/pagination/all/" }, // JSON file to add data
+		columns: [
+			{ data: null },
+			{ data: "curgiin_ovog" },
+			{ data: "clast_name" },
+			{ data: "cfirst_name" },
+			{ data: "register_code" },
+			{ data: "ex_csub_org_id" },
+			{ data: "salbar__name" },
+			{ data: "org_position__name" },
+			{ data: "cemail" },
+			{ data: "cphone_number" },
+			{ data: "gender_name" },
+			{ data: "cregister" },
+			{ data: "cemdd_number" },
+			{ data: "cndd_number" },
+			{ data: "unit1_name" },
+			{ data: "unit2_name" },
+			{ data: null },
+		],
+		columnDefs: [
+			{
+				targets: 0,
+				title: "#",
+				orderable: false,
+				render: function (data, type, full, meta) {
+					return (
+						meta.settings._iDisplayStart + meta.row + 1
+					);
+				},
+			},
+			{
+				targets: 3,
+				render: function (data, type, full, meta) {
+					return (
+						`<a class="text-decoration-underline text-dark" href="/account/worker/${full.id}">
+							${full.cfirst_name}
+						</a>
+						`
+					);
+				},
+			},
+			{
+				// Actions
+				targets: -1,
+				title: "Үйлдэл",
+				orderable: false,
+				render: function (data, type, full, meta) {
+					const id = `${full.email}${meta.row}`
+					if(full.state === 1)
+					{
+						return (
+						`
+							<div style='width: 76px;' >
+								<a
+									class="delete-record text-warning"
+									onclick="handleDefinitionModal(event, ${full.id})"
+								>
+									<span
+										data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Тодорхойлолт хэвлэх"
+									>
+										${feather.icons["printer"].toSvg({
+											class: "font-small-4 me-50",
+										})}
+									</span>
+								</a>
+								<a
+									class="delete-record text-primary"
+									onclick="handleEditModal(event)"
+								>
+									<span
+										data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Ажилтан засах"
+									>
+										${feather.icons["edit-3"].toSvg({
+											class: "font-small-4 me-50",
+										})}
+									</span>
+								</a>
+								<a
+									class="delete-record text-primary-orange"
+									onclick="handleFireModal(event)"
+								>
+									<span
+										data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Ажилтан чөлөөлөх"
+									>
+										${feather.icons["user-minus"].toSvg({
+											class: "font-small-4 me-50",
+										})}
+									</span>
+								</a>
+							</div>
+						`
+					);
+					}
+					else
+					return null
+				},
+			},
+		],
+		order: [[4, "asc"]],
+		lengthMenu: [
+			[10, 25, 50, 100, -1],
+			[10, 25, 50, 100, 'Бүгд'],
+		],
+		dom:
+            '<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+            '<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+            '<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+            ">t" +
+            '<"d-flex justify-content-between mx-2 row mb-1"' +
+            '<"col-sm-12 col-md-6"i>' +
+            '<"col-sm-12 col-md-6"p>' +
+            ">",
+        oLanguage: {
+            sProcessing: "Ачааллаж байна. ",
+            sSearch: "Хайх: ",
+            sEmptyTable: "Бичлэг байхгүй",
+            sInfoEmpty: "Нийт 0 бичлэг",
+            sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+            sInfoFiltered: " - _MAX_ бичлэгээс",
+            sLengthMenu: "_MENU_ бичлэг",
+            oPaginate: {
+                sFirst: "Эхэнд",
+                sLast: "Төгсгөлд",
+                sNext: "Дараах",
+                sPrevious: "Өмнөх",
+            },
+        },
+        // Buttons with Dropdown
+        buttons: [
+            {
+                extend: "collection",
+                className: "btn btn-outline-secondary dropdown-toggle me-2",
+                text:
+                    feather.icons["external-link"].toSvg({
+                        class: "font-small-4 me-50",
+                    }) + "Export",
+                buttons: [
+                    {
+                        extend: "print",
+                        text:
+                            feather.icons["printer"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Print",
+                        className: "dropdown-item",
+						exportOptions: {
+							columns: ':visible'
+						}
+                    },
+                    {
+                        extend: "csv",
+                        text:
+                            feather.icons["file-text"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Csv",
+                        className: "dropdown-item",
+						exportOptions: {
+							columns: ':visible'
+						},
+                    },
+                    {
+                        extend: "excel",
+                        text:
+                            feather.icons["file"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Excel",
+                        className: "dropdown-item",
+						exportOptions: {
+							columns: ':visible'
+						}
+                    },
+                    {
+                        extend: "pdf",
+                        text:
+                            feather.icons["clipboard"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Pdf",
+                        className: "dropdown-item",
+						exportOptions: {
+							columns: ':visible'
+						},
+						orientation: "landscape"
+                    },
+                    {
+                        extend: "copy",
+                        text:
+                            feather.icons["copy"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Copy",
+                        className: "dropdown-item",
+						exportOptions: {
+							columns: ':visible'
+						}
+                    },
+                ],
+                init: function (api, node, config) {
+                    $(node).removeClass("btn-secondary");
+                    $(node).parent().removeClass("btn-group");
+                    setTimeout(function () {
+                        $(node)
+                            .removeClass("btn-group")
+                            .addClass("d-inline-flex mt-50");
+                    }, 50);
+                },
+            },
+            {
+				extend: "collection",
+				className: "btn btn-outline-secondary flaot-start px-1 me-2 dropdown-toggle custom-a-none",
+				text: 'Төлөв: Нийт ажилчид',
+				config: {
+					left: 0,
+					right: 0
+				},
+                attr: {
+                    "id": "slipSearchBtn",
+                    "style": "margin-top: 7px"
+                },
+				buttons: [
+					{
+						extend: "",
+						text: "Нийт ажилчид",
+						className: "dropdown-item",
+                        action: function(e, slipTable, node, config) {
+                            const dropDownBtn = $('#slipSearchBtn')
+                            dropDownBtn.trigger("click")
+                            dotoodState = 'self'
+                            dropDownBtn.html('Төлөв: Нийт ажилчид')
+							slipTable.ajax.url(`/worker/pagination/all/`).load()
+						},
+					},
+                    {
+						extend: "",
+						text: "Үндсэн ажилчид",
+						className: "dropdown-item",
+                        action: function(e, slipTable, node, config) {
+                            const dropDownBtn = $('#slipSearchBtn')
+                            dropDownBtn.trigger("click")
+                            dotoodState = 'approved'
+                            dropDownBtn.html('Төлөв: Үндсэн ажилчид')
+							slipTable.ajax.url(`/worker/pagination/employee/`).load()
+						},
+					},
+					{
+						extend: "",
+						text: "Гэрээт ажилчид",
+						className: "dropdown-item",
+                        action: function(e, slipTable, node, config) {
+                            const dropDownBtn = $('#slipSearchBtn')
+                            dropDownBtn.trigger("click")
+                            dotoodState = 'pending'
+                            dropDownBtn.html('Төлөв: Гэрээт ажилчид')
+							slipTable.ajax.url(`/worker/pagination/contract/`).load()
+						},
+					},
+                    {
+						extend: "",
+						text: "Түр ажилчид",
+						className: "dropdown-item",
+                        action: function(e, slipTable, node, config) {
+                            const dropDownBtn = $('#slipSearchBtn')
+                            dropDownBtn.trigger("click")
+                            dotoodState = 'declined'
+                            dropDownBtn.html('Төлөв: Түр ажилчид')
+							slipTable.ajax.url(`/worker/pagination/parttime/`).load()
+						},
+					},
+                    {
+						extend: "",
+						text: "Ажлаас гарсан",
+						className: "dropdown-item",
+                        action: function(e, slipTable, node, config) {
+                            const dropDownBtn = $('#slipSearchBtn')
+                            dropDownBtn.trigger("click")
+                            dotoodState = 'end'
+                            dropDownBtn.html('Төлөв: Ажлаас гарсан')
+							slipTable.ajax.url(`/worker/pagination/out/`).load()
+						},
+					},
+				]
+			},
+        ],
+	});
+	searchFooter(dt)
+
+	const selectOptions = {{choices.tree_data|safe}}
+    const defaultOption = new Option("-----------------", ``)
+
+	/** Тухайн ажилтаны датаг оноох нь */
+	function setData(full)
+	{
+		document.getElementById('commandButton').style.display= "none"
+
+		//  sub org ийн select ийн default ийг оноох нь
+		if ("{{choices.pos}}" === 'org' && full.sub_org_id)
+		{
+			const foundIndex = selectOptions.findIndex(e => e.id + "" === full.sub_org_id + "")
+			$(`#sub_org_select`).val(`${full.sub_org_id}-${foundIndex}`).change()
+
+			const options = selectOptions[foundIndex]['children']
+			$("#salbar_select").html(defaultOption)
+			// example: https://github.com/clivezhg/select2-to-tree/blob/master/example/example.html
+			$("#salbar_select").select2ToTree({
+					treeData: {
+						dataArr: options,
+						valFld: "id",
+						labelFld: "name",
+						incFld: 'children'
+					}
+				}
+			)
+			$("#salbar_select").val(full.salbar_id).change()
+		}
+		//  салбарын select ийн default ийг оноох нь
+		if (['salbar', 'suborg'].includes("{{choices.pos}}"))
+		{
+			$("#salbar_select").html(defaultOption)
+			// example: https://github.com/clivezhg/select2-to-tree/blob/master/example/example.html
+			$("#salbar_select").select2ToTree({
+					treeData: {
+						dataArr: selectOptions,
+						valFld: "id",
+						labelFld: "name",
+						incFld: 'children'
+					}
+				}
+			)
+			$("#salbar_select").val(full.salbar_id).change()
+		}
+		//  албан тушаалын ийн select ийн default ийг оноох нь
+		$(`#position_select`).val(full.position_id).change()
+		$(`#saveWorkerEdit`).val(full.position_id).change()
+		$(`#command_number`).val(null).change()
+	}
+
+	/** Өөрийнхөө датаг засаж байгаа эсэхийг шалгах
+	 * хэрэв өөрөө байвал анхааруулга өгөх */
+	function checkMyData(full)
+	{
+		// хэрэв өөрөө байвал
+		if ("{{request.employee.id}}" === clickedRow.id + "")
+		{
+			$("#worker-alert").modal("show")
+		}
+		else {
+			$("#worder-edit-modal").modal("show")
+		}
+	}
+
+	/** Өөрийнхөө датаг засна гэсэн бол формын модал харуулах */
+	function sureEdit(params)
+	{
+		$("#worder-edit-modal").modal("show")
+	}
+
+	/** Засах товч дарж модал нээх үед гарчигийг оноох */
+	const handleEditModal = async(event) =>
+	{
+
+		let clickedTarget = $(event.target)
+		let row = clickedTarget.parent().closest("tr")
+		let full = dt.row(row).data()
+
+		clickedRow = full
+		checkMyData(full)
+
+		let modal = $("#worder-edit-modal")
+		let modalTitle = $("#worder-edit-modal-title")
+		let modalId = $("#worder-edit-modal-id")
+
+		const title = `${full.cfirst_name} - засах`
+		const id = full.id
+
+		modalTitle.text(title)
+		modalId.text(id)
+
+		setData(full)
+
+		document.getElementById('commandInputs').style.display= "none"
+	}
+
+	const handleDefinitionModal = async (event, id) =>
+	{
+		$("#definitionTitle").modal("show")
+
+		chosedDefinition = id
+	}
+
+	const definitionTitleSubmit = async (event) =>
+	{
+		event.preventDefault()
+		let title = document.getElementById('title').value
+
+		window.open(`${window.location.protocol}/worker/definition/${chosedDefinition}?title=${title}`, '_blank');
+	}
+
+	/** Ажилтан халах товч дарж модал нээх үед гарчигийг оноох*/
+	const handleFireModal = async(event) =>
+	{
+		let clickedTarget = $(event.target)
+		let row = clickedTarget.parent().closest("tr")
+		let full = dt.row(row).data()
+		let stepperEl = document.querySelector('.bs-stepper') 	// form step хийх element
+		let numberedStepper = new Stepper(stepperEl) //  bs stepper library
+		let currentIndex = numberedStepper._currentIndex
+		clickedRow = full
+
+		$("#circle-page-modal").modal("show")
+
+		let modal = $("#worker-fire-modal")
+		let modalTitle = $("#worker-fire-modal-title")
+		let modalId = $("#worker-fire-modal-id")
+
+		const title = `${full.cfirst_name} - халах`
+		clickedEmployeeId = full.id
+
+		let data = await getChoicesOptions(clickedEmployeeId)
+
+		if(data)
+		{
+			numberedStepper.to(2)
+			deleteSlip = []
+		}
+		else
+		{
+			numberedStepper.to(0)
+			deleteSlip = []
+			await setDEmployee()
+		}
+
+		selectedFieldId = clickedEmployeeId
+		modalTitle.text(title)
+		modalId.text(clickedEmployeeId)
+	}
+
+	/** Ажилтны мэдээллийг хадгалах */
+	async function saveWorkerEdit(event)
+	{
+		event.preventDefault()
+
+		const form = new CForm(event)
+		const data = form.data
+
+		if (data.sub_org)
+		{
+			data.sub_org = data.sub_org.split("-")[0]
+		}
+
+		if('salbar' in data === false){
+			data.salbar = ""
+		}
+
+		for (const [key, value] of Object.entries(data)) {
+			if(value === '')
+			data[`${key}`] = null
+		}
+
+		const { success, error, errors } = await fetchData(`/worker/${clickedRow.id}/`, data, 'PUT')
+
+		if (success)
+		{
+			// hide modal
+			$('#worder-edit-modal').modal('hide');
+			let resetPaging = false
+			dt.ajax.reload(null, resetPaging)
+			// хэрэв өөрийнхөө датаг засвал хуудсыг refresh хийх
+			if ("{{request.employee.id}}" === clickedRow.id + "")
+			{
+				window.location.href = "{% url 'worker-list' %}"
+			}
+		}
+	}
+
+	/** select ийн утга солигдох үед */
+	function handleChangeSubSalbar(event)
+    {
+
+        const selectId = event.target.id
+        const selectedValue = event.target.value
+
+        if (selectId === "sub_org_select" && selectedValue)
+        {
+            const [id, index] = selectedValue.split("-")
+            const options = setOptions(id, index, '#salbar_select')
+        }
+		else if(!selectedValue && selectId === "sub_org_select")
+		{
+			$("#salbar_select").html(defaultOption)
+		}
+    }
+
+    /** select ийн утга солигдох үед дараачийн select ийн утгыг хайх нь */
+    function setOptions(id, index, elementId)
+    {
+        const options = []
+        const children = selectOptions[index]['children']
+        for(const index in children)
+        {
+            const item = children[index]
+            options.push(item)
+        }
+
+        $("#salbar_select").html(defaultOption)
+        // example: https://github.com/clivezhg/select2-to-tree/blob/master/example/example.html
+        $("#salbar_select").select2ToTree({
+                treeData: {
+                    dataArr: options,
+                    valFld: "id",
+                    labelFld: "name",
+                    incFld: 'children'
+                }
+            }
+        )
+    }
+
+	cloneFooter(
+		".command-info-table",
+		[
+			2, 3, 4, 5, 6, 7
+		]
+	)
+	function getCommandMoreInfo(type) {
+		$("#command-modal").modal('show')
+		typeCommand = type
+		if (commandTable)
+        {
+            commandTable.destroy()
+        }
+
+		// Тушаалын list table
+		commandTable = $(".command-info-table").DataTable({
+			fixedColumns:   {
+				left: 0,
+				right: 1
+			},
+			processing: true,
+			dom: 'lBfrtip',
+			retrieve: true,
+			serverSide: true,
+			select: true,
+			ajax: { url: `/worker/command/${clickedRow.id}/` }, // JSON file to add data
+			columns: [
+				// columns according to JSON
+				{ data: null },
+				{ data: null },
+				{ data: "command_number" },
+				{ data: "name" },
+				{ data: "unit_name" },
+				{ data: "description" },
+				{ data: "date" },
+				{ data: "formated_created_at" },
+			],
+			columnDefs: [
+				{
+					// For Responsive
+					className: "control",
+					orderable: false,
+					responsivePriority: 2,
+					targets: 0,
+					render: function (data, type, full, meta) {
+						return "";
+					},
+				},
+				{
+					targets: 1,
+					title: "#",
+					orderable: false,
+					render: function (data, type, full, meta) {
+						return (
+							meta.settings._iDisplayStart + meta.row + 1
+						);
+					},
+				},
+			],
+			order: [[2, "asc"]],
+			lengthMenu: [
+				[10, 25, 50, 100, -1],
+				[10, 25, 50, 100, 'Бүгд'],
+			],
+			dom:
+				'<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+				'<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+				'<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+				">t" +
+				'<"d-flex justify-content-between mx-2 row mb-1"' +
+				'<"col-sm-12 col-md-6"i>' +
+				'<"col-sm-12 col-md-6"p>' +
+				">",
+			oLanguage: {
+				sProcessing: "Ачааллаж байна. ",
+				sSearch: "Хайх: ",
+				sEmptyTable: "Бичлэг байхгүй",
+				sInfoEmpty: "Нийт 0 бичлэг",
+				sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+				sInfoFiltered: " - _MAX_ бичлэгээс",
+				sLengthMenu: "_MENU_ бичлэг",
+				oPaginate: {
+					sFirst: "Эхэнд",
+					sLast: "Төгсгөлд",
+					sNext: "Дараах",
+					sPrevious: "Өмнөх",
+				},
+			},
+			// Buttons with Dropdown
+			buttons: [
+				{
+					extend: "collection",
+					className: "btn btn-outline-secondary dropdown-toggle me-2",
+					text:
+						feather.icons["external-link"].toSvg({
+							class: "font-small-4 me-50",
+						}) + "Export",
+					buttons: [
+						{
+							extend: "print",
+							text:
+								feather.icons["printer"].toSvg({
+									class: "font-small-4 me-50",
+								}) + "Print",
+							className: "dropdown-item",
+							exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7] },
+						},
+						{
+							extend: "csv",
+							text:
+								feather.icons["file-text"].toSvg({
+									class: "font-small-4 me-50",
+								}) + "Csv",
+							className: "dropdown-item",
+							exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7] },
+						},
+						{
+							extend: "excel",
+							text:
+								feather.icons["file"].toSvg({
+									class: "font-small-4 me-50",
+								}) + "Excel",
+							className: "dropdown-item",
+							exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7] },
+						},
+						{
+							extend: "pdf",
+							text:
+								feather.icons["clipboard"].toSvg({
+									class: "font-small-4 me-50",
+								}) + "Pdf",
+							className: "dropdown-item",
+							exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7] },
+						},
+						{
+							extend: "copy",
+							text:
+								feather.icons["copy"].toSvg({
+									class: "font-small-4 me-50",
+								}) + "Copy",
+							className: "dropdown-item",
+							exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7] },
+						},
+					],
+					init: function (api, node, config) {
+						$(node).removeClass("btn-secondary");
+						$(node).parent().removeClass("btn-group");
+						setTimeout(function () {
+							$(node)
+								.removeClass("btn-group")
+								.addClass("d-inline-flex mt-50");
+						}, 50);
+					},
+				},
+			],
+			initComplete: (settings, json) =>{
+				let selectedSelect2Value = $(`#command_number`).val()
+				commandTable.rows().every( function () {
+					this.nodes().to$().attr("role", "button")
+					if ((this.data().command_number).toString() === selectedSelect2Value){
+						this.nodes().to$().addClass('selected')
+					}
+				} );
+			}
+		});
+		searchFooter(commandTable)
+	}
+
+	$(document).ready(function () {
+		// table select-ийг харуулан сонгогдсон мөрийн id хадгалах нь
+		$('.command-info-table tbody').on('click', 'tr', function () {
+			if ($(this).hasClass('selected')) {
+				$(this).removeClass('selected')
+			} else {
+				commandTable.$('tr.selected').removeClass('selected')
+				$(this).addClass('selected')
+			}
+			selectedCommand = commandTable.row( this ).data()
+		})
+	})
+
+	function selectCommandButton(){
+		// modal-ийг хадгалах үед сонгосон тушаалын дугаар нэрийг оноох
+		if(selectedCommand != null)
+		{
+			if(typeCommand === 'edit')
+			{
+				$(`#command_number`).val(selectedCommand.command_number).change()
+				$(`#command_name`).val(selectedCommand.name).change()
+				document.getElementById('commandInputs').style.display= "block"
+				selectedCommand = null
+			}
+			else
+			{
+				$(`#fire_command_number`).val(selectedCommand.command_number).change()
+				$(`#fire_command_name`).val(selectedCommand.name).change()
+				document.getElementById('fire_commandInputs').style.display= "block"
+				selectedCommand = null
+			}
+		}
+		$("#command-modal").modal('hide')
+	}
+
+	function handlePosition(event)
+	{
+		const selectId = event.target.id
+        const selectedValue = event.target.value
+		let selectedName = event.target.name
+		let addedChildCount = 0
+
+        if (selectId === "org_position")
+        {
+			let commanderSelect = selectedName.replace('org_position', 'employee')
+			const [matchId] = selectedValue.split("-")
+
+			$(`select[name='${commanderSelect}']`).html(defaultOption)
+			employeePos.map(employee => {
+				let strID = employee.org_position
+				if(strID.toString() === matchId)
+				{
+					const option = new Option(employee.full_name, employee.id)
+					$(`select[name='${commanderSelect}']`).append(option)
+					addedChildCount++
+				}
+			})
+			if(addedChildCount === 0 )
+			{
+				$(`select[name='${commanderSelect}']`).html(new Option("Ажилтан байхгүй байна.", ``))
+				$(`select[name='${commanderSelect}']`).prop('disabled', 'disabled')
+			}
+			else
+			{
+				$(`select[name='${commanderSelect}']`).prop('disabled', false)
+			}
+		}
+	}
+
+	/** ЖАгсаалт формын сонголтуудыг дуудах нь */
+	async function getChoicesOptions(id)
+	{
+		const { success, data, errors } = await fetchData(`/worker/routing-slip/create/${id}/`, "", 'GET')
+		if (success)
+		{
+			return data
+		}
+	}
+
+	async function cancelSlup(event)
+	{
+		const { success, data, error } = await fetchData(`/worker/routing-slip/create/${clickedEmployeeId}/`, "", 'DELETE')
+		if(success)
+		{
+			numberedStepper.to(0)
+			deleteSlip = []
+			await setDEmployee()
+		}
+	}
+
+</script>
+
+{% endblock js %}

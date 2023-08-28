@@ -1,0 +1,32 @@
+(1.764) SELECT "core_userinfo"."id", "core_userinfo"."user_id", "core_userinfo"."urgiin_ovog", "core_userinfo"."last_name", "core_userinfo"."first_name", "core_userinfo"."register", "core_userinfo"."gender", "core_userinfo"."ys_undes", "core_userinfo"."action_status", "core_userinfo"."action_status_type", "core_userinfo"."blood_type", "core_userinfo"."address", "core_userinfo"."unit1_id", "core_userinfo"."unit2_id", "core_userinfo"."emdd_number", "core_userinfo"."ndd_number", "core_userinfo"."body_height", "core_userinfo"."body_weight", "core_userinfo"."suutsnii_torol", "core_userinfo"."is_pension", "core_userinfo"."is_disabled", "core_userinfo"."experience_year", "core_userinfo"."experience_mnun_year", "core_userinfo"."is_training_licence", "core_userinfo"."org_id", "core_userinfo"."sub_org_id", "core_userinfo"."salbar_id", "core_userinfo"."birthday", "core_userinfo"."updated_at", "core_userinfo"."created_at" FROM "core_userinfo" WHERE "core_userinfo"."id" = 1 LIMIT 21; args=(1,); alias=default
+(0.135) 
+            SELECT
+                c.relname,
+                CASE
+                    WHEN c.relispartition THEN 'p'
+                    WHEN c.relkind IN ('m', 'v') THEN 'v'
+                    ELSE 't'
+                END
+            FROM pg_catalog.pg_class c
+            LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+            WHERE c.relkind IN ('f', 'm', 'p', 'r', 'v')
+                AND n.nspname NOT IN ('pg_catalog', 'pg_toast')
+                AND pg_catalog.pg_table_is_visible(c.oid)
+        ; args=None; alias=default
+(0.321) SELECT "django_migrations"."id", "django_migrations"."app", "django_migrations"."name", "django_migrations"."applied" FROM "django_migrations"; args=(); alias=default
+(1.884) SELECT "core_userinfo"."id", "core_userinfo"."user_id", "core_userinfo"."urgiin_ovog", "core_userinfo"."last_name", "core_userinfo"."first_name", "core_userinfo"."register", "core_userinfo"."gender", "core_userinfo"."ys_undes", "core_userinfo"."action_status", "core_userinfo"."action_status_type", "core_userinfo"."blood_type", "core_userinfo"."address", "core_userinfo"."unit1_id", "core_userinfo"."unit2_id", "core_userinfo"."emdd_number", "core_userinfo"."ndd_number", "core_userinfo"."body_height", "core_userinfo"."body_weight", "core_userinfo"."suutsnii_torol", "core_userinfo"."is_pension", "core_userinfo"."is_disabled", "core_userinfo"."experience_year", "core_userinfo"."experience_mnun_year", "core_userinfo"."is_training_licence", "core_userinfo"."org_id", "core_userinfo"."sub_org_id", "core_userinfo"."salbar_id", "core_userinfo"."birthday", "core_userinfo"."updated_at", "core_userinfo"."created_at" FROM "core_userinfo" WHERE "core_userinfo"."id" = 1 LIMIT 21; args=(1,); alias=default
+(0.126) 
+            SELECT
+                c.relname,
+                CASE
+                    WHEN c.relispartition THEN 'p'
+                    WHEN c.relkind IN ('m', 'v') THEN 'v'
+                    ELSE 't'
+                END
+            FROM pg_catalog.pg_class c
+            LEFT JOIN pg_catalog.pg_namespace n ON n.oid = c.relnamespace
+            WHERE c.relkind IN ('f', 'm', 'p', 'r', 'v')
+                AND n.nspname NOT IN ('pg_catalog', 'pg_toast')
+                AND pg_catalog.pg_table_is_visible(c.oid)
+        ; args=None; alias=default
+(0.361) SELECT "django_migrations"."id", "django_migrations"."app", "django_migrations"."name", "django_migrations"."applied" FROM "django_migrations"; args=(); alias=default

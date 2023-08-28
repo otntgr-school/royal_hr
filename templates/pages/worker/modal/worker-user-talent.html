@@ -1,0 +1,63 @@
+{% load static %}
+
+{% block content %}
+    <div class="modal fade" id="userTalent" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-edit-user">
+            <div class="modal-content">
+                <div class="modal-header bg-transparent">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pb-5 px-sm-5 pt-50">
+                    <div class="row">
+                        <h1 class="text-center mb-1">Урлаг, спортын авъяас</h1>
+                        <hr>
+                        {% if not join_req %}
+                        <div class="col-xl-3 mb-2">
+                            <div class="card-border">
+                                <div class='text-center fw-bolder mb-1' style='font-size: 16px' id='formTitleTalent'>Үүсгэх</div>
+                                <form id="userTalentForm" class="row gy-1" onsubmit="handleTalentForm(event)">
+                                    <div class="col-12">
+                                        <label class="form-label">Урлаг/Спортын төрөл:</label>
+                                        <input type="text" id="type" name="type" class="form-control" placeholder="Сагс ..." value="" data-msg="Урлаг/Спортын төрөл талбарыг бөглөнө үү" />
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label">Хичээллэсэн хугацаа /жил/:</label>
+                                        <input type="number" step="0.1" id="studied_date" name="studied_date" class="form-control" placeholder="5.5 ..." data-msg="Хичээллэсэн хугацаа сонгоно уу" />
+                                    </div>
+                                    <div class="col-12">
+                                        <label class="form-label">Зэрэг/Шагналын нэр:</label>
+                                        <input type="text" id="rank" name="rank" class="form-control" placeholder="1-р зэрэг" value="" data-msg="Зэрэг/Шагналын нэр талбарыг бөглөнө үү" />
+                                    </div>
+                                    <div class="col-12 text-center mt-2 pt-50">
+                                        <button id='submitbtn' type="submit" class="btn btn-primary me-1">Оруулах</button>
+                                        <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">
+                                            Болих
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <div class="col-xl-9 table-responsive card-datatable">
+                            <div class="card-border">
+                                <table class="table user-talent-table ">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th>Урлаг/Спортын төрөл</th>
+                                            <th>Хичээллэсэн хугацаа</th>
+                                            <th>Зэрэг/Шагналын нэр</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

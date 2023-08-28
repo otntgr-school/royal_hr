@@ -1,0 +1,321 @@
+{% extends 'base.html' %}
+{% block title %}
+{% load rest_framework %}
+{% endblock %}
+{% load static %}
+
+{% block vendorcss %}
+<!-- BEGIN: Vendor CSS-->
+
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="{% static 'app-assets/vendors/css/forms/select/select2.min.css' %}"
+    />
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}"
+    />
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}"
+    />
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="{% static 'app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css' %}"
+    />
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="{% static 'app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css' %}"
+    />
+    <!-- END: Vendor CSS-->
+{% endblock vendorcss %} {% block css %}
+
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="{% static 'app-assets/css/plugins/forms/form-validation.css' %}"
+    />
+{% endblock css %}
+
+{% block content %}
+    <div id="content-container" class="container p-none">
+        <div class="lgn-container col-lg-12">
+            <section id="multiple-column-form">
+                <div class="row">
+                    <div class="col-12">
+                        <form class="form" action="{% url 'user-info-register' %}" method="POST" id="userInfoRegister" >
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Хэрэглэгчийн мэдээлэл:</h4>
+                                </div>
+                                <div class="card-body">
+                                    {% csrf_token %}
+                                    {% render_form user_serializer %}
+                                </div>
+                                {% if not 'employee-create' in request.permissions %}
+                                    <div class="inactive p-2">
+                                        <p class="fs-18">Танд эрх байхгүй байна</p>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Ажилтны үндсэн мэдээлэл:</h4>
+                                </div>
+                                <div class="card-body">
+                                {% csrf_token %}
+                                {% render_form serializer %}
+                                    <div class="col-12">
+                                        <button type="submit" class="btn btn-primary me-1">Бүртгэх</button>
+                                        <button type="reset" class="btn btn-outline-secondary">Хоослох</button>
+                                    </div>
+                                </div>
+                                {% if not 'employee-create' in request.permissions %}
+                                <div class="inactive p-2">
+                                    <p class="fs-18">Танд эрх байхгүй байна</p>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block js %}
+
+<script>
+
+    // select option утгыг хоослох function
+    function removeOptions(selectElement) {
+        var i, length = selectElement.options.length - 1;
+        for(i = length; i >= 0; i--) {
+            selectElement.remove(i);
+        }
+    }
+
+    // эцэг select-ийн selected option өөрчлөгдөхөд хүү select-ийн option утгуудыг солих нь
+    function selectAppendChild( selectedParentsValue, childSelectName, dataList){
+        let filtered_data_list
+        filtered_data_list = dataList.filter(
+            (data) =>
+            {
+                if(data.parents_id.toString() === selectedParentsValue.toString())
+                {
+                    return data
+                }
+            }
+        )
+        let childSelect = document.getElementsByName(childSelectName);
+        removeOptions(childSelect[0]);
+        filtered_data_list.map(
+            (childValue) =>
+            {
+                var option = document.createElement("option");
+                option.text = childValue.name;
+                option.value = childValue.id;
+                childSelect[0].appendChild(option);
+            }
+        )
+    }
+    // select option цэвэрлэх
+    function loadSelectData(selectName, dataList){
+        let selectedElement = document.getElementsByName(selectName);
+        removeOptions(selectedElement[0]);
+        var option = document.createElement("option");
+        option.text = '--------'
+        option.value = '';
+        selectedElement[0].appendChild(option);
+        dataList.map(
+            (data) =>
+            {
+                var option = document.createElement("option");
+                option.text = data.name;
+                option.value = data.id;
+                selectedElement[0].appendChild(option);
+            })
+    }
+
+    window.addEventListener('load', (event) => {
+        let subOrg_list = JSON.parse('{{subOrg_data|safe}}')
+        let orgPosition_list= JSON.parse('{{orgPosition_data|safe}}')
+
+        loadSelectData('sub_org', subOrg_list)
+        loadSelectData('org_position', orgPosition_list)
+    });
+
+
+    let unit2_data = JSON.parse('{{unit2_data|safe}}')
+
+    let unit1 = document.getElementsByName("unit1");
+    unit1[0].addEventListener('change', function(event){
+        selectedParentsValue = event.target.value
+        selectAppendChild(selectedParentsValue, 'unit2', unit2_data)
+    })
+
+    let salbar_data = JSON.parse('{{salbars_data|safe}}')
+
+    let sub_org = document.getElementsByName("sub_org")
+    sub_org[0].addEventListener('change', function(event){
+        selectedParentsValue = event.target.value
+        selectAppendChild(selectedParentsValue, 'salbar', salbar_data)
+    })
+
+    $.validator.addMethod(
+        "regex",
+        function(value, element, regexp) {
+            return this.optional(element) || regexp.test(value);
+        },
+        "Талбарын утгыг оруулна уу."
+    );
+
+    $(document).ready(function () {
+        $('#userInfoRegister').validate({
+            rules: {
+                'sub_org': {
+                    required: false
+                },
+                'salbar': {
+                    required: false
+                },
+                'phone_number': {
+                    required: true
+                },
+                'org_position': {
+                    required: true
+                },
+                'email': {
+                    required: true,
+                    email: true
+                },
+                'cpassword': {
+                    required: true,
+                    minlength: 8
+                },
+                'urgiin_ovog': {
+                    required: true
+                },
+                'last_name': {
+                    required: true,
+                },
+                'first_name': {
+                    required: true,
+                },
+                'register': {
+                    required: {
+                        depends:function(){
+                            $(this).val($.trim($(this).val()));
+                            return true;
+                        }
+                    },
+                    regex: /[a-яА-Я]{2}[0-9]{8}/,
+                },
+                'gender': {
+                    required: true,
+                },
+                'ys_undes': {
+                    required: true,
+                },
+                'blood_type': {
+                    required: true,
+                },
+                'address': {
+                    required: true,
+                },
+                'unit1': {
+                    required: true,
+                },
+                'unit2': {
+                    required: true,
+                },
+                'emdd_number': {
+                    required: false,
+                },
+                'ndd_number': {
+                    required: false,
+                },
+                'body_height': {
+                    required: false,
+                },
+                'body_weight': {
+                    required: false,
+                },
+            },
+            messages: {
+                'sub_org': {
+                    required: false
+                },
+                'salbar': {
+                    required: false
+                },
+                'phone_number': {
+                    required: "Утасны дугаар талбарын төрөл нь number. Та number хэрэглэнэ үү"
+                },
+                'org_position': {
+                    required: 'Албан тушаал талбарыг сонгоно уу.'
+                },
+                'email': {
+                    required: "И-мэйл талбарыг бөглөнө үү.",
+                    email: "И-мэйл талбарыг бөглөнө үү."
+                },
+                'cpassword': {
+                    required: "Нууц үг талбарыг бөглөнө үү.",
+                    minlength: 'Хамгийн багадаа 8 тэмдэгт орсон байх шаардлагатай'
+                },
+                'urgiin_ovog': {
+                    required: 'Ургийн овог талбарыг бөглөнө үү.'
+                },
+                'last_name': {
+                    required: 'Эцэг/эхийн нэр талбарыг бөглөнө үү.',
+                },
+                'first_name': {
+                    required: 'Өөрийн нэр талбарыг бөглөнө үү.',
+                },
+                'register': {
+                    required: 'Регистерийн дугаар талбарыг бөглөнө үү.',
+                    regex: 'Регистерийн дугаарыг АА12345678 гэсэн форматын дагуу оруулна уу.'
+                },
+                'gender': {
+                    required: 'Хүйс талбарыг бөглөнө үү.',
+                },
+                'ys_undes': {
+                    required: 'Яс үндэс талбарыг бөглөнө үү.',
+                },
+                'blood_type': {
+                    required: 'Цусны бүлэг талбарыг бөглөнө үү.',
+                },
+                'address': {
+                    required: 'Оршин суугаа хаяг талбарыг бөглөнө үү.',
+                },
+                'unit1': {
+                    required: 'Төрсөн газар /аймаг,хот/ талбарыг бөглөнө үү.',
+                },
+                'unit2': {
+                    required: 'Төрсөн газар /сум, дүүрэг/ талбарыг бөглөнө үү.',
+                },
+                'emdd_number': {
+                    required: 'ЭМДД-ийн дугаар талбарыг бөглөнө үү.',
+                },
+                'ndd_number': {
+                    required: 'НДД-ийн дугаар талбарыг бөглөнө үү.',
+                },
+                'body_height': {
+                    required: 'Биеийн өндөр талбарыг бөглөнө үү.',
+                },
+                'body_weight': {
+                    required: 'Биеийн жин талбарыг бөглөнө үү.',
+                },
+            }
+        });
+    });
+
+</script>
+
+{% endblock js %}

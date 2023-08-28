@@ -1,0 +1,87 @@
+<form class="add-new-user modal-content pt-0" onsubmit="saveSurgaltCreate(event)" id="surgalt-create">
+    <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="modal"
+        aria-label="Close"
+    >
+        ×
+    </button>
+    <div class="modal-header mb-1">
+        <h5 class="modal-title" id="surgalt-create-modal-title">
+        </h5>
+        <span style="visibility: hidden;" id="surgalt-create-modal-id"></span>
+    </div>
+    <div class="modal-body flex-grow-1">
+        <div class="mb-1">
+            <label class="form-label">Сургалтын нэр</label>
+            <input type="text" class="form-control" placeholder="" id="name" name="name" />
+        </div>
+        <div class="mb-1">
+            <label class="form-label">Сургалтын зориулалт</label>
+            <input type="text" class="form-control" placeholder="" id="purpose" name="purpose"/>
+        </div>
+        <div class="mb-1">
+            <label class="form-label">Сургалтын хамрах хүрээ</label>
+            <div class="col-sm-8">
+                {% for id, name in info.for_type %}
+                    <div class="form-check" id="for_type_div" onchange="handleChangeForType(event)" >
+                        <input class="form-check-input" type="radio" name="for_type" value="{{id}}" id="{{id}}" data-error="#errNm1">
+                        <label class="form-check-label" for="{{id}}">
+                            {{name}}
+                        </label>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="errorTxt">
+            <span id="errNm1"></span>
+        </div>
+        <div class="mb-1" id="for_count_div">
+            <label class="form-label">Суралцагчдын тоо</label>
+            <input type="text" class="form-control" id="for_count" name="for_count" onchange="changeSelectMax(event)">
+        </div>
+        <div class="mb-1 select2-primary {% if not request.employee.is_hr %}{% endif %}" id="users-div">
+            <label for="employees" class="form-label">Ажилтан сонгох</label>
+            <select
+                class="select2 form-select w-100"
+                id="employees"
+                name="employees"
+                multiple
+                data-error="#errNm2"
+            >
+                {% for employee in info.employees %}
+                    <option value="{{employee.id}}">
+                        {{employee.user.info.full_name}}
+                    </option>
+                {% endfor %}
+            </select>
+            <div class="errorTxt">
+                <span id="errNm2"></span>
+            </div>
+        </div>
+        <div class="mb-1">
+            <label class="form-label" for="fp-range">Огноо</label>
+            <input type="text" class="form-control flat-range flatpickr-input active" placeholder="YYYY-MM-DD to YYYY-MM-DD" readonly="readonly" id="date" name="date">
+        </div>
+        <div class="mb-1">
+            <label class="form-label">Сургалт эхлэх цаг</label>
+            <input type="text" class="form-control time-mask" placeholder="цаг:мин:сек" id="start_time"  name="start_time">
+        </div>
+        <div class="mb-1">
+            <label class="form-label">Сургалт дуусах цаг</label>
+            <input type="text" class="form-control time-mask" placeholder="цаг:мин:сек" id="end_time"  name="end_time">
+        </div>
+        <button type="submit" class="btn btn-primary me-1 data-submit" id="surgaltSubmitBtn">Хадгалах</button>
+        <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Болих</button>
+    </div>
+    {% if 'surgalt-create' not in request.permissions %}
+            <div class="inactive m-1">
+                <p class="fs-18 text-secondary">Танд эрх байхгүй байна</p>
+            </div>
+    {% elif pk and 'surgalt-update' not in request.permissions %}
+        <div class="inactive m-1">
+            <p class="fs-18 text-secondary">Танд эрх байхгүй байна</p>
+        </div>
+    {% endif %}
+</form>

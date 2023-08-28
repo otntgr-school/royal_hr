@@ -1,0 +1,112 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/core/menu/menu-types/horizontal-menu.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/pages/page-faq.css' %}">
+{% endblock css %}
+{% block content %}
+
+<div class="app-content ">
+    <div class="content-overlay"></div>
+    <div class="header-navbar-shadow"></div>
+    <div class="content-wrapper container-xxl p-0">
+        <div id="faqLoader" class="content-body">
+            <!-- frequently asked questions tabs pills -->
+            <section id="faq-tabs">
+                <!-- vertical tab pill -->
+                <div class="row">
+                    <div class="col-lg-3 col-md-4 col-sm-12">
+                        <div class="faq-navigation d-flex justify-content-between flex-column mb-2 mb-md-0">
+                            <!-- pill tabs navigation -->
+                            <ul id="faqGroupList" class="nav nav-pills nav-left flex-column" role="tablist">
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-9 col-md-8 col-sm-12">
+                        <!-- pill tabs tab content -->
+                        <div class="tab-content" id="faqList">
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block js %}
+<script src="{% static 'app-assets/vendors/js/ui/jquery.sticky.js' %}"></script>
+<script>
+
+    const faqGroupList = document.getElementById("faqGroupList")
+    const faqList = document.getElementById("faqList")
+
+    const faqLoader = $('#faqLoader')
+
+    const getListData = async () =>
+    {
+        const { success, data } = await useLoader(fetchData("/faq/faq-list/", null, 'GET'), faqLoader)
+        if(success)
+        {
+            const groupList = []
+            data.map(
+                (group, index) =>
+                {
+                    const elemnt = document.createElement("div")
+                    elemnt.innerHTML = `
+                            <div role="tabpanel" class="tab-pane ${index === 0 && 'active'}" id="faq-${group.id}" aria-labelledby="${group.id}-faq" aria-expanded="true">
+                                <div class="accordion" id="faq-${group.id}-qna">
+                                    ${
+                                        group.questions.map(
+                                            (qs) =>
+                                            {
+                                                return`
+                                                    <div class="card accordion-item mb-1">
+                                                        <h2 class="accordion-header" id="qs-${qs.id}">
+                                                            <button class="accordion-button collapsed" data-bs-toggle="collapse" role="button" data-bs-target="#faq-${group.id}-${qs.id}" aria-expanded="false" aria-controls="faq-${group.id}-${qs.id}">
+                                                                ${qs.question}
+                                                            </button>
+                                                        </h2>
+
+                                                        <div id="faq-${group.id}-${qs.id}" class="collapse accordion-collapse" aria-labelledby="qs-${qs.id}" data-bs-parent="#faq-${group.id}-qna">
+                                                            <div class="accordion-body">
+                                                                ${qs.answer}
+                                                            </div>
+                                                            <div class='mb-1 ms-1'>
+                                                                ${timeZoneToDateString(qs.created_at, false)}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                `
+                                            }
+                                        ).join("")
+                                    }
+                                </div>
+                        `
+                    faqList.appendChild(elemnt.children[0])
+                    groupList.push(`
+                        <li class="nav-item">
+                            <a class="nav-link ${index === 0 && 'active'}" id="${group.id}-faq" data-bs-toggle="pill" href="#faq-${group.id}" aria-expanded="true" role="tab">
+                                <i data-feather="${group.icon}" class="font-medium-3 me-1"></i>
+                                <span class="fw-bold">${group.name}</span>
+                            </a>
+                        </li>
+                    `)
+                }
+            )
+            faqGroupList.innerHTML = groupList.join("")
+        }
+        if (feather)
+        {
+            feather.replace({
+                width: 14,
+                height: 14,
+            });
+        }
+    }
+    getListData()
+</script>
+{% endblock js %}

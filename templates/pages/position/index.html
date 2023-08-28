@@ -1,0 +1,1082 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+
+{% block content %}
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/forms/select/select2.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/extensions/jstree.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/extensions/ext-component-tree.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/vendors.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/pickadate/pickadate.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-pickadate.css' %}" />
+
+{% endblock css %}
+{% load rest_framework %}
+
+<div class="content-body">
+    <div class="row">
+        <div class="col-xl-4 col-lg-5 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Бүртгэгдсэн албан тушаалууд</h4>
+                </div>
+                <div class="card-body" style="width: 100%; overflow: auto; max-height: 77vh;">
+                    <div id="positions-menu"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-8 col-lg-7 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Албан тушаал {% if pk %} засах{% else %} бүртгэх{% endif %}</h4>
+                </div>
+                <div class="card-body">
+                    <div class="position-relative">
+                        {% if pk %}
+                            <form action="{% url 'position-action' pk %}" id="salbar-form" method="POST">
+                        {% else %}
+                            <form action="{% url 'position-action' %}" id="salbar-form" method="POST">
+                        {% endif %}
+                            {% csrf_token %}
+                            {% render_form serializer %}
+
+                            <div class="form-group">
+                                <label class="control-label" for="main_position">
+                                    Үндсэн албан тушаал
+                                </label>
+                                <select class="select2 form-select" name="main_position" id="main_position">
+                                    <option value="">-- сонгох --</option>
+                                    {% for main_position_item in main_positions %}
+                                        <option
+                                            value="{{main_position_item.id}}"
+                                            {% if main_position_item.id == serializer.cmain_position.value %} selected {% endif %}
+                                        >{{main_position_item.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="control-label" for="removed_perms">
+                                    Role ийн эрхээс хасах
+                                </label>
+                                <select class="select2 form-select" name="removed_perms" id="removed_perms" multiple></select>
+                            </div>
+                            {% if not pk %}
+                            <div class="form-group">
+                                <label class="col-sm-2 control-label" for="employee">
+                                    Ажилчид
+                                </label>
+                                <select class="select2 form-select" name="employee" id="employee" multiple>
+                                    {% for employee in employees %}
+                                        <option
+                                            value="{{ employee.id }}"
+                                            {% if employee.id in has_pos_employee %}selected{% endif %}
+                                        >
+                                            {{ employee.full_name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            {% endif %}
+                            <div class="col-xl-12 col-md-12 col-12 mt-2">
+                                {% if pk %}
+                                    {% if 'appointment-update' in request.permissions or not 'appointment-update' in request.permissions and not 'appointment-delete' in request.permissions %}
+                                    <button type="submit" id="salbar-btn" class="btn btn-primary">Засах</button>
+                                    {% endif %}
+                                    {% if 'appointment-delete' in request.permissions or not 'appointment-update' in request.permissions and not 'appointment-delete' in request.permissions %}
+                                    <a href="{% url 'orgpos-delete' pk %}" class="btn btn-danger">Устгах</a>
+                                    {% endif %}
+                                    <div id="todorhoiololt_btns" style="float: right;">
+                                        <button id="todorhoilolt_action_btn" type="button" data-bs-toggle="modal" data-bs-target="#alban-tushaaliin-todorhoilolt" class="btn btn-primary"></button>
+                                        <button id="todorhoilolt_read_btn" type="button" data-bs-toggle="modal" data-bs-target="#alban-tushaaliin-todorhoilolt-read" class="btn btn-primary"></button>
+                                    </div>
+                                {% else %}
+                                    <button type="submit" id="salbar-btn" class="btn btn-primary">Бүртгэх</button>
+                                {% endif %}
+                            </div>
+                        </form>
+                        {% if sub_org_id and not 'appointment-create' in request.permissions %}
+                            <div class="inactive p-2">
+                                <p class="fs-18">Танд эрх байхгүй байна</p>
+                            </div>
+                        {% elif pk and not 'appointment-update' in request.permissions and pk and not 'appointment-delete' in request.permissions %}
+                            <div class="inactive p-2">
+                                <p class="fs-18">Танд эрх байхгүй байна</p>
+                            </div>
+                        {% elif not pk and not 'appointment-create' in request.permissions %}
+                            <div class="inactive p-2">
+                                <p class="fs-18">Танд эрх байхгүй байна</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% include './alban-tushaaliin-todorhoilolt/index.html' %}
+                {% include './alban-tushaaliin-todorhoilolt/read.html' %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+<!--prettier-ignore-->
+{% block js %}
+
+<script src="{% static 'app-assets/vendors/js/forms/select/select2.full.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/form-select2.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/extensions/jstree.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/extensions/ext-component-tree.js' %}"></script>
+
+<script src="{% static 'app-assets/js/scripts/components/components-tooltips.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.date.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.time.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/legacy.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+
+<script src="{% static 'app-assets/js/scripts/forms/pickers/form-pickers.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/forms/repeater/jquery.repeater.min.js' %}"></script>
+<script src="{% static 'assets/js/print.min.js' %}"></script>
+<script>
+    (function (window, undefined) {
+        'use strict';
+
+        let wtf = []
+
+        let treeElement = $("#positions-menu")
+        let croles = $("select[name='croles']")
+        let removePerm = $("select[name='removed_perms']")
+
+        /** Дэд байгууллагын албан тушаал хамаарсан мод хэлбэрийн json авах */
+        async function getData()
+        {
+            const rsp = await fetch(
+                "/role/positions-tree/",
+                {
+                    method: "GET"
+                }
+            ).catch(err => alert("aldaa"))
+            if (rsp.ok) {
+                return rsp.json()
+            }
+            return rsp
+        }
+
+        if (treeElement.length)
+        {
+            getData()
+                .then(rsp =>
+                    {
+                        treeElement.jstree({
+                            core: {
+                                data: rsp
+                            },
+                            plugins: ['types', 'contextmenu', 'state'],
+                            types: {
+                                default: {
+                                    icon: 'fas fa-briefcase text-primary-green'
+                                },
+                                sub: {
+                                    icon: 'fas fa-landmark text-primary'
+                                },
+                                sub1: {
+                                    icon: 'far fa-circle text-success'
+                                },
+                                sub2: {
+                                    icon: "far fa-circle text-success"
+                                },
+                                sub3: {
+                                    icon: 'far fa-circle text-success'
+                                }
+                            }
+                        });
+                        treeElement.bind(
+                            "select_node.jstree",
+                            function (e, data)
+                            {
+                                if (data.node.parent === '#' && data.node.a_attr.href !== window.location.pathname && wtf.length > 0)
+                                {
+                                    window.location.href = data.node.a_attr.href
+                                }
+                                wtf.push(data.node.a_attr.href)
+                            }
+                        )
+                    })
+        }
+
+        async function getRmPermOptions(values)
+        {
+            const { success, data, errors } = await fetchData("{% url 'role-perms' %}", { 'role_ids': values, "pos_id": "{{pk}}" }, 'POST')
+            if (success)
+            {
+                removePerm.html("")
+                const { perms, removed_pos } = data
+                perms.map(
+                    (opt, idx) =>
+                    {
+                        removePerm.append(`<option value="${opt.cid}" ${removed_pos.includes(opt.cid) ? "selected" : ""}>${opt.cdesc} - ${opt.cname}</option>`)
+                    }
+                )
+            }
+        }
+
+        croles.on("change", (event) =>
+            {
+                useLoader(getRmPermOptions(croles.val()), removePerm.parent())
+            }
+        )
+
+        if ("{{pk}}")
+        {
+            croles.change()
+        }
+
+    })(window);
+
+    var $repeaters = {}
+    let deleteList = {
+        zorilt: [],
+        chig_vvreg: []
+    }
+
+    const todorhoiloltInputs = [
+        'chig_vvreg_oorchlogdson_ner',
+        'chig_vvreg_oorchlogdson_ognoo',
+        'dagaj_murduh_ognoo',
+        'alban_tushaal_batalsan_ognoo',
+        'negj',
+        'alban_tushaal_angilal',
+        'ajliin_tsag',
+        'ajliin_bairnii_bairshil',
+        'hudulmuriin_nuhtsul',
+        'ontsgoi_nuhtsul',
+        'alban_tushaaliin_zorilgo',
+        'bolowsor',
+        'mergeshil',
+        'turshlaga',
+        'hariyalan_udirdah_alban_tushaaliin_ner',
+        'ahlah_mergejilten',
+        'mergejilten',
+        'turiin_vilchilgeenii_alban_haagch',
+        'niit',
+        'todorhoiloltiig_bolowsruulsan',
+        'todorhoiloltiig_batlah_zowshoorol',
+        'alban_tushaal',
+        'baiguullagiin_ner',
+        'shiidweriin_ognoo_batalgaajuulalt',
+        'dugaar_batalgaajuulalt',
+        'shiidweriin_ognoo',
+        'dugaar',
+        'darga'
+    ]
+
+    const repeaters = [
+        'udirdan_zohion_baiguulah',
+        'bigZoriltRepeater',
+        'dvn_shinjilgee_hiih',
+        'asuudal_shiidwerleh',
+        'manlailah',
+        'busad',
+        'busad_hariltsah_subject',
+        'mergejil',
+    ]
+
+    /** repeater с ийг үүсгэх */
+    const createInputs = () =>
+    {
+        repeaters.map(
+            (repeater) =>
+            {
+                if(repeater === 'bigZoriltRepeater')
+                {
+                    $repeaters.bigZoriltRepeater = $(`.${repeater}`).repeater({
+                        show: function () {
+                            $(this).slideDown();
+                            // Feather Icons
+                            if (feather) {
+                                feather.replace({ width: 14, height: 14 });
+                            }
+                        },
+                        hide: function (deleteElement) {
+                            $(this).slideUp(deleteElement);
+                        },
+                        repeaters: [{
+                            // (Required)
+                            // Specify the jQuery selector for this nested repeater
+                            selector: '.chig_vvreg'
+                        }]
+                    });
+                    return
+                }
+                $repeaters[repeater] = $(`.${repeater}`).repeater({
+                    show: function () {
+                        $(this).slideDown();
+                        // Feather Icons
+                        if (feather) {
+                            feather.replace({ width: 14, height: 14 });
+                        }
+                    },
+                    hide: function (deleteElement) {
+                        if (confirm('Устгахдаа итгэлтэй байна уу?')) {
+                            $(this).slideUp(deleteElement);
+                        }
+                    }
+                });
+            }
+        )
+    }
+
+    createInputs()
+
+    let isCreateTodorhoilolt = true
+    let todorhoiloltData = {}
+    const jqFormTodorhoilolt = $('#todorhoiloltForm')
+    const todorhoilolt_action_btn = document.getElementById('todorhoilolt_action_btn')
+    const todorhoilolt_read_btn = document.getElementById('todorhoilolt_read_btn')
+    const todorhoiololt_btns_section = $('#todorhoiololt_btns')
+    const todorhoilolt_form_load = $('#todorhoilolt-form-load')
+    let validateTod
+
+    $(document).ready(function () {
+        validateTod = jqFormTodorhoilolt.validate({
+            rules: {
+                'turiin_albanii_huulitai_holbootoi': {
+                    required: true
+                },
+                huuli_togtoomjtoi_holbootoi_chiglel_vvrgiin_oorchlolt: {
+                    required: true
+                },
+                chig_vvreg_oorchlogdson_ner:{
+                    required: true
+                },
+                chig_vvreg_oorchlogdson_ognoo:{
+                    required: true
+                },
+                dagaj_murduh_ognoo:{
+                    required: true
+                },
+                alban_tushaal_batalsan_ognoo:{
+                    required: true
+                },
+                negj:{
+                    required: true
+                },
+                alban_tushaal_angilal:{
+                    required: true
+                },
+                ajliin_tsag:{
+                    required: true
+                },
+                ajliin_bairnii_bairshil:{
+                    required: true
+                },
+                hudulmuriin_nuhtsul:{
+                    required: true
+                },
+                ontsgoi_nuhtsul:{
+                    required: true
+                },
+                alban_tushaaliin_zorilgo:{
+                    required: true
+                },
+                bolowsor:{
+                    required: true
+                },
+                mergeshil:{
+                    required: true
+                },
+                turshlaga:{
+                    required: true
+                },
+                hariyalan_udirdah_alban_tushaaliin_ner:{
+                    required: true
+                },
+                ahlah_mergejilten:{
+                    required: true
+                },
+                mergejilten:{
+                    required: true
+                },
+                turiin_vilchilgeenii_alban_haagch:{
+                    required: true
+                },
+                niit:{
+                    required: true
+                },
+                todorhoiloltiig_batlah_zowshoorol:{
+                    required: true
+                },
+                todorhoiloltiig_bolowsruulsan:{
+                    required: true
+                },
+                alban_tushaal:{
+                    required: true
+                },
+                baiguullagiin_ner:{
+                    required: true
+                },
+                shiidweriin_ognoo_batalgaajuulalt:{
+                    required: true
+                },
+                dugaar_batalgaajuulalt:{
+                    required: true
+                },
+                shiidweriin_ognoo:{
+                    required: true
+                },
+                dugaar:{
+                    required: true
+                },
+                darga:{
+                    required: true
+                },
+            },
+            messages: {
+                'turiin_albanii_huulitai_holbootoi': {
+                    required: 'Энэ талбарыг бөглөх шаардлагатай'
+                },
+                huuli_togtoomjtoi_holbootoi_chiglel_vvrgiin_oorchlolt: {
+                    required: 'Энэ талбарыг бөглөх шаардлагатай'
+                },
+                chig_vvreg_oorchlogdson_ner:{
+                    required: 'Энэ талбарыг бөглөх шаардлагатай'
+                },
+                chig_vvreg_oorchlogdson_ognoo:{
+                    required: 'Энэ талбарыг бөглөх шаардлагатай'
+                },
+                dagaj_murduh_ognoo:{
+                    required: 'Энэ талбарыг бөглөх шаардлагатай'
+                },
+                alban_tushaal_batalsan_ognoo:{
+                    required: 'Энэ талбарыг бөглөх шаардлагатай'
+                },
+                negj:{
+                    required: 'Энэ талбарыг бөглөх шаардлагатай'
+                },
+                alban_tushaal_angilal:{
+                    required: 'Энэ талбарыг бөглөх шаардлагатай'
+                },
+                ajliin_tsag:{
+                    required: 'Энэ талбарыг бөглөх шаардлагатай'
+                },
+                ajliin_bairnii_bairshil:{
+                    required: 'Энэ талбарыг бөглөх шаардлагатай'
+                },
+                hudulmuriin_nuhtsul:{
+                    required: 'Энэ талбарыг бөглөх шаардлагатай'
+                },
+                ontsgoi_nuhtsul:{
+                    required: 'Энэ талбарыг бөглөх шаардлагатай'
+                },
+                alban_tushaaliin_zorilgo:{
+                    required: 'Энэ талбарыг бөглөх шаардлагатай'
+                },
+                bolowsor:{
+                    required: 'Энэ талбарыг бөглөх шаардлагатай'
+                },
+                mergeshil:{
+                    required: 'Энэ талбарыг бөглөх шаардлагатай'
+                },
+                turshlaga:{
+                    required: 'Энэ талбарыг бөглөх шаардлагатай'
+                },
+                hariyalan_udirdah_alban_tushaaliin_ner:{
+                    required: 'Энэ талбарыг бөглөх шаардлагатай'
+                },
+                ahlah_mergejilten:{
+                    required: 'Энэ талбарыг бөглөх шаардлагатай'
+                },
+                mergejilten:{
+                    required: 'Энэ талбарыг бөглөх шаардлагатай'
+                },
+                turiin_vilchilgeenii_alban_haagch:{
+                    required: 'Энэ талбарыг бөглөх шаардлагатай'
+                },
+                niit:{
+                    required: 'Энэ талбарыг бөглөх шаардлагатай'
+                },
+                todorhoiloltiig_batlah_zowshoorol:{
+                    required: 'Энэ талбарыг бөглөх шаардлагатай'
+                },
+                todorhoiloltiig_bolowsruulsan:{
+                    required: 'Энэ талбарыг бөглөх шаардлагатай'
+                },
+                alban_tushaal:{
+                    required: 'Энэ талбарыг бөглөх шаардлагатай'
+                },
+                baiguullagiin_ner:{
+                    required: 'Энэ талбарыг бөглөх шаардлагатай'
+                },
+                shiidweriin_ognoo_batalgaajuulalt:{
+                    required: 'Энэ талбарыг бөглөх шаардлагатай'
+                },
+                dugaar_batalgaajuulalt:{
+                    required: 'Энэ талбарыг бөглөх шаардлагатай'
+                },
+                shiidweriin_ognoo:{
+                    required: 'Энэ талбарыг бөглөх шаардлагатай'
+                },
+                dugaar:{
+                    required: 'Энэ талбарыг бөглөх шаардлагатай'
+                },
+                darga:{
+                    required: 'Энэ талбарыг бөглөх шаардлагатай'
+                },
+            },
+            errorPlacement: function(error, element)
+            {
+                if ( element.is(":radio"))
+                {
+                    error.appendTo( element.parents('.specialInputContainer') );
+                }
+                else if ( element.is(":checkbox"))
+                {
+                    error.appendTo( element.parents('.specialInputContainer') );
+                }
+                else
+                {
+                    error.insertAfter( element );
+                }
+            }
+        });
+    });
+
+    /** repeater устгахад устасан id г хадгаланаа */
+    const handleDeleteRepeater = (type, id) =>
+    {
+        if(type === 'zorilt')
+        {
+            const foundZorilt = todorhoiloltData.zorilgo_zorilt.zorilt.find((zorilt, index) => zorilt.id === id)
+            foundZorilt.chig_vvreg.map(
+                (chig) =>
+                {
+                    deleteList.chig_vvreg.push(chig.id)
+                }
+            )
+            todorhoiloltData.zorilgo_zorilt.zorilt = todorhoiloltData.zorilgo_zorilt.zorilt.filter((zorilt, index) => zorilt.id !== id)
+
+            deleteList.zorilt.push(id)
+        }
+        else
+        {
+            const zoriltID = id.split('_')[0]
+            const chig = id.split('_')[1]
+            todorhoiloltData.zorilgo_zorilt.zorilt.find(
+                (zorilt, index) =>
+                {
+                    if(zorilt.id === zoriltID)
+                    {
+                        todorhoiloltData.zorilgo_zorilt.zorilt[index].chig_vvreg = zorilt.chig_vvreg.filter(
+                            (chig_vvregz) =>
+                            {
+                                if(chig_vvregz.id === chig) return
+                                return chig_vvregz
+                            }
+                        )
+                        return zorilt
+                    }
+                }
+            )
+
+            deleteList.chig_vvreg.push(chig)
+        }
+    }
+
+    const onSubmitTodorhoilolt = async (event) =>
+    {
+        event.preventDefault()
+        if(!validateTod.checkForm())
+        {
+            return
+        }
+        const body = {}
+        const repeaterData = {}
+        body['turiin_albanii_huulitai_holbootoi'] = $('input[name="turiin_albanii_huulitai_holbootoi"]:checked').val();
+        body['huuli_togtoomjtoi_holbootoi_chiglel_vvrgiin_oorchlolt'] = $('input[name="huuli_togtoomjtoi_holbootoi_chiglel_vvrgiin_oorchlolt"]:checked').val();
+        todorhoiloltInputs.map(
+            (input) =>
+            {
+                body[input] = document.getElementById(input)?.value
+            }
+        )
+        repeaters.map(
+            (repeater, rindex) =>
+            {
+                repeaterData[repeater] = $('.' + repeater).repeaterVal()
+                // Nested repeater утга авах
+                if(repeater === 'bigZoriltRepeater')
+                {
+                    $('.' + repeater).repeaterVal().bigZoriltRepeater.map(
+                        (zorilt, index) =>
+                        {
+                            zorilt['chig_vvreg'].map(
+                                (select, indexSelect) =>
+                                {
+                                    const checkboxes = [ ...$(`div[name="bigZoriltRepeater[${index}][chig_vvreg][${indexSelect}][select-containerz]"]`)[0].getElementsByTagName('input') ]
+                                    let checkedgg = []
+                                    checkboxes.map(
+                                        (checkbox) =>
+                                        {
+                                            if(checkbox.checked)
+                                            {
+                                                checkedgg.push(checkbox.value)
+                                            }
+                                        }
+                                    )
+                                    repeaterData[repeater].bigZoriltRepeater[index]['chig_vvreg'][indexSelect].oroltsoonii_turul = checkedgg
+                                }
+                            )
+                        }
+                    )
+                }
+            }
+        )
+        const toArray = (array, field) =>
+        {
+            return array.map(
+                (element, index) =>
+                {
+                    return element[field]
+                }
+            )
+        }
+        body.zorilt = repeaterData.bigZoriltRepeater.bigZoriltRepeater
+        body.udirdan_zohion_baiguulah = toArray(repeaterData.udirdan_zohion_baiguulah.udirdan_zohion_baiguulah, 'udirdan_zohion_baiguulah')
+        body.dvn_shinjilgee_hiih = toArray(repeaterData.dvn_shinjilgee_hiih.dvn_shinjilgee_hiih, 'dvn_shinjilgee_hiih')
+        body.asuudal_shiidwerleh = toArray(repeaterData.asuudal_shiidwerleh.asuudal_shiidwerleh, 'asuudal_shiidwerleh')
+        body.manlailah = toArray(repeaterData.manlailah.manlailah, 'manlailah')
+        body.busad_hariltsah_subject = toArray(repeaterData.busad_hariltsah_subject.busad_hariltsah_subject, 'busad_hariltsah_subject')
+        body.busad = toArray(repeaterData.busad.busad, 'busad')
+        body.mergejil = toArray(repeaterData.mergejil.mergejil, 'mergejil')
+        body.org_position = '{{ pk }}'
+        if(isCreateTodorhoilolt)
+        {
+            const { success } = await useLoader(fetchData("/role/alban-tushaal-todorhoilolt/", body, 'POST'), todorhoilolt_form_load)
+            if(success)
+            {
+                window.location.reload()
+            }
+        }
+        else
+        {
+            Object.entries(todorhoiloltData).map(
+                (value) =>
+                {
+                    if(typeof value[1] === 'object' && value[1]?.id)
+                    {
+                        body[value[0] + '_id'] = value[1]?.id
+                    }
+                }
+            )
+
+            // Зорилго зорилт нд өөрсдийхн id г өгөх устасан array -д байгаа эсэхийг шалгана
+            todorhoiloltData.zorilgo_zorilt.zorilt.map(
+                (zorilt, index) =>
+                {
+                    if(deleteList.zorilt.includes(zorilt.id)) return
+
+                    body.zorilt[index].id = zorilt.id
+                    zorilt.chig_vvreg.map(
+                        (chig_vvreg, idx) =>
+                        {
+                            if(deleteList.chig_vvreg.includes(chig_vvreg.id)) return
+                            if(body.zorilt[index].chig_vvreg[idx])
+                            {
+                                body.zorilt[index].chig_vvreg[idx].id = chig_vvreg?.id
+                            }
+                        }
+                    )
+                }
+            )
+            body.deleteList = deleteList
+            const { success } = await useLoader(fetchData("/role/alban-tushaal-todorhoilolt/{{ pk }}/", body, 'PUT'), todorhoilolt_form_load)
+            if(success)
+            {
+                window.location.reload()
+            }
+        }
+    }
+
+    const displayInputValues = (data) =>
+    {
+        Object.entries(data).map(
+            (el, index) =>
+            {
+                if(Array.isArray(el[1]))
+                {
+                    $repeaters[el[0]].setList(el[1].map(
+                        (repeaterValue) =>
+                        {
+                            return {
+                                [el[0]]: repeaterValue
+                            }
+                        }
+                    ));
+                }
+                else if(el[0].includes('ognoo'))
+                {
+                    $(`#${el[0]}`).pickadate('picker').set('select', el[1]);
+                }
+                else
+                {
+                    if(document.getElementById(el[0]))
+                    {
+                        document.getElementById(el[0]).value = el[1]
+                    }
+                }
+            }
+        )
+    }
+
+    const displayValues = (data) =>
+    {
+        /** Ерөнхий мэдээлэл */
+        data.general.turiin_albanii_huulitai_holbootoi
+        ?
+            $('input[name="turiin_albanii_huulitai_holbootoi"][value="1"]').prop('checked', true)
+        :
+            $('input[name="turiin_albanii_huulitai_holbootoi"][value="0"]').prop('checked', true)
+
+        data.general.huuli_togtoomjtoi_holbootoi_chiglel_vvrgiin_oorchlolt
+        ?
+            $('input[name="huuli_togtoomjtoi_holbootoi_chiglel_vvrgiin_oorchlolt"][value="1"]').prop('checked', true)
+        :
+            $('input[name="huuli_togtoomjtoi_holbootoi_chiglel_vvrgiin_oorchlolt"][value="0"]').prop('checked', true)
+
+
+        displayInputValues(data.general)
+
+        /** Албан тушаалын зорилго, зорилт, чиг үүрэг */
+        document.getElementById('alban_tushaaliin_zorilgo').value = data.zorilgo_zorilt.alban_tushaaliin_zorilgo
+
+        $repeaters.bigZoriltRepeater.setList(data.zorilgo_zorilt.zorilt);
+
+        const zoriltDeleteBtns = [...document.getElementsByClassName('zorilt_delete_btn') ]
+        const chigDeleteBtns = [ ...document.getElementsByClassName('chig_delete_btn') ]
+        let chigDeleteBtnCount = 0
+
+        // repeater устгах товч дээр onclick тавьж байна. Үүссэн repeater устгахад ямар id тай устгасаныг мэдэх
+        data.zorilgo_zorilt.zorilt.map(
+            (zorilt, index) =>
+            {
+                zoriltDeleteBtns[index].onclick = function(){ handleDeleteRepeater('zorilt', zorilt.id) }
+                zorilt.chig_vvreg.map(
+                    (chig, idx) =>
+                    {
+                        chigDeleteBtns[chigDeleteBtnCount].onclick = function(){ handleDeleteRepeater('chig', zorilt.id + "_" + chig.id) }
+                        const checkboxes = [ ...$(`div[name="bigZoriltRepeater[${index}][chig_vvreg][${idx}][select-containerz]"]`)[0].getElementsByTagName('input') ]
+                        chig.oroltsoonii_turul.map(
+                            (turul) =>
+                            {
+                                checkboxes[turul - 1].checked = true
+                            }
+                        )
+                        chigDeleteBtnCount++
+                    }
+                )
+            }
+        )
+
+        // labelm input гэсэн жижиг input үүддэд утгын шууд өгөх
+        displayInputValues(data.shaardlaga)
+        displayInputValues(data.subject)
+        displayInputValues(data.batalgaajuulalt)
+        displayInputValues(data)
+    }
+
+    // Тодорхойлолт авах
+    const getTodorhoilolt = async () =>
+    {
+        const { success, data } = await useLoader(fetchData('/role/alban-tushaal-todorhoilolt/{{ pk }}/', null, "GET"), todorhoiololt_btns_section)
+        if(success)
+        {
+            if(data.org_position)
+            {
+                // read html дээр харуулах
+                displayReadValues(data)
+                todorhoilolt_read_btn.classList.remove('d-none')
+                todorhoilolt_action_btn.textContent = 'Тодорхойлолт засах'
+                todorhoilolt_read_btn.textContent = 'Тодорхойлолт харах'
+                // input үүд дээр харуулах
+                displayValues(data)
+            }
+            else
+            {
+                todorhoilolt_action_btn.classList.remove('d-none')
+                todorhoilolt_read_btn.classList.add('d-none')
+                todorhoilolt_action_btn.textContent = 'Тодорхойлолт үүсгэх'
+            }
+            isCreateTodorhoilolt = data.org_position ? false : true
+            todorhoiloltData = data
+        }
+    }
+
+    getTodorhoilolt()
+
+    const readIds = [
+        "chig_vvreg_oorchlogdson_ner_read",
+        "chig_vvreg_oorchlogdson_ognoo_read",
+        "dagaj_murduh_ognoo_read",
+        "alban_tushaal_batalsan_ognoo_read",
+        "negj_read",
+        "alban_tushaal_angilal_read",
+        "ajliin_tsag_read",
+        "ajliin_bairnii_bairshil_read",
+        "hudulmuriin_nuhtsul_read",
+        "ontsgoi_nuhtsul_read",
+        "alban_tushaaliin_zorilgo_read",
+        "hariyalan_udirdah_alban_tushaaliin_ner_read",
+        "ahlah_mergejilten_read",
+        "mergejilten_read",
+        "turiin_vilchilgeenii_alban_haagch_read",
+        "niit_read",
+        "busad_hariltsah_subject_read",
+        "todorhoiloltiig_bolowsruulsan_read",
+        "todorhoiloltiig_batlah_zowshoorol_read",
+        "alban_tushaal_read",
+        "baiguullagiin_ner_read",
+        "shiidweriin_ognoo_batalgaajuulalt_read",
+        "dugaar_batalgaajuulalt_read",
+        "shiidweriin_ognoo_read",
+        "dugaar_read",
+        "darga_read",
+        "org_name_read"
+    ]
+
+    const displayReadValuesz = (data) =>
+    {
+        Object.entries(data).map(
+            (value) =>
+            {
+                if(typeof value[1] === 'object') return
+                if(document.getElementById(value[0] + '_read'))
+                {
+                    document.getElementById(value[0] + '_read').textContent = value[1]
+                }
+            }
+        )
+    }
+
+    // read.html ийг утгатай болгох
+    const displayReadValues = (data) =>
+    {
+        // label, input гэсэн жижиг хэсгийн утгуудыг шууд харуулна
+        displayReadValuesz(data)
+        displayReadValuesz(data.general)
+        displayReadValuesz(data.batalgaajuulalt)
+        displayReadValuesz(data.shaardlaga)
+        displayReadValuesz(data.subject)
+        displayReadValuesz(data.zorilgo_zorilt)
+
+        const zoriltTable = document.getElementById('zorilt_table')
+        const shaardlagaTable = document.getElementById('shaardlaga_table')
+        const zoriltHtml = []
+
+        // эхний үсгээр харуулах зорилт хүснэгт
+        const displayType = (types) =>
+        {
+            const typez = {
+                1: 'Т',
+                2: 'Г',
+                3: 'Х',
+                4: 'Ш',
+            }
+            return types.map((type) => typez[type])
+        }
+
+        // хүснэгт
+        data.zorilgo_zorilt.zorilt.map(
+            (zorilt, index) =>
+            {
+                // зорилт жагсаалт
+                const li = document.createElement('li')
+                li.textContent = `${index + 1}. ${zorilt.desicription}`
+                document.getElementById('desicription_read').appendChild(li)
+
+                zoriltHtml.push(
+                    `
+                        <tr>
+                            <td style="border: 1px solid #595957;" rowspan="${zorilt.chig_vvreg.length}">${index + 1}-р зорилтын хүрээнд</td>
+                            <td style="border: 1px solid #595957;">${zorilt.chig_vvreg[0].vvreg}</td>
+                            <td style="border: 1px solid #595957;">${zorilt.chig_vvreg[0].shalguur}</td>
+                            <td style="border: 1px solid #595957;">${displayType(zorilt.chig_vvreg[0].oroltsoonii_turul)}</td>
+                        </tr>
+                        ${
+                            zorilt.chig_vvreg.map(
+                                (chig, index) =>
+                                {
+                                    if(index === 0) return
+                                    return `
+                                    <tr>
+                                        <td style="border: 1px solid #595957;">${chig.vvreg}</td>
+                                        <td style="border: 1px solid #595957;">${chig.shalguur}</td>
+                                        <td style="border: 1px solid #595957;">${displayType(chig.oroltsoonii_turul)}</td>
+                                    </tr>
+                                    `
+                                }
+                            ).join("")
+                        }
+
+                    `
+                )
+            }
+        )
+        zoriltTable.innerHTML = zoriltHtml.join("")
+
+        const shaardlagaHTML = []
+
+        // хүснэгт
+        shaardlagaHTML.push(
+            `
+                <tr>
+                    <td style="border: 1px solid #595957;">Боловсрол</td>
+                    <td style="border: 1px solid #595957;" colspan="2">${data.shaardlaga.bolowsor}</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #595957;">Мэргэжил</td>
+                    <td style="border: 1px solid #595957;" colspan="2">
+                        <ul>
+                            ${
+                                data.shaardlaga.mergejil.map(
+                                    (merg) =>
+                                    {
+                                        return `
+                                            <li>
+                                                ${merg}
+                                            </li>
+                                        `
+                                    }
+                                ).join("")
+                            }
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #595957;">Мэргэшил</td>
+                    <td style="border: 1px solid #595957;" colspan="2">${data.shaardlaga.mergeshil}</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #595957;">Туршлага</td>
+                    <td style="border: 1px solid #595957;" colspan="2">${data.shaardlaga.turshlaga}</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #595957;" rowspan="5">Ур чадвар</td>
+                    <td style="border: 1px solid #595957;">Удирдан зохион байгуулах</td>
+                    <td style="border: 1px solid #595957;">
+                        <ul>
+                            ${
+                                data.shaardlaga.udirdan_zohion_baiguulah.map(
+                                    (merg) =>
+                                    {
+                                        return `
+                                            <li>
+                                                ${merg}
+                                            </li>
+                                        `
+                                    }
+                                ).join("")
+                            }
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #595957;">Дүн шинжилгээ хийх</td>
+                    <td style="border: 1px solid #595957;">
+                        <ul>
+                            ${
+                                data.shaardlaga.dvn_shinjilgee_hiih.map(
+                                    (merg) =>
+                                    {
+                                        return `
+                                            <li>
+                                                ${merg}
+                                            </li>
+                                        `
+                                    }
+                                ).join("")
+                            }
+                        </ul>
+                    </td>
+                </tr><tr>
+                    <td style="border: 1px solid #595957;">Асуудал шийдвэрлэх</td>
+                    <td style="border: 1px solid #595957;">
+                        <ul>
+                            ${
+                                data.shaardlaga.asuudal_shiidwerleh.map(
+                                    (merg) =>
+                                    {
+                                        return `
+                                            <li>
+                                                ${merg}
+                                            </li>
+                                        `
+                                    }
+                                ).join("")
+                            }
+                        </ul>
+                    </td>
+                </tr><tr>
+                    <td style="border: 1px solid #595957;">Манлайлах</td>
+                    <td style="border: 1px solid #595957;">
+                        <ul>
+                            ${
+                                data.shaardlaga.manlailah.map(
+                                    (merg) =>
+                                    {
+                                        return `
+                                            <li>
+                                                ${merg}
+                                            </li>
+                                        `
+                                    }
+                                ).join("")
+                            }
+                        </ul>
+                    </td>
+                </tr><tr>
+                    <td style="border: 1px solid #595957;">Бусад</td>
+                    <td style="border: 1px solid #595957;">
+                        <ul>
+                            ${
+                                data.shaardlaga.busad.map(
+                                    (merg) =>
+                                    {
+                                        return `
+                                            <li>
+                                                ${merg}
+                                            </li>
+                                        `
+                                    }
+                                ).join("")
+                            }
+                        </ul>
+                    </td>
+                </tr>
+            `
+        )
+        shaardlagaTable.innerHTML = shaardlagaHTML.join("")
+        data.subject.busad_hariltsah_subject.map(
+            (sub) =>
+            {
+                const li = document.createElement('li')
+                li.textContent = `${sub}`
+                document.getElementById('busad_hariltsah_subject_read').appendChild(li)
+            }
+        )
+    }
+
+</script>
+{% endblock js %}

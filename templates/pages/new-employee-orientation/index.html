@@ -1,0 +1,691 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+{% block content %}
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-pickadate.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/pickadate/pickadate.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'assets/css/drop.css' %}" />
+
+{% endblock css %}
+
+<div class="content-body">
+    <div class="row" id="table-hover-row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Шинэ ажилтны чиглүүлэх хөтөлбөр</h4>
+                </div>
+                    {% if 'new-employee-lesson-read' in request.permissions %}
+                        <div class="table-body">
+                            <div class="table-responsive card-datatable">
+                                <table class="table chigluuleh-hotolbor ">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th>Нэр</th>
+                                            <th>Тайлбар</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    {% endif %}
+                <div class="modal modal-slide-in new-user-modal fade" id="modals-slide-in">
+                    <div class="modal-dialog custom-50">
+                        <form id="chiglelForm" class="add-new-user modal-content pt-0">
+                            <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                            >
+                                ×
+                            </button>
+                            <div class="modal-header mb-1">
+                                <h5 class="modal-title" id="exampleModalLabel">
+                                    Шинэ ажилтны чиглүүлэх хөтөлбөр бүртгэх
+                                </h5>
+                            </div>
+                            <div class="modal-body flex-grow-1">
+                                <div class="mb-1">
+                                    <label class="form-label">Нэр</label>
+                                    <input id="name" name="name" type="text" class="form-control" placeholder="Нэр" data-msg="Энэ талбарыг бөглөнө үү" />
+                                </div>
+                                <div class="mb-1">
+                                    <label class="form-label">Тайлбар</label>
+                                    <textarea id="description" name="description" class="form-control" rows="3" data-msg="Энэ талбарыг бөглөнө үү" ></textarea>
+                                </div>
+                                <div class="mb-1">
+                                    <label class="form-label">Хавсралт</label>
+                                    <div class="cdrop-area" id="cdrop-area">
+                                        <div class="cdrop-text" id="cdrop-text"></div>
+                                        <div class="cgallery row" id="gallery"></div>
+                                        <input
+                                            type="file"
+                                            class="form-control d-none"
+                                            id="pdfs"
+                                            name="pdfs"
+                                            multiple
+                                            accept="application/pdf"
+                                        >
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary me-1 data-submit">Хадгалах</button>
+                                <button id="modalCancelBtn" type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Болих</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal fade" id="referEarnModal" tabindex="-1" aria-labelledby="referEarnTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-xl modal-refer-earn modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header bg-transparent">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body pb-5 px-sm-0">
+                                <div class="px-sm-4 mx-50">
+                                    <h1 class="text-center mb-1" id="referEarnTitle">
+                                    </h1>
+                                    <p class="text-center mb-5">
+                                        <i data-feather='clock'></i> <span id="createdAtChiglel"></span>
+                                    </p>
+                                    <div id="cpdf-view"></div>
+                                    <!-- <p class="ql-editor" id="ChiglelContent">
+                                    </p> -->
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade" id="delete-modal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-sm modal-dialog-centered modal-edit-user">
+                        <div class="modal-content">
+                            <div class="modal-header bg-transparent">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-center">
+                                <div class="text-center">
+                                    <i class="fas fa-exclamation-circle text-warning fs-40"></i>
+                                </div>
+                                <h6 class="mt-1 mb-1 fw-bolder">Анхааруулга<h6>
+                                Та устгахдаа итгэлтэй байна уу
+                            </div>
+                            <div class="modal-footer">
+                                <button
+                                    class="btn btn-primary"
+                                    type="button"
+                                    onclick="deleteChiglel(event)"
+                                >
+                                    <span>Тийм</span>
+                                </button>
+                                <button
+                                    class="btn btn-outline-secondary"
+                                    data-bs-dismiss="modal"
+                                >
+                                    Үгүй
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.buttons.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jszip.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/pdfmake.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/vfs_fonts.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.html5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.print.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/cleave.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/addons/cleave-phone.us.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.date.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.time.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/legacy.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+
+<script src="{% static 'app-assets/js/scripts/tables/table-datatables-advanced.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/pickers/form-pickers.js' %}"></script>
+
+<script src="{% static 'assets/js/drop.js' %}"></script>
+<script src="{% static 'assets/js/pdf.js' %}"></script>
+
+<script>
+    var generalInfoTable
+    let deleteModal = $("#delete-modal")
+
+    const displayCreateBtn = () =>
+    {
+        const hasPremission = "{% if 'new-employee-lesson-create' in request.permissions %}yes{% endif %}"
+        if(hasPremission === 'yes')
+        {
+            return(
+                {
+                        text: "Шинээр бүртгэх",
+                        className: "add-new btn btn-primary",
+                        attr: {
+                            "id": "modalToggler",
+                            "data-bs-toggle": "modal",
+                            "data-bs-target": "#modals-slide-in",
+                            "onclick": "resetActionType()"
+                        },
+                        init: function (api, node, config) {
+                            $(node).removeClass("btn-secondary");
+                        },
+                }
+            )
+        }
+    }
+
+    "{% if 'new-employee-lesson-read' in request.permissions %}"
+        generalInfoTable = $(".chigluuleh-hotolbor").DataTable({
+            fixedColumns:   {
+                left: 0,
+                right: 1
+            },
+            processing: false,
+            dom: 'lBfrtip',
+            serverSide: true,
+            ajax: { url: '/worker/new-employee-orientation-paginate/' }, // JSON file to add data
+            columns: [
+                // columns according to JSON
+                { data: null },
+                { data: null },
+                { data: "name" },
+                { data: "description" },
+                { data: null },
+            ],
+            columnDefs: [
+                {
+                    // For Responsive
+                    className: "control",
+                    orderable: false,
+                    responsivePriority: 2,
+                    targets: 0,
+                    render: function (data, type, full, meta) {
+                        return "";
+                    },
+                },
+                {
+                    targets: 2,
+                    render: function (data, type, full, meta) {
+                        return (`<a onclick="getOneChiglel(${full.id}, 'view')" data-bs-toggle="modal" data-bs-target="#referEarnModal" class="text-decoration-underline text-dark">${full.name}</a>`);
+                    },
+                },
+                {
+                    // Actions
+                    targets: -1,
+                    title: "Үйлдэл",
+                    orderable: false,
+                    render: function (data, type, full, meta) {
+                        return (
+                            `
+                            {% if 'new-employee-lesson-update' in request.permissions %}
+                                <span
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    data-bs-original-title="Засах"
+                                    onclick="getOneChiglel(${full.id})"
+                                    class="cursor-pointer delete-record text-primary me-1 approve_gei"
+                                >
+                                    ${feather.icons["edit-3"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    })}
+                                </span>
+                            {% endif %}
+                            {% if 'new-employee-lesson-delete' in request.permissions %}
+                                <span
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    data-bs-original-title="Устгах"
+                                    onclick="deleteModalShow(${full.id})"
+                                    class="cursor-pointer delete-record text-primary-orange decline_gei"
+                                >
+                                    ${feather.icons["trash-2"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    })}
+                                </span>
+                            {% endif %}
+                            `
+                        );
+                    },
+                },
+                {
+                    targets: 1,
+                    title: "#",
+                    orderable: false,
+                    render: function (data, type, full, meta) {
+                        return (
+                            meta.settings._iDisplayStart + meta.row + 1
+                        );
+                    },
+                },
+            ],
+            order: [[3, "desc"]],
+            lengthMenu: [
+                [10, 25, 50, 100, -1],
+                [10, 25, 50, 100, 'Бүгд'],
+            ],
+            dom:
+            '<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75 float-right"' +
+                '<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+                '<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+                ">t" +
+                '<"d-flex justify-content-between mx-2 row mb-1"' +
+                '<"col-sm-12 col-md-6"i>' +
+                '<"col-sm-12 col-md-6"p>' +
+                ">",
+            oLanguage: {
+                sProcessing: "Ачааллаж байна. ",
+                sSearch: "Хайх: ",
+                sEmptyTable: "Бичлэг байхгүй",
+                sInfoEmpty: "Нийт 0 бичлэг",
+                sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+                sInfoFiltered: " - _MAX_ бичлэгээс",
+                sLengthMenu: "_MENU_ бичлэг",
+                oPaginate: {
+                    sFirst: "Эхэнд",
+                    sLast: "Төгсгөлд",
+                    sNext: "Дараах",
+                    sPrevious: "Өмнөх",
+                },
+            },
+            // Buttons with Dropdown
+            buttons: [
+                {
+                    extend: "collection",
+                    className: "btn btn-outline-secondary dropdown-toggle me-2",
+                    text:
+                        feather.icons["external-link"].toSvg({
+                            class: "font-small-4 me-50",
+                        }) + "Export",
+                    buttons: [
+                        {
+                            extend: "print",
+                            text:
+                                feather.icons["printer"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Print",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [1, 2, 3] },
+                        },
+                        {
+                            extend: "csv",
+                            text:
+                                feather.icons["file-text"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Csv",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [1, 2, 3] },
+                        },
+                        {
+                            extend: "excel",
+                            text:
+                                feather.icons["file"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Excel",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [1, 2, 3] },
+                        },
+                        {
+                            extend: "pdf",
+                            text:
+                                feather.icons["clipboard"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Pdf",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [1, 2, 3] },
+                        },
+                        {
+                            extend: "copy",
+                            text:
+                                feather.icons["copy"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Copy",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [1, 2, 3] },
+                        },
+                    ],
+                    init: function (api, node, config) {
+                        $(node).removeClass("btn-secondary");
+                        $(node).parent().removeClass("btn-group");
+                        setTimeout(function () {
+                            $(node)
+                                .closest(".dt-buttons")
+                                .removeClass("btn-group")
+                                .addClass("d-inline-flex mt-50");
+                        }, 50);
+                    },
+                },
+                displayCreateBtn()
+            ],
+        });
+    "{% endif %}"
+
+    const chigluulehInputs = [ "name", "description" ]
+
+    // // var editor = new Quill('#full-container2 .editor2', {
+    //     bounds: '#full-container2 .editor2',
+    //     modules: {
+    //         formula: true,
+    //         syntax: true,
+    //         toolbar: [
+    //             [
+    //                 {
+    //                     font: []
+    //                 },
+    //                 {
+    //                     size: []
+    //                 }
+    //             ],
+    //             ['bold', 'italic', 'underline', 'strike'],
+    //             [
+    //                 {
+    //                     color: []
+    //                 },
+    //                 {
+    //                     background: []
+    //                 }
+    //             ],
+    //             [
+    //                 {
+    //                     script: 'super'
+    //                 },
+    //                 {
+    //                     script: 'sub'
+    //                 }
+    //             ],
+    //             [
+    //                 {
+    //                     header: '1'
+    //                 },
+    //                 {
+    //                     header: '2'
+    //                 },
+    //                 'blockquote',
+    //                 'code-block'
+    //             ],
+    //             [
+    //                 {
+    //                     list: 'ordered'
+    //                 },
+    //                 {
+    //                     list: 'bullet'
+    //                 },
+    //                 {
+    //                     indent: '-1'
+    //                 },
+    //                 {
+    //                     indent: '+1'
+    //                 }
+    //             ],
+    //             [
+    //                 'direction',
+    //                 {
+    //                     align: []
+    //                 }
+    //             ],
+    //             ['link', 'image', 'video', 'formula'],
+    //             ['clean']
+    //         ]
+    //     },
+    //     theme: 'snow'
+    // });
+
+    function clearForm()
+    {
+        resetGallery()
+        chigluulehInputs.map(
+            (input) =>
+            {
+                if(input === 'content')
+                {
+                    document.getElementById(input).firstChild.innerHTML = ""
+                    return
+                }
+                document.getElementById(input).value = ""
+            }
+        )
+    }
+
+    const resetActionType = () =>
+    {
+        actionType = 'create'
+        clearForm()
+    }
+
+    //   /**
+    //    * Step1. select local image
+    //    *
+    //    */
+    // function selectLocalImage() {
+    //     const input = document.createElement('input');
+    //     input.setAttribute('type', 'file');
+    //     input.click();
+
+    //     // Listen upload local image and save to server
+    //     input.onchange = () => {
+    //         const file = input.files[0];
+
+    //         // file type is only image.
+    //         if (/^image\//.test(file.type)) {
+    //             saveToServer(file);
+    //         } else {
+    //             alert('Зураг оруулна уу хэхээх');
+    //         }
+    //     };
+    // }
+
+    // let uplaodedImages = []
+
+    // /**
+    //  * Step2. save to server
+    //  *
+    //  * @param {File} file
+    //  */
+    // function saveToServer(file) {
+    //     const fd = new FormData();
+    //     fd.append('image', file);
+
+    //     var token = document.cookie.split(';').find(e => e.trim().startsWith('csrftoken'))
+    //     token = token.split('csrftoken=')[1]
+
+    //     const xhr = new XMLHttpRequest();
+    //     xhr.open('POST', '/worker/new-employee-orientation-action/image/', true);
+    //     xhr.setRequestHeader("X-CSRFToken", token)
+
+    //     xhr.onload = () => {
+    //         if (xhr.status === 200) {
+    //             // this is callback data: url
+    //             const url = JSON.parse(xhr.responseText).data.image;
+    //             uplaodedImages.push(url.split('/media/')[1])
+    //             insertToEditor(url);
+    //         }
+    //     };
+
+    //     xhr.send(fd);
+    // }
+
+    // /**
+    //  * Step3. insert image url to rich editor.
+    //  *
+    //  * @param {string} url
+    //  */
+    // function insertToEditor(url) {
+    //     // push image url to rich editor.
+    //     const range = editor.getSelection();
+    //     editor.insertEmbed(range.index, 'image', url);
+    // }
+
+    // // quill editor add image handler
+    // editor.getModule('toolbar').addHandler('image', () => {
+    //     selectLocalImage();
+    // });
+
+    let actionType = 'create'
+
+    var ChiglelJqFrom = $('#chiglelForm')
+
+    let validateChiglelK
+    if (ChiglelJqFrom.length) {
+
+        validateChiglelK = ChiglelJqFrom.validate({
+            submitHandler: (form, event) => actionChigluuleh(form, event),
+            rules: {
+                "name": {
+                    required: true,
+                },
+                "description": {
+                    required: true
+                },
+                "pdfs": {
+                    checkDrop: true,
+                    sizeDrop: true
+                }
+            },
+            ignore: []
+        })
+    }
+
+    const actionChigluuleh = async (form, event) =>
+    {
+        event.preventDefault();
+        const formData = new FormData(form)
+        removeImgIds.map((cmd, idx) => formData.append("remove_commands", cmd))
+
+        let fetch = actionType === 'create'
+                    ? fetchData('/worker/new-employee-orientation-action/', formData, "POST", "", false)
+                    : fetchData(`/worker/new-employee-orientation-action/${actionType}/`, formData, "PUT", "", false)
+
+        const { success, errors } = await useLoader(fetch, ChiglelJqFrom).catch(err => err)
+        if(errors)
+        {
+            // input ийг validate алдаа г харуулах
+            displayError(errors)
+        } else {
+            // input ийн харагдсан байгаа validate алдаануудыг устгах
+            deleteError(errors)
+        }
+        if(success)
+        {
+            actionType = 'create'
+            $("#modals-slide-in").modal('hide')
+            // document.getElementsByClassName('ql-editor')[0].innerHTML = ''
+            generalInfoTable.ajax.reload(null, false)
+        }
+    }
+
+    const getOneChiglel = async (id, type) =>
+    {
+        actionType = id
+        const { success, data } = await fetchData(`/worker/new-employee-orientation-action/${id}/`, null, "GET")
+        if(success)
+        {
+            if(type !== 'view')
+            {
+                $("#modals-slide-in").modal('show')
+                clearForm()
+                uplaodedImages = data.images
+                chigluulehInputs.map(
+                    (input) =>
+                    {
+                        document.getElementById(input).value = data[input]
+                    }
+                )
+                displayFiles(data.pdfs)
+            }
+            else
+            {
+                renderPDF(data.pdfs, "#cpdf-view");
+                const contentViewIds = [ "referEarnTitle", "createdAtChiglel", "ChiglelContent" ]
+                contentViewIds.map(
+                    (id) =>
+                    {
+                        if(id === 'ChiglelContent')
+                        {
+                            let parsedHtml = $.parseHTML(data?.content)
+                            $(parsedHtml).find("img").each(
+                                (index, element) =>
+                                {
+                                    element.style.maxWidth = '100%'
+                                }
+                            )
+                            $("#ChiglelContent").html(parsedHtml)
+                            return
+                        }
+                        if(id === 'createdAtChiglel')
+                        {
+                            document.getElementById('createdAtChiglel').textContent = timeZoneToDateString(data?.created_at)
+                            return
+                        }
+                        if(id === 'referEarnTitle')
+                        {
+                            document.getElementById('referEarnTitle').textContent = data?.name
+                            return
+                        }
+                    }
+                )
+            }
+        }
+    }
+
+    const deleteModalShow = (id) =>
+    {
+        deleteModal.modal("show")
+        deleteModal.attr("data-cid", id)
+    }
+
+    const deleteChiglel = async (event) =>
+    {
+        const id = deleteModal.attr("data-cid")
+        const { success } = await fetchData(`/worker/new-employee-orientation-action/${id}/`, null, "DELETE")
+        if(success)
+        {
+            deleteModal.modal("hide")
+            generalInfoTable.ajax.reload(null, false)
+        }
+    }
+
+</script>
+
+{% endblock js %}

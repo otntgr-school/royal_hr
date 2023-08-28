@@ -1,0 +1,609 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/vendors.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/form-quill-editor.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/editors/quill/katex.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/editors/quill/monokai-sublime.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/editors/quill/quill.snow.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/editors/quill/quill.bubble.css' %}">
+{% endblock css %}
+<!--prettier-ignore-->
+{% block content %}
+<!-- fixed column -->
+<div class="content-body">
+    <section class="app-user-view-connections">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Нийтлэг асуулт, хариулт</h4>
+                    </div>
+                    <div class="table-body">
+                        <div class="table-responsive card-datatable">
+                            <table class="table allowance-table ">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th>Асуултын бүлэг</th>
+                                        <th>Асуулт</th>
+                                        <th>Хариулт</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal modal-slide-in new-user-modal fade" id="modals-slide-in">
+                    <div class="modal-dialog custom-50">
+                        <form onsubmit="actionDonation(event)" id="donationForm" class="add-new-user modal-content pt-0">
+                            <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                            >
+                                ×
+                            </button>
+                            <div class="modal-header mb-1">
+                                <h5 class="modal-title" id="exampleModalLabel">
+                                    Ажлын байрны бүртгэл
+                                </h5>
+                            </div>
+                            <div class="modal-body flex-grow-1">
+                                <div id="selectGroup" class="mb-1">
+                                    <label class="form-label">Асуултын бүлэг</label>
+                                    <select id="group" name="group" class="select2 form-select" data-msg="Cонгоно уу">
+                                            <option value="">
+                                                -------------
+                                            </option>
+                                            {% for group in faqgroup %}
+                                                <option value="{{ group.id }}">
+                                                    {{ group.name }}
+                                                </option>
+                                            {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="mb-1">
+                                    <label class="form-label">Асуулт</label>
+                                    <input type="text" id="question" name="question" class="form-control" placeholder="Асуулт"/>
+                                </div>
+                                <div class="mb-1">
+                                    <label class="form-label">Дэлгэрэнгүй агуулга</label>
+                                    <section class="full-editor">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <div id="full-wrapper">
+                                                    <div id="full-container2">
+                                                        <div id="content" name="content" class="editor2">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                                <button type="submit" class="btn btn-primary me-1 data-submit">Хадгалах</button>
+                                <button id="modalCancelBtn" type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Болих</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="modal fade" id="warning-modal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog modal-sm modal-dialog-centered modal-edit-user">
+			<div class="modal-content">
+				<div class="modal-header bg-transparent">
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body text-center">
+					<div class="text-center">
+						<i class="fas fa-exclamation-circle text-warning fs-40"></i>
+					</div>
+					<h6 class="mt-1 mb-1 fw-bolder">Анхааруулга<h6>
+					Та устгахдаа итгэлтэй байна уу
+				</div>
+				<div class="modal-footer">
+					<button
+						class="btn btn-primary"
+						data-bs-dismiss="modal"
+						type="button"
+						onclick="deleteOneDonate(event)"
+					>
+						<span>Тийм</span>
+					</button>
+					<button
+						class="btn btn-outline-secondary"
+						data-bs-dismiss="modal"
+					>
+						Үгүй
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+    <div class="modal fade" id="contanctInfoUserModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-edit-user">
+            <div class="modal-content">
+                <div class="modal-header bg-transparent">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pb-5 px-sm-5 pt-50">
+                    <div class="text-center mb-2">
+                        <h1 class="mb-1">Хариулт</h1>
+                    </div>
+                    <div id="answerContent"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+{% block js %}
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.min.js' %}"></script>
+
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.buttons.min.js' %}"></script>
+
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/pdfmake.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.html5.min.js' %}"></script>
+
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.print.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js' %}"></script>
+
+    <script src="{% static 'app-assets/js/scripts/components/components-tooltips.js' %}"></script>
+
+    <script src="{% static 'app-assets/vendors/js/editors/quill/katex.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/editors/quill/highlight.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/editors/quill/quill.min.js' %}"></script>
+
+    <script>
+        var donateTable
+        let actionType = 'create'
+        const donationInputs = [ "group", "question", "content" ]
+        const answerContent = document.getElementById("answerContent")
+        const selectGroup = document.getElementById("selectGroup")
+
+        var editor = new Quill('#full-container2 .editor2', {
+            bounds: '#full-container2 .editor2',
+            modules: {
+                formula: true,
+                syntax: true,
+                toolbar: [
+                    [
+                        {
+                            font: []
+                        },
+                        {
+                            size: []
+                        }
+                    ],
+                    ['bold', 'italic', 'underline', 'strike'],
+                    [
+                        {
+                            color: []
+                        },
+                        {
+                            background: []
+                        }
+                    ],
+                    [
+                        {
+                            script: 'super'
+                        },
+                        {
+                            script: 'sub'
+                        }
+                    ],
+                    [
+                        {
+                            header: '1'
+                        },
+                        {
+                            header: '2'
+                        },
+                        'blockquote',
+                        'code-block'
+                    ],
+                    [
+                        {
+                            list: 'ordered'
+                        },
+                        {
+                            list: 'bullet'
+                        },
+                        {
+                            indent: '-1'
+                        },
+                        {
+                            indent: '+1'
+                        }
+                    ],
+                    [
+                        'direction',
+                        {
+                            align: []
+                        }
+                    ],
+                    ['link', 'formula'],
+                    ['clean']
+                ]
+            },
+            theme: 'snow'
+        });
+
+        const clearAllInputsDonate = () =>
+        {
+            actionType = 'create'
+            donationInputs.map(
+                (input) =>
+                {
+                    if(input === 'group')
+                    {
+                        $(`#${input}`).val(null).trigger('change');
+                        return
+                    }
+                    document.getElementById(input).value = ''
+                }
+            )
+            document.getElementsByClassName('ql-editor')[0].innerHTML = ''
+        }
+
+
+        const displayCreateBtn = () =>
+        {
+            return(
+                {
+                        text: "Шинээр бүртгэх",
+                        className: "add-new btn btn-primary",
+                        attr: {
+                            "id": "modalToggler",
+                            "data-bs-toggle": "modal",
+                            "data-bs-target": "#modals-slide-in",
+                            "onclick": "clearAllInputsDonate()"
+                        },
+                        init: function (api, node, config) {
+                            $(node).removeClass("btn-secondary");
+                        },
+                }
+            )
+        }
+
+        const params = new Proxy(new URLSearchParams(window.location.search), {
+            get: (searchParams, prop) => searchParams.get(prop),
+        });
+        // Get the value of "some_key" in eg "https://example.com/?some_key=some_value"
+        let paramGroupId = params.groupId || '';
+
+        if(paramGroupId)
+        {
+            selectGroup.classList.add("d-none")
+        }
+
+        donateTable = $(".allowance-table").DataTable({
+            processing: false,
+            dom: 'lBfrtip',
+            serverSide: true,
+            ajax: { url: '/faq/faq-question-paginate/?groupId=' + paramGroupId }, // JSON file to add data
+            columns: [
+                // columns according to JSON
+                { data: null },
+                { data: null },
+                { data: "group" },
+                { data: "question" },
+                { data: "answer" },
+                { data: null },
+            ],
+            columnDefs: [
+                {
+                    // For Responsive
+                    className: "control",
+                    orderable: false,
+                    responsivePriority: 2,
+                    targets: 0,
+                    render: function (data, type, full, meta) {
+                        return "";
+                    },
+                },
+                {
+                    // Actions
+                    targets: -1,
+                    title: "Үйлдэл",
+                    orderable: false,
+                    render: function (data, type, full, meta) {
+                        return (
+                            `
+                                <span
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    data-bs-original-title="Засах"
+                                    onclick="getOneDonate(${full.id})"
+                                    class="cursor-pointer delete-record text-primary me-1 approve_gei"
+                                >
+                                    ${feather.icons["edit-3"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    })}
+                                </span>
+                                <span
+                                    data-bs-toggle="tooltip"
+                                    data-bs-placement="top"
+                                    data-bs-original-title="Устгах"
+                                    onclick="showWarningModal(event, ${full.id})"
+                                    class="cursor-pointer delete-record text-primary-orange decline_gei"
+                                >
+                                    ${feather.icons["trash-2"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    })}
+                                </span>
+                            `
+                        );
+                    },
+                },
+                {
+                    targets: 3,
+                    orderable: false,
+                    render: function (data, type, full, meta) {
+                        return `<div onclick='handleClickQuestion("${full.answer}")' role='button' style='text-decoration: underline' data-bs-toggle='modal' data-bs-target='#contanctInfoUserModal'>${full.question}</div>`;
+                    },
+                },
+                {
+                    targets: 4,
+                    orderable: false,
+                    render: function (data, type, full, meta) {
+                        return 'Асуулт дээр дарж хариултыг харна уу';
+                    },
+                },
+                {
+                    targets: 1,
+                    title: "#",
+                    orderable: false,
+                    render: function (data, type, full, meta) {
+                        return (
+                            meta.settings._iDisplayStart + meta.row + 1
+                        );
+                    },
+                },
+            ],
+            order: [[3, "desc"]],
+            lengthMenu: [
+                [10, 25, 50, 100, -1],
+                [10, 25, 50, 100, 'Бүгд'],
+            ],
+            dom:
+            '<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75 float-right"' +
+                '<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+                '<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+                ">t" +
+                '<"d-flex justify-content-between mx-2 row mb-1"' +
+                '<"col-sm-12 col-md-6"i>' +
+                '<"col-sm-12 col-md-6"p>' +
+                ">",
+            oLanguage: {
+                sProcessing: "Ачааллаж байна. ",
+                sSearch: "Хайх: ",
+                sEmptyTable: "Бичлэг байхгүй",
+                sInfoEmpty: "Нийт 0 бичлэг",
+                sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+                sInfoFiltered: " - _MAX_ бичлэгээс",
+                sLengthMenu: "_MENU_ бичлэг",
+                oPaginate: {
+                    sFirst: "Эхэнд",
+                    sLast: "Төгсгөлд",
+                    sNext: "Дараах",
+                    sPrevious: "Өмнөх",
+                },
+            },
+            // Buttons with Dropdown
+            buttons: [
+                {
+                    extend: "collection",
+                    className: "btn btn-outline-secondary dropdown-toggle me-2",
+                    text:
+                        feather.icons["external-link"].toSvg({
+                            class: "font-small-4 me-50",
+                        }) + "Export",
+                    buttons: [
+                        {
+                            extend: "print",
+                            text:
+                                feather.icons["printer"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Print",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [1, 2, 3, 4, 5] },
+                        },
+                        {
+                            extend: "csv",
+                            text:
+                                feather.icons["file-text"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Csv",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [1, 2, 3, 4, 5] },
+                        },
+                        {
+                            extend: "excel",
+                            text:
+                                feather.icons["file"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Excel",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [1, 2, 3, 4, 5] },
+                        },
+                        {
+                            extend: "pdf",
+                            text:
+                                feather.icons["clipboard"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Pdf",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [1, 2, 3, 4, 5] },
+                        },
+                        {
+                            extend: "copy",
+                            text:
+                                feather.icons["copy"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Copy",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [1, 2, 3, 4, 5] },
+                        },
+                    ],
+                    init: function (api, node, config) {
+                        $(node).removeClass("btn-secondary");
+                        $(node).parent().removeClass("btn-group");
+                        setTimeout(function () {
+                            $(node)
+                                .closest(".dt-buttons")
+                                .removeClass("btn-group")
+                                .addClass("d-inline-flex mt-50");
+                        }, 50);
+                    },
+                },
+                displayCreateBtn()
+            ],
+        });
+
+        const handleClickQuestion = (answer) =>
+        {
+            answerContent.innerHTML = answer
+        }
+
+        var donationJqForm = $('#donationForm')
+        var warningModal = $("#warning-modal")
+
+        let validateDonation
+        if (donationJqForm.length) {
+            validateDonation = donationJqForm.validate({
+                rules: {
+                    "group": {
+                        required: true
+                    },
+                    "question": {
+                        required: true
+                    },
+                }
+            })
+        }
+
+        function showWarningModal(event, id)
+        {
+            actionType = id
+            warningModal.modal("show")
+        }
+
+        const deleteOneDonate = async (id) =>
+        {
+            const { success, data } = await fetchData(`/faq/faq-question-action/${actionType}/`, null, 'DELETE')
+            if(success)
+            {
+                donationInputs.map(
+                    (input) =>
+                    {
+                        actionType = 'create'
+                        donateTable.ajax.reload(null, false)
+                    }
+                )
+            }
+        }
+
+        const getOneDonate = async (id) =>
+        {
+            actionType = id
+            $("#modals-slide-in").modal('show')
+            const { success, data } = await fetchData(`/faq/faq-question-action/${id}/`, null, 'GET')
+            if(success)
+            {
+                donationInputs.map(
+                    (input) =>
+                    {
+                        if(input === 'group')
+                        {
+                            $(`#${input}`).val(data[input]).trigger('change');
+                            return
+                        }
+                        if(input === 'content')
+                        {
+                            document.getElementById(input).firstChild.innerHTML = data.answer
+                            return
+                        }
+                        document.getElementById(input).value = data[input]
+                    }
+                )
+            }
+        }
+
+        const actionDonation = async (event) =>
+        {
+            event.preventDefault();
+            if(!donationJqForm.valid())
+            {
+                return
+            }
+
+            const body = {}
+
+            donationInputs.map(
+                (input) =>
+                {
+                    if(input === 'content')
+                    {
+                        const elementValue = document.getElementById(input).firstChild.innerHTML
+                        body.answer = elementValue
+                        return
+                    }
+                    const value = document.getElementById(input).value
+                    body[input] = value
+                }
+            )
+
+            if(paramGroupId)
+            {
+                body.group = paramGroupId
+            }
+
+            if(actionType === 'create')
+            {
+                const { success, errors } = await fetchData('/faq/faq-question-action/', body, "POST")
+                if(success)
+                {
+                    actionType = 'create'
+                    $("#modals-slide-in").modal('hide')
+                    donateTable.ajax.reload(null, false)
+                    clearAllInputsDonate()
+                }
+                return
+            }
+            else
+            {
+                const { success, errors } = await fetchData(`/faq/faq-question-action/${actionType}/`, body, "PUT")
+                if(success)
+                {
+                    actionType = 'create'
+                    $("#modals-slide-in").modal('hide')
+                    donateTable.ajax.reload(null, false)
+                    clearAllInputsDonate()
+                }
+                return
+            }
+        }
+    </script>
+{% endblock js %}

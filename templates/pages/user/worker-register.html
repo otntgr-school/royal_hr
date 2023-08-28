@@ -1,0 +1,412 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+{% block content %}
+<div class="content-body">
+	<!-- Basic multiple Column Form section start -->
+	<section id="multiple-column-form">
+		<div class="row">
+			<div class="col-12">
+				<div class="card">
+					<div class="card-header">
+						<h4 class="card-title">Ажилтны үндсэн мэдээлэл:</h4>
+					</div>
+					<div class="card-body">
+						<form class="form">
+							<div class="row">
+								<div class="col-md-6 col-12">
+									<div class="mb-1">
+										<label
+											class="form-label"
+											for="first-name-column"
+											>Ургийн овог*:</label
+										>
+										<input
+											type="text"
+											id="first-name-column"
+											class="form-control"
+											placeholder="Ургийн овог"
+											name="fname-column"
+										/>
+									</div>
+								</div>
+								<div class="col-md-6 col-12">
+									<div class="mb-1">
+										<label
+											class="form-label"
+											for="last-name-column"
+											>Төрсөн газар /аймаг, хот/:</label
+										>
+										<input
+											type="text"
+											id="last-name-column"
+											class="form-control"
+											placeholder="Төрсөн газар /аймаг, хот/"
+											name="lname-column"
+										/>
+									</div>
+								</div>
+								<div class="col-md-6 col-12">
+									<div class="mb-1">
+										<label
+											class="form-label"
+											for="city-column"
+											>Эцэг/Эх-ийн нэр*:</label
+										>
+										<input
+											type="text"
+											id="city-column"
+											class="form-control"
+											placeholder="Эцэг/Эх-ийн нэр"
+											name="city-column"
+										/>
+									</div>
+								</div>
+								<div class="col-md-6 col-12">
+									<div class="mb-1">
+										<label
+											class="form-label"
+											for="country-floating"
+											>Төрсөн газар /сум, дүүрэг/:</label
+										>
+										<input
+											type="text"
+											id="country-floating"
+											class="form-control"
+											name="country-floating"
+											placeholder="Төрсөн газар /сум, дүүрэг/"
+										/>
+									</div>
+								</div>
+								<div class="col-md-6 col-12">
+									<div class="mb-1">
+										<label
+											class="form-label"
+											for="company-column"
+											>Өөрийн нэр:*</label
+										>
+										<input
+											type="text"
+											id="company-column"
+											class="form-control"
+											name="company-column"
+											placeholder="Өөрийн нэр"
+										/>
+									</div>
+								</div>
+								<div class="col-md-6 col-12">
+									<div class="mb-1">
+										<label
+											class="form-label"
+											for="email-id-column"
+											>ЭМДД-ийн дугаар:</label
+										>
+										<input
+											type="email"
+											id="email-id-column"
+											class="form-control"
+											name="email-id-column"
+											placeholder="ЭМДД-ийн дугаар"
+										/>
+									</div>
+								</div>
+								<div class="col-md-6 col-12">
+									<div class="mb-1">
+										<label
+											class="form-label"
+											for="company-column"
+											>Регистрийн дугаар:*</label
+										>
+										<input
+											type="text"
+											id="company-column"
+											class="form-control"
+											name="company-column"
+											placeholder="Регистрийн дугаар"
+										/>
+									</div>
+								</div>
+								<div class="col-md-6 col-12">
+									<div class="mb-1">
+										<label
+											class="form-label"
+											for="email-id-column"
+											>НДД-ийн дугаар:</label
+										>
+										<input
+											type="email"
+											id="email-id-column"
+											class="form-control"
+											name="email-id-column"
+											placeholder="НДД-ийн дугаар"
+										/>
+									</div>
+								</div>
+
+								<div class="col-md-6 col-12">
+									<div class="mb-1">
+										<label
+											class="form-label"
+											for="company-column"
+											>Төрсөн огноо:*</label
+										>
+										<input
+											type="text"
+											class="form-control date-mask"
+											placeholder="YYYY-MM-DD"
+											id="date"
+										/>
+									</div>
+								</div>
+								<div class="col-md-6 col-12">
+									<div class="mb-1">
+										<label
+											class="form-label"
+											for="email-id-column"
+											>НДД-ийн дугаар/хуучин/:</label
+										>
+										<input
+											type="text"
+											id="email-id-column"
+											class="form-control"
+											name="email-id-column"
+											placeholder="НДД-ийн дугаар/хуучин/"
+										/>
+									</div>
+								</div>
+								<div class="col-md-6 col-12">
+									<div class="mb-1">
+										<label
+											class="form-label"
+											for="company-column"
+											>Хүйс:</label
+										>
+										<select
+											class="form-select"
+											id="basicSelect"
+										>
+											<option>Эрэгтэй</option>
+											<option>Эмэгтэй</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-md-6 col-12">
+									<div class="mb-1">
+										<label
+											class="form-label"
+											for="email-id-column"
+											>Хөдөлмөрийн дэвтрийн дугаар:</label
+										>
+										<input
+											type="text"
+											id="email-id-column"
+											class="form-control"
+											name="email-id-column"
+											placeholder="Хөдөлмөрийн дэвтрийн дугаар"
+										/>
+									</div>
+								</div>
+								<div class="col-md-6 col-12">
+									<div class="mb-1">
+										<label
+											class="form-label"
+											for="company-column"
+											>Яс үндэс:</label
+										>
+										<select
+											class="form-select"
+											id="basicSelect"
+										>
+											<option>Халх</option>
+											<option>Баяд</option>
+											<option>Буриад</option>
+											<option>Барга</option>
+											<option>Дарьганга</option>
+											<option>Дархад</option>
+											<option>Дөрвөд</option>
+											<option>Мянгад</option>
+											<option>Захчин</option>
+											<option>Өөлд</option>
+											<option>Торгууд</option>
+											<option>Үзэмчин</option>
+											<option>Хамниган</option>
+											<option>Харчин</option>
+											<option>Хотгойд</option>
+											<option>Цахар</option>
+											<option>Казак</option>
+											<option>Урианхай</option>
+											<option>Хотон</option>
+											<option>Сартуул</option>
+											<option>Элжигэн</option>
+											<option>Бусад</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-md-6 col-12">
+									<div class="mb-1">
+										<label
+											class="form-label"
+											for="email-id-column"
+											>Биеийн өндөр/см/:</label
+										>
+										<input
+											type="number"
+											id="email-id-column"
+											class="form-control"
+											name="email-id-column"
+											placeholder="Биеийн өндөр/см/"
+										/>
+									</div>
+								</div>
+								<div class="col-md-6 col-12">
+									<div class="mb-1">
+										<label
+											class="form-label"
+											for="company-column"
+											>Цусны бүлэг:</label
+										>
+										<select
+											class="form-select"
+											id="basicSelect"
+										>
+											<option>O/I/</option>
+											<option>A/II/</option>
+											<option>B/III/</option>
+											<option>AB/IV/</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-md-6 col-12">
+									<div class="mb-1">
+										<label
+											class="form-label"
+											for="email-id-column"
+											>Биеийн жин/кг/:</label
+										>
+										<input
+											type="number"
+											id="email-id-column"
+											class="form-control"
+											name="email-id-column"
+											placeholder="Биеийн жин"
+										/>
+									</div>
+								</div>
+								<div class="col-md-12 col-12">
+									<div class="mb-1">
+										<label
+											class="form-label"
+											for="email-id-column"
+											>Оршин суугаа хаяг:</label
+										>
+										<input
+											type="text"
+											id="email-id-column"
+											class="form-control"
+											name="email-id-column"
+											placeholder="Оршин суугаа хаяг"
+										/>
+									</div>
+								</div>
+								<div class="col-md-6 col-12">
+									<div class="mb-1">
+										<label
+											class="form-label"
+											for="company-column"
+											>Гар утас:</label
+										>
+										<input
+											type="number"
+											id="email-id-column"
+											class="form-control"
+											name="email-id-column"
+											placeholder="Гар утас"
+										/>
+									</div>
+								</div>
+								<div class="col-md-6 col-12">
+									<div class="mb-1">
+										<label
+											class="form-label"
+											for="email-id-column"
+											>Гэрийн утас:</label
+										>
+										<input
+											type="number"
+											id="email-id-column"
+											class="form-control"
+											name="email-id-column"
+											placeholder="Гэрийн утас"
+										/>
+									</div>
+								</div>
+								<div class="col-md-6 col-12">
+									<div class="mb-1">
+										<label
+											class="form-label"
+											for="company-column"
+											>И-мэйл хаяг:</label
+										>
+										<input
+											type="email"
+											id="email-id-column"
+											class="form-control"
+											name="email-id-column"
+											placeholder="И-мэйл хаяг"
+										/>
+									</div>
+								</div>
+								<div class="col-md-6 col-12">
+									<div class="mb-1">
+										<label
+											class="form-label"
+											for="email-id-column"
+											>Цээж зураг:</label
+										>
+										<input
+											class="form-control"
+											type="file"
+											id="customFile1"
+											required
+										/>
+									</div>
+								</div>
+								<div class="col-12">
+									<button
+										type="reset"
+										class="btn btn-primary me-1"
+									>
+										Бүртгэх
+									</button>
+									<button
+										type="reset"
+										class="btn btn-outline-secondary"
+									>
+										Хоослох
+									</button>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- Basic Floating Label Form section end -->
+</div>
+<!--prettier-ignore-->
+{% endblock %}
+
+<!--prettier-ignore-->
+{% block js %}
+<!-- BEGIN: Page Vendor JS-->
+<script src="{% static 'app-assets/vendors/js/forms/cleave/cleave.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/addons/cleave-phone.us.js' %}"></script>
+<!-- END: Page Vendor JS-->
+
+<!-- BEGIN: Page JS-->
+<script src="{% static 'app-assets/js/scripts/forms/form-input-mask.js' %}"></script>
+<!-- END: Page JS-->
+<!--prettier-ignore-->
+{% endblock js %}

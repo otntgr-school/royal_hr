@@ -1,0 +1,15 @@
+{% if messages %}
+	<script>
+		window.onload = (event) => {
+			{% for message in messages %}
+				toastr['{{message.tags}}']('', "{{ message }}", {
+					timeOut: 2500,
+					closeButton: true,
+					hideDuration: 200,
+					progressBar: true,
+					newestOnTop: true
+				})
+			{% endfor %}
+		};
+	</script>
+{% endif %}

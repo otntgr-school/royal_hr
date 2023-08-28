@@ -1,0 +1,37 @@
+{% load static %}
+<div class="modal fade" id="contanctInfoUserModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-edit-user">
+        <div class="modal-content">
+            <div class="modal-header bg-transparent">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pb-5 px-sm-5 pt-50">
+                <div class="text-center mb-2">
+                    <h1 class="mb-1">Холбоо барих мэдээлэл</h1>
+                </div>
+                <div id="contactInfoStatus"></div>
+                <form id="contactInfoK" class="row gy-1 pt-75" onsubmit="contactInfoSubmit(event)">
+                    <div class="col-12">
+                        <label class="form-label">И-мэйл хаяг:</label>
+                        <input type="text" id="email" name="email" class="form-control" placeholder="" value="{{ selected_user_data.email|default:'' }}" data-msg="И-мэйл хаяг оруулна уу" />
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Гар утас:</label>
+                        <input type="number" id="phone_number" name="phone_number" class="form-control" placeholder="" value="{{ selected_user_data.phone_number|default:'Хоосон' }}" data-msg="И-мэйл хаяг оруулна уу"/>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Гэрийн утас:</label>
+                        <input type="number" id="home_phone" name="home_phone" class="form-control" placeholder="Заавал биш" value="{{ selected_user_data.home_phone|default:'Хоосон' }}" />
+                    </div>
+                    <div class="col-12 text-center mt-2 pt-50">
+                        <button id="contactInfoSubmitBtn" type="submit" class="btn btn-primary me-1">Засах</button>
+                        <button id="contact_info_modal_close_btn" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">
+                            Болих
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <span id="loaderWeew2"></span>
+        </div>
+    </div>
+</div>

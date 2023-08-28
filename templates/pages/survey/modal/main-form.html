@@ -1,0 +1,520 @@
+<div class="modal modal-slide-in new-user-modal fade" id="modals-slide-in">
+    <div class="modal-dialog custom-80">
+        <form class="add-new-user modal-content pt-0">
+            <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+            >
+                ×
+            </button>
+            <div class="modal-header mb-1">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    Судалгааны бүртгэл
+                </h5>
+            </div>
+            <div class="modal-body flex-grow-1">
+                <!-- Modern Horizontal Wizard -->
+                <section class="modern-horizontal-wizard">
+                    <div class="bs-stepper">
+                        <div class="bs-stepper-header">
+                            <div class="step" data-target="#account-details-modern" role="tab" id="account-details-modern-trigger">
+                                <button type="button" class="step-trigger d-flex align-items-center">
+                                    <span class="bs-stepper-box">
+                                        <i data-feather='life-buoy' class="font-medium-3"></i>
+                                    </span>
+                                    <span class="bs-stepper-label">
+                                        <span class="bs-stepper-title">Хамрах хүрээ</span>
+                                        <span class="bs-stepper-subtitle">Байгууллага</span>
+                                    </span>
+                                </button>
+                            </div>
+                            <div class="line">
+                                <i data-feather="chevron-right" class="font-medium-2"></i>
+                            </div>
+                            <div class="step" data-target="#personal-info-modern" role="tab" id="personal-info-modern-trigger">
+                                <button type="button" class="step-trigger">
+                                    <span class="bs-stepper-box">
+                                        <i data-feather='flag' class="font-medium-3"></i>
+                                    </span>
+                                    <span class="bs-stepper-label">
+                                        <span class="bs-stepper-title">Жагсаалт</span>
+                                        <span class="bs-stepper-subtitle">Байгууллага сонгох</span>
+                                    </span>
+                                </button>
+                            </div>
+                            <div class="line">
+                                <i data-feather="chevron-right" class="font-medium-2"></i>
+                            </div>
+                            <div class="step" data-target="#address-step-modern" role="tab" id="address-step-modern-trigger">
+                                <button type="button" class="step-trigger">
+                                    <span class="bs-stepper-box">
+                                        <i data-feather="file-text" class="font-medium-3"></i>
+                                    </span>
+                                    <span class="bs-stepper-label">
+                                        <span class="bs-stepper-title">Ерөнхий мэдээлэл</span>
+                                        <span class="bs-stepper-subtitle">Судалгааны мэдээлэл</span>
+                                    </span>
+                                </button>
+                            </div>
+                            <div class="line">
+                                <i data-feather="chevron-right" class="font-medium-2"></i>
+                            </div>
+                            <div class="step" data-target="#address-step-modern02" role="tab" id="address-step-modern-trigger02">
+                                <button type="button" class="step-trigger">
+                                    <span class="bs-stepper-box">
+                                        <i data-feather="link" class="font-medium-3"></i>
+                                    </span>
+                                    <span class="bs-stepper-label">
+                                        <span class="bs-stepper-title">Асуултууд</span>
+                                        <span class="bs-stepper-subtitle">Асуулт бэлдэх</span>
+                                    </span>
+                                </button>
+                            </div>
+                            <div class="line">
+                                <i data-feather="chevron-right" class="font-medium-2"></i>
+                            </div>
+                            <div class="step" data-target="#social-links-modern" role="tab" id="social-links-modern-trigger">
+                                <button type="button" class="step-trigger">
+                                    <span class="bs-stepper-box">
+                                        <i data-feather='check-circle'></i>
+                                    </span>
+                                    <span class="bs-stepper-label">
+                                        <span class="bs-stepper-title">Баталгаажуулалт</span>
+                                        <span class="bs-stepper-subtitle">Үр дүн харах</span>
+                                    </span>
+                                </button>
+                            </div>
+                            <div class="line">
+                                <i data-feather="chevron-right" class="font-medium-2"></i>
+                            </div>
+                            <div class="step d-none" data-target="#sudalgaa-process" role="tab" id="sudalgaa-process-trigger">
+                                <button type="button" class="step-trigger">
+                                    <span class="bs-stepper-box">
+                                        <i data-feather='check-circle'></i>
+                                    </span>
+                                    <span class="bs-stepper-label">
+                                        <span class="bs-stepper-title">Явц харах</span>
+                                        <span class="bs-stepper-subtitle">явц</span>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="bs-stepper-content">
+                            <!-- step1 -->
+                            <div id="account-details-modern" class="content" role="tabpanel" aria-labelledby="account-details-modern-trigger">
+                                <div class="content-header">
+                                    <h5 class="mb-0 text-center">Төрөл сонгоно уу</h5>
+                                    <small class="text-muted">Судалгаа явуулах хамрах хүрээгээ сонгоно уу</small>
+                                </div>
+                                <div class="row mb-1 c-content">
+                                    {% for id, name in hamrah_hurees %}
+                                        <div class="col-lg-3 mb-2">
+                                            <div class="card-border p-2 cursor-pointer hover-zoom text-center survey-kind" data-ckind="{{id}}">
+                                                {{name}}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <button class="btn btn-outline-secondary btn-prev" disabled>
+                                        <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
+                                        <span class="align-middle d-sm-inline-block d-none">Өмнөх</span>
+                                    </button>
+                                    <button type="button" class="survey-kind-next btn btn-primary btn-next">
+                                        <span class="align-middle d-sm-inline-block d-none">Дараах</span>
+                                        <i data-feather="arrow-right" class="align-middle ms-sm-25 ms-0"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- step2 -->
+                            <div id="personal-info-modern" class="content" role="tabpanel" aria-labelledby="personal-info-modern-trigger">
+                                <div class="content-header">
+                                    <h5 class="mb-0">Сонголт</h5>
+                                </div>
+                                <div class="row c-content">
+                                    <div class="col-md-6">
+                                        <div class="mb-1 col-12" id="songolt-org">
+                                            <label class="form-label" for="songolt-org-input">Байгууллага сонгох</label>
+                                            <input type="text" disabled class="form-control" id="songolt-org-input" value="{{request.employee.org.name}}" />
+                                        </div>
+                                        <div class="mb-1 col-12 d-none" id="songolt-sub-org">
+                                            <label class="form-label" for="songolt-sub-org-select">Салбар сургууль сонгох</label>
+                                            <select class="select2 w-100" id="songolt-sub-org-select" name="sub_org">
+                                            </select>
+                                        </div>
+                                        <div class="mb-1 col-12 d-none" id="songolt-salbar">
+                                            <label class="form-label" for="songolt-salbar-select">Нэгжийг сонгох</label>
+                                            <select class="select2 w-100" id="songolt-salbar-select" name="salbar">
+                                            </select>
+                                        </div>
+                                        <div class="mb-1 col-12 d-none" id="songolt-position">
+                                            <label class="form-label" for="songolt-position-select">Албан тушаал сонгох</label>
+                                            <select class="select2 w-100" id="songolt-position-select" name="org_position">
+                                            </select>
+                                        </div>
+                                        <div class="mb-1 col-12 d-none" id="songolt-employee">
+                                            <label class="form-label" for="songolt-employee-select">Алба хаагч сонгох</label>
+                                            <div id="employees-tree"></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-1">
+                                            <label class="form-label" for="">Сонгогдсон утга</label>
+                                            <div style="height: 265px; overflow-y: scroll;" class="card-border selected-datas-container">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <button type="button" class="btn btn-primary btn-prev">
+                                        <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
+                                        <span class="align-middle d-sm-inline-block d-none">Өмнөх</span>
+                                    </button>
+                                    <button type="submit" class="btn btn-primary btn-next list-btn-next">
+                                        <span class="align-middle d-sm-inline-block d-none">Дараах</span>
+                                        <i data-feather="arrow-right" class="align-middle ms-sm-25 ms-0"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- step3 -->
+                            <div id="address-step-modern" class="content" role="tabpanel" aria-labelledby="address-step-modern-trigger">
+                                <div class="content-header">
+                                    <h5 class="mb-0">Судалгааны ерөнхий мэдээлэл</h5>
+                                </div>
+                                <div class="c-content">
+                                    <div class="row">
+                                        <div class="mb-1 col-md-6">
+                                            <label class="form-label" for="modern-address">Судалгааны нэр</label>
+                                            <input type="text" id="modern-address" name="title" class="form-control" placeholder="" />
+                                        </div>
+                                        <div class="mb-1 col-md-6">
+                                            <label class="form-label" for="pincode3">Эхлэх хугацаа</label>
+                                            <input type="text" id="fp-date-time" name="start_date" class="form-control flatpickr-date-time" placeholder="YYYY-MM-DD HH:MM" />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="mb-1 col-md-6">
+                                            <label class="form-label" for="modern-landmark">Тайлбар</label>
+                                            <textarea id="description" name="description" class="form-control" rows="3"></textarea>
+                                        </div>
+                                        <div class="mb-1 col-md-6">
+                                            <label class="form-label" for="city3">Дуусах хугацаа</label>
+                                            <input type="text" id="fp-date-time" name="end_date" class="form-control flatpickr-date-time" placeholder="YYYY-MM-DD HH:MM" />
+                                        </div>
+                                        <div class="mb-1 col-md-6">
+                                            <div class="d-flex mt-2 custom-flex">
+                                                <div class="me-2">
+                                                    <div class="orgLogoDiv">
+                                                        <img id="logoImg" onerror="this.onerror=null; this.src='/media/400x245.jpg'" src="/media/400x245.jpg" />
+                                                        <input accept="image/*" type="file" id="logoInput" name="logo" class="form-control d-none"/>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-1 col-md-6">
+                                            <div class="form-check form-switch mb-1">
+                                                <input type="checkbox" class="form-check-input" name="has_shuffle">
+                                                <label class="form-check-label" for="customSwitch1">Холих эсэх</label>
+                                            </div>
+                                            <div class="form-check form-switch mb-1">
+                                                <input type="checkbox" class="form-check-input" name="is_required">
+                                                <label class="form-check-label" for="customSwitch1">Заавал бөглөх эсэх</label>
+                                            </div>
+                                            <div class="form-check form-switch mb-1">
+                                                <input type="checkbox" class="form-check-input" name="is_hide_employees">
+                                                <label class="form-check-label" for="customSwitch1">Бөглөсөн хүнийг нуух эсэх</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <button type="button" class="btn btn-primary btn-prev">
+                                        <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
+                                        <span class="align-middle d-sm-inline-block d-none">Өмнөх</span>
+                                    </button>
+                                    <button type="submit" class="btn btn-primary btn-next general-form-next">
+                                        <span class="align-middle d-sm-inline-block d-none">Дараах</span>
+                                        <i data-feather="arrow-right" class="align-middle ms-sm-25 ms-0"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- step4 -->
+                            <div id="address-step-modern02" class="content" role="tabpanel" aria-labelledby="address-step-modern-trigger02">
+                                <div class="content-header">
+                                    <h5 class="mb-0">Асуулт бэлдэх</h5>
+                                    <small>Та сонгосон асуултын төрөлдөө тохируулан асуулт бэлдэнэ үү</small>
+                                </div>
+                                <!-- Invoice repeater -->
+                                <div class="questions mb-2 c-content">
+                                    <div data-repeater-list="questions">
+                                        <div data-repeater-item>
+                                            <div class="row d-flex align-items-start">
+                                                <div class="col-md-6">
+                                                    <div class="col-12">
+                                                        Асуулт <span class="qst-index">1)</span>
+                                                    </div>
+                                                    <input type="text" class="form-control d-none" placeholder="Сургуулийн нэр" name="id" id="q-id">
+                                                    <input type="text" class="form-control d-none" placeholder="Сургуулийн нэр" name="cid">
+                                                    <div class="col-12">
+                                                        <div class="mb-1">
+                                                            <label class="form-label" for="question-kind">Асуултын төрөл</label>
+                                                            <select class="form-select question-kind" name="kind" id="question-kind" onchange="handleQuestionKind(event)">
+                                                                <option value="">--------</option>
+                                                                {% for id, name in question_kinds %}
+                                                                    <option value="{{id}}">
+                                                                        {{name}}
+                                                                    </option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-12">
+                                                        <div class="mb-1">
+                                                            <label class="form-label" for="question">Асуулт</label>
+                                                            <input
+                                                                type="text"
+                                                                class="form-control"
+                                                                name="question"
+                                                                id="question"
+                                                                aria-describedby="question"
+                                                                placeholder="Асуулт"
+                                                            />
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-12">
+                                                        <div class="form-check form-switch mb-1">
+                                                            <input
+                                                                type="checkbox"
+                                                                class="form-check-input"
+                                                                id="is_required"
+                                                                name="is_required"
+                                                                value="yes"
+                                                            >
+                                                            <label class="form-check-label" for="is_required">Заавал бөглөх эсэх</label>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- үнэлгээ сонгогдоход харагдаna -->
+                                                    <div class="d-none" id="rating_container">
+                                                        <div class="col-12">
+                                                            <div class="mb-1">
+                                                                <label class="form-label" for="rating_max_count">Үнэлгээний дээд тоо</label>
+                                                                <input
+                                                                    type="text"
+                                                                    class="form-control"
+                                                                    name="rating_max_count"
+                                                                    id="rating_max_count"
+                                                                    aria-describedby="rating_max_count"
+                                                                    placeholder=""
+                                                                    value="5"
+                                                                    onkeyup="checkRatingMaxCount(event)"
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <div class="mb-1">
+                                                                <label class="form-label" for="low_rating_word">Доод үнэлгээг илэрхийлэх үг</label>
+                                                                <input
+                                                                    type="text"
+                                                                    class="form-control"
+                                                                    name="low_rating_word"
+                                                                    id="low_rating_word"
+                                                                    aria-describedby="low_rating_word"
+                                                                    placeholder=""
+                                                                    value="Муу"
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-12">
+                                                            <div class="mb-1">
+                                                                <label class="form-label" for="high_rating_word">Дээд үнэлгээг илэрхийлэх үг</label>
+                                                                <input
+                                                                    type="text"
+                                                                    class="form-control"
+                                                                    name="high_rating_word"
+                                                                    id="high_rating_word"
+                                                                    aria-describedby="high_rating_word"
+                                                                    placeholder=""
+                                                                    value="Сайн"
+                                                                />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <!--  -->
+
+                                                    <!-- олон сонголттой -->
+                                                    <div class="col-12 d-none" id="max_choice_count_container">
+                                                        <div class="mb-1">
+                                                            <label class="form-label" for="max_choice_count">Сонголтын хязгаар</label>
+                                                            <input
+                                                                type="text"
+                                                                class="form-control"
+                                                                name="max_choice_count"
+                                                                id="max_choice_count"
+                                                                aria-describedby="max_choice_count"
+                                                                placeholder=""
+                                                            />
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- innner repeater -->
+                                                    <div class="col-12 d-none" id="choices-container">
+                                                        <div class="mb-1">
+                                                            <label class="form-label">Сонголтын утгууд</label>
+                                                            <div class="inner-repeater">
+                                                                <div data-repeater-list="choices">
+                                                                    <div data-repeater-item>
+                                                                        <div class="d-flex">
+                                                                            <input type="text" class="form-control d-none" placeholder="Сургуулийн нэр" name="id" id="c-id">
+                                                                            <input type="text" class="form-control d-none" placeholder="Сургуулийн нэр" name="cid">
+                                                                            <input
+                                                                                type="text"
+                                                                                class="form-control"
+                                                                                name="choices"
+                                                                            />
+                                                                            <div data-repeater-delete type="button" class="text-danger d-flex align-items-center q-remove">
+                                                                                X
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div
+                                                                    data-repeater-create
+                                                                    type="button"
+                                                                    class="text-success q-add"
+                                                                >
+                                                                    <i data-feather="plus" class="me-25"></i>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-12">
+                                                        <div class="mb-1 d-flex">
+                                                            <button class="ms-auto btn btn-outline-danger text-nowrap px-1 big-remove" data-repeater-delete type="button">
+                                                                <i data-feather="x" class="me-25"></i>
+                                                                <span>Устгах</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- PREVIEW -->
+                                                <div class="col-md-6 q-preview">
+                                                </div>
+
+                                            </div>
+                                            <hr />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <button class="btn btn-icon btn-primary" type="button" data-repeater-create>
+                                                <i data-feather="plus" class="me-25"></i>
+                                                <span>Асуулт нэмэх</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /Invoice repeater -->
+                                <div class="d-flex justify-content-between">
+                                    <button type="button" class="btn btn-primary btn-prev">
+                                        <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
+                                        <span class="align-middle d-sm-inline-block d-none">Өмнөх</span>
+                                    </button>
+                                    <button type="button" class="btn btn-primary btn-next question-next" id="question-next">
+                                        <span class="align-middle d-sm-inline-block d-none">Дараах</span>
+                                        <i data-feather="arrow-right" class="align-middle ms-sm-25 ms-0"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div id="social-links-modern" class="content" role="tabpanel" aria-labelledby="social-links-modern-trigger">
+                                <div class="content-header">
+                                    <h5 class="mb-0">Судалгааны загвар</h5>
+                                </div>
+                                <div class="row c-content">
+                                    <div class="preview-survey col-12">
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <button type="button" class="btn btn-primary btn-prev">
+                                        <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
+                                        <span class="align-middle d-sm-inline-block d-none">Өмнөх</span>
+                                    </button>
+                                    <button type="button" id="btn-submit-c" class="btn btn-success btn-submit">Баталгаажуулах</button>
+                                </div>
+                            </div>
+                            <div id="sudalgaa-process" class="content d-none" role="tabpanel" aria-labelledby="sudalgaa-process-trigger">
+                                <div class="content-header">
+                                    <h5 class="mb-0">Судалгааны явц</h5>
+                                </div>
+                                <div class="row process-charts c-content" id="process-charts">
+                                    <ul class="nav nav-tabs justify-content-center" role="tablist">
+                                        <li class="nav-item">
+                                            <a class="nav-link" id="general-center" data-bs-toggle="tab" href="#tab-general" aria-controls="tab-general" role="tab" aria-selected="false">
+                                                Ерөнхий
+                                            </a>
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link active" id="tab-questions-center" data-bs-toggle="tab" href="#tab-questions" aria-controls="tab-questions" role="tab" aria-selected="true">
+                                                Асуултууд
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <div class="tab-content">
+                                        <div class="tab-pane active" id="tab-questions" aria-labelledby="tab-questions-center" role="tabpanel">
+                                        </div>
+                                        <div class="tab-pane" id="tab-general" aria-labelledby="general-center" role="tabpanel">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <button type="button" class="btn btn-primary btn-prev">
+                                        <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
+                                        <span class="align-middle d-sm-inline-block d-none">Өмнөх</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- /Modern Horizontal Wizard -->
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal fade" id="warning-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-edit-user">
+        <div class="modal-content">
+            <div class="modal-header bg-transparent">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center">
+                <div class="text-center">
+                    <i class="fas fa-exclamation-circle text-warning fs-40"></i>
+                </div>
+                <h6 class="mt-1 mb-1 fw-bolder">Анхааруулга<h6>
+                <span class="modal-text">Та хадгалахдаа итгэлтэй байна уу?</span>
+            </div>
+            <div class="modal-footer">
+                <button
+                    class="btn btn-primary"
+                    type="button"
+                    onclick="submitSurvey(event)"
+                >
+                    <span>Тийм</span>
+                </button>
+                <button
+                    class="btn btn-outline-secondary"
+                    data-bs-dismiss="modal"
+                >
+                    Үгүй
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

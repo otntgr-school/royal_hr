@@ -1,0 +1,30 @@
+<!--
+    htmlpath: дээр modal дотор харуулах html ийн замыг явуулна
+    тэгэхээр modal ашиглахын тулд тусдаа html үүсгэж түүнийгээ өгнө гэсэн үг example: pages/role/form.html
+
+    id: modal ийг таних id
+    title:  Modal ийн дээр харуулах гарчиг
+-->
+<div
+    class="modal modal-slide-in fade"
+    id="{{id}}"
+>
+    <div class="modal-dialog">
+        <div class="modal-content pt-0">
+            <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+            >
+                ×
+            </button>
+            <div class="modal-header mb-1">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    {{title}}
+                </h5>
+            </div>
+            {% include htmlpath %}
+        </div>
+    </div>
+</div>

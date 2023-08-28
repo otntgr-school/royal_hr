@@ -1,0 +1,393 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/vendors.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+
+{% endblock css %}
+<!--prettier-ignore-->
+{% block content %}
+<!-- fixed column -->
+<div class="content-body">
+    <section class="app-user-view-connections">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Шагнал тайлан</h4>
+                    </div>
+                    <div class="row p-1">
+                        <div class="col-md-10">
+                            <div class="d-flex align-items-center">
+                                <label for="searchGG" class="form-label me-1">Шүүх /нэр эсвэл оноор/: </label>
+                                <input id="searchGG" type="text" class="form-control" style="width: fit-content;" placeholder="Ж: Бат эсвэл 2022" />
+                                <div id="loadingInput" class="spinner-grow spinner-grow-sm text-white d-none ms-1" role="status"></div>
+                            </div>
+                            <div class="d-flex align-items-center mt-1">
+                                <label for="workingType" class="form-label me-1">Ажилаас гарсан хүмүүсийг харуулах эсэх: </label>
+                                <input id="workingType" onchange="handleChangeType(event)" type="checkbox" class="form-check-input"/>
+                            </div>
+                        </div>
+                        <button id="export_button" class="col-md-2 m-1 btn btn-primary" style="width: fit-content; height: fit-content;">Татах EXCEL</button>
+                    </div>
+                    <div class="row p-2 pb-0 table-cols">
+                        <small class="col-auto">Хүснэгтийн баганууд:</small>
+                    </div>
+                    <div id="tableLoaderShagnal" class="table-body">
+                        <div class="table-responsive card-datatable">
+                            <table id="shagnalTable" class="table allowance-table small-text-thead">
+                                <thead class="table-light">
+                                    <tr id="shagnalTableHead">
+                                        <th class="text-center" style="vertical-align: middle;">№</th>
+                                        <th class="text-center" style="vertical-align: middle;">Ажиллагсадын нэр</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="shagnalTableBody">
+                                </tbody>
+                            </table>
+                            <div id="notFound" class="w-100 mt-5 mb-5 text-center d-none">Мэдээлэл олдсонгүй</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock content %}
+{% block js %}
+    <script src="{% static 'assets/js/xlsx.full.min.js' %}"></script>
+    <script>
+        let tableCols = $(".table-cols")
+        const searchInput = document.getElementById("searchGG")
+        const shagnalTableHead = document.getElementById("shagnalTableHead")
+        const shagnalTableBody = document.getElementById("shagnalTableBody")
+        const notFound = document.getElementById("notFound")
+        const workingType = document.getElementById("workingType")
+        const loadingInput = document.getElementById("loadingInput")
+
+        const tableLoaderShagnal = $('#tableLoaderShagnal')
+
+        let showOnlyWorking = true
+        let grouped_empl = {}
+        let dynamicShagnal = []
+        let staticShagnal = []
+        let searchText = ''
+
+        const updateDText = debounce(
+            (text) =>
+            {
+                displayTable(text)
+            }
+        )
+
+        function debounce(cb, deley = 1500) {
+            let timeout
+            return (...args) =>
+            {
+                clearTimeout(timeout)
+                timeout = setTimeout(
+                    () =>
+                    {
+                        cb(...args)
+                        loadingInput.classList.add('d-none')
+                    },
+                    deley
+                )
+            }
+        }
+
+        searchInput.addEventListener('keyup', (event) => {
+            updateDText(event.target.value)
+            loadingInput.classList.remove('d-none')
+            searchText = event.target.value
+        });
+
+        const handleChangeType = (event) =>
+        {
+            showOnlyWorking = !event.target.checked
+            displayTable(searchText)
+        }
+
+        function html_table_to_excel(type)
+        {
+            var data = document.getElementById('shagnalTable');
+            let columnWidths = []
+
+            let sheetname = "shagnal"
+
+            var file = XLSX.utils.table_to_book(data, {sheet: sheetname, display: true});
+            const allRows = dynamicShagnal.concat(staticShagnal)
+            columnWidths.push({ wpx: 25 })
+            columnWidths.push({ wpx: 120 })
+
+            allRows.map(
+                (row) =>
+                {
+                    columnWidths.push({ wpx: row.name.length * 6 })
+                }
+            )
+
+            file["Sheets"][sheetname]["!cols"] = columnWidths
+            XLSX.write(file, { bookType: type, bookSST: true, type: 'base64' });
+
+            XLSX.writeFile(file, 'file.' + type);
+        }
+
+        const export_button = document.getElementById('export_button');
+
+        export_button.addEventListener('click', () =>  {
+            html_table_to_excel('xlsx');
+        });
+
+        const displayTable = (filter='') =>
+        {
+            let group = {}
+            shagnalTableBody.innerHTML = ""
+            let count = 1
+
+            if(filter !== "")
+            {
+                group = {}
+                for(const emplz in grouped_empl)
+                {
+                    // Ажилж байгаа хүмүүсээс хайлт хийх
+                    if(showOnlyWorking)
+                    {
+                        group[emplz] = grouped_empl[emplz].filter(
+                            (elemnt) =>
+                            {
+                                const year = new Date(elemnt.what_year).getFullYear().toString()
+                                if  (
+                                        (
+                                            elemnt.employee_name.toLowerCase().includes(filter.toLowerCase())
+                                            ||
+                                                year.includes(filter)
+                                        )
+                                        &&
+                                            elemnt.employee_state === 1  //Ажиллаж байгаа
+                                    )
+                                {
+                                    return elemnt
+                                }
+                            }
+                        )
+                    }
+                    else
+                    {
+                        group[emplz] = grouped_empl[emplz].filter(
+                            (elemnt) =>
+                            {
+                                const year = new Date(elemnt.what_year).getFullYear().toString()
+                                if(elemnt.employee_name.toLowerCase().includes(filter.toLowerCase()) || year.includes(filter))
+                                {
+                                    return elemnt
+                                }
+                            }
+                        )
+                    }
+                }
+            }
+            else
+            {
+                // Ажилж байгаа хүмүүсийг харуулах
+                if(showOnlyWorking)
+                {
+                    for(const emplz in grouped_empl)
+                    {
+                        if(showOnlyWorking)
+                        {
+                            group[emplz] = grouped_empl[emplz].filter(
+                                (elemnt) =>
+                                {
+                                    const year = new Date(elemnt.what_year).getFullYear().toString()
+                                    if((elemnt.employee_name.toLowerCase().includes(filter.toLowerCase()) || year.includes(filter)) && elemnt.employee_state === 1)
+                                    {
+                                        return elemnt
+                                    }
+                                }
+                            )
+                        }
+                    }
+                }
+                else
+                {
+                    group = grouped_empl
+                }
+            }
+
+            for(const emp in group)
+            {
+
+                const tr = document.createElement("tr")
+                const td = document.createElement("td")
+                const td2 = document.createElement("td")
+                td2.textContent = count
+                td2.classList.add("text-center")
+                td2.style.verticalAlign = 'middle'
+                tr.appendChild(td2)
+
+                if(!group[emp][0]) continue
+
+                td.textContent = group[emp][0].employee_name
+                td.classList.add("text-center")
+                td.style.verticalAlign = 'middle'
+                tr.appendChild(td)
+
+                dynamicShagnal.map((shagnal, index) =>
+                {
+                    const td = document.createElement("td")
+                    let year = []
+                    group[emp].map(
+                        (emp_shagnal) =>
+                        {
+                            if(emp_shagnal.kind === 2)
+                            {
+                                if(emp_shagnal.shagnal === shagnal.id)
+                                {
+                                    year.push(`${new Date(emp_shagnal.what_year).getFullYear()} он ${emp_shagnal.desc}`)
+                                }
+                            }
+                        }
+                    )
+                    td.textContent = year.join(", ")
+                    tr.appendChild(td)
+
+                })
+                staticShagnal.map((shagnal, index) =>
+                {
+                    const td = document.createElement("td")
+                    let year = []
+                    group[emp].map(
+                        (emp_shagnal) =>
+                        {
+                            if(emp_shagnal.kind === 1)
+                            {
+                                if(emp_shagnal.static_shagnal === shagnal.id)
+                                {
+                                    year.push(`${new Date(emp_shagnal.what_year).getFullYear()} он ${emp_shagnal.desc}`)
+                                }
+                            }
+                        }
+                    )
+                    td.textContent = year.join(", ")
+                    tr.appendChild(td)
+                })
+                shagnalTableBody.appendChild(tr)
+                count++
+            }
+            if(shagnalTableBody.children.length === 0)
+            {
+                notFound.classList.remove("d-none")
+            }
+            else
+            {
+                notFound.classList.add("d-none")
+            }
+        }
+
+        function _toggleColumns(event, id, sType)
+        {
+            event.preventDefault();
+            let _this = $(event.target)
+            let shagnalTable = $("#shagnalTable")
+
+            _this.toggleClass("disabled")
+            let isShow = _this.hasClass("disabled")
+            let foundCol = shagnalTable.find(`thead th[data-id="${id}"][data-type="${sType}"]`)
+            let columnindex = foundCol.index()
+            let tbody = shagnalTable.find(`tbody td:nth-child(${columnindex + 1})`)
+            if(isShow)
+            {
+                foundCol.hide()
+                tbody.hide()
+            }
+            else {
+                foundCol.show()
+                tbody.show()
+            }
+        }
+
+        function setColToDisplay(shagnals)
+        {
+            let html = []
+            shagnals.dynamic.map(
+                (shagnal, idc) =>
+                {
+                    html.push(`<a class="col-auto toggle-vis small" onclick="_toggleColumns(event, ${shagnal.id}, 'dynamic')">${shagnal.name}</a>`)
+                }
+            )
+            shagnals.static.map(
+                (shagnal, idc) =>
+                {
+                    html.push(`<a class="col-auto toggle-vis small" onclick="_toggleColumns(event, ${shagnal.id}, 'static')">${shagnal.name}</a>`)
+                }
+            )
+
+            tableCols.append(html.join(" - "))
+        }
+
+        const getTailanShagnal = () =>
+        {
+            Promise.all([
+                fetchData("/shagnal/shagnal-tailan/", null, 'GET'),
+                fetchData("/shagnal/all-shagnal-list/", null, 'GET')]
+            ).then(
+                (result) =>
+                {
+                    const { success: success2, data: data2 } = result[1]
+                    const { success, data } = result[0]
+
+                    if(success2)
+                    {
+                        dynamicShagnal = data2.dynamic
+                        staticShagnal = data2.static
+
+                        data2.dynamic.map(
+                            (dynamic, index) =>
+                            {
+                                const th = document.createElement("th")
+                                th.setAttribute("data-id", dynamic.id)
+                                th.setAttribute("data-type", "dynamic")
+                                th.classList.add("text-center")
+                                th.style.verticalAlign = 'middle'
+                                th.textContent = dynamic.name
+                                shagnalTableHead.appendChild(th)
+                            }
+                        )
+                        data2.static.map(
+                            (static, index) =>
+                            {
+                                const th = document.createElement("th")
+                                th.setAttribute("data-id", static.id)
+                                th.setAttribute("data-type", "static")
+                                th.classList.add("text-center")
+                                th.style.verticalAlign = 'middle'
+                                th.textContent = static.name
+                                shagnalTableHead.appendChild(th)
+                            }
+                        )
+                        setColToDisplay(data2)
+                    }
+
+                    if(success)
+                    {
+                        var groupBy = function(xs, key) {
+                            return xs.reduce(function(rv, x) {
+                                (rv[x[key]] = rv[x[key]] || []).push(x);
+                                return rv;
+                            }, {});
+                        };
+                        grouped_empl = groupBy(data, 'user')
+
+                        displayTable()
+                    }
+
+                }
+            )
+        }
+
+        getTailanShagnal()
+    </script>
+{% endblock js %}

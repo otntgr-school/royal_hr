@@ -1,0 +1,238 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+{% block content %}
+<div class="content-body">
+    <section class="app-user-view-connections">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Ажлын байрны зарууд</h4>
+                    </div>
+                    <div id="adsList" style="min-height: 200px;" class="card-body"></div>
+                    <div class="d-flex align-items-center justify-content-between p-2">
+                        <div id="currentPageHtml"></div>
+                        <div class="d-flex gap-1">
+                            <button id="paginatePrev" onclick="handlePage('prev')" class="d-none btn btn-primary">Өмнөх</button>
+                            <button id="paginateNext" onclick="handlePage('next')" class="d-none btn btn-primary">Дараагийх</button>
+                        </div>
+                        <div id="totalPageHtml"></div>
+                    </div>
+                </div>
+            </div>
+            <button id="hiddenModalShower" class="d-none" data-bs-toggle='modal' data-bs-target='#send-reqeust'></button>
+            {% include './modal/sendRequest.html' %}
+        </div>
+    </section>
+</div>
+{% endblock content %}
+{% block js %}
+    <script>
+        function findGetParameter(parameterName) {
+            var result = null,
+                tmp = [];
+            location.search
+                .substr(1)
+                .split("&")
+                .forEach(function (item) {
+                    tmp = item.split("=");
+                    if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
+                });
+            return result;
+        }
+
+        let currentPage = 0
+        let limit = 5
+        let totalPage = 0
+        const adsList = document.getElementById('adsList')
+        const adsListJq = $('#adsList')
+        const currentPageHtml = document.getElementById("currentPageHtml")
+        const totalPageHtml = document.getElementById("totalPageHtml")
+
+        const paginatePrev = document.getElementById("paginatePrev")
+        const paginateNext = document.getElementById("paginateNext")
+
+        // MODAL ELEMENTS
+        const more_logo = document.getElementById("more_logo")
+        const more_name = document.getElementById("more_name")
+        const org_psoition_name = document.getElementById("org_psoition_name")
+        const more_desc = document.getElementById("more_desc")
+        const address = document.getElementById("address")
+        const social = document.getElementById("social")
+        const send_req_btn = document.getElementById("send_req_btn")
+        const alreadyReqeuest = document.getElementById("alreadyReqeuest")
+        const web = document.getElementById("web")
+        const modalLoaderEl = $('#modalLoaderEl')
+        const hiddenModalShower = document.getElementById("hiddenModalShower")
+
+        const checkPages = () =>
+        {
+            currentPageHtml.textContent = 'Хуудас: '+ (currentPage + 1)
+            totalPageHtml.textContent = "Нийт хуудас: " + (totalPage + 1)
+
+            if(totalPage === currentPage)
+            {
+                paginateNext.classList.add("d-none")
+            }
+            else
+            {
+                paginateNext.classList.remove("d-none")
+            }
+            if(currentPage === 0)
+            {
+                paginatePrev.classList.add("d-none")
+            }
+            else
+            {
+                paginatePrev.classList.remove("d-none")
+            }
+        }
+
+        const sendRequest = async (ads) =>
+        {
+            const span = document.createElement("span")
+            span.classList.add('badge')
+            span.classList.add('rounded-pill')
+            span.classList.add('badge-light-success')
+            span.textContent = 'Хүсэлт илгээсэн'
+            const body = {
+                org: ads.org.id,
+                org_position: ads.org_position_id,
+                work_adsense: ads.id,
+            }
+            const { success } = await useLoader(
+                fetchData("{% url 'work-join-request' %}", body, "POST"),
+                modalLoaderEl
+            )
+
+            if(success)
+            {
+                document.getElementById(ads.id + "_work_ad").appendChild(span)
+                document.getElementById("modalCloseBtn").click()
+            }
+        }
+
+        const displayModalInfo = async (adId) =>
+        {
+            const { success, data: { adsense } } = await useLoader(
+                fetchData(`{% url 'work-join-request' %}?work_adsense_id=${adId}`, null, "GET"),
+                modalLoaderEl
+            )
+
+            if(success)
+            {
+                if(!adsense.is_already)
+                {
+                    send_req_btn.classList.remove('d-none')
+                    alreadyReqeuest.classList.add("d-none")
+                }
+                else
+                {
+                    send_req_btn.classList.add('d-none')
+                    alreadyReqeuest.classList.remove("d-none")
+                }
+                more_logo.src = adsense.org?.logo || '/media/400x245.jpg'
+                more_name.textContent = adsense.org?.name
+                org_psoition_name.textContent = adsense.org_position
+                more_desc.textContent = adsense.description
+                address.textContent = adsense.org?.address
+                social.href = adsense.org?.social
+                social.textContent = adsense.org?.social
+                web.href = adsense.org?.web
+                web.textContent = adsense.org?.web
+                send_req_btn.onclick = function(){ sendRequest(adsense) }
+            }
+        }
+
+        const selectedAdz = findGetParameter('selectedAd')
+        const displayModalFromParams = async () =>
+        {
+            if(selectedAdz)
+            {
+                await displayModalInfo(selectedAdz)
+                hiddenModalShower.click()
+            }
+        }
+
+        displayModalFromParams()
+
+        const getListPagination = async (skip=0) =>
+        {
+            const { data: { serializer, total_pages }, success } = await useLoader(
+                fetchData(`{% url 'work-adsense-get' %}?skip=${skip}&limit=${limit}`, null, 'GET'),
+                adsListJq
+            )
+
+            if(success)
+            {
+                totalPage = total_pages - 1
+                checkPages()
+                if(serializer.length === 0)
+                {
+                    adsList.innerHTML = `<div class='text-center mt-4'>Илэрц олдсонгүй</div>`
+                    return
+                }
+                adsList.innerHTML = serializer.map(
+                    (ad) =>
+                    {
+                        return`
+                            <div onclick='displayModalInfo(${ad.id})' data-bs-toggle='modal' data-bs-target='#send-reqeust' class='row workAds' style='padding: 8px;'>
+                                <div class='col-md-4'>
+                                    <div class='d-flex workadsenseCom'>
+                                        <div class='d-flex align-items-center' style='height: 100px; background-color: rgba(214, 214, 214, 0.1); border-radius: 5px'>
+                                            <img style='object-fit: contain;height: 100%; width: 100%;' src='${ad.org.logo || '/media/400x245.jpg'}' />
+                                        </div>
+                                        <div class='ms-1 d-flex align-items-center' style='font-weight: 600;'>${ad.org.name}</div>
+                                    </div>
+                                </div>
+                                <div class='col-md-6 mt-1'>
+                                    <div id='${ad.id}_work_ad' style='font-weight: 500;'>${ad.org_position} ${ad.is_already ? `<span class='badge rounded-pill badge-light-success' bis_skin_checked='1'>Хүсэлт илгээсэн</span>` : ''}</div>
+                                    <div
+                                        style='
+                                            display: -webkit-box;
+                                            -webkit-line-clamp: 3;
+                                            -webkit-box-orient: vertical;
+                                            overflow: hidden;
+                                        '
+                                    >
+                                        ${ad.description}
+                                    </div>
+                                </div>
+                                <div class='col-md-2'>
+                                    <div class='float-end'>
+                                        Нийтлэсэн огноо:
+                                        <br>
+                                        ${timeZoneToDateString(ad.created_at, false)}
+                                        <br>
+                                        Дуусах огноо:
+                                        <br>
+                                        ${timeZoneToDateString(ad.end_at, false)}
+                                    </div>
+                                </div>
+                            </div>
+                            <hr/>
+                        `
+                    }
+                ).join('')
+            }
+        }
+
+        getListPagination()
+
+        const handlePage = (type) =>
+        {
+            if(type === 'next')
+            {
+                currentPage++
+                getListPagination(currentPage * limit)
+            }
+            else
+            {
+                currentPage--
+                getListPagination(currentPage * limit)
+            }
+        }
+
+    </script>
+{% endblock js %}

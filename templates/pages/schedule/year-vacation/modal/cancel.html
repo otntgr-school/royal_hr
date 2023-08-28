@@ -1,0 +1,32 @@
+
+<!--
+    URL: Хаана ч ашиглаж болно
+    Нэр: Устгах модал
+    Төрөл: Modal
+    Дэлгэрэнгүй: Устгах дарахад гарж ирэх modal
+-->
+
+<div class="modal fade" id="{{id}}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content" >
+            <form method="post" action="{% url 'year-vacation-cancel' %}">
+                {% csrf_token %}
+                <input class="d-none" type="text" id="cancel_input" name="cancel_input" >
+                <div class="modal-body text-center" id="modalbody">
+                    <div class="text-center">
+                        <i class="fas fa-exclamation-circle text-warning fs-40"></i>
+                    </div>
+                    <div style="margin-top: 10px">
+                        Та цуцлахдаа итгэлтэй байна уу?
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary" data-bs-dismiss="modal" >Тийм</button>
+                    <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">
+                        Болих
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

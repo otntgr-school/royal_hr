@@ -1,0 +1,99 @@
+<div class="card-border">
+    <div class="card-body crepeat edus">
+        <h4 class="card-title text-center">2.1. Боловсрол /ерөнхий, тусгай дунд, дээд боловсрол, дипломын, бакалаврын болон магистрийн зэргийг оролцуулан/</h4>
+        <hr>
+        <div class="table-responsive">
+            <table id="faqs" class="table table-hover table-bordered small-text-thead">
+                <thead>
+                    <tr>
+                        <th>Сургуулийн нэр</th>
+                        <th>Орсон он, сар</th>
+                        <th>Төгссөн он, сар</th>
+                        <th>Эзэмшсэн боловсрол</th>
+                        <th>Мэргэжил</th>
+                        <th>Гэрчилгээ, дипломын дугаар</th>
+                        <th style="width: 80px;">Үйлдэл</th>
+                    </tr>
+                </thead>
+                <tbody data-repeater-list="education1">
+                    <tr data-repeater-item>
+                        <td>
+                            <input type="text" class="form-control form-control-sm d-none" placeholder="Сургуулийн нэр" name="id" id="id">
+                            <input type="text" class="form-control form-control-sm d-none" placeholder="Сургуулийн нэр" name="cid">
+                            <input type="text" class="form-control form-control-sm" placeholder="Сургуулийн нэр" name="school">
+                        </td>
+                        <td>
+                            <input
+                                type="text"
+                                class="form-control form-control-sm cyear-and-month"
+                                placeholder="2000-01-20"
+                                name="start_date"
+                            />
+                        </td>
+                        <td>
+                            <input type="text" class="form-control form-control-sm cyear-and-month" placeholder="2000-01-20" name="end_date" />
+                        </td>
+                        <td>
+                            <input type="text" class="form-control form-control-sm" placeholder="Эзэмшсэн боловсрол" name="ezemshsen_bolowsrol" />
+                        </td>
+                        <td>
+                            <input type="text" class="form-control form-control-sm" placeholder="Мэргэжил" name="mergejil" />
+                        </td>
+                        <td>
+                            <input type="text" class="form-control form-control-sm" placeholder="Гэрчилгээ, дипломын дугаар" name="diplom_number" />
+                        </td>
+                        <td class="mt-10"><button class="btn btn-sm btn-danger" type="button" data-repeater-delete>Устгах</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <span data-repeater-create class="text-primary fw-bold fs-12 mt-1 mb-2 d-block text-center cursor-pointer">
+            <i data-feather='plus'></i> Шинээр нэмэх
+        </span>
+    </div>
+    <div class="card-body crepeat edus2">
+        <h4 class="card-title text-center">2.2. Боловсролын докторын болон шинжлэх ухааны докторын зэрэг</h4>
+        <hr>
+        <div class="table-responsive">
+            <table id="faqs" class="table table-hover table-bordered small-text-thead">
+                <thead>
+                    <tr>
+                        <th>Зэрэг</th>
+                        <th>Хамгаалсан газар</th>
+                        <th>Он, сар</th>
+                        <th>Гэрчилгээ, дипломын дугаар</th>
+                        <th style="width: 80px;">Үйлдэл</th>
+                    </tr>
+                </thead>
+                <tbody data-repeater-list="education2">
+                    <tr data-repeater-item>
+                        <td><input type="text" class="form-control form-control-sm" placeholder="Зэрэг" name="level" /></td>
+                        <td>
+                            <input type="text" class="form-control d-none" placeholder="Сургуулийн нэр" name="id" id="id">
+                            <input type="text" class="form-control d-none" placeholder="Сургуулийн нэр" name="cid">
+                            <input type="text" class="form-control form-control-sm" placeholder="Хамгаалсан газар" name="school" />
+                        </td>
+                        <td>
+                            <input type="text" id="fp-default" class="form-control form-control-sm cyear-and-month" placeholder="2000-01-20" name="end_date" />
+                        </td>
+                        <td><input type="text" class="form-control form-control-sm" placeholder="Гэрчилгээ, дипломын дугаар" name="diplom_number" /></td>
+                        <td class="mt-10"><button class="btn btn-sm btn-danger" type="button" data-repeater-delete>Устгах</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <span data-repeater-create class="text-primary fw-bold fs-12 mt-1 mb-2 d-block text-center cursor-pointer">
+            <i data-feather='plus'></i> Шинээр нэмэх
+        </span>
+    </div>
+    <div class="card-body">
+        <div class="form-group">
+            <label for="" class="form-label">Боловсролын докторын зэрэг хамгаалсан сэдэв </label>
+            <input type="text" class="form-control" name="bachelor_sedew" />
+        </div>
+        <div class="form-group">
+            <label for="" class="form-label">Шинжлэх ухааны доктор хамгаалсан сэдэв</label>
+            <input type="text" class="form-control" name="dr_sedew" />
+        </div>
+    </div>
+</div>

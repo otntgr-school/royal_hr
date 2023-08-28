@@ -1,0 +1,591 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+{% block content %}
+
+{% block css %}
+<!-- BEGIN: Page CSS-->
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/form-validation.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/pages/app-todo.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'assets/css/drop.css' %}" />
+
+<!-- END: Page CSS-->
+
+{% endblock css %}
+
+<div class="content-body todo-application">
+    <div class="content-overlay"></div>
+    <div class="header-navbar-shadow"></div>
+    <div class="content-area-wrapper container-xxl p-0">
+        <div class="sidebar-left">
+            <div class="sidebar">
+                <div class="sidebar-content todo-sidebar">
+                    <div class="todo-app-menu">
+                        <div class="sidebar-menu-list">
+
+                            <!-- Төлвөөр хайлт -->
+                            <div class="px-2 d-flex justify-content-between mt-2">
+                                <h6 class="section-label mb-1">Төлөв</h6>
+                                <!-- <i data-feather="plus" class="cursor-pointer"></i> -->
+                            </div>
+                            <div class="list-group">
+                                {% for id, name in states %}
+                                    <div class="form-group list-group-item list-group-item-action mb-0">
+                                        <input type="checkbox" class="form-check-input" id="{{name}}" value="{{id}}" {%if id == 1%} checked {%endif%} name="search_state">
+                                        <label class="form-check-label" for="{{name}}">{{name}}</label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                            <!-- Төрөлөөр хайлт -->
+                            <div class="px-2 d-flex justify-content-between mt-2">
+                                <h6 class="section-label mb-1">Төрөл</h6>
+                                <!-- <i data-feather="plus" class="cursor-pointer"></i> -->
+                            </div>
+                            <div class="list-group">
+                                {% for kind in kinds %}
+                                    <div class="form-group list-group-item list-group-item-action mb-0">
+                                        <input type="checkbox" class="form-check-input" id="{{kind.title}}" value="{{kind.id}}" name="search_kind">
+                                        <label class="form-check-label" for="{{kind.title}}">{{kind.title}}</label>
+                                    </div>
+                                {% endfor %}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="content-right">
+            <div class="content-wrapper container-xxl p-0">
+                <div class="content-header row">
+                </div>
+                <div class="content-body">
+                    <div class="body-content-overlay"></div>
+                    <div class="todo-app-list">
+                        <div class="app-fixed-search d-flex align-items-center">
+                            <div class="sidebar-toggle d-block d-lg-none ms-1" role="button">
+                                <i data-feather="menu" class="font-medium-5"></i>
+                            </div>
+                            <div class="d-flex align-content-center justify-content-between w-100">
+                                <div class="input-group input-group-merge">
+                                    <span class="input-group-text"><i data-feather="search" class="text-muted"></i></span>
+                                    <input type="text" class="form-control" id="todo-search" placeholder="Гарчигаар хайх" aria-label="Search..." aria-describedby="todo-search" />
+                                </div>
+                            </div>
+                            <div class="dropdown">
+                                <a href="#" class="dropdown-toggle hide-arrow me-1" id="todoActions" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <i data-feather="more-vertical" class="font-medium-2 text-body"></i>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="todoActions">
+                                    <a class="dropdown-item sort-asc" href="#">Эрэмбэ A - Z</a>
+                                    <a class="dropdown-item sort-desc" href="#">Эрэмбэ Z - A</a>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Todo List starts -->
+                        <div class="todo-task-list-wrapper list-group">
+                            <ul class="todo-task-list media-list" id="todo-task-list">
+                            </ul>
+                        </div>
+                        <!-- Todo List ends -->
+                    </div>
+
+                    <!-- Right Sidebar starts -->
+                    <div class="modal modal-slide-in sidebar-todo-modal fade" id="new-task-modal">
+                        <div class="modal-dialog sidebar-lg">
+                            <div class="modal-content p-0">
+                                <form id="form-modal-todo" class="todo-modal needs-validation" novalidate>
+                                    <div class="modal-header align-items-center mb-1">
+                                        <h5 class="modal-title"></h5>
+                                        <div class="todo-item-action d-flex align-items-center justify-content-between ms-auto">
+                                            <i data-feather="x" class="cursor-pointer" data-bs-dismiss="modal" stroke-width="3"></i>
+                                        </div>
+                                    </div>
+                                    <div class="modal-body flex-grow-1 pb-sm-0 pb-3">
+                                        <div class="mb-1">
+                                            <div class="form-check form-switch">
+                                                <input type="checkbox" class="form-check-input" name="is_meeting" id="is_meeting_id" readonly disabled />
+                                                <label class="form-check-label" for="is_meeting_id">Уулзалт эсэх</label>
+                                            </div>
+                                        </div>
+                                        <div class="mb-1">
+                                            <label class="form-label">Гарчиг:</label>
+                                            <p>
+                                                <span id="title"></span>
+                                            </p>
+                                        </div>
+                                        <div class="mb-1">
+                                            <label class="form-label">Үндсэн хэсэг:</label>
+                                            <p>
+                                                <span id="mainContent"></span>
+                                            </p>
+                                        </div>
+
+                                        <div class="mb-1">
+                                            <label class="form-label">Хаанаас:</label>
+                                            <p>
+                                                <span id="fromLvl"></span>
+                                            </p>
+                                        </div>
+
+                                        <div class="mb-1">
+                                            <label class="form-label">Хэнээс:</label>
+                                            <p>
+                                                <span id="fromEmployee"></span>
+                                            </p>
+                                        </div>
+
+                                        <div class="mb-1">
+                                            <label class="form-label">Хавсралт:</label>
+                                            <div class="row attachment-list">
+                                            </div>
+                                        </div>
+
+                                        <div class="divider">
+                                            <div class="divider-text">Шийдвэрлэх хэсэг</div>
+                                        </div>
+
+                                        <div class="mb-1">
+                                            <div>
+                                                <input
+                                                    type="radio"
+                                                    class="form-check-input"
+                                                    name="what"
+                                                    id="whatone"
+                                                    value="success"
+                                                    {% if not is_my %}
+                                                        {% if not 'sanal-gomdol-decide-approve' in request.permissions and not 'sanal-gomdol-decide-refuse' in request.permissions %}disabled{% endif %}
+                                                        {% if not 'sanal-gomdol-decide-approve' in request.permissions and not 'sanal-gomdol-decide-refuse' in request.permissions %}readonly{% endif %}
+                                                    {% endif %}
+                                                />
+                                                <label class="form-check-label" for="whatone">Зөвшөөрсөн</label>
+                                            </div>
+                                            <div>
+                                                <input
+                                                    type="radio"
+                                                    class="form-check-input"
+                                                    name="what"
+                                                    id="whattwo"
+                                                    value="cancel"
+                                                    {% if not is_my %}
+                                                        {% if not 'sanal-gomdol-decide-approve' in request.permissions and not 'sanal-gomdol-decide-refuse' in request.permissions %}disabled{% endif %}
+                                                        {% if not 'sanal-gomdol-decide-approve' in request.permissions and not 'sanal-gomdol-decide-refuse' in request.permissions %}readonly{% endif %}
+                                                    {% endif %}
+                                                />
+                                                <label class="form-check-label" for="whattwo">Татгалзсан</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-1">
+                                            <label class="form-label">Хэрхэн Шийдвэрлэсэн:</label>
+                                            <textarea
+                                                name="decided_content"
+                                                id="decided_content"
+                                                class="form-control"
+                                                {% if not is_my %}
+                                                    {% if not 'sanal-gomdol-decide-approve' in request.permissions and not 'sanal-gomdol-decide-refuse' in request.permissions %}disabled{% endif %}
+                                                    {% if not 'sanal-gomdol-decide-approve' in request.permissions and not 'sanal-gomdol-decide-refuse' in request.permissions %}readonly{% endif %}
+                                                {% endif %}
+                                            ></textarea>
+                                        </div>
+                                        <div class="mb-1">
+                                            <label class="form-label">Хэзээ:</label>
+                                            <input
+                                                type="text"
+                                                class="form-control"
+                                                id="decided_at"
+                                                name="decided_at"
+                                                {% if not is_my %}
+                                                    {% if not 'sanal-gomdol-decide-approve' in request.permissions and not 'sanal-gomdol-decide-refuse' in request.permissions %}disabled{% endif %}
+                                                    {% if not 'sanal-gomdol-decide-approve' in request.permissions and not 'sanal-gomdol-decide-refuse' in request.permissions %}readonly{% endif %}
+                                                {% endif %}
+                                            >
+                                        </div>
+                                        <div class="mb-1">
+                                            <label class="form-label">Тушаал:</label>
+                                            <div class="cdrop-area" id="cdrop-area">
+                                                <div class="cdrop-text" id="cdrop-text"></div>
+                                                <div class="cgallery row" id="gallery"></div>
+                                                <input
+                                                    type="file"
+                                                    class="form-control d-none"
+                                                    id="commands"
+                                                    name="commands"
+                                                    multiple
+                                                    {% if not is_my %}
+                                                        {% if not 'sanal-gomdol-decide-approve' in request.permissions and not 'sanal-gomdol-decide-refuse' in request.permissions %}disabled{% endif %}
+                                                        {% if not 'sanal-gomdol-decide-approve' in request.permissions and not 'sanal-gomdol-decide-refuse' in request.permissions %}readonly{% endif %}
+                                                    {% endif %}
+                                                >
+                                            </div>
+                                        </div>
+                                        <div class="my-1">
+                                            {% if is_my or 'sanal-gomdol-decide-approve' in request.permissions or 'sanal-gomdol-decide-refuse' in request.permissions %}
+                                                <button type="submit" class="btn btn-primary me-1">Хадгалах</button>
+                                            {% endif %}
+                                            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+                                                Хаах
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Right Sidebar ends -->
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block js %}
+
+<!-- BEGIN: Page Vendor JS-->
+<script src="{% static 'app-assets/vendors/js/extensions/dragula.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/extensions/moment.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+<script src="{% static 'assets/js/browser.js' %}"></script>
+<script src="{% static 'assets/js/drop.js' %}"></script>
+
+<!-- END: Page Vendor JS-->
+
+<!-- variables -->
+<script>
+    var noResult = `
+                    <div class="no-results d-block">
+                        <h5>Шийдвэрлэх хүсэлт байхгүй байна</h5>
+                    </div>
+                `,
+        todoList = $("#todo-task-list"),
+        attachmentList = $(".attachment-list"),
+        formModal = $(".sidebar-todo-modal"),
+        titleOfModal = $(".modal-title"),
+
+        titleValue = $("#title"),
+        fromLvl = $("#fromLvl"),
+        fromEmployee = $("#fromEmployee"),
+        mainContentValue = $("#mainContent"),
+        isMeeting = $("#is_meeting"),
+
+        decidedContent = $("#decided_content"),
+        decidedAt = $("#decided_at"),
+        whatone = $("#whatone"),
+        whattwo = $("#whattwo"),
+
+        searchKind = $("input[name='search_kind']"),
+        searchState = $("input[name='search_state']"),
+
+        selectedData = {},
+        searchs = {
+            'state': ['1'],
+            'kind': [],
+            "is_my": "{{ is_my }}"
+        }
+
+</script>
+
+<script>
+
+    /** жагсаалт дээр state ээс хамаарсан хэсгийг text html маягаар авах нь */
+    function getStateElement(feedback)
+    {
+        let html = feedback.state === 2 // зөвшөөрсөн
+            ?
+                `
+                <small class="text-success me-1">${feedback.decided_at}</small>
+                <div class="avatar">
+                    <img
+                        src="${feedback.from_employee_img ? feedback.from_employee_img : "/media/53x53.jpg"}"
+                        alt="Avatar"
+                        height="32"
+                        onerror="this.onerror=null; this.src='/media/53x53.jpg'"
+                        width="32"
+                    >
+                </div>
+                <span class="fw-bolder text-dark">${feedback.decided_employee_name}</span>
+                `
+            :
+                feedback.state === 1 // үүсгэсэн
+                ?
+                    `
+                    <small class="text-muted">Ирсэн: ${feedback.created_at}</small>
+                    `
+                :
+                    feedback.state === 3 // татгалзсан
+                    ?
+                        `
+                        <small class="me-1 text-danger">${feedback.decided_at}</small>
+                        <div class="avatar">
+                            <img
+                                src="${feedback.from_employee_img ? feedback.from_employee_img : "/media/53x53.jpg"}"
+                                alt="Avatar"
+                                height="32"
+                                width="32"
+                                onerror="this.onerror=null; this.src='/media/53x53.jpg'"
+                            >
+                        </div>
+                        <span class="fw-bolder text-dark">${feedback.decided_employee_name}</span>
+                        `
+                    :
+                    null
+
+        return html
+    }
+</script>
+
+<!-- BEGIN: Page JS-->
+<script src="{% static 'assets/js/pages/feedback-decide/app-todo.js' %}"></script>
+<!-- END: Page JS-->
+
+<script>
+
+    let decidedAtPickr = decidedAt.flatpickr({
+        enableTime: true,
+        default: "today"
+    });
+
+    /** жагсаалтыг elementeer үүсгэх нь */
+    function makeDecideListElements(feedbacks)
+    {
+
+        if (!feedbacks.length)
+        {
+            todoList.append(noResult)
+        }
+
+        feedbacks.map(
+            (feedback, index) =>
+            {
+                let html = `
+                    <li class="todo-item" onclick="getItemData(event, ${feedback.id})" data-cid="${feedback.id}">
+                        <div style="margin-bottom: 5px">
+                            <div class="avatar">
+                                <img
+                                    src="${feedback.from_employee_img ? feedback.from_employee_img : "/media/53x53.jpg"}"
+                                    alt="Avatar"
+                                    height="32"
+                                    width="32"
+                                    onerror="this.onerror=null; this.src='/media/53x53.jpg'"
+                                >
+                            </div>
+                            <span class="fw-bolder text-dark">${feedback.from_employee_name}</span>
+                        </div>
+                        <div class="todo-title-wrapper">
+                            <div class="todo-title-area">
+                                <div class="title-wrapper">
+                                    <span class="todo-title">${feedback.title}</span>
+                                </div>
+                            </div>
+                            <div class="todo-item-action">
+                                <div class="badge-wrapper me-1">
+                                    <span class="badge rounded-pill badge-light-primary">${feedback.kind_name}</span>
+                                </div>
+                                <div class="avatar-wrapper">
+                                    ${getStateElement(feedback)}
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                `
+                todoList.append($(html))
+            }
+        )
+    }
+
+    /** Формын утгуудыг хоослох нь */
+    function resetData()
+    {
+        titleOfModal.text("")
+        titleValue.text("")
+        mainContentValue.text("")
+        fromLvl.text("")
+        fromEmployee.text("")
+        isMeeting.val(false)
+
+        decidedContent.val("").change()
+        decidedAt.val("").change()
+        decidedAtPickr.setDate(null)
+        whatone.prop("checked", false).change()
+        whattwo.prop("checked", false).change()
+
+        attachmentList.html("")
+        resetGallery()
+    }
+
+    /** хавсралтыг дэлгэц дээр гаргах */
+    function setHawsralt(feedback)
+    {
+        if (!feedback.attachments.length)
+        {
+            attachmentList.html(`<small class="d-flex align-items-center text-muted justify-content-center">Хавсралт байхгүй байна</small>`)
+            return
+        }
+        feedback.attachments.map(
+            (attachment, idx) =>
+            {
+                let html = `
+                    <div class="col-md-8">
+                        ${idx + 1})
+                        ${
+                            attachment.has_file
+                            ?
+                                `
+                                <a class="text-decoration-underline" role="button" target="_blank" href="${attachment.url}">
+                                    ${attachment.name}
+                                </a>
+                                `
+                            :
+                                `
+                                <span>
+                                    ${attachment.name}
+                                </span>
+                                `
+                        }
+                    </div>
+                    <div class="col-md-4">
+                        ${
+                            attachment.has_file
+                            ?
+                                `
+                                ${attachment.size}
+                                <div class='text-danger cursor-pointer' style='text-decoration: underline' value='Download' onclick='handleDownloadAttach(${attachment.id})'>
+                                    Татах
+                                </div>
+                                `
+                            :
+                                "<small>Файл устсан байна</small>"
+                        }
+                    </div>
+                `
+                attachmentList.append($(html))
+            }
+        )
+    }
+
+    /** Форм дээр утгуудыг оноож өгөх нь  */
+    function setData(data, event)
+    {
+        resetData()
+        titleOfModal.text(data.kind_name)
+        titleValue.text(data.title)
+        mainContentValue.text(data.main_content)
+        isMeeting.val(data.is_meeting)
+
+        const orgLvl = '{{ request.org_lvl }}'
+
+        let upOrgName = data.from_employee_org_name
+        let feedbackOrgLvl = 3
+        if (data.from_employee_sub_org_name)
+        {
+            feedbackOrgLvl = 2
+            upOrgName = data.from_employee_sub_org_name
+        }
+        if (data.from_employee_salbar_name)
+        {
+            feedbackOrgLvl = 1
+            upOrgName = data.from_employee_salbar_name
+        }
+
+        if (orgLvl !== feedbackOrgLvl  + "")
+        {
+            fromLvl.parent().parent().show()
+            fromLvl.text(upOrgName)
+        }
+        else {
+            fromLvl.parent().parent().hide()
+        }
+
+        fromEmployee.text(data.from_employee_name)
+
+        decidedContent.val(data.decided_content).change()
+        decidedAt.val(data.decided_at).change()
+        decidedAtPickr.setDate(data.decided_at)
+
+        setHawsralt(data)
+        displayFiles(data.commands)
+
+        //  зөвшөөрөх
+        if (data.state === 2)
+        {
+            whatone.prop("checked", true).change()
+        }
+        //  татгалзах
+        else if (data.state === 3)
+        {
+            whattwo.prop("checked", true).change()
+        }
+
+        selectedData = data
+    }
+
+    /** Тухайн нэг өргөдөл гомдлын датаг дуудаж авна бүтнээр нь */
+    async function getItemData(event, id)
+    {
+        const { success, data, errors } = await useLoader(
+            fetchData(`/feedback/decide-list/${id}/`, '', "GET"),
+            todoList.parent()
+        ).catch(err => err)
+        if (success)
+        {
+            formModal.modal("show")
+            setData(data, event)
+        }
+    }
+
+    // шийдвэрлэх жагсаалт байгааг дуудаж харуулах
+    async function getDatas()
+    {
+        todoList.html("")
+        const { success, data, errors } = await useLoader(
+            fetchData("{% url 'sanal-gomdol-decide-list' %}?" + objectToQueryString(searchs), "", "GET"),
+            todoList.parent()
+        ).catch(err => err)
+        if (success)
+        {
+            makeDecideListElements(data)
+        }
+    }
+    //  хамгийн анх ороход байгаа датаг дуудаж харуулах
+    getDatas()
+</script>
+
+<script>
+
+    /** Жагсаалтыг шүүж хайх нь */
+    function handleSearch(event, fieldName)
+    {
+        const id = event.target.value
+        const checked = event.target.checked
+        if (checked)
+        {
+            let index = searchs[fieldName].indexOf(id)
+            if (index == -1)
+            {
+                searchs[fieldName].push(id)
+            }
+        }
+        else {
+            let index = searchs[fieldName].indexOf(id)
+            if (index > -1)
+            {
+                searchs[fieldName].splice(index, 1)
+            }
+        }
+        getDatas()
+    }
+
+    searchKind.on("change", (event) => handleSearch(event, 'kind'))
+    searchState.on("change", (event) => handleSearch(event, 'state'))
+</script>
+
+{% endblock js %}

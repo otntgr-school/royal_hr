@@ -1,0 +1,26 @@
+{
+	"data": [
+		{
+			"id": 1,
+			"full_name": "Дорж Бат",
+			"email": "gslixby0@abc.net.au",
+			"sub_organ": "monos-1",
+			"division": "эм худалдаа",
+			"position": "худалдагч",
+			"register": "АА88888888",
+			"phone": 88888888,
+			"avatar": "10.png"
+		},
+		{
+			"id": 2,
+			"full_name": "Дорж Бат",
+			"email": "gslixby0@abc.net.au",
+			"sub_organ": "monos-1",
+			"division": "эм худалдаа",
+			"position": "худалдагч",
+			"register": "АА88888888",
+			"phone": 88888888,
+			"avatar": "10.png"
+		}
+	]
+}

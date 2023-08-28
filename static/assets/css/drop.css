@@ -1,0 +1,58 @@
+.cdrop-area {
+	border: 2px dashed #ccc;
+	border-radius: 20px;
+	font-family: sans-serif;
+	padding: 20px;
+}
+.cdrop-area.highlight {
+	border-color: purple;
+}
+.cdrop-area .cgallery {
+	margin-top: 10px;
+}
+.cdrop-area .cgallery div {
+	position: relative;
+}
+.cdrop-area .cgallery img {
+	width: 150px;
+	margin-bottom: 10px;
+	margin-right: 10px;
+	vertical-align: middle;
+}
+.cdrop-area .cdrop-text {
+	cursor: pointer;
+}
+.cdrop-area .cdrop-text:hover {
+	color: white;
+}
+
+.cdrop-area .cgallery .actions {
+	background:rgb(51, 51, 51);
+	color: white;
+	position: absolute;
+	bottom: 50%;
+	left: 50%;
+	margin-left: -50px;
+	width: 100px;
+	height: 30px;
+	line-height: 30px;
+	text-align: center;
+	opacity: 0;
+	-webkit-transition: all .3s linear;
+	-moz-transition: all .3s linear;
+	-o-transition: all .3s linear;
+	transition: all .3s linear;
+	z-index: 2;
+}
+.cdrop-area .cgallery div:hover {
+	opacity: .5;
+}
+.cdrop-area .cgallery div:hover .actions {
+	opacity: 1;
+}
+
+.cbtn:hover .cicon{
+    height: 23px;
+    width: 24px;
+    opacity: 1;
+}

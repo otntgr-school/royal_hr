@@ -1,0 +1,44 @@
+
+{% load rest_framework %}
+
+<div
+    class="modal modal-slide-in new-timetable-modal fade"
+    id="modals-slide-in"
+>
+    <div class="modal-dialog">
+
+            <form id="timetable_form" class="add-new-timetable modal-content pt-0" action="{% url 'work-time-type' %}" method="post" onsubmit="timeTableSubmit(event)">
+
+            <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+            >
+                ×
+            </button>
+            <div class="modal-header mb-1">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    Ажлын цагийн төрөл нэмэх
+                </h5>
+            </div>
+            <div class="modal-body flex-grow-1">
+                {% csrf_token %}
+                <input type="hidden" class="form-control" id="org" name="org" value="{{ request.employee.org.id }}" />
+                {% render_form serializer %}
+            </div>
+            <div class="col-xl-12 col-md-12 col-12">
+
+                <button type="submit" class="btn btn-primary ms-2">Бүртгэх</button>
+
+                <button
+                    type="reset"
+                    class="btn btn-outline-secondary ms-1"
+                    data-bs-dismiss="modal"
+                >
+                    Болих
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

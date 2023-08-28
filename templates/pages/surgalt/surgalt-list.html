@@ -1,0 +1,643 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+{% block content %}
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-pickadate.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/pickadate/pickadate.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/editors/quill/katex.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/editors/quill/monokai-sublime.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/editors/quill/quill.snow.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/editors/quill/quill.bubble.css' %}">
+
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Inconsolata&amp;family=Roboto+Slab&amp;family=Slabo+27px&amp;family=Sofia&amp;family=Ubuntu+Mono&amp;display=swap">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/form-quill-editor.css' %}" />
+
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+
+{% endblock css %}
+
+<div class="content-body">
+    <div class="row" id="table-hover-row">
+        <div class="col-12">
+            <div>
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Сургалт, сургалтын төлөвлөгөөний бүртгэл</h4>
+                    </div>
+                    <div class="table-responsive">
+                        <div class="card-datatable table-responsive pt-0">
+                            <table class="surgalt-list-table table text-center">
+                                <thead class="table-light">
+                                    <tr class="filter-container"></tr>
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th>Сургалтын нэр</th>
+                                        <th>Сургалтын зориулалт</th>
+                                        <th>Хэнд зориулж</th>
+                                        <th>Суралцагчдын тоо</th>
+                                        <th>Эхлэх огноо</th>
+                                        <th>Дуусах огноо</th>
+                                        <th>Эхлэх цаг</th>
+                                        <th>Дуусах цаг</th>
+                                        <th>Үйлдэл</th>
+                                    </tr>
+                                </thead>
+                                <tfoot class="table-light">
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th>Сургалтын нэр</th>
+                                        <th>Сургалтын зориулалт</th>
+                                        <th>Хэнд зориулж</th>
+                                        <th>Суралцагчдын тоо</th>
+                                        <th>Эхлэх огноо</th>
+                                        <th>Дуусах огноо</th>
+                                        <th>Эхлэх цаг</th>
+                                        <th>Дуусах цаг</th>
+                                        <th>Үйлдэл</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                    {% include "pages/surgalt/modal/surgalt-delete.html" with id="deleteSurgalt" deletebtn="deletebtn" %}
+                    <div class="modal modal-slide-in new-user-modal fade" id="surgalt-create-modal">
+                        <div class="modal-dialog">
+                            {% include 'pages/surgalt/modal/surgalt-create.html' %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.buttons.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jszip.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/pdfmake.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/vfs_fonts.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.html5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.print.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/cleave.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/addons/cleave-phone.us.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.date.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.time.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/legacy.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+
+<script src="{% static 'app-assets/js/scripts/pages/app-user-list.js' %}"></script>
+
+<script src="{% static 'app-assets/js/scripts/tables/table-datatables-advanced.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/pickers/form-pickers.js' %}"></script>
+
+<script>
+
+    $(document).ready(function() {
+        $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+    });
+
+    cloneFooter(
+        ".surgalt-list-table",
+        [
+            2, 3, 4, 5, 6, 7, 8 , 9
+        ]
+    )
+
+    var selectedEditId =null
+    let modal = $("#surgalt-create-modal")
+    let modalTitle = $("#surgalt-create-modal-title")
+    let modalBtn = $("#surgaltSubmitBtn")
+    let modalId = $("#surgalt-create-modal-id")
+
+    const surgaltTable = $(".surgalt-list-table").DataTable({
+        fixedColumns:   {
+            left: 0,
+            right: 1
+        },
+        processing: false,
+        dom: 'lBfrtip',
+        serverSide: true,
+        ajax: { url: '/surgalt/' }, // JSON file to add data
+        columns: [
+            // columns according to JSON
+            { data: null },
+            { data: null },
+            { data: "name" },
+            { data: "purpose" },
+            { data: "for_type_name" },
+            { data: "for_count" },
+            { data: "start_date" },
+            { data: "end_date" },
+            { data: "start_time" },
+            { data: "end_time" },
+            { data: null },
+        ],
+        columnDefs: [
+            {
+                // For Responsive
+                className: "control",
+                orderable: false,
+                responsivePriority: 2,
+                targets: 0,
+                render: function (data, type, full, meta) {
+                    return "";
+                },
+            },
+            {
+                // Actions
+                targets: -1,
+                title: "Үйлдэл",
+                orderable: false,
+                render: function (data, type, full, meta) {
+                    return (
+						`
+							<a
+								class="delete-record text-primary"
+								onclick="handleEditModal(event)"
+							>
+								<span
+									data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Сургалт засах"
+								>
+									${feather.icons["edit-3"].toSvg({
+										class: "font-small-4 me-50",
+									})}
+								</span>
+							</a>
+							<a  data-toggle="tooltip" title="Устгах" data-bs-toggle="modal" data-bs-target="#deleteSurgalt" onclick=(changeChoosedId(function(){delete_function(${full.id})})) class="delete-record text-primary-orange">
+								${feather.icons["trash-2"].toSvg({
+									class: "font-small-4 me-50",
+								})}
+							</a>
+						`
+					);
+                },
+            },
+            {
+                targets: 1,
+                title: "#",
+                orderable: false,
+                render: function (data, type, full, meta) {
+                    return (
+                        meta.settings._iDisplayStart + meta.row + 1
+                    );
+                },
+            },
+        ],
+        order: [[6, "desc"]],
+        lengthMenu: [
+            [10, 25, 50, 100, -1],
+            [10, 25, 50, 100, 'Бүгд'],
+        ],
+        dom:
+            '<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+            '<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+            '<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+            ">t" +
+            '<"d-flex justify-content-between mx-2 row mb-1"' +
+            '<"col-sm-12 col-md-6"i>' +
+            '<"col-sm-12 col-md-6"p>' +
+            ">",
+        oLanguage: {
+            sProcessing: "Ачааллаж байна. ",
+            sSearch: "Хайх: ",
+            sEmptyTable: "Бичлэг байхгүй",
+            sInfoEmpty: "Нийт 0 бичлэг",
+            sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+            sInfoFiltered: " - _MAX_ бичлэгээс",
+            sLengthMenu: "_MENU_ бичлэг",
+            oPaginate: {
+                sFirst: "Эхэнд",
+                sLast: "Төгсгөлд",
+                sNext: "Дараах",
+                sPrevious: "Өмнөх",
+            },
+        },
+        // Buttons with Dropdown
+        buttons: [
+            {
+                extend: "collection",
+                className: "btn btn-outline-secondary dropdown-toggle me-2",
+                text:
+                    feather.icons["external-link"].toSvg({
+                        class: "font-small-4 me-50",
+                    }) + "Export",
+                buttons: [
+                    {
+                        extend: "print",
+                        text:
+                            feather.icons["printer"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Print",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7, 8, 9] },
+                    },
+                    {
+                        extend: "csv",
+                        text:
+                            feather.icons["file-text"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Csv",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7, 8, 9] },
+                    },
+                    {
+                        extend: "excel",
+                        text:
+                            feather.icons["file"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Excel",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7, 8, 9] },
+                    },
+                    {
+                        extend: "pdf",
+                        text:
+                            feather.icons["clipboard"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Pdf",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7, 8, 9] },
+                    },
+                    {
+                        extend: "copy",
+                        text:
+                            feather.icons["copy"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Copy",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7, 8, 9] },
+                    },
+                ],
+                init: function (api, node, config) {
+                    $(node).removeClass("btn-secondary");
+                    $(node).parent().removeClass("btn-group");
+                    setTimeout(function () {
+                        $(node)
+                            .removeClass("btn-group")
+                            .addClass("d-inline-flex mt-50");
+                    }, 50);
+                },
+            },
+            {% if 'surgalt-create' in request.permissions or 'surgalt-update' in request.permissions %}
+            {
+				text: "Шинээр бүртгэх",
+				className: "add-new btn btn-primary",
+				attr: {
+					"data-bs-toggle": "modal",
+                    "data-bs-target": "#surgalt-create-modal",
+                    "onclick": "handleCreateModal()",
+				},
+				init: function (api, node, config) {
+					$(node).removeClass("btn-secondary");
+				},
+			},
+            {% endif %}
+        ],
+    });
+    searchFooter(surgaltTable)
+
+    let _rangePickr  = $(".flat-range")
+
+    let range = _rangePickr.flatpickr({
+        mode: 'range',
+    });
+
+    var surgalCreateJqFrom = $('#surgalt-create')
+
+    let valudateCreate
+
+    // validator
+    if (surgalCreateJqFrom.length) {
+        valudateCreate = surgalCreateJqFrom.validate({
+            rules: {
+                "name": {
+                    required: true,
+                },
+                "purpose": {
+                    required: true,
+                },
+                "for_type": {
+                    required: true,
+                },
+                "for_count": {
+                    required: true,
+                },
+                "employees": {
+                    required: true,
+                },
+                "date": {
+                    required: true,
+                },
+                "start_time": {
+                    required: true,
+                },
+                "end_time": {
+                    required: true,
+                },
+            },
+            messages: {
+                'name': {
+                    required: 'Сургалтын нэр талбарыг бөглөнө үү.',
+                },
+                'purpose': {
+                    required: 'Сургалтын зориулалт талбарыг бөглөнө үү.',
+                },
+                'for_type': {
+                    required: 'Сургалтын хамрах хүрээ талбарыг бөглөнө үү.',
+                },
+                'for_count': {
+                    required: 'Суралцагчдын тоо талбарыг бөглөнө үү.',
+                },
+                'employees': {
+                    required: 'Ажилтан сонгох талбарыг бөглөнө үү.',
+                },
+                'date': {
+                    required: 'Огноо талбарыг бөглөнө үү.',
+                },
+                'start_time': {
+                    required: 'Сургалт эхлэх цаг талбарыг бөглөнө үү.',
+                },
+                'end_time': {
+                    required: 'Сургалт дуусах цаг талбарыг бөглөнө үү.',
+                },
+            },
+             // Алдааны messsage байрлал өөрчлөх
+            errorPlacement: function(error, element) {
+                var placement = $(element).data('error');
+                if (placement) {
+                    $(placement).append(error)
+                } else {
+                    error.insertAfter(element);
+                }
+                if (element.parent().hasClass('input-group')) {
+                    element.parent().addClass('is-invalid');
+                }
+            },
+            highlight: function (element, errorClass, validClass) {
+                $(element).addClass('error');
+                if ($(element).parent().hasClass('input-group')) {
+                    $(element).parent().addClass('is-invalid');
+                }
+            },
+            unhighlight: function (element, errorClass, validClass) {
+                $(element).removeClass('error');
+                if ($(element).parent().hasClass('input-group')) {
+                    $(element).parent().removeClass('is-invalid');
+                }
+            }
+        });
+    }
+
+    function handleChangeForType(event)
+    {
+        const selectedValue = event.target.value
+        var countInput = document.getElementById('for_count')
+        var employeeDiv = document.getElementById('users-div')
+        if ( selectedValue === 'whole' )
+        {
+            countInput.disabled = true
+            employeeDiv.style.display = 'none';
+            countInput.value = "{{ info.total_employee }}"
+        }
+        else
+        {
+            countInput.disabled = false
+            countInput.value = ""
+            $(`#employees`).val('').trigger('change')
+            employeeDiv.style.display = 'block';
+        }
+    }
+
+    function changeSelectMax(event)
+    {
+        const selectedValue = event.target.value
+        var select2Count = $(`#employees`).select2('data').length
+
+        $(`#employees`).select2({
+                maximumSelectionLength: selectedValue,
+                language: {
+                    maximumSelected: function (e) {
+                        var t = "Хамгийн ихдээ " + e.maximum + " ажилтан сонгож болно";
+                        return t + ' - Илүү их ажилтан сонгохын тулд суралцагчдын тоог нэмнэ үү.';
+                    }
+                },
+                closeOnSelect: false
+            })
+
+        if(select2Count > selectedValue)
+        {
+            $(`#employees`).val('').trigger('change')
+        }
+    }
+
+    /** Сургалтын мэдээллийг хадгалах */
+	async function saveSurgaltCreate(event)
+	{
+		event.preventDefault()
+
+        if(!valudateCreate.checkForm())
+        {
+            return
+        }
+
+        const formData = new FormData(event.target)
+        var data = Object.fromEntries(formData)
+        data.employees = $('#employees').select2("val")
+
+        if (data.for_type === "whole")
+        {
+            data.for_count = "{{ info.total_employee }}"
+            delete data[employees]
+        }
+
+        if (data.date)
+        {
+            var date = data.date
+            if (date.includes('to'))
+            {
+                date = date.split(" to ")
+                data.start_date = date[0]
+                data.end_date = date[1]
+            }
+            else
+            {
+                data.start_date = data.date
+                data.end_date = data.date
+            }
+        }
+        if (selectedEditId){
+            const { success, error } = await fetchData(`surgalt-create-edit/${selectedEditId}/`, data, 'PUT')
+            if(error)
+            {
+                // input ийг validate алдаа г харуулах
+                displayError(error)
+            } else {
+                // input ийн харагдсан байгаа validate алдаануудыг устгах
+                deleteError(error)
+            }
+            if (success)
+            {
+                // datatable refresh хийх
+                $('#surgalt-create-modal').modal('hide');
+                surgaltTable.ajax.reload(null, false)
+            }
+        }
+        else
+        {
+
+            const { success, error } = await fetchData(`surgalt-create-edit/`, data, 'POST')
+            if(error)
+            {
+                // input ийг validate алдаа г харуулах
+                displayError(error)
+            } else {
+                // input ийн харагдсан байгаа validate алдаануудыг устгах
+                deleteError(error)
+            }
+            if (success)
+            {
+                // datatable refresh хийх
+                surgaltTable.ajax.reload(null, false)
+                document.getElementById("surgalt-create").reset()
+                $(`#for_type`).val('').trigger('change')
+            }
+        }
+	}
+
+    // Delete function
+    async function delete_function(choosedId)
+    {
+        const { success } = await fetchData(`/surgalt/surgalt-delete/${choosedId}/`, null,'DELETE')
+
+        if (success)
+        {
+            surgaltTable.ajax.reload(null, false)
+        }
+    }
+
+    //  edit товч дарахад input-үүдийн утгыг оноох нь
+    function setData(full)
+	{
+        var date
+        if (full.start_date === full.end_date)
+        {
+            date = full.start_date
+        }
+        else
+        {
+            var start_date = full.start_date
+            date = start_date.concat(" to ", full.end_date)
+        }
+        selectedEditId = full.id
+		$(`#name`).val(full.name).change()
+        $(`#purpose`).val(full.purpose).change()
+        $(`#${full.for_type_value}`).attr("checked",true)
+        $(`#for_type_div`).val(full.for_type_value).change()
+        $(`#for_count`).val(full.for_count).change()
+        $(`#employees`).val(full.employees).change()
+        $(`#date`).val(date).change()
+        $(`#start_time`).val(full.start_time).change()
+        $(`#end_time`).val(full.end_time).change()
+        range.setDate(date)
+	}
+
+    /** Засах товч дарж модал нээх үед гарчигийг оноох */
+	function handleEditModal(event)
+	{
+
+		let clickedTarget = $(event.target)
+		let row = clickedTarget.parent().closest("tr")
+		let full = surgaltTable.row(row).data()
+
+        modalBtn.text('Засах')
+		modalTitle.text(`${full.name} - засах`)
+		modalId.text(full.id)
+
+        modal.modal('show')
+		setData(full)
+	}
+
+    /** Шинээр үүсгэх товч дарж модал нээх үед formийн input цэвэрлэх */
+	function handleCreateModal()
+	{
+		const title = `Сургалт сургалтын төлөвлөгөөний бүртгэл`
+
+		modalTitle.text(title)
+        document.getElementById("surgalt-create").reset()
+        range.setDate(null)
+        $(`#for_type`).val('').trigger('change')
+        modalBtn.text('Хадгалах')
+		modalId.text(null)
+        selectedEditId = null
+	}
+
+    /** url дээр id гэж байвал модал дээр дата харуулах */
+    function checkParam()
+    {
+        const params = new URLSearchParams(window.location.search)
+        const showModalId = params.get("id")
+        if (showModalId)
+        {
+            useLoader(fetchData("{% url 'surgalt-info-pagination' %}" + showModalId + "/"), $("#table-hover-row"))
+                .then(
+                    ({ success, data, errors }) =>
+                    {
+                        if (success)
+                        {
+                            modalBtn.text('Засах')
+                            modalTitle.text(`${data.name} - засах`)
+                            modalId.text(data.id)
+
+                            modal.modal('show')
+                            setData(data)
+                        }
+                    },
+                    $(".content-body")
+                )
+        }
+    }
+    checkParam()
+
+</script>
+
+{% endblock js %}

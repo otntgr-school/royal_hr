@@ -1,0 +1,37 @@
+
+<div class="modal fade" id="khodolmoriinGeree" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-edit-user">
+        <div class="modal-content">
+            <div class="modal-header bg-transparent">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pb-5 px-sm-5 pt-50">
+                <div class="text-center mb-2">
+                    <h1 class="mb-1">Хөдөлмөрийн гэрээ</h1>
+                </div>
+                <div id="actionStatus"></div>
+                <form id="khodolmoriinGereeForm" class="row gy-1 pt-75" onsubmit="khodolmoriinGereeSubmit(event)">
+                    <div class="col-12 col-md-12">
+                        <label class="form-label">Нэр:</label>
+                        <input type="text" id="name" name="name" class="form-control" placeholder="Нэр:" data-msg="Талбарыг бөглөнө үү" />
+                    </div>
+                    <div class="col-12 col-md-12">
+                        <label for="file-upload" class="form-label">Хавсралт:</label>
+                        <div id="dZUpload" class="dropzone attachments geree-error" id="attachments">
+                            <div class="dz-default dz-message"></div>
+                        </div>
+                        <h6 class="text-danger mt-1" id="geree-error-text"></h6>
+
+                    </div>
+                    <div class="col-12 text-center mt-2 pt-50">
+                        <button id="khodolmoriinGereeBtn" type="submit" class="btn btn-primary me-1">Хадгалах</button>
+                        <button id="geree_modal_close_btn" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">
+                            Болих
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <span id="loaderWeew"></span>
+        </div>
+    </div>
+</div>

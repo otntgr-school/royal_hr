@@ -1,0 +1,810 @@
+
+<!--
+    URL: /schedule/time-schedule-register/ || /schedule/time-schedule-register/<pk>
+    Нэр: Цаг бүртгэл
+    Төрөл: Хуудас
+-->
+
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+{% block content %}
+
+{% load rest_framework %}
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-pickadate.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/pickadate/pickadate.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+
+{% endblock css %}
+
+<div class="content-body">
+    <div class="row">
+
+		<div class="col-lg-4 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Цаг бүртгэл</h4>
+                </div>
+                <div class="card-body">
+                    <div class="mt-1">
+						{% if irsenee_burtguuleh_btn %}
+                        <ul class="nav nav-pills nav-justified" role="tablist">
+                            <li class="nav-item">
+								<form action="{% url 'time-schedule-register' %}" method="post" novalidate>
+									{% csrf_token %}
+									<input type="hidden" value="{{ request.employee.id }}" id="employee" name="employee" >
+									<button type="submit" class="btn btn-primary waves-effect waves-float waves-light mt-1 w-100" id="timeBtn" disabled="true">Цагаа явуулах</button>
+								</form>
+                            </li>
+                        </ul>
+						{% endif %}
+                        <div class="tab-content mt-2">
+                            <div class="tab-pane active" id="home" aria-labelledby="home-tab" role="tabpanel">
+                                <div>
+									<label class="form-label" for="first-name-vertical">Улаанбаатрын цаг:</label>
+									<div class="circle">
+										<div class="face">
+											<div id="hour" class="hour"></div>
+											<div id="minute" class="minute"></div>
+											<div id="second" class="second"></div>
+										</div>
+									</div>
+									<label class="form-label" for="first-name-vertical">Системийн цаг:</label>
+                                    <h4 class="card-border" id="nowTime"></h4>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-8 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h6 class="card-title">Цаг бүртгэлийн жагсаалт</h6>
+                </div>
+                <div class="table-responsive">
+                    <div class="card-datatable table-responsive pt-0" id="time-register-table" >
+
+						{% if working_time_schedule == '1' or working_time_schedule == '3' %}
+						<table class="time-register-table table text-center" id="time-register-table-id">
+                            <thead class="table-light">
+								<tr class="filter-container"></tr>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Огноо</th>
+                                    <th>Ирсэн цаг</th>
+                                    <!-- <th>Цайны цаг</th>
+                                    <th>Цайнаас ирсэн цаг</th> -->
+                                    <th>Явсан цаг</th>
+                                    <th>Ажилласан цаг</th>
+									<th>Тайлбар</th>
+                                </tr>
+                            </thead>
+							<tfoot>
+								<tr>
+									<th>ID</th>
+                                    <th>Огноо</th>
+                                    <th>Ирсэн цаг</th>
+									<!-- <th>Цайны цаг</th>
+                                    <th>Цайнаас ирсэн цаг</th> -->
+                                    <th>Явсан цаг</th>
+                                    <th>Ажилласан цаг</th>
+									<th>Тайлбар</th>
+								</tr>
+							</tfoot>
+                        </table>
+						{% endif %}
+
+						{% if working_time_schedule == '2' %}
+                        <table class="time-register-table table text-center" id="time-register-table-id">
+                            <thead class="table-light">
+								<tr class="filter-container"></tr>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Огноо</th>
+                                    <th>Ирсэн цаг</th>
+                                    <th>Явсан цаг</th>
+                                    <th>Ажилласан цаг</th>
+									<th>Тайлбар</th>
+                                </tr>
+                            </thead>
+							<tfoot>
+								<tr>
+									<th>ID</th>
+                                    <th>Огноо</th>
+                                    <th>Ирсэн цаг</th>
+                                    <th>Явсан цаг</th>
+                                    <th>Ажилласан цаг</th>
+									<th>Тайлбар</th>
+								</tr>
+							</tfoot>
+                        </table>
+						{% endif %}
+
+                    </div>
+                </div>
+            </div>
+        </div>
+		{% include "pages/schedule/time-schedule-register/modal/time-schedule-register-detail.html" with id="detail_tsr" %}
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.buttons.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jszip.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/pdfmake.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/vfs_fonts.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.html5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.print.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/cleave.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/addons/cleave-phone.us.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.date.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.time.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/legacy.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+
+<script src="{% static 'app-assets/js/scripts/pages/app-user-list.js' %}"></script>
+
+<script src="{% static 'app-assets/js/scripts/tables/table-datatables-advanced.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/pickers/form-pickers.js' %}"></script>
+
+<script src="https://momentjs.com/downloads/moment.js"></script>
+
+<script>
+
+	const SEVEN_DAYS = 1
+	const XY_DAYS = 2
+	const INDEPENDENT_DAYS = 3
+
+	/** Tooltip ажиллуулж байна */
+	$(document).ready(function() {
+        $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+    });
+
+    /** 1 => 01 болгох Format */
+    const zeroFill = n => {
+        return ('0' + n).slice(-2);
+    }
+
+	const employeeTypeCode = {{working_time_schedule}}
+
+	var url = `{% url 'time-schedule-register' %}`
+
+	// Одоогийн цагны мэдээлэл
+	let nowDateValue = new Date({{ today|date:"Y" }}, parseInt({{ today|date:"m" }}) - 1, {{ today|date:"d" }}, {{ today|date:"G" }}, {{ today|date:"i" }}, {{ today|date:"s" }})
+
+    // 1 sec болгон утга авч хэвлэнэ
+    const interval = setInterval(() => {
+
+        // const now = new Date();
+		// const nowDateValue = new Date(now.getFullYear(), now.getMonth(), now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds())
+
+		nowDateValue.setSeconds(nowDateValue.getSeconds() + 1)
+
+        // 2022 оны 07 сарын 19-н 11:46:16 --- Форматын дагуу
+        const dateTime = nowDateValue.getFullYear() + ' оны ' + zeroFill(nowDateValue.getMonth() + 1) + ' сарын ' + zeroFill(nowDateValue.getDate()) + '-н' + ' ' + zeroFill(nowDateValue.getHours()) + ':' + zeroFill(nowDateValue.getMinutes()) + ':' + zeroFill(nowDateValue.getSeconds());
+
+		/** цагийн зургийн утгыг өгч байна */
+		second = moment(nowDateValue).seconds() * 6,
+		minute = moment(nowDateValue).minutes() * 6 + second / 60,
+		hour = ((moment(nowDateValue).hours() % 12) / 12) * 360 + 90 + minute / 12;
+		$('#hour').css("transform", "rotate(" + hour + "deg)");
+		$('#minute').css("transform", "rotate(" + minute + "deg)");
+		$('#second').css("transform", "rotate(" + second + "deg)");
+
+        /** Цагийг дэлгэцэнд харуулах */
+        document.getElementById('nowTime').innerHTML = dateTime;
+
+		if (document.getElementById('timeBtn'))
+		{
+			// Цагны мэдээлэл уншихад button дарж болохоор болно
+			document.getElementById('timeBtn').disabled = false
+		}
+
+
+    }, 1000);
+
+	//  header дээр input ийг clone хийж гаргах нь
+	cloneFooter('#time-register-table-id',
+	[
+		1
+	])
+
+	let dataTable
+
+	if (employeeTypeCode == SEVEN_DAYS || employeeTypeCode == INDEPENDENT_DAYS)
+	{
+		// DATA-TABLE
+		dataTable = $("#time-register-table-id")
+		.on('preXhr.dt', function ()
+		{
+			addLoader($('#time-register-table'))
+		})
+		.on( 'draw.dt', function () {
+			rmLoader($('#time-register-table'))
+		})
+		.DataTable({
+			processing: false,
+			serverSide: true,
+			ajax: { url: `{% url 'time-schedule-register-json' %}` },
+			columns: [
+				// columns according to JSON
+				{ data: "id" },
+				{ data: "date" },
+				{ data: "in_dt" },
+				// { data: "lunch_in_dt" },
+				// { data: "lunch_out_dt" },
+				{ data: "out_dt" },
+				{ data: "worked_time" },
+				{ data: "sick_check" },
+			],
+			bFilter: true,
+			columnDefs: [
+				{
+					// For Responsive
+					className: "control",
+					orderable: false,
+					responsivePriority: 2,
+					title: '#',
+					targets: 0,
+					render: function (data, type, full, meta) {
+						return meta.settings._iDisplayStart + meta.row + 1
+					},
+				},
+				{
+					targets: 2,
+					render: function (data, type, full, meta) {
+
+						if(!full.in_dt)
+						{
+							return (
+								`-`
+							)
+						}
+						return (
+							full.in_dt.substring(11)
+						)
+					},
+				},
+				// {
+				// 	targets: 3,
+				// 	render: function (data, type, full, meta) {
+
+				// 		let showButton = false
+				// 		if (full.in_dt && !full.out_dt && !full.lunch_in_dt && !full.lunch_out_dt)
+				// 		{
+				// 			showButton = true
+				// 		}
+				// 		if(!full.lunch_in_dt)
+				// 		{
+				// 			if (showButton)
+				// 			{
+				// 				return `<form action="` + url + full.id + '/start_lunch' + `/" method="post" novalidate>` +
+				// 					`{% csrf_token %}` +
+				// 					`<button type="submit" id="timeBtn_edited" class="btn btn-sm fs-12 btn-primary waves-effect waves-float waves-light mt-1">Цайндаа орох</button>` +
+				// 				`</form>`
+				// 			}
+				// 			return (
+				// 				`-`
+				// 			)
+				// 		}
+				// 		return (
+				// 			full.lunch_in_dt.substring(11)
+				// 		)
+				// 	},
+				// },
+				// {
+				// 	targets: 4,
+				// 	render: function (data, type, full, meta) {
+
+				// 		let showButton = false
+				// 		if (full.in_dt && !full.out_dt && full.lunch_in_dt && !full.lunch_out_dt)
+				// 		{
+				// 			showButton = true
+				// 		}
+				// 		if(!full.lunch_out_dt)
+				// 		{
+				// 			if (showButton)
+				// 			{
+				// 				return `<form action="` + url + full.id + '/end_lunch' + `/" method="post" novalidate>` +
+				// 					`{% csrf_token %}` +
+				// 					`<button type="submit" id="timeBtn_edited" class="btn btn-sm fs-12 btn-primary waves-effect waves-float waves-light mt-1">Цайны цаг дуусгах</button>` +
+				// 				`</form>`
+				// 			}
+				// 			return (
+				// 				`-`
+				// 			)
+				// 		}
+				// 		return (
+				// 			full.lunch_out_dt.substring(11)
+				// 		)
+				// 	},
+				// },
+				// {
+				// 	targets: 4,
+				// 	visible: false,
+				// },
+				{
+					targets: 3,
+					render: function (data, type, full, meta) {
+
+						let showButton = false
+						if (full.in_dt && !full.out_dt)
+						{
+							showButton = true
+						}
+
+						if (full.out_dt) return full.out_dt.substring(11)
+
+						if (showButton)
+						{
+							return (
+								`<form action="` + url + full.id + '/end_work' +  `/" method="post" novalidate>` +
+									`{% csrf_token %}` +
+									`<button type="submit" id="timeBtn_edited" class="btn btn-sm fs-12 btn-danger waves-effect waves-float waves-light mt-1">Явсан бүртгүүлэх</button>` +
+								`</form>`
+							)
+						}
+						return '-'
+					},
+				},
+				{
+					targets: 4,
+					render: function (data, type, full, meta) {
+
+						if (!full.in_dt)
+						{
+							return (
+								`-`
+							)
+						}
+						if (!full.worked_time)
+						{
+							return (0)
+						}
+						return (
+							full.worked_time
+						)
+					},
+				},
+				{
+					targets: 5,
+					orderable: false,
+					render: function (data, type, full, meta)
+					{
+						if ([3, 5, 6].includes(full.kind))
+						{
+							let data = JSON.stringify(full.for_shaltgaan)
+							return (
+								`<a
+									data-toggle="tooltip"
+									title="Дэлгэрэнгүй"
+									data-bs-toggle="modal"
+									data-bs-target="#detail_tsr"
+									onclick='getDetailFunction(
+										${data}
+									)'
+									class="text-secondary delete-record ms-1"
+								>
+									Шалтгаантай
+
+									${feather.icons["info"].toSvg(
+									{
+										class: "font-small-4",
+									})}
+
+								</a>`
+							)
+						}
+						if (full.kind == 4)
+						{
+							return (
+								`<p>Амрах өдөр нь</p>`
+							)
+						}
+						if (full.kind == 2)
+						{
+							return (
+								`<p class="text-danger">Тасалсан</p>`
+							)
+						}
+						if (full.kind == 1)
+						{
+							return (
+								`-`
+							)
+						}
+					},
+				},
+			],
+			order: [[1, "desc"]],
+			lengthMenu: [
+				[10, 25, 50, 100, -1],
+				[10, 25, 50, 100, 'Бүгд'],
+			],
+			dom:
+				'<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+				'<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+				'<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+				">t" +
+				'<"d-flex justify-content-between mx-2 row mb-1"' +
+				'<"col-sm-12 col-md-6"i>' +
+				'<"col-sm-12 col-md-6"p>' +
+				">",
+			oLanguage: {
+				sProcessing: "Ачааллаж байна. ",
+				// sSearch: "Хайх: ",
+				sEmptyTable: "Бичлэг байхгүй",
+				sInfoEmpty: "Нийт 0 бичлэг",
+				sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+				sInfoFiltered: " - _MAX_ бичлэгээс",
+				sLengthMenu: "_MENU_ бичлэг",
+				oPaginate: {
+					sFirst: "Эхэнд",
+					sLast: "Төгсгөлд",
+					sNext: "Дараах",
+					sPrevious: "Өмнөх",
+				},
+			},
+			// Buttons with Dropdown
+			buttons: [
+				{
+					extend: "collection",
+					className: "btn btn-outline-secondary dropdown-toggle me-2",
+					text:
+						feather.icons["external-link"].toSvg({
+							class: "font-small-4 me-50",
+						}) + "Export",
+					buttons: [
+						{
+							extend: "print",
+							text:
+								feather.icons["printer"].toSvg({
+									class: "font-small-4 me-50",
+								}) + "Print",
+							className: "dropdown-item",
+							exportOptions: { columns: [1, 2, 3, 4, 5] },
+						},
+						{
+							extend: "csv",
+							text:
+								feather.icons["file-text"].toSvg({
+									class: "font-small-4 me-50",
+								}) + "Csv",
+							className: "dropdown-item",
+							exportOptions: { columns: [1, 2, 3, 4, 5] },
+						},
+						{
+							extend: "excel",
+							text:
+								feather.icons["file"].toSvg({
+									class: "font-small-4 me-50",
+								}) + "Excel",
+							className: "dropdown-item",
+							exportOptions: { columns: [1, 2, 3, 4, 5] },
+						},
+						{
+							extend: "pdf",
+							text:
+								feather.icons["clipboard"].toSvg({
+									class: "font-small-4 me-50",
+								}) + "Pdf",
+							className: "dropdown-item",
+							exportOptions: { columns: [1, 2, 3, 4, 5] },
+						},
+						{
+							extend: "copy",
+							text:
+								feather.icons["copy"].toSvg({
+									class: "font-small-4 me-50",
+								}) + "Copy",
+							className: "dropdown-item",
+							exportOptions: { columns: [1, 2, 3, 4, 5] },
+						},
+					],
+					init: function (api, node, config) {
+						$(node).removeClass("btn-secondary");
+						$(node).parent().removeClass("btn-group");
+						setTimeout(function () {
+							$(node)
+								.closest(".dt-buttons")
+								.removeClass("btn-group")
+								.addClass("d-inline-flex mt-50");
+						}, 50);
+					},
+				},
+			],
+		});
+	}
+	else if (employeeTypeCode == XY_DAYS)
+	{
+		// DATA-TABLE
+		dataTable = $("#time-register-table-id")
+		.on('preXhr.dt', function ()
+		{
+			addLoader($('#time-register-table'))
+		})
+		.on( 'draw.dt', function () {
+			rmLoader($('#time-register-table'))
+		})
+		.DataTable({
+			processing: false,
+			serverSide: true,
+			ajax: { url: `{% url 'time-schedule-register-json' %}` },
+			columns: [
+				// columns according to JSON
+				{ data: "id" },
+				{ data: "date" },
+				{ data: "in_dt" },
+				{ data: "out_dt" },
+				{ data: "worked_time" },
+				{ data: "sick_check" },
+			],
+			bFilter: true,
+			columnDefs: [
+				{
+					// For Responsive
+					className: "control",
+					orderable: false,
+					responsivePriority: 2,
+					title: '#',
+					targets: 0,
+					render: function (data, type, full, meta) {
+						return meta.settings._iDisplayStart + meta.row + 1
+					},
+				},
+				{
+					targets: 2,
+					render: function (data, type, full, meta) {
+
+						if(!full.in_dt)
+						{
+							return (
+								`-`
+							)
+						}
+						return (
+							full.in_dt.substring(11)
+						)
+					},
+				},
+				{
+					targets: 3,
+					render: function (data, type, full, meta) {
+
+						if (full.out_dt) return full.out_dt.substring(11)
+
+						if (full.in_dt && !full.out_dt)
+						{
+							return (
+								`<form action="` + url + full.id + '/end_work' +  `/" method="post" novalidate>` +
+									`{% csrf_token %}` +
+									`<button type="submit" id="timeBtn_edited" class="btn btn-sm fs-12 btn-danger waves-effect waves-float waves-light mt-1">Явсан бүртгүүлэх</button>` +
+								`</form>`
+							)
+						}
+						return '-'
+					},
+				},
+				{
+					targets: 4,
+					render: function (data, type, full, meta) {
+
+						if (!full.in_dt)
+						{
+							return (
+								`-`
+							)
+						}
+						if (!full.worked_time)
+						{
+							return (0)
+						}
+						return (
+							full.worked_time
+						)
+					},
+				},
+				{
+					targets: 5,
+					orderable: false,
+					render: function (data, type, full, meta)
+					{
+						if ([3, 5, 6].includes(full.kind))
+						{
+							let data = JSON.stringify(full.for_shaltgaan)
+							return (
+								`<a
+									data-toggle="tooltip"
+									title="Дэлгэрэнгүй"
+									data-bs-toggle="modal"
+									data-bs-target="#detail_tsr"
+									onclick='getDetailFunction(
+										${data}
+									)'
+									class="text-secondary delete-record ms-1"
+								>
+									Шалтгаантай
+
+									${feather.icons["info"].toSvg(
+									{
+										class: "font-small-4",
+									})}
+
+								</a>`
+							)
+						}
+						if (full.kind == 4)
+						{
+							return (
+								`<p>Амрах өдөр нь</p>`
+							)
+						}
+						if (full.kind == 2)
+						{
+							return (
+								`<p class="text-danger">Тасалсан</p>`
+							)
+						}
+						if (full.kind == 1)
+						{
+							return (
+								`-`
+							)
+						}
+					},
+				},
+			],
+			order: [[2, "desc"]],
+			lengthMenu: [
+				[10, 25, 50, 100, -1],
+				[10, 25, 50, 100, 'Бүгд'],
+			],
+			dom:
+				'<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+				'<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+				'<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+				">t" +
+				'<"d-flex justify-content-between mx-2 row mb-1"' +
+				'<"col-sm-12 col-md-6"i>' +
+				'<"col-sm-12 col-md-6"p>' +
+				">",
+			oLanguage: {
+				sProcessing: "Ачааллаж байна. ",
+				// sSearch: "Хайх: ",
+				sEmptyTable: "Бичлэг байхгүй",
+				sInfoEmpty: "Нийт 0 бичлэг",
+				sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+				sInfoFiltered: " - _MAX_ бичлэгээс",
+				sLengthMenu: "_MENU_ бичлэг",
+				oPaginate: {
+					sFirst: "Эхэнд",
+					sLast: "Төгсгөлд",
+					sNext: "Дараах",
+					sPrevious: "Өмнөх",
+				},
+			},
+			// Buttons with Dropdown
+			buttons: [
+				{
+					extend: "collection",
+					className: "btn btn-outline-secondary dropdown-toggle me-2",
+					text:
+						feather.icons["external-link"].toSvg({
+							class: "font-small-4 me-50",
+						}) + "Export",
+					buttons: [
+						{
+							extend: "print",
+							text:
+								feather.icons["printer"].toSvg({
+									class: "font-small-4 me-50",
+								}) + "Print",
+							className: "dropdown-item",
+							exportOptions: { columns: [1, 2, 3, 4, 5] },
+						},
+						{
+							extend: "csv",
+							text:
+								feather.icons["file-text"].toSvg({
+									class: "font-small-4 me-50",
+								}) + "Csv",
+							className: "dropdown-item",
+							exportOptions: { columns: [1, 2, 3, 4, 5] },
+						},
+						{
+							extend: "excel",
+							text:
+								feather.icons["file"].toSvg({
+									class: "font-small-4 me-50",
+								}) + "Excel",
+							className: "dropdown-item",
+							exportOptions: { columns: [1, 2, 3, 4, 5] },
+						},
+						{
+							extend: "pdf",
+							text:
+								feather.icons["clipboard"].toSvg({
+									class: "font-small-4 me-50",
+								}) + "Pdf",
+							className: "dropdown-item",
+							exportOptions: { columns: [1, 2, 3, 4, 5] },
+						},
+						{
+							extend: "copy",
+							text:
+								feather.icons["copy"].toSvg({
+									class: "font-small-4 me-50",
+								}) + "Copy",
+							className: "dropdown-item",
+							exportOptions: { columns: [1, 2, 3, 4, 5] },
+						},
+					],
+					init: function (api, node, config) {
+						$(node).removeClass("btn-secondary");
+						$(node).parent().removeClass("btn-group");
+						setTimeout(function () {
+							$(node)
+								.closest(".dt-buttons")
+								.removeClass("btn-group")
+								.addClass("d-inline-flex mt-50");
+						}, 50);
+					},
+				},
+			],
+		});
+	}
+
+	searchFooter(dataTable)
+
+	/** Modal гарж ирэх үед утгаа татаж оноож өгнө */
+	async function getDetailFunction(data)
+	{
+		/** Огноо */
+		let date = data.start_day
+
+		if (data.end_day)
+			date = date.concat(" - ", data.end_day)
+		if (data.start_time)
+			date = date = date.concat("   ", data.start_time)
+		if (data.end_time)
+			date = date = date.concat(" - ", data.end_time)
+
+		document.getElementById('vacation_type').value = data.vacation_type
+		document.getElementById('date').value = date
+		document.getElementById('description_detail').value = data.description
+	}
+
+</script>
+
+{% endblock js %}

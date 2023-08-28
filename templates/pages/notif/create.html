@@ -1,0 +1,200 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+
+{% load rest_framework %}
+
+{% block content %}
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/forms/select/select2.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/extensions/jstree.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/extensions/ext-component-tree.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+
+{% endblock css %}
+
+<div class="content-body">
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">
+                Мэдэгдэл үүсгэх
+            </h4>
+        </div>
+        <div class="card-body">
+            <div class="form">
+                <form onsubmit="handleSubmit(event)" id="notif-action">
+                    <div class="row">
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="title" class="form-label">
+                                    Гарчиг *
+                                </label>
+                                <input type="text" name="title" id="title" class="form-control" placeholder="Гарчиг"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="content" class="form-label">
+                                    Тайлбар *
+                                </label>
+                                <textarea name="content" id="content" class="form-control" placeholder="Гарчиг">
+                                </textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="ntype" class="form-label">
+                                    Төрөл *
+                                </label>
+                                <select name="ntype" id="ntype" class="select2-bullets select-label form-select w-100">
+                                    {% for ntype in ntypes %}
+                                        <option data-ccolor="{{ntype.color}}" value="{{ntype.code}}">{{ntype.name}}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="url" class="form-label">
+                                    Холбоос
+                                </label>
+                                <input type="text" id="url" name="url" class="form-control" placeholder="www.example.com"/>
+                            </div>
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <label for="" class="form-label">
+                                            Хамрах хүрээ*
+                                        </label>
+                                        {% for id, name in scope_kind_choices %}
+                                            {% if id == 1 and request.org_lvl == 3 %}
+                                                <div>
+                                                    <input
+                                                        type="radio"
+                                                        class="form-check-input"
+                                                        name="scope_kind"
+                                                        id="scope_kind-{{forloop.counter0}}-id"
+                                                        value="{{id}}"
+                                                    />
+                                                    <label class="form-check-label fs-12" for="scope_kind-{{forloop.counter0}}-id">{{name}}</label>
+                                                </div>
+                                            {% elif id == 2 and request.org_lvl >= 2 %}
+                                                <div>
+                                                    <input
+                                                        type="radio"
+                                                        class="form-check-input"
+                                                        name="scope_kind"
+                                                        id="scope_kind-{{forloop.counter0}}-id"
+                                                        value="{{id}}"
+                                                    />
+                                                    <label class="form-check-label fs-12" for="scope_kind-{{forloop.counter0}}-id">{{name}}</label>
+                                                </div>
+                                            {% elif id == 3 and request.org_lvl >= 1 %}
+                                                <div>
+                                                    <input
+                                                        type="radio"
+                                                        class="form-check-input"
+                                                        name="scope_kind"
+                                                        id="scope_kind-{{forloop.counter0}}-id"
+                                                        value="{{id}}"
+                                                    />
+                                                    <label class="form-check-label fs-12" for="scope_kind-{{forloop.counter0}}-id">{{name}}</label>
+                                                </div>
+                                            {% elif id != 1 and id != 2 and id != 3 %}
+                                                <div>
+                                                    <input
+                                                        type="radio"
+                                                        class="form-check-input"
+                                                        name="scope_kind"
+                                                        id="scope_kind-{{forloop.counter0}}-id"
+                                                        value="{{id}}"
+                                                    />
+                                                    <label class="form-check-label fs-12" for="scope_kind-{{forloop.counter0}}-id">{{name}}</label>
+                                                </div>
+                                            {% endif %}
+
+                                        {% endfor %}
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label for="" class="form-label">
+                                            Хэнээс*
+                                        </label>
+                                        {% for id, name in from_kind_choices %}
+                                            {% if id == 1 and request.org_lvl == 3 %}
+                                                <div>
+                                                    <input
+                                                        type="radio"
+                                                        class="form-check-input"
+                                                        name="from_kind"
+                                                        id="from_kind-{{forloop.counter0}}-id"
+                                                        value="{{id}}"
+                                                    />
+                                                    <label class="form-check-label fs-12" for="from_kind-{{forloop.counter0}}-id">{{name}}</label>
+                                                </div>
+                                            {% elif id == 2 and request.org_lvl >= 2 %}
+                                                <div>
+                                                    <input
+                                                        type="radio"
+                                                        class="form-check-input"
+                                                        name="from_kind"
+                                                        id="from_kind-{{forloop.counter0}}-id"
+                                                        value="{{id}}"
+                                                    />
+                                                    <label class="form-check-label fs-12" for="from_kind-{{forloop.counter0}}-id">{{name}}</label>
+                                                </div>
+                                            {% elif id == 3 and request.org_lvl >= 1 %}
+                                                <div>
+                                                    <input
+                                                        type="radio"
+                                                        class="form-check-input"
+                                                        name="from_kind"
+                                                        id="from_kind-{{forloop.counter0}}-id"
+                                                        value="{{id}}"
+                                                    />
+                                                    <label class="form-check-label fs-12" for="from_kind-{{forloop.counter0}}-id">{{name}}</label>
+                                                </div>
+                                            {% elif id != 1 and id != 2 and id != 3 %}
+                                                <div>
+                                                    <input
+                                                        type="radio"
+                                                        class="form-check-input"
+                                                        name="from_kind"
+                                                        id="from_kind-{{forloop.counter0}}-id"
+                                                        value="{{id}}"
+                                                    />
+                                                    <label class="form-check-label fs-12" for="from_kind-{{forloop.counter0}}-id">{{name}}</label>
+                                                </div>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-4">
+                            <div class="form-group">
+                                <label for="" class="form-label">
+                                    Хамрах хүрээний сонголтууд
+                                </label>
+                                <div id="data-tree"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary me-1 data-submit">Хадгалах</button>
+                        <button type="button" onclick="handleReset(event)" class="btn btn-outline-secondary">Болих</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+<script src="{% static 'app-assets/vendors/js/extensions/jstree.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/extensions/ext-component-tree.js' %}"></script>
+<script>
+    const LIST_PAGE_AJAX_URL = "{% url 'org-to-employee' %}"
+</script>
+<script src="{% static 'assets/js/pages/notif/create.js' %}"></script>
+
+{% endblock js %}

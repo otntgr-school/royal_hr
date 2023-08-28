@@ -1,0 +1,904 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+{% block content %}
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/vendors.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-pickadate.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/file-uploaders/dropzone.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/pickadate/pickadate.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/jkanban/jkanban.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/pages/app-kanban.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/form-file-uploader.min.css' %}">
+
+{% endblock css %}
+
+<div class="content-body">
+    <div class="row" id="table-hover-row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Миний илгээсэн өргөдөл, гомдол</h4>
+                </div>
+                <!-- Хүснэгт: Зөвхөн тухайн хүний өөрийнх нь гаргасан хүсэлтүүд харагдана -->
+                <div class="table-responsive">
+                    <div class="card-datatable table-responsive pt-0">
+                        <table class="feedback-table table text-center">
+                            <thead class="table-light">
+                                <tr class="filter-container"></tr>
+                                <tr>
+                                    <th></th>
+                                    <th>#</th>
+                                    <th>Гарчиг</th>
+                                    <th>Төрөл</th>
+                                    <th>Төлөв</th>
+                                    <th>Шийдэгдсэн огноо</th>
+                                    <th>Илгээсэн огноо</th>
+                                    <th>Үйлдэл</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th>#</th>
+                                    <th>Гарчиг</th>
+                                    <th>Төрөл</th>
+                                    <th>Төлөв</th>
+                                    <th>Шийдэгдсэн огноо</th>
+                                    <th>Илгээсэн огноо</th>
+                                    <th>Үйлдэл</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <!-- Модалаар гарч ирэх форм -->
+                <div class="modal modal-slide-in add-feedback-modal fade" id="modals-slide-in">
+                    <div class="modal-dialog custom-50">
+                        <form class="add-feedback-form modal-content pt-0">
+                            {% csrf_token %}
+                            <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                            >
+                                ×
+                            </button>
+                            <div class="modal-header mb-1">
+                                <h5 class="modal-title" id="exampleModalLabel">
+                                    Санал, гомдол бүртгэх
+                                </h5>
+                            </div>
+                            <div class="modal-body flex-grow-1">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="mb-1">
+                                            <div class="form-check form-switch">
+                                                <input type="checkbox" class="form-check-input" name="is_meeting" id="is_meeting_id" />
+                                                <label class="form-check-label" for="is_meeting_id">Уулзалт эсэх</label>
+                                            </div>
+                                        </div>
+                                        <div class="mb-1">
+                                            <label class="form-label">Гарчиг</label>
+                                            <input type="text" class="form-control" name="title" id="title" placeholder="" />
+                                        </div>
+                                        <div class="mb-1">
+                                            <label class="form-label" for="label">Төрөл</label>
+                                            <select class="select2 select2-label form-select" name="kind" id="kind">
+                                                {% for kind in feedback_kinds %}
+                                                    <option
+                                                        data-color="badge-light-success"
+                                                        value="{{kind.id}}"
+                                                    >
+                                                        {{kind.title}}
+                                                    </option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="mb-1">
+                                            <label class="form-label">Үндсэн хэсэг</label>
+                                            <textarea name="main_content" id="main_content" class="form-control"></textarea>
+                                        </div>
+
+                                        <div class="mb-1">
+                                            <div>
+                                                <input
+                                                    type="radio"
+                                                    class="form-check-input"
+                                                    name="to_employee_radio"
+                                                    id="no_employee_radio"
+                                                    value="for_hr"
+                                                />
+                                                <label class="form-check-label fs-12" for="no_employee_radio">Хүний нөөц-д</label>
+                                            </div>
+                                            <div>
+                                                <input
+                                                    type="radio"
+                                                    class="form-check-input"
+                                                    name="to_employee_radio"
+                                                    id="to_employee_radio"
+                                                    value="for_emp"
+                                                    checked
+                                                />
+                                                <label class="form-check-label fs-12" for="to_employee_radio">Ажилтанд зориулж</label>
+                                            </div>
+                                            {% if request.org_lvl < 3 %}
+                                            <div>
+                                                <input
+                                                    type="checkbox"
+                                                    class="form-check-input"
+                                                    name="up_org_checkbox"
+                                                    id="up_org_checkbox"
+                                                />
+                                                <label class="form-check-label fs-12" for="up_org_checkbox">Дээд байгууллагаас сонгох</label>
+                                            </div>
+                                            {% endif %}
+                                        </div>
+
+                                        <div id="more-detail">
+                                            <div class="mb-1">
+                                                <label class="form-label">Дээд байгууллага</label>
+                                                <div id="up-org-data"></div>
+                                            </div>
+                                            <div class="mb-1">
+                                                <label class="form-label">Ажилтанд</label>
+                                                <div id="to-employee-data"></div>
+                                            </div>
+                                        </div>
+
+                                        <div id="choices">
+                                            <div class="mb-1 up_orgs_container d-none">
+                                                <label class="form-label" for="up_orgs_select">Дээд байгууллага</label>
+                                                <select class="select2 form-select" name="up_orgs" id="up_orgs_select" onchange="handleUpOrg(event)">
+                                                </select>
+                                            </div>
+
+                                            <div class="mb-1 to_employees_container">
+                                                <label class="form-label" for="to_employees">Ажилтанд</label>
+                                                <select class="select2 form-select" name="to_employees" id="to_employees">
+                                                    {% for pos in to_employees %}
+                                                        <optgroup label="{{pos.text}}">
+                                                            {% for employee in pos.children %}
+                                                                <option
+                                                                    value="{{employee.type}}"
+                                                                >
+                                                                    - {{employee.text}}
+                                                                </option>
+                                                            {% endfor %}
+                                                        </optgroup>
+                                                    {% endfor %}
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="mb-1">
+                                            <label for="file-upload" class="form-label">Хавсралт</label>
+                                            <div id="dZUpload" class="dropzone">
+                                                <div class="dz-default dz-message"></div>
+                                            </div>
+                                        </div>
+                                        <div class="mb-1 my-attachs">
+                                            <label class="form-label">Таны хавсралт</label>
+                                            <div id="attachemtsDiv"></div>
+                                            <div class="mb-1">
+                                                <label class="form-label">Төлөв</label>
+                                                <div class="tuluw"></div>
+                                            </div>
+                                            <div class="mb-1">
+                                                <label class="form-label">Хэрхэн Шийдвэрлэсэн</label>
+                                                <div class="how-decide"></div>
+                                            </div>
+                                            <div class="mb-1">
+                                                <label class="form-label">Тушаал</label>
+                                                <div id="commandsDiv"></div>
+                                            </div>
+                                        </div>
+
+                                        <button type="submit" id="btn_upload" class="btn btn-primary me-1 data-submit">Хадгалах</button>
+                                        <button type="reset" class="btn btn-outline-secondary resetBtn" data-bs-dismiss="modal">Болих</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Анхааруулгын модал -->
+    <div class="modal fade" id="warning-modal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog modal-sm modal-dialog-centered modal-edit-user">
+			<div class="modal-content">
+				<div class="modal-header bg-transparent">
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body text-center">
+					<div class="text-center">
+						<i class="fas fa-exclamation-circle text-warning fs-40"></i>
+					</div>
+					<h6 class="mt-1 mb-1 fw-bolder">Анхааруулга<h6>
+					Та уг мэдээллийг татгалзахдаа итгэлтэй байна уу
+				</div>
+				<div class="modal-footer">
+					<button
+						class="btn btn-primary"
+						data-bs-dismiss="modal"
+						type="button"
+						onclick="handleDelete(event)"
+					>
+						<span>Тийм</span>
+					</button>
+					<button
+						class="btn btn-outline-secondary"
+						data-bs-dismiss="modal"
+					>
+						Үгүй
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+
+<script src="{% static 'app-assets/vendors/js/file-uploaders/dropzone.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.buttons.min.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jszip.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/pdfmake.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/vfs_fonts.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.html5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.print.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/cleave.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/addons/cleave-phone.us.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.date.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.time.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/legacy.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+
+<script src="{% static 'app-assets/js/scripts/tables/table-datatables-advanced.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/pickers/form-pickers.js' %}"></script>
+<script>
+
+    Dropzone.autoDiscover = false;
+
+    var feedbackDT = $(".feedback-table"),
+        addFeedbackModal = $(".add-feedback-modal"),
+        addFeedbackForm = $(".add-feedback-form"),
+        multipleFiles = $("#dZUpload"),
+        fromEmployeeKindSelect = $("#from_employee_kind"),
+        warningModal = $("#warning-modal"),
+
+        filesHidden = $("#files"),
+        mainContentHidden = $("#main_content_hide"),
+        feedbackDTRef = null,
+
+        isMeeting = $("#is_meeting_id"),
+        titleInput = $("input[name='title']"),
+        kind = $("select[name='kind']"),
+        mainContent = $("textarea[name='main_content']"),
+        toEmployees = $("select[name='to_employees']"),
+        toEmployeeContainer = $(".to_employees_container"),
+
+        isCreate = true,
+        removeFiles = [], //  арилгасан файлууд зөвхөн засах үед
+        selectedData = {},  //  засах дарж орсон row дата
+        selectDeleteId = null,  //  татгалзах товчийг дарсан id
+
+        btnSubmit = $("#btn_upload"),
+        resetBtn = $(".resetBtn"),
+
+        myAttachContainer = $(".my-attachs"),
+        myAttachList = myAttachContainer.find("#attachemtsDiv"),
+        myTuluw = myAttachContainer.find(".tuluw"),
+        howDecide = myAttachContainer.find(".how-decide"),
+        commandsDiv = myAttachContainer.find("#commandsDiv"),
+
+        upOrgs = [],
+        upOrgCheckBox = $('#up_org_checkbox'),
+        upOrgsSelect = $('#up_orgs_select'),
+        upOrgContainer = $('.up_orgs_container'),
+        upOrgData = $("#up-org-data"),
+        upEmployeeData = $("#to-employee-data"),
+        hasDetail = $("#more-detail"),
+        haschoices = $("#choices")
+
+    let dz = new Dropzone("#dZUpload", {
+        url: "/test",
+        clickable: true,
+        paramName: 'file', // The name that will be used to transfer the file
+        autoProcessQueue: false,
+        addRemoveLinks: true,
+        accept: function(file, done)
+        {
+            if (file.size > 1*1024*1024) {
+                this.removeFile(file);
+                alert('file too big');
+                return false;
+            }
+
+            $(".dz-progress").remove();
+            $(".dz-remove").html(
+                `<div><span class='fa fa-trash text-danger'></span></div>`
+            );
+            return file.previewElement.classList.add("dz-success");
+        },
+        removedfile: function(file) {
+            //  зөвхөн засаж байгаа үед хуучин байсан зургаас id ийг авна
+            file.id && removeFiles.push(file.id)
+
+            $(file.previewElement).remove();
+        }
+    });
+
+    function getStateColor(state)
+    {
+        let color = {
+            "Зөвшөөрсөн": "text-success",
+            "Цуцлагдсан": "text-danger",
+            "Илгээсэн": "text-info",
+        }
+        return color?.[state] ? color[state] : ""
+    }
+
+    cloneFooter(
+        ".feedback-table",
+        [
+            2, 3, 4, 5, 6
+        ]
+    )
+    // Users List datatable
+    if (feedbackDT.length) {
+
+
+        feedbackDTRef = feedbackDT.DataTable({
+            serverSide: true,
+            ajax: { url: "{% url 'sanal-gomdol-dt' %}" },
+            columns: [
+                // columns according to JSON
+                { data: "" },
+                { data: "" },
+                { data: "title" },
+                { data: "kind_name" },
+                { data: "state_name" },
+                { data: "decided_at" },
+                { data: "created_at" },
+                { data: "" },
+            ],
+            columnDefs: [
+                {
+                    orderable: true,
+                    targets: 4,
+                    render: function(data, type, full, meta)
+                    {
+                        return `<span class="${getStateColor(data)}">${data}</span>`
+                    }
+                },
+                {
+                    // For Responsive
+                    className: "control",
+                    orderable: false,
+                    responsivePriority: 2,
+                    targets: 0,
+                    render: function (data, type, full, meta) {
+                        return "";
+                    },
+                },
+                {
+                    // For Responsive
+                    orderable: false,
+                    targets: 1,
+                    render: function (data, type, full, meta) {
+                        return meta.settings._iDisplayStart + meta.row + 1
+                    },
+                },
+                {
+                    orderable: false,
+                    targets: -1,
+                    render: function (data, type, full, meta) {
+                        return `
+							<a
+								class="delete-record text-primary"
+								onclick="handleEditModal(event, ${full.id})"
+							>
+								<span
+									data-bs-toggle="tooltip"
+                                    data-bs-placement="left"
+                                    data-bs-original-title="харах"
+								>
+									${feather.icons["eye"].toSvg({
+										class: "font-small-4 me-50",
+									})}
+								</span>
+							</a>
+                            ${
+                                full.state_name == "Илгээсэн"
+                                ?
+                                    `<a class="delete-record text-primary-orange">
+                                        <span
+                                            data-bs-toggle="tooltip"
+                                            data-bs-placement="top"
+                                            data-bs-original-title="Татгалзах"
+                                            onclick="showWarningModal(event, ${full.id})"
+                                        >
+                                            ${feather.icons["trash-2"].toSvg({
+                                                class: "font-small-4 me-50",
+                                            })}
+                                        </span>
+                                    </a>`
+                                :
+                                    ""
+                            }
+						`
+                    },
+                },
+                {
+                    orderable: true,
+                    targets: -2,
+                    render: function(data, type, full, meta)
+                    {
+                        return timeZoneToDateString(data)
+                    }
+                },
+                {
+                    orderable: true,
+                    targets: -3,
+                    render: function(data, type, full, meta)
+                    {
+                        return data ? timeZoneToDateString(data) : "-"
+                    }
+                }
+            ],
+            order: [[6, "desc"]],
+            lengthMenu: [
+                [10, 25, 50, 100, -1],
+                [10, 25, 50, 100, 'Бүгд'],
+            ],
+            dom:
+                '<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+                '<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+                '<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+                ">t" +
+                '<"d-flex justify-content-between mx-2 row mb-1"' +
+                '<"col-sm-12 col-md-6"i>' +
+                '<"col-sm-12 col-md-6"p>' +
+                ">",
+            oLanguage: {
+                sProcessing: "Ачааллаж байна. ",
+                sSearch: "Хайх: ",
+                sEmptyTable: "Бичлэг байхгүй",
+                sInfoEmpty: "Нийт 0 бичлэг",
+                sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+                sInfoFiltered: " - _MAX_ бичлэгээс",
+                sLengthMenu: "_MENU_ бичлэг",
+                oPaginate: {
+                    sFirst: "Эхэнд",
+                    sLast: "Төгсгөлд",
+                    sNext: "Дараах",
+                    sPrevious: "Өмнөх",
+                },
+            },
+            // Buttons with Dropdown
+            buttons: [
+                {
+                    extend: "collection",
+                    className: "btn btn-outline-secondary dropdown-toggle me-2",
+                    text:
+                        feather.icons["external-link"].toSvg({
+                            class: "font-small-4 me-50",
+                        }) + "Export",
+                    buttons: [
+                        {
+                            extend: "print",
+                            text:
+                                feather.icons["printer"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Print",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [1, 2, 3, 4, 5, 6] },
+                        },
+                        {
+                            extend: "csv",
+                            text:
+                                feather.icons["file-text"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Csv",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [1, 2, 3, 4, 5, 6] },
+                        },
+                        {
+                            extend: "excel",
+                            text:
+                                feather.icons["file"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Excel",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [1, 2, 3, 4, 5, 6] },
+                        },
+                        {
+                            extend: "pdf",
+                            text:
+                                feather.icons["clipboard"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Pdf",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [1, 2, 3, 4, 5, 6] },
+                        },
+                        {
+                            extend: "copy",
+                            text:
+                                feather.icons["copy"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Copy",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [1, 2, 3, 4, 5, 6] },
+                        },
+                    ],
+                    init: function (api, node, config) {
+                        $(node).removeClass("btn-secondary");
+                        $(node).parent().removeClass("btn-group");
+                        setTimeout(function () {
+                            $(node)
+                                .closest(".dt-buttons")
+                                .removeClass("btn-group")
+                                .addClass("d-inline-flex mt-50");
+                        }, 50);
+                    },
+                },
+                {
+                    text: "Шинээр бүртгэх",
+                    className: "add-new btn btn-primary",
+                    attr: {
+                        "data-bs-toggle": "modal",
+                        "data-bs-target": "#modals-slide-in",
+                        "onclick": "resetData(true)"
+                    },
+                    init: function (api, node, config) {
+                        $(node).removeClass("btn-secondary");
+                    },
+                },
+            ],
+        });
+    }
+    searchFooter(feedbackDTRef)
+
+    const valdiate = addFeedbackForm.validate({
+        rules: {
+            'title': { required: true },
+            'kind': { required: true },
+        },
+        messages: {
+            'title': { required: 'Гарчиг оруулна уу' },
+            'kind': { required: 'Төрөл сонгоно уу' },
+        },
+        ignore: ".ql-container *"
+    });
+
+    addFeedbackForm.on("submit", handleSubmit)
+
+    /** Форм дээр утгуудыг хоослох нь */
+    function resetData(_isCreate)
+    {
+        multipleFiles.parent().show()
+        btnSubmit.show()
+        resetBtn.attr("type", "reset")
+        dz.files.map(
+            (_file, idx) =>
+            {
+                $(_file.previewElement).remove();
+                dz.emit("removefile", _file);
+            }
+        )
+
+        myAttachContainer.hide()
+        myAttachList.html("")
+        myTuluw.html(``)
+        howDecide.text("")
+        commandsDiv.html("")
+
+        dz.files = []
+        $(".dz-default").show()
+
+        isMeeting.val(false)
+        titleInput.val("")
+        kind.val("").change()
+        mainContent.val("")
+        selectedData = {}
+        isCreate = _isCreate
+        $("input[name='to_employee_radio'][value='for_emp']").prop("checked", true)
+        $("input[name='to_employee_radio']").change()
+
+        upOrgCheckBox.prop("checked", false)
+        isMeeting.attr("disabled", false)
+        titleInput.attr("disabled", false)
+        upOrgCheckBox.attr("disabled", false)
+        if (!upOrgContainer.hasClass('d-none'))
+        {
+            upOrgContainer.addClass("d-none")
+        }
+        kind.attr("disabled", false)
+        mainContent.attr("disabled", false)
+        $(".dz-hidden-input").prop("disabled", false);
+        upOrgsSelect.prop("disabled", false)
+        $("input[name='to_employee_radio']").attr("disabled", false)
+        toEmployees.attr("disabled", false)
+        upOrgData.text("")
+        upEmployeeData.text("")
+        hasDetail.hide()
+        haschoices.show()
+        valdiate.resetForm();
+    }
+
+    /** Форм дээр утгуудыг оноож өгөх нь */
+    function setData(data)
+    {
+        // $(".dz-default").show()
+        btnSubmit.hide()
+        resetBtn.attr("type", "button")
+        multipleFiles.parent().hide()
+        isMeeting.val(data.is_meeting)
+        titleInput.val(data.title)
+        isMeeting.attr("disabled", true)
+        titleInput.attr("disabled", true)
+        kind.attr("disabled", true)
+        mainContent.attr("disabled", true)
+        kind.val(data.kind).change()
+        mainContent.val(data.main_content)
+
+        const orgLvl = '{{ request.org_lvl }}'
+        let upOrgName = data.org_name
+        let feedbackOrgLvl = 3
+        if (data.sub_org)
+        {
+            feedbackOrgLvl = 2
+            upOrgName = data.sub_org_name
+        }
+        if (data.salbar)
+        {
+            feedbackOrgLvl = 1
+            upOrgName = data.salbar_name
+        }
+        if (orgLvl !== feedbackOrgLvl  + "")
+        {
+            upOrgCheckBox.prop("checked", true)
+            upOrgData.parent().show()
+        }
+        else {
+            upOrgCheckBox.prop("checked", false)
+            upOrgData.parent().hide()
+        }
+
+        hasDetail.show()
+        haschoices.hide()
+
+        upOrgData.text(upOrgName)
+        upEmployeeData.text(data.to_employees ? data.employee_name : "Хүний нөөц")
+
+        if (data.to_employees)
+        {
+            $("input[name='to_employee_radio'][value='for_emp']").prop("checked", true)
+        }
+        else {
+            $("input[name='to_employee_radio'][value='for_hr']").prop("checked", true)
+        }
+        $("input[name='to_employee_radio']").change()
+        $("input[name='to_employee_radio']").attr("disabled", true)
+        upOrgsSelect.prop("disabled", true)
+        upOrgCheckBox.attr("disabled", true)
+        $(".dz-hidden-input").prop("disabled",true);
+        selectedData = data
+        toEmployees.attr("disabled", true)
+
+        myAttachContainer.show()
+        getAttachmetsList('/feedback/get-attachmets-gg/', data.id)
+        myTuluw.html(`<span class="${getStateColor(data.state_name)}">${data.state_name}</span>`)
+        getAttachmetsList('/feedback/get-commands/', data.id, 'commandsDiv')
+        howDecide.text(data.decided_content)
+    }
+
+    function showWarningModal(event, id)
+    {
+        selectDeleteId = id
+        warningModal.modal("show")
+    }
+
+    /** tatgalzah */
+    async function handleDelete(event)
+    {
+        const { success, data, errors } = await fetchData(`/feedback/action/${selectDeleteId}/`, '', 'DELETE').catch(err => err)
+        if (success)
+        {
+            feedbackDTRef.ajax.reload(null, true)
+        }
+
+        selectDeleteId = null
+    }
+
+    /** Датаг татаж авч харуулах нь */
+    async function handleEditModal(event, id)
+    {
+        isCreate = false
+        const { success, data, errors } = await fetchData(`/feedback/dt/${id}/`, "", "GET").catch(err => err)
+        if (success)
+        {
+            resetData(false)
+            addFeedbackModal.modal('show')
+            setData(data)
+        }
+        else {
+            displayError(errors)
+        }
+    }
+
+    async function handleSubmit(event)
+    {
+        let form = event.target
+        event.preventDefault()
+        const isValid = valdiate.checkForm()
+        if (!isValid)
+            return
+        const formdata = new FormData(form)
+        const attachemnts = dz.files.filter(el => !el.cfile)
+        for(var i = 0; i < attachemnts.length; i ++) {
+            const element = attachemnts[i];
+            formdata.append("attachments", element, element.name)
+        }
+        formdata.append("is_meeting", formdata.get("is_meeting") === 'on')
+        formdata.append("removed_attachments", JSON.stringify(removeFiles))
+
+        if (toEmployeeContainer.hasClass("d-none"))
+        {
+            formdata.delete("to_employees")
+        }
+
+        let fetch
+        if (isCreate)
+            fetch = fetchData("{% url 'sanal-gomdol-action' %}", formdata, 'POST', '', false)
+        else
+            fetch = fetchData(`/feedback/action/${selectedData.id}/`, formdata, 'PUT', '', false)
+
+        const { success, data, errors } = await fetch
+        if (success)
+        {
+            addFeedbackModal.modal("hide")
+            feedbackDTRef.ajax.reload(null, true)
+        }
+    }
+
+    $("input[name='to_employee_radio']").on("change", (event) =>
+    {
+        const value = event.target.value
+        const checked = event.target.checked
+        if (value === 'for_hr' && checked)
+        {
+            toEmployeeContainer.addClass("d-none")
+        }
+        else if (value === "for_emp" && checked) {
+            toEmployeeContainer.removeClass("d-none")
+        }
+    })
+
+    const displayUpOrg = () =>
+    {
+        upOrgsSelect.html('')
+        let html = '<option value="">--- Одоогийн түвшин ---</option>'
+        upOrgs.map(
+            (item, idx) =>
+            {
+                html += `
+                    <option value="${item.id}">
+                        ${item.name}
+                    </option>
+                `
+            }
+        )
+        upOrgsSelect.html(html)
+    }
+
+    const getUpOrgs = async () =>
+    {
+        const { success, data, error, errors } = await useLoader(
+            fetchData("{% url 'get-up-orgs' %}"),
+            upOrgContainer
+        )
+            .catch(err => err)
+
+        if (success)
+        {
+            upOrgs = data
+            displayUpOrg()
+        }
+    }
+
+    upOrgCheckBox.on("change", (event) =>
+    {
+        const checked = event.target.checked
+        if (checked)
+        {
+            if (!upOrgs.length)
+            {
+                getUpOrgs()
+            }
+            else
+            {
+                displayUpOrg()
+            }
+        }
+        else {
+            handleUpOrg({ "target": { value: "" } })
+        }
+        upOrgContainer.toggleClass('d-none')
+    })
+
+    async function handleUpOrg(event)
+    {
+        const upOrgId = event.target.value || "self"
+        const { success, data, error, errors } = await useLoader(
+            fetchData(`/feedback/get-employees-lvl/${upOrgId}/`),
+            toEmployeeContainer
+        )
+            .catch(err => err)
+
+        if (success)
+        {
+            toEmployees.html('')
+            let html = ''
+            data.map(
+                (item, idx) =>
+                {
+                    html += `
+                        <optgroup label="${item.text}">
+                            ${
+                                item.children.map(
+                                    (emp, eidx) =>
+                                    {
+                                        return `
+                                            <option value="${emp.type}">
+                                                - ${emp.text}
+                                            </option>
+                                        `
+                                    }
+                                ).join(" ")
+                            }
+                        </optgroup>
+                    `
+                }
+            )
+            toEmployees.html(html)
+        }
+    }
+
+</script>
+
+{% endblock js %}

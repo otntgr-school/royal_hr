@@ -1,0 +1,1589 @@
+{% load static %}
+{% load mytags %}
+
+<!DOCTYPE html>
+<html class="loading" lang="en" data-textdirection="ltr">
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta
+			name="viewport"
+			content="width=device-width,initial-scale=1.0,user-scalable=0,minimal-ui"
+		/>
+		<meta
+			name="description"
+			content="HR - Монголын үндэсний их сургууль."
+		/>
+		<meta
+			name="keywords"
+			content="HR - Монголын үндэсний их сургууль"
+		/>
+		<meta name="author" content="PIXINVENT" />
+		<title>HR - Монголын үндэсний их сургууль</title>
+		<link
+			rel="apple-touch-icon"
+			href="{% static 'app-assets/images/ico/apple-icon-120.png' %}"
+		/>
+		<link
+			rel="shortcut icon"
+			type="image/x-icon"
+			href="{% static 'app-assets/images/logo/muis_vacation_logo.png' %}"
+		/>
+		<link
+			rel="stylesheet"
+			href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css"
+		/>
+		<link
+			href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600"
+			rel="stylesheet"
+		/>
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="{% static 'app-assets/vendors/css/vendors.min.css' %}"
+		/>
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="{% static 'app-assets/vendors/css/charts/apexcharts.css' %}"
+		/>
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="{% static 'app-assets/vendors/css/extensions/toastr.min.css' %}"
+		/>
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="{% static 'app-assets/vendors/css/forms/select/select2.min.css' %}"
+		/>
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="{% static 'app-assets/vendors/css/forms/select/select2totree.css' %}"
+		/>
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="{% static 'app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css' %}"
+		/>
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="{% static 'app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css' %}"
+		/>
+		{% block vendorcss %} {% endblock vendorcss %}
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="{% static 'app-assets/css/bootstrap.css' %}"
+		/>
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="{% static 'app-assets/css/bootstrap-extended.css' %}"
+		/>
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="{% static 'app-assets/css/colors.css' %}"
+		/>
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="{% static 'app-assets/css/components.css' %}"
+		/>
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="{% static 'app-assets/css/themes/dark-layout.css' %}"
+		/>
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="{% static 'app-assets/css/themes/bordered-layout.css' %}"
+		/>
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="{% static 'app-assets/css/themes/semi-dark-layout.css' %}"
+		/>
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="{% static 'app-assets/css/core/menu/menu-types/vertical-menu.css' %}"
+		/>
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="{% static 'app-assets/css/pages/dashboard-ecommerce.css' %}"
+		/>
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="{% static 'app-assets/css/plugins/charts/chart-apex.css' %}"
+		/>
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="{% static '/app-assets/css/plugins/extensions/ext-component-toastr.css' %}"
+		/>
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}"
+		/>
+
+		{% block css %}
+		{% endblock css %}
+
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="{% static 'assets/css/loader.css' %}"
+		/>
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="{% static 'assets/css/style.css' %}"
+		/>
+	</head>
+
+	<body
+		class="vertical-layout vertical-menu-modern navbar-floating footer-static"
+		data-open="click"
+		data-menu="vertical-menu-modern"
+		data-col=""
+	>
+		<nav
+			class="header-navbar navbar navbar-expand-lg align-items-center floating-nav navbar-light navbar-shadow container-xxl"
+		>
+			{% include './message/messages.html' %}
+			<div class="navbar-container d-flex content">
+				<div class="bookmark-wrapper d-flex align-items-center">
+					<ul class="nav navbar-nav d-xl-none">
+						<li class="nav-item"><a class="nav-link menu-toggle" href="#"><i class="ficon" data-feather="menu"></i></a></li>
+					</ul>
+					<ul class="nav navbar-nav bookmark-icons">
+					</ul>
+					<ul class="nav navbar-nav">
+						<li class="nav-item d-none d-lg-block"><a class="nav-link bookmark-star"><i class="ficon text-warning" data-feather="star"></i></a>
+							<div class="bookmark-input search-input">
+								<div class="bookmark-input-icon"><i data-feather="search"></i></div>
+								<input class="form-control input" type="text" placeholder="Хуудас хайх" tabindex="0" data-search="search">
+								<ul class="search-list search-list-bookmark"></ul>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<ul class="nav navbar-nav align-items-center ms-auto">
+
+					<li class="nav-item d-lg-block">
+						<a class="nav-link nav-link-style">
+							<i class="ficon" data-feather="moon"></i>
+						</a>
+					</li>
+
+					<li class="nav-item dropdown dropdown-notification me-25">
+						<a class="nav-link n-btn" href="#" data-bs-toggle="dropdown">
+							<i class="ficon" data-feather="bell"></i>
+						</a>
+						<ul
+							class="dropdown-menu dropdown-menu-media dropdown-menu-end"
+						>
+							<li class="dropdown-menu-header">
+								<div class="dropdown-header d-flex">
+									<h4 class="notification-title mb-0 me-auto">
+										Мэдэгдлүүд
+									</h4>
+									<div
+										class="badge rounded-pill badge-light-primary n-info"
+									>
+										Шинэ
+									</div>
+								</div>
+							</li>
+							<li class="scrollable-container media-list n-list" id='notifDiv'>
+							</li>
+							<span id="loaderNotif"></span>
+							<li class="dropdown-menu-footer">
+								<a class="btn btn-primary w-100" onclick="handleReadAll(event)">
+									Бүгдийг унших
+								</a>
+							</li>
+						</ul>
+					</li>
+					{% if user.is_authenticated %}
+					<li class="nav-item dropdown dropdown-user">
+						<a
+							class="nav-link dropdown-toggle dropdown-user-link"
+							id="dropdown-user"
+							href="#"
+							data-bs-toggle="dropdown"
+							aria-haspopup="true"
+							aria-expanded="false"
+						>
+							<div class="user-nav d-sm-flex d-none">
+								<span class="user-name fw-bolder">{{ request.user_info.full_name|default:'' }}</span
+								><span class="user-status">{{ request.employee.org_position.name|default:'' }}</span>
+							</div>
+							<span class="avatar"
+								><img
+									class="round"
+									id="baseHeaderImg"
+									src="{% if request.user.real_photo %}{{ request.user.real_photo.url }}{% else %}/media/53x53.jpg{% endif %}"
+									onerror="this.onerror=null; this.src='/media/53x53.jpg'"
+									alt="avatar"
+									height="40"
+									width="40" /><span
+									class="avatar-status-online"
+								></span
+							></span>
+						</a>
+						<div class="dropdown-menu dropdown-menu-end " aria-labelledby="dropdown-user">
+							<a class="dropdown-item {% if url_name == 'worker-profile' %} active {% endif %}" href="{% url 'worker-profile' %}">
+								<i class="me-50" data-feather="user"></i>
+								Профайл
+							</a>
+							<a class="dropdown-item {% if url_name == 'settings' %} active {% endif %}" href="{% url 'settings' %}">
+								<i class="me-50" data-feather='settings'></i>
+								Тохиргоо
+							</a>
+							<a class="dropdown-item" href="{% url 'account-user-logout' %}">
+								<i class="me-50" data-feather="power"></i>
+								Гарах
+							</a>
+						</div>
+					</li>
+					{% else %}
+					<li class="nav-item ms-1 {% if url_name == 'account-user-login' %} active {% endif %}">
+						<a class="d-flex align-items-center" href="{% url 'account-user-login' %}">
+							<i data-feather='user'></i>&nbsp;
+							<span class="menu-title text-truncate" data-i18n="Email">Нэвтрэх</span >
+						</a>
+					</li>
+					{% endif %}
+				</ul>
+			</div>
+		</nav>
+
+		<div
+			class="main-menu menu-fixed menu-light menu-accordion menu-shadow"
+			data-scroll-to-active="true"
+		>
+			<div class="navbar-header">
+				<ul class="nav navbar-nav flex-row">
+					<li class="nav-item me-auto">
+						<a class="navbar-brand" href="/">
+							<span class="brand-logo">
+								<img
+									style="width: 34px"
+									src="{% static '/app-assets/images/logo/muis_vacation_logo.png' %}"
+								/>
+							</span>
+							<h1 class="brand-text" style="font-size: 1.5em;" >МҮИС</h1>
+						</a>
+					</li>
+					<li class="nav-item nav-toggle">
+						<a
+							class="nav-link modern-nav-toggle pe-0"
+							data-bs-toggle="collapse"
+							><i
+								class="d-block d-xl-none text-primary toggle-icon font-medium-4"
+								data-feather="x"
+							></i
+							><i
+								class="d-none d-xl-block collapse-toggle-icon font-medium-4 text-primary"
+								data-feather="disc"
+								data-ticon="disc"
+							></i
+						></a>
+					</li>
+				</ul>
+			</div>
+			<div class="shadow-bottom"></div>
+
+			{% with request.resolver_match.url_name as url_name %}
+			{% with salbar_lvl=1 sub_org_lvl=2 org_lvl=3 %}
+
+			<div class="main-menu-content">
+				<ul
+					class="navigation navigation-main"
+					id="main-menu-navigation"
+					data-menu="menu-navigation"
+				>
+					<li
+						class="nav-item {% if url_name == 'home' %} active {% endif %}"
+					>
+						<a
+							class="d-flex align-items-center"
+							href="{% url 'home' %}"
+							><i data-feather="home"></i
+							><span
+								class="menu-title text-truncate"
+								data-i18n="Email"
+								data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Нүүр хуудас"
+								>Нүүр хуудас</span
+							></a
+						>
+					</li>
+
+					{% if request.have_org %}
+						{% if request.permissions|has_perm:'org-read, sub-company-read, salbar-read, appointment-read' %}
+							<li class="navigation-header">
+								<span data-i18n="Apps &amp; Pages">Бүтцийн бүртгэл</span
+								><i data-feather="more-horizontal"></i>
+							</li>
+							{% if 'org-read' in request.permissions and request.org_lvl >= org_lvl %}
+								<li
+									class="nav-item {% if url_name == 'org-register' %} active {% endif %}"
+								>
+									<a
+										class="d-flex align-items-center"
+										href="{% url 'org-register'%}"
+										><i data-feather="globe"></i
+										><span
+											data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Их сургууль"
+											class="menu-title text-truncate"
+											data-i18n="Email"
+											>Их сургууль</span
+										></a
+									>
+								</li>
+							{% endif %}
+							{% if request.user.is_superuser and request.employee.org or not request.user.is_superuser  %}
+								{% if 'sub-company-read' in  request.permissions and request.org_lvl >= sub_org_lvl %}
+									<li
+										class="nav-item {% if url_name == 'sub-company-register' %} active {% endif %}"
+									>
+										<a
+											class="d-flex align-items-center"
+											href="{% url 'sub-company-register'%}"
+											><i data-feather='flag'></i>
+											<span
+												data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Салбар сургууль"
+												class="menu-title text-truncate"
+												data-i18n="Email"
+											>Салбар сургууль</span
+											></a
+										>
+									</li>
+								{% endif %}
+							{% endif %}
+							{% if request.user.is_superuser and request.employee.org or not request.user.is_superuser  %}
+								{% if 'salbar-read' in request.permissions %}
+									<li
+										class="nav-item {% if url_name == 'salbar-list' %} active {% endif %}"
+									>
+										<a
+											class="d-flex align-items-center"
+											href="{% url 'salbar-list'%}"
+										>
+											<i data-feather='git-branch'></i>
+											<span
+												data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Тэнхим"
+												class="menu-title text-truncate"
+												data-i18n="Email"
+											>
+												Тэнхим
+											</span>
+										</a>
+									</li>
+								{% endif %}
+							{% endif %}
+
+							{% if request.have_org %}
+								{% if 'appointment-read' in request.permissions %}
+									<li
+										class="nav-item {% if url_name == 'position-action' %} active {% endif %}"
+									>
+										<a
+											class="d-flex align-items-center"
+											href="{% url 'position-action' %}"
+										>
+											<i data-feather='briefcase'></i>
+											<span
+												data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Албан тушаал"
+												class="menu-title text-truncate"
+												data-i18n="Email"
+											>
+												Албан тушаал
+											</span>
+										</a>
+									</li>
+								{% endif %}
+							{% endif %}
+						{% endif %}
+					{% endif %}
+
+					{% if request.have_org %}
+						{% if request.permissions|has_perm:'employee-read, userinfo-request-read, work-list-read' %}
+							<li class="navigation-header">
+								<span data-i18n="Apps &amp; Pages">Ажилтан</span
+								><i data-feather="more-horizontal"></i>
+							</li>
+							{% if 'work-list-read' in request.permissions %}
+								<li
+									class="nav-item {% if url_name == 'worker-list' %} active {% endif %}"
+								>
+									<a
+										class="d-flex align-items-center"
+										href="{% url 'worker-list'%}"
+										><i data-feather="users"></i
+										><span
+											data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Ажилтны жагсаалт"
+											class="menu-title text-truncate"
+											data-i18n="Todo"
+											>Ажилтны жагсаалт</span
+										></a
+									>
+								</li>
+							{% endif %}
+							{% if 'employee-read' in request.permissions %}
+								<li
+									class="nav-item {% if url_name == 'user-info-register-v2' %} active {% endif %}"
+								>
+									<a
+										class="d-flex align-items-center"
+										href="{% url 'user-info-register-v2' %}"
+										><i data-feather="user-plus"></i
+										><span
+											data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Ажилтан бүртгэх"
+											class="menu-title text-truncate"
+											data-i18n="Chat"
+											>Ажилтан бүртгэх</span
+										></a
+									>
+								</li>
+							{% endif %}
+						{% endif %}
+
+						<li class="navigation-header">
+							<span data-i18n="Apps &amp; Pages">Анкет</span
+							><i data-feather="more-horizontal"></i>
+						</li>
+
+						<!-- TODO: PERMISSION нэмэх -->
+						<li
+							class="nav-item {% if url_name == 'anket' %} active {% endif %}"
+						>
+							<a
+								class="d-flex align-items-center"
+								href="{% url 'anket'%}"
+								><i data-feather="book-open"></i
+								><span
+									data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Тодорхойлолтууд"
+									class="menu-title text-truncate"
+									data-i18n="Todo"
+									>Тодорхойлолтууд</span
+								></a
+							>
+						</li>
+
+						<!-- TODO: PERMISSION нэмэх -->
+						<li
+							class="nav-item {% if url_name == 'anket-register' %} active {% endif %}"
+						>
+							<a
+								class="d-flex align-items-center"
+								href="{% url 'anket-register'%}"
+								><i data-feather="book-open"></i
+								><span
+									data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Анкет бөглөх"
+									class="menu-title text-truncate"
+									data-i18n="Todo"
+									>Анкет бөглөх</span
+								></a
+							>
+						</li>
+						<li
+							class="nav-item {% if url_name == 'new-employee-registration-form' %} active {% endif %}"
+						>
+							<a
+								class="d-flex align-items-center"
+								href="{% url 'new-employee-registration-form'%}"
+								><i data-feather="book-open"></i
+								><span
+									data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Шинэ ажилтны бүртгэлийн хуудас бөглөх"
+									class="menu-title text-truncate"
+									data-i18n="Todo"
+									>Шинэ ажилтны бүртгэлийн хуудас бөглөх</span
+								></a
+							>
+						</li>
+
+						<li class="nav-item">
+							<a class="d-flex align-items-center" href="#">
+								<i data-feather='check-circle'></i>
+								<span
+									class="menu-title text-truncate"
+									data-i18n="Form Elements"
+									data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Хүний нөөцийн захиалгын хуудас"
+									>Хүний нөөцийн захиалгын хуудас</span>
+							</a>
+							<ul class="menu-content">
+								<li
+									class="{% if url_name == 'order-form-create' %} active {% endif %}"
+								>
+									<a
+										class="d-flex align-items-center"
+										href="{% url 'order-form-create' %}"
+									>
+										<i data-feather="git-merge"></i>
+										<span
+											class="menu-title text-truncate"
+											data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Хүний нөөцийн захиалгын хуудасны бүртгэх"
+											data-i18n="Chat"
+										>
+											Бүртгэл
+										</span>
+									</a>
+								</li>
+
+								<li
+									class="{% if url_name == 'order-form' %} active {% endif %}"
+								>
+									<a
+										class="d-flex align-items-center"
+										href="{% url 'order-form' %}"
+									>
+										<i data-feather="git-merge"></i>
+										<span
+											class="menu-title text-truncate"
+											data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Хүний нөөцийн захиалгын шийдвэрлэх"
+											data-i18n="Chat"
+										>
+											Шийдвэрлэх
+										</span>
+									</a>
+								</li>
+							</ul>
+						</li>
+
+						{% if request.permissions|has_perm:'tomilolt-read, tomilolt-type-read, work-adsense-read, donate-read, work-time-read, request-read, request-solve-read, time-schedule-read, work-time-type-read, working-time-schedule-read, new-employee-lesson-read' %}
+							<li class="navigation-header">
+								<span data-i18n="User Interface">Бүртгэл</span>
+								<i data-feather="more-horizontal"></i>
+							</li>
+
+							{% if 'notif-action-create' in request.permissions %}
+								<li
+									class="nav-item {% if url_name == 'notif-action' %} active {% endif %}"
+								>
+									<a
+										class="d-flex align-items-center"
+										href="{% url 'notif-action'%}"
+										><i data-feather="bell"></i
+										><span
+											data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Мэдэгдэл"
+											class="menu-title text-truncate"
+											data-i18n="Email"
+											>Мэдэгдэл</span
+										></a
+									>
+								</li>
+							{% endif %}
+
+							{% if 'tomilolt-read' in request.permissions %}
+								<li
+									class="{% if url_name == 'designation' %} active {% endif %}"
+								>
+									<a
+										class="d-flex align-items-center"
+										href="{% url 'designation' %}"
+									>
+										<i data-feather="circle"></i>
+										<span
+											data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Томилолт"
+											class="menu-title text-truncate"
+											data-i18n="Chat"
+										>
+											Томилолт
+										</span>
+									</a>
+								</li>
+							{% endif %}
+
+							{% if 'donate-read' in request.permissions %}
+								<li
+									class="{% if url_name == 'donation' %} active {% endif %}"
+								>
+									<a
+										class="d-flex align-items-center"
+										href="{% url 'donation' %}"
+										><i data-feather='box'></i><span
+											data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Тэтгэмж, буцалтгүй тусламж"
+											class="menu-title text-truncate"
+											data-i18n="Chat"
+											>Тэтгэмж, буцалтгүй тусламж</span
+										></a
+									>
+								</li>
+							{% endif %}
+
+							{% if 'surgalt-read' in request.permissions %}
+								<li
+									class="nav-item {% if url_name == 'surgalt-list' %} active {% endif %}"
+								>
+									<a
+										class="d-flex align-items-center"
+										href="{% url 'surgalt-list'%}"
+										>
+										<i data-feather='airplay'></i>
+										<span
+											data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Сургалт, сургалтын төлөвлөгөөний бүртгэл"
+											class="menu-title text-truncate"
+											data-i18n="Todo"
+											>Сургалт, сургалтын төлөвлөгөөний бүртгэл</span
+										></a
+									>
+								</li>
+							{% endif %}
+
+							{% if request.permissions|has_perm:'work-time-read, request-read, request-solve-read, time-schedule-read, work-time-type-read, working-time-schedule-read, surgalt-read' %}
+								<li class="nav-item">
+									<a class="d-flex align-items-center" href="#"
+										><i data-feather="clock"></i
+										><span
+											class="menu-title text-truncate"
+											data-i18n="Form Elements"
+											>Цаг бүртгэл</span
+										></a
+									>
+									<ul class="menu-content">
+
+										{% if 'auto-time-balance-show' in request.permissions %}
+										<li
+											class="{% if url_name == 'auto-time-balance' %} active {% endif %}"
+										>
+											<a
+												class="d-flex align-items-center"
+												href="{% url 'auto-time-balance'%}"
+												><i data-feather="clock"></i
+												><span
+													data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Автомат цагийн баланс"
+													class="menu-item text-truncate"
+													data-i18n="Input"
+													>Автомат цагийн баланс</span
+												></a
+											>
+										</li>
+										{% endif %}
+
+										{% if request.employee.org %}
+										<li
+											class="{% if url_name == 'year-vacation' %} active {% endif %}"
+										>
+											<a
+												class="d-flex align-items-center"
+												href="{% url 'year-vacation'%}"
+												><i data-feather="clock"></i
+												><span
+													data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Ээлжийн амралт"
+													class="menu-item text-truncate"
+													data-i18n="Input"
+													>Ээлжийн амралт</span
+												></a
+											>
+										</li>
+										{% endif %}
+
+										{% if 'year-vacation-deciding-read' in request.permissions %}
+										<li
+											class="{% if url_name == 'year-vacation-deciding' %} active {% endif %}"
+										>
+											<a
+												class="d-flex align-items-center"
+												href="{% url 'year-vacation-deciding'%}"
+												><i data-feather="clock"></i
+												><span
+													data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Ээлжийн амралт шийдвэрлэх"
+													class="menu-item text-truncate"
+													data-i18n="Input"
+													>Ээлжийн амралт шийдвэрлэх</span
+												></a
+											>
+										</li>
+										{% endif %}
+
+										{% if 'work-time-read' in request.permissions %}
+										<li
+											class="{% if url_name == 'time-schedule-register' %} active {% endif %}"
+										>
+											<a
+												class="d-flex align-items-center"
+												href="{% url 'time-schedule-register'%}"
+												><i data-feather="clock"></i
+												><span
+													data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Цаг бүртгэл"
+													class="menu-item text-truncate"
+													data-i18n="Input"
+													>Цаг бүртгэл</span
+												></a
+											>
+										</li>
+										{% endif %}
+
+										{% if 'request-read' in request.permissions %}
+										<li
+											class="{% if url_name == 'time-register-request' %} active {% endif %}"
+										>
+											<a
+												class="d-flex align-items-center"
+												href="{% url 'time-register-request'%}"
+												><i data-feather="clock"></i
+												><span
+													data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Хүсэлт илгээх"
+													class="menu-item text-truncate"
+													data-i18n="Input"
+													>Хүсэлт илгээх</span
+												></a
+											>
+										</li>
+										{% endif %}
+
+										{% if 'request-solve-read' in request.permissions %}
+										<li
+											class="{% if url_name == 'time-register-request-solve' %} active {% endif %}"
+										>
+											<a
+												class="d-flex align-items-center"
+												href="{% url 'time-register-request-solve'%}"
+												><i data-feather="clock"></i
+												><span
+													data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Хүсэлт шийдэх"
+													class="menu-item text-truncate"
+													data-i18n="Input"
+													>Хүсэлт шийдэх</span
+												></a
+											>
+										</li>
+										{% endif %}
+
+										<li
+											class="{% if url_name == 'special-leave' %} active {% endif %}"
+										>
+											<a
+												class="d-flex align-items-center"
+												href="{% url 'special-leave'%}"
+												alt="Тусгай амралт, баярын өдөр"
+											>
+												<i data-feather="circle"></i>
+												<span
+													data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Тусгай амралт, баярын өдөр"
+													class="menu-item text-truncate"
+													data-i18n="Custom Options"
+													>Тусгай амралт, баярын өдөр
+												</span>
+											</a>
+										</li>
+
+										{% if 'work-time-type-read' in request.permissions %}
+										<li class="{% if url_name == 'work-time-type' %} active {% endif %}">
+											<a
+												class="d-flex align-items-center"
+												href="{% url 'work-time-type' %}"
+												><i data-feather="circle"></i
+												><span
+													data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Ажлын цагийн төрөл"
+													class="menu-item text-truncate"
+													data-i18n="Switch"
+													>Ажлын цагийн төрөл</span
+												></a
+											>
+										</li>
+										{% endif %}
+
+										{% if 'working-time-schedule-read' in request.permissions %}
+										<li class="{% if url_name == 'working-time-schedule' %} active {% endif %}">
+											<a
+												class="d-flex align-items-center"
+												href="{% url 'working-time-schedule'%}"
+												><i data-feather="circle"></i
+												><span
+													data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Цагийн хуваарийн төрөл"
+													class="menu-item text-truncate"
+													data-i18n="Select"
+													>Цагийн хуваарийн төрөл</span
+												></a
+											>
+										</li>
+										{% endif %}
+							</ul>
+						</li>
+						{% endif %}
+						<li class="nav-item">
+							<a class="d-flex align-items-center" href="#">
+								<i data-feather='check-circle'></i>
+								<span class="menu-title text-truncate" data-i18n="Form Elements">Судалгаа</span>
+							</a>
+							<ul class="menu-content">
+								{% if 'survey-create' in request.permissions %}
+								<li
+									class="{% if url_name == 'survey' %} active {% endif %}"
+								>
+									<a
+										class="d-flex align-items-center"
+										href="{% url 'survey' %}"
+										><i data-feather="circle"></i
+										><span
+											data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Судалгааны бүртгэл"
+											class="menu-title text-truncate"
+											data-i18n="Chat"
+											>Судалгааны бүртгэл</span
+										></a
+									>
+								</li>
+								{% endif %}
+								<li
+									class="{% if url_name == 'pollee' %} active {% endif %}"
+								>
+									<a
+										class="d-flex align-items-center"
+										href="{% url 'pollee' %}"
+										><i data-feather="circle"></i
+										><span
+											data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Судалгаа бөглөх"
+											class="menu-title text-truncate"
+											data-i18n="Chat"
+											>Судалгаа бөглөх</span
+										></a
+									>
+								</li>
+							</ul>
+						</li>
+						{% endif %}
+
+						{% if request.user.is_employee or request.permissions|has_perm:'sanal-gomdol-turul-read, sanal-gomdol-decide-read, dynamic-shagnal-read, sahilga-read, shagnal-set-read, routing-slip-read, command-read' %}
+							<li class="navigation-header">
+								<span data-i18n="Forms &amp; Tables"
+									>Шагнал &amp; Гомдол</span
+								><i data-feather="more-horizontal"></i>
+							</li>
+							{% if request.user.is_employee or request.permissions|has_perm:'sanal-gomdol-turul-read, sanal-gomdol-decide-read' %}
+								<li class="nav-item">
+									<a
+										class="d-flex align-items-center"
+										><i data-feather="package"></i
+										><span
+											class="menu-title text-truncate"
+											data-i18n="Form Wizard"
+											>Өргөдөл, гомдол</span
+										></a
+									>
+									<ul class="menu-content">
+										<li
+											class="{% if url_name == 'sanal-gomdol' %} active {% endif %}"
+										>
+											<a
+												class="d-flex align-items-center"
+												href="{% url 'sanal-gomdol'%}"
+												><i data-feather="circle"></i
+												><span
+													data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Миний өргөдөл, гомдол"
+													class="menu-item text-truncate"
+													data-i18n="Form Wizard"
+													>Миний өргөдөл, гомдол</span
+												></a
+											>
+										</li>
+										<li
+											class="{% if url_name == 'my-feedback-decide' %} active {% endif %}"
+										>
+											<a
+												class="d-flex align-items-center"
+												href="{% url 'my-feedback-decide'%}"
+												><i data-feather="circle"></i
+												><span
+													data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Надад ирсэн өргөдөл, гомдол"
+													class="menu-item text-truncate"
+													data-i18n="Form Wizard"
+													>Надад ирсэн өргөдөл, гомдол</span
+												></a
+											>
+										</li>
+										{% if 'sanal-gomdol-decide-read' in request.permissions %}
+											<li
+												class="{% if url_name == 'sanal-gomdol-decide' %} active {% endif %}"
+											>
+												<a
+													class="d-flex align-items-center"
+													href="{% url 'sanal-gomdol-decide'%}"
+													><i data-feather="circle"></i
+													><span
+														data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Өргөдөл, гомдол шийдвэрлэх"
+														class="menu-item text-truncate"
+														data-i18n="Form Wizard"
+														>Шийдвэрлэх</span
+													></a
+												>
+											</li>
+										{% endif %}
+									</ul>
+								</li>
+							{% endif %}
+
+							{% if request.permissions|has_perm:'dynamic-shagnal-read, shagnal-set-read' %}
+								<li class="nav-item">
+									<a class="d-flex align-items-center" href="#">
+										<i data-feather='star'></i>
+										<span class="menu-title text-truncate" data-i18n="Form Elements">Шагнал, урамшуулал</span>
+									</a>
+									<ul class="menu-content">
+										{% if 'dynamic-shagnal-read' in request.permissions %}
+											<li
+												class="{% if url_name == 'dynamic-shagnal' %} active {% endif %}"
+											>
+												<a
+													class="d-flex align-items-center"
+													href="{% url 'dynamic-shagnal' %}"
+												>
+													<i data-feather="star"></i>
+													<span
+														data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Шагнал бүртгэл"
+														class="menu-title text-truncate"
+														data-i18n="Chat"
+													>
+														Шагнал бүртгэл
+													</span>
+												</a>
+											</li>
+										{% endif %}
+										{% if 'shagnal-set-read' in request.permissions %}
+											<li
+												class="{% if url_name == 'shagnal-to-employee' %} active {% endif %}"
+											>
+												<a
+													class="d-flex align-items-center"
+													href="{% url 'shagnal-to-employee' %}"
+												>
+													<i data-feather="star"></i>
+													<span
+														data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Ажилчдын шагнал"
+														class="menu-title text-truncate"
+														data-i18n="Chat"
+													>
+														Ажилчдын шагнал
+													</span>
+												</a>
+											</li>
+										{% endif %}
+									</ul>
+								</li>
+							{% endif %}
+
+							{% if 'command-read' in request.permissions %}
+								<li
+									class="nav-item {% if url_name == 'command-page' %} active {% endif %}"
+								>
+									<a
+										class="d-flex align-items-center"
+										href="{% url 'command-page' %}"
+										>
+										<i data-feather='airplay'></i>
+										<span
+											data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Тушаал шийдвэрийн бүртгэл"
+											class="menu-title text-truncate"
+											data-i18n="Todo"
+											>Тушаал шийдвэрийн бүртгэл</span
+										></a
+									>
+								</li>
+							{% endif %}
+							{% if 'routing-slip-read' in request.permissions %}
+							<li class="nav-item {% if url_name == 'routing-slip-list' %} active {% endif %}">
+								<a
+									class="d-flex align-items-center"
+									href="{% url 'routing-slip-list' %}"
+									><i data-feather="move"></i>
+									<span
+										data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Тойрох хуудас"
+										class="menu-title text-truncate"
+										data-i18n="Todo"
+										>Тойрох хуудас</span
+									></a
+								>
+							</li>
+							{% endif %}
+						{% endif %}
+
+						{% if request.permissions|has_perm:'shagnal-report-read, time-register-report-show, urgudul-report-read' %}
+							<li class="navigation-header">
+								<span data-i18n="Forms &amp; Tables"
+									>Тайлан &amp; Судалгаа</span
+								><i data-feather="more-horizontal"></i>
+							</li>
+							{% if request.permissions|has_perm:'shagnal-report-read, time-register-report-show, urgudul-report-read' %}
+								<li class="nav-item">
+									<a
+										class="d-flex align-items-center"
+										>
+										<i data-feather='pie-chart'></i>
+										<span
+											class="menu-title text-truncate"
+											data-i18n="Form Wizard"
+											>Тайлангууд</span
+										></a
+									>
+									<ul class="menu-content">
+										{% if 'time-register-report-show' in request.permissions %}
+										<li
+											class="{% if url_name == 'time-register-report' %} active {% endif %}"
+										>
+											<a
+												class="d-flex align-items-center"
+												href="{% url 'time-register-report'%}"
+												><i data-feather="clock"></i
+												><span
+													data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Цаг бүртгэлийн тайлан"
+													class="menu-item text-truncate"
+													data-i18n="Input"
+													>Цаг бүртгэлийн тайлан</span
+												></a
+											>
+										</li>
+										{% endif %}
+
+									</ul>
+
+									<li
+										class="{% if url_name == 'violation-registration' %} active {% endif %}"
+									>
+										<a
+											class="d-flex align-items-center"
+											href="{% url 'violation-registration'%}"
+											><i data-feather="plus"></i
+											><span
+												data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Зөрчил бүртгэх хуудас"
+												class="menu-item text-truncate"
+												data-i18n="Input"
+												>Зөрчил бүртгэх хуудас</span
+											></a
+										>
+									</li>
+									<li
+										class="{% if url_name == 'note-on-disciplinary' %} active {% endif %}"
+									>
+										<a
+											class="d-flex align-items-center"
+											href="{% url 'note-on-disciplinary'%}"
+											><i data-feather="plus"></i
+											><span
+												data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Ажилтны сахилгын шийтгэлийн тухай тэмдэглэл"
+												class="menu-item text-truncate"
+												data-i18n="Input"
+												>Ажилтны сахилгын шийтгэлийн тухай тэмдэглэл</span
+											></a
+										>
+									</li>
+									<li
+										class="{% if url_name == 'violation-registration-list' %} active {% endif %}"
+									>
+										<a
+											class="d-flex align-items-center"
+											href="{% url 'violation-registration-list'%}"
+											><i data-feather="align-left"></i
+											><span
+												data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Зөрчил бүртгэх хуудас"
+												class="menu-item text-truncate"
+												data-i18n="Input"
+												>Зөрчил бүртгэх хуудас</span
+											></a
+										>
+									</li>
+								</li>
+							{% endif %}
+						{% endif %}
+
+						{% if 'work-calendar-read' in request.permissions %}
+							<li class="nav-item {% if url_name == 'work-calendar' %} active {% endif %}">
+								<a class="d-flex align-items-center" href="{% url 'work-calendar'%}">
+									<i data-feather='calendar'></i>
+									<span
+										data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Ажлын календарь"
+										class="menu-title text-truncate" data-i18n="Todo"
+									>Ажлын календарь</span>
+								</a>
+							</li>
+						{% endif %}
+
+						<li
+							class="{% if url_name == 'faq' %} active {% endif %}"
+						>
+							<a
+								class="d-flex align-items-center"
+								href="{% url 'faq' %}"
+							>
+								<i data-feather="help-circle"></i>
+								<span
+									data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Нийтлэг асуулт, хариулт"
+									class="menu-title text-truncate"
+									data-i18n="Chat"
+								>
+									Нийтлэг асуулт, хариулт
+								</span>
+							</a>
+						</li>
+					{% endif %}
+
+					<!-- ================================================ АДМИН ================================================ -->
+
+					{% if request.user.is_superuser %}
+						<li class="navigation-header">
+							<span data-i18n="Forms &amp; Tables">
+								Админий бүртгэл
+							</span>
+							<i data-feather="more-horizontal"></i>
+						</li>
+						<li
+							class="nav-item {% if url_name == 'static-shagnal' %} active {% endif %}"
+						>
+							<a
+								class="d-flex align-items-center"
+								href="{% url 'static-shagnal' %}"
+							>
+								<i data-feather='circle'></i>
+								<span
+									data-bs-toggle="tooltip"
+									data-bs-placement="top"
+									data-bs-original-title="Шагнал урамшуулал"
+									class="menu-title text-truncate"
+									data-i18n="Todo"
+								>
+									Шагнал урамшуулал
+								</span>
+							</a>
+						</li>
+						<li
+							class="nav-item {% if url_name == 'static-bank' %} active {% endif %}"
+						>
+							<a
+								class="d-flex align-items-center"
+								href="{% url 'static-bank' %}"
+							>
+								<i data-feather='circle'></i>
+								<span
+									data-bs-toggle="tooltip"
+									data-bs-placement="top"
+									data-bs-original-title="Банкны мэдээлэл"
+									class="menu-title text-truncate"
+									data-i18n="Todo"
+								>
+									Банкны мэдээлэл
+								</span>
+							</a>
+						</li>
+						<li
+							class="nav-item {% if url_name in 'permission-list, permission-action' %} active {% endif %}"
+						>
+							<a
+								class="d-flex align-items-center"
+								href="{% url 'permission-list' %}"
+								><i data-feather='circle'></i>
+								<span
+									data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Эрхүүд"
+									class="menu-title text-truncate"
+									data-i18n="Permissionlist"
+									>Эрхүүд</span
+								></a
+							>
+						</li>
+						<li
+							class="nav-item {% if url_name in 'role, role-action' %} active {% endif %}"
+						>
+						<a
+							class="d-flex align-items-center"
+							href="{% url 'role' %}"
+							><i data-feather='circle'></i>
+							<span
+								data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Role"
+								class="menu-title text-truncate"
+								data-i18n="RoleCreate"
+								>Role</span
+							></a
+						>
+						</li>
+						<li
+							class="nav-item {% if url_name == 'notif-type' %} active {% endif %}"
+						>
+							<a
+								class="d-flex align-items-center"
+								href="{% url 'notif-type'%}"
+								><i data-feather="circle"></i
+								><span
+									data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Мэдэгдлийн төрөл"
+									class="menu-title text-truncate"
+									data-i18n="Email"
+									> Мэдэгдлийн төрөл</span
+								></a
+							>
+						</li>
+						<li
+							class="{% if url_name == 'faq-action' %} active {% endif %}"
+						>
+							<a
+								class="d-flex align-items-center"
+								href="{% url 'faq-action' %}"
+							>
+								<i data-feather="circle"></i>
+								<span
+									class="menu-title text-truncate"
+									data-i18n="Chat"
+									data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Асуулт хариултын бүлэг үүсгэх"
+								>
+									Асуулт хариултын бүлэг үүсгэх
+								</span>
+							</a>
+						</li>
+						<li
+							class="{% if url_name == 'faq-question-action' %} active {% endif %}"
+						>
+							<a
+								class="d-flex align-items-center"
+								href="{% url 'faq-question-action' %}"
+							>
+								<i data-feather="circle"></i>
+								<span
+									class="menu-title text-truncate"
+									data-i18n="Chat"
+									data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Асуулт хариулт үүсгэх"
+								>
+									Асуулт хариулт үүсгэх
+								</span>
+							</a>
+						</li>
+						{% if 'work-calendar-kind-read' in request.permissions %}
+							<li class="nav-item {% if url_name == 'work-calendar-kinds' %} active {% endif %}">
+								<a class="d-flex align-items-center" href="{% url 'work-calendar-kinds'%}">
+									<i data-feather='circle'></i>
+									<span
+										data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Үйл ажиллагааны төрөл"
+										class="menu-title text-truncate" data-i18n="Todo"
+									>
+										Үйл ажиллагааны төрөл
+									</span>
+								</a>
+							</li>
+						{% endif %}
+						{% if 'sanal-gomdol-turul-read' in request.permissions %}
+							<li class="nav-item {% if url_name == 'sanal-gomdol-turul' %} active {% endif %}">
+								<a
+									class="d-flex align-items-center"
+									href="{% url 'sanal-gomdol-turul'%}"
+									><i data-feather="circle"></i
+									><span
+										data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Өргөдөл, гомдлын төрөл"
+										class="menu-title text-truncate"
+										data-i18n="Form Wizard"
+										>Өргөдөл, гомдлын төрөл</span
+									></a
+								>
+							</li>
+						{% endif %}
+						{% if 'create-vacation-type-read' in request.permissions %}
+							<li
+								class="{% if url_name == 'create-vacation-type' %} active {% endif %}"
+							>
+								<a
+									class="d-flex align-items-center"
+									href="{% url 'create-vacation-type' %}"
+									><i data-feather="circle"></i
+									><span
+										data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Чөлөөний төрөл"
+										class="menu-item text-truncate"
+										data-i18n="Input"
+										>Чөлөөний төрөл</span
+									></a
+								>
+							</li>
+						{% endif %}
+						{% if 'tomilolt-type-read' in request.permissions %}
+							<li
+								class="{% if url_name == 'fortomilolt' %} active {% endif %}"
+							>
+								<a
+									class="d-flex align-items-center"
+									href="{% url 'fortomilolt' %}"
+									><i data-feather="circle"></i
+									><span
+										data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Томилолтын төрөл"
+										class="menu-title text-truncate"
+										data-i18n="Chat"
+										>Томилолтын төрөл</span
+									></a
+								>
+							</li>
+						{% endif %}
+					{% endif %}
+
+					<!-- ================================================ МҮИС дээрх ашиглагдахгүй хуудасууд ================================================ -->
+
+					<!-- {% if request.permissions|has_perm:'work-adsense-read, workad-join-request-read' %}
+						<li class="nav-item">
+							<a class="d-flex align-items-center" href="#">
+								<i data-feather='radio'></i>
+								<span class="menu-title text-truncate" data-i18n="Form Elements">Ажлын байр</span>
+							</a>
+							<ul class="menu-content">
+								{% if 'work-adsense-read' in request.permissions %}
+									<li
+										class="{% if url_name == 'work-adsense' %} active {% endif %}"
+									>
+										<a
+											class="d-flex align-items-center"
+											href="{% url 'work-adsense' %}"
+											><i data-feather='radio'></i><span
+												data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Ажлын байрны зар бүртгэл"
+												class="menu-title text-truncate"
+												data-i18n="Chat"
+												>Ажлын байрны зар бүртгэл</span
+											></a
+										>
+									</li>
+								{% endif %}
+								{% if 'workad-join-request-read' in request.permissions %}
+									<li
+										class="{% if url_name == 'work-adsense-request' %} active {% endif %}"
+									>
+										<a
+											class="d-flex align-items-center"
+											href="{% url 'work-adsense-request' %}"
+											><i data-feather='radio'></i><span
+												data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Ажлын байранд орох хүсэлтүүд"
+												class="menu-title text-truncate"
+												data-i18n="Chat"
+												>Ажлын байранд орох хүсэлтүүд</span
+											></a
+										>
+									</li>
+								{% endif %}
+							</ul>
+						</li>
+						{% if 'userinfo-request-read' in request.permissions %}
+							<li
+								class="nav-item {% if url_name == 'requests-general-info' %} active {% endif %}"
+							>
+								<a
+									class="d-flex align-items-center"
+									href="{% url 'requests-general-info' %}"
+								>
+								<i data-feather='edit'></i>							<span
+										data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Мэдээлэл өөрчлөх хүсэлтүүд"
+										class="menu-title text-truncate"
+										data-i18n="Email"
+									>
+										Мэдээлэл өөрчлөх хүсэлтүүд
+									</span>
+								</a>
+							</li>
+						{% endif %}
+						{% if 'sahilga-read' in request.permissions %}
+							<li
+								class="{% if url_name == 'sahilga' %} active {% endif %}"
+							>
+								<a
+									class="d-flex align-items-center"
+									href="{% url 'sahilga' %}"
+								>
+									<i data-feather="zap-off"></i>
+									<span
+										data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Сахилгын шийтгэл бүртгэл"
+										class="menu-title text-truncate"
+										data-i18n="Chat"
+									>
+										Сахилгын шийтгэл бүртгэл
+									</span>
+								</a>
+							</li>
+						{% endif %}
+						{% if 'urgudul-report-read' in request.permissions %}
+							<li
+								class="{% if url_name == 'report-urgudul' %} active {% endif %}"
+							>
+								<a
+									class="d-flex align-items-center"
+									href="{% url 'report-urgudul' %}"
+									><i data-feather="circle"></i
+									><span
+										data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Өргөдөл, гомдлын тайлан"
+										class="menu-item text-truncate"
+										data-i18n="Form Wizard"
+										>Өргөдөл, гомдлын тайлан</span
+									></a
+								>
+							</li>
+						{% endif %}
+
+						{% if request.permissions|has_perm:'kpi-register-read, kpi-assessment-read, kpi-report-read' %}
+							<li class="nav-item">
+								<a class="d-flex align-items-center" href="#">
+									<i data-feather='git-merge'></i>
+									<span
+										class="menu-title text-truncate"
+										data-i18n="Form Elements"
+									>KPI үнэлгээ</span>
+								</a>
+								<ul class="menu-content">
+
+									{% if 'kpi-register-read' in request.permissions %}
+									<li
+										class="{% if url_name == 'kpi-register' %} active {% endif %}"
+									>
+										<a
+											class="d-flex align-items-center"
+											href="{% url 'kpi-register' %}"
+										>
+											<i data-feather="git-merge"></i>
+											<span
+												class="menu-title text-truncate"
+												data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Үнэлгээ ангилал, үзүүлэлт оруулах"
+												data-i18n="Chat"
+											>
+												Үнэлгээ ангилал, үзүүлэлт оруулах
+											</span>
+										</a>
+									</li>
+									{% endif %}
+
+									{% if 'kpi-assessment-read' in request.permissions %}
+									<li
+										class="{% if url_name == 'kpi-assessment' %} active {% endif %}"
+									>
+										<a
+											class="d-flex align-items-center"
+											href="{% url 'kpi-assessment' %}"
+										>
+											<i data-feather="git-merge"></i>
+											<span
+												class="menu-title text-truncate"
+												data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Үнэлгээ оруулах"
+												data-i18n="Chat"
+											>
+												Үнэлгээ оруулах
+											</span>
+										</a>
+									</li>
+									{% endif %}
+
+									{% if 'kpi-report-read' in request.permissions %}
+									<li
+										class="{% if url_name == 'kpi-report' %} active {% endif %}"
+									>
+										<a
+											class="d-flex align-items-center"
+											href="{% url 'kpi-report' %}"
+										>
+											<i data-feather="git-merge"></i>
+											<span
+												class="menu-title text-truncate"
+												data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Үнэлгээ"
+												data-i18n="Chat"
+											>
+												Үнэлгээ
+											</span>
+										</a>
+									</li>
+									{% endif %}
+								</ul>
+							</li>
+						{% endif %}
+						{% if 'new-employee-lesson-read' in request.permissions %}
+							<li
+								class="nav-item {% if url_name == 'new-employee-orientation' %} active {% endif %}"
+							>
+								<a
+									class="d-flex align-items-center"
+									href="{% url 'new-employee-orientation'%}"
+									><i data-feather='book-open'></i>
+									<span
+										data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Шинэ ажилтны чиглүүлэх хөтөлбөр"
+										class="menu-title text-truncate"
+										data-i18n="Todo"
+										>Шинэ ажилтны чиглүүлэх хөтөлбөр</span
+									></a
+								>
+							</li>
+						{% endif %}
+					{% endif %} -->
+
+				</ul>
+			</div>
+			{% endwith %}
+			{% endwith %}
+		</div>
+		<div class="app-content content">
+			<div class="content-overlay"></div>
+			<div class="header-navbar-shadow"></div>
+			<div class="content-wrapper container-xxl p-0">
+				<div class="content-header row"></div>
+				{% block content%} {% endblock content%}
+			</div>
+		</div>
+
+		<div class="sidenav-overlay"></div>
+		<div class="drag-target"></div>
+
+		<footer class="footer footer-static footer-light">
+			<p class="clearfix mb-0">
+				<span class="float-md-start d-block d-md-inline-block mt-25"
+					>COPYRIGHT &copy; {% now "Y" %}
+					<span class="d-none d-sm-inline-block"
+						>, Бүх эрх хуулиар хамгаалагдсан</span
+					></span
+				><span class="float-md-end d-none d-md-block"></span>
+			</p>
+		</footer>
+
+		<button class="btn btn-primary btn-icon scroll-top" type="button">
+			<i data-feather="arrow-up"></i>
+		</button>
+
+		<script src="{% static 'app-assets/vendors/js/vendors.min.js' %}"></script>
+		<script src="{% static 'app-assets/vendors/js/charts/apexcharts.min.js' %}"></script>
+		<script src="{% static 'app-assets/vendors/js/extensions/toastr.min.js' %}"></script>
+		<script src="{% static 'app-assets/vendors/js/forms/validation/jquery.validate.min.js' %}"></script>
+		<script src="{% static 'app-assets/vendors/js/forms/cleave/cleave.min.js' %}"></script>
+		<script src="{% static 'app-assets/vendors/js/forms/select/select2.full.min.js' %}"></script>
+		<script src="{% static 'app-assets/vendors/js/forms/select/select2totree.js' %}"></script>
+		<script src="{% static 'app-assets/js/core/app-menu.js' %}"></script>
+		<script src="{% static 'app-assets/js/core/app.js' %}"></script>
+		<script src="{% static 'app-assets/js/scripts/forms/form-input-mask.js' %}"></script>
+		<script src="{% static 'app-assets/js/scripts/forms/form-select2.js' %}"></script>
+
+		<script src="{% static 'assets/js/api.js' %}"></script>
+		<script src="{% static 'assets/js/mongoliaUnits.js' %}"></script>
+		<script src="{% static 'assets/js/scripts.js' %}"></script>
+		<script src="{% static 'assets/js/form.js' %}"></script>
+
+		<script>
+			let MAX_NOTIF = "{{CONFIGS.NOTIF_MAX}}"
+			let BOOKMARK_PAGES = {{BOOKMARKS.PAGES|safe}}
+
+			/** Tooltip ажиллуулж байна */
+			$(document).ready(function()
+			{
+				$("body").tooltip({ selector: '[data-bs-toggle=tooltip]' });
+			});
+
+			$(window).on("load", function ()
+			{
+				if (feather)
+				{
+					feather.replace({
+						width: 14,
+						height: 14,
+					});
+				}
+			});
+
+		</script>
+
+		<script src="{% static 'assets/js/pages/notif/base.js' %}"></script>
+		<script src="{% static 'assets/js/pages/page-bookmarks/index.js' %}"></script>
+
+		{% block js %}
+		{% endblock js %}
+
+	</body>
+</html>

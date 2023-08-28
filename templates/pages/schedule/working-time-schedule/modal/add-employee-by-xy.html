@@ -1,0 +1,45 @@
+
+<div class="modal fade" id="{{id}}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content" >
+            <form method="post" class="row border border-5" id="add_employee_xy_form" onsubmit="addEmployeeXYSubmit(event)" >
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center" id="modalbody">
+                    <div class="text-center">
+                        <i class="fas fa-exclamation-circle fs-40"></i>
+                    </div>
+                    <div style="margin-top: 10px">
+                        Эхлэх огноог оруулах
+                    </div>
+                </div>
+
+                <div class="mb-1">
+                    <div class="modal-body row">
+                        <div class="col-12 position-relative">
+                            <label class="form-label">Огноо</label>
+
+                            <input style="cursor: pointer;" class="form-control" id="xy_start_time" name="xy_start_time" placeholder="2000-01-01 00:00" data-msg="Талбарыг бөглөнө үү" />
+                            <div style="display: none;">
+                                <input type="text" id="date" />
+                                <input type="text" id="time" />
+                            </div>
+                            <div id="outlet"></div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary me-1 data-submit">
+                        Хадгалах
+                    </button>
+                    <button type="reset" class="btn btn-outline-secondary add-employee-by-xy-hide-modal" data-bs-dismiss="modal" aria-label="Close">
+                        Болих
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

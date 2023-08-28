@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+
+{% load rest_framework %}
+
+{% block content %}
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/forms/select/select2.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/extensions/jstree.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/extensions/ext-component-tree.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+
+{% endblock css %}
+
+<div class="content-body">
+    <div class="row">
+        <div class="col-xl-4 col-lg-5 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Салбар сургуулиуд</h4>
+                </div>
+                <div class="card-body" style="overflow: auto;">
+                    <div id="jstree-orgs-menu"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-8 col-lg-7 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">
+                        {% if pk %}
+                            Салбар сургууль засах
+                        {% else %}
+                            Салбар сургууль бүртгэх
+                        {% endif %}
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="position-relative">
+                    {% if pk %}
+                        <form enctype="multipart/form-data" class="form-inline" id="subOrgZ" action="{% url 'sub-company-register' pk %}" method="post" novalidate>
+                    {% else %}
+                        <form enctype="multipart/form-data" class="form-inline" id="subOrgZ" action="{% url 'sub-company-register' %}" method="post" novalidate>
+                    {% endif %}
+                            {% csrf_token %}
+                            <div class="col-12 mt-1">
+                                <label class="form-label">Байгууллагын нэр:</label>
+                                <input type="text" id="name" name="name" class="form-control" value="{{ serializer.data.name|default:"" }}" placeholder="Ютилити солюшн"  data-msg="Байгууллагын нэр оруулна уу" />
+                            </div>
+                            <div class="col-12 mt-1">
+                                <label class="form-label">Хаяг:</label>
+                                <input type="text" id="address" name="address" class="form-control" value="{{ serializer.data.address|default:"" }}" placeholder="Заавал биш... Улаанбаатар, БГД, ... " data-msg="Xаяг оруулна уу"/>
+                            </div>
+                            <div class="col-12 mt-1">
+                                <label class="form-label">Сошиал холбоос:</label>
+                                <input type="text" id="social" name="social" class="form-control" value="{{ serializer.data.social|default:"" }}" placeholder="Заавал биш... www.facebook.com/exapmle " data-msg="Сошиал холбоос оруулна уу"/>
+                            </div>
+                            <div class="col-12 mt-1">
+                                <label class="form-label">Веб:</label>
+                                <input type="text" id="web" name="web" class="form-control" value="{{ serializer.data.web|default:"" }}" placeholder="Заавал биш... www.exapmle.com " data-msg="Веб оруулна уу"/>
+                            </div>
+                            <div class="col-12 mt-1">
+                                <label class="form-label">Сургууль эсэх:</label>
+                                <input type="checkbox" class="form-check-input" name="is_school" id="is_school"
+                                    {% if serializer.data.is_school %}
+                                        checked
+                                    {% endif %}
+                                />
+                            </div>
+                            <div class="d-flex mt-2 custom-flex">
+                                <div class="me-2">
+                                    <div class="orgLogoDiv">
+                                        <img id="viewSubOrgLogo" onerror="this.onerror=null; this.src='/media/400x245.jpg'" src="{{ serializer.data.logo }}" />
+                                    </div>
+                                </div>
+                                <div class="w-100">
+                                    <label class="form-label">Лого:</label>
+                                    <input accept="image/*" type="file" id="logo" name="logo" class="form-control" value="{{ serializer.data.logo|default:"" }}" placeholder="" data-msg="Лого оруулна уу"/>
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-md-12 col-12 mt-2">
+                                {% if pk %}
+                                    {% if 'sub-company-update' in request.permissions or not 'sub-company-update' in request.permissions and not 'sub-company-delete' in request.permissions %}
+                                    <button type="submit" id="salbar-btn" class="btn btn-primary">Засах</button>
+                                    {% endif %}
+                                    {% if 'sub-company-delete' in request.permissions or not 'sub-company-update' in request.permissions and not 'sub-company-delete' in request.permissions %}
+                                    <a href="{% url 'suborg-delete' pk %}" class="btn btn-danger">Устгах</a>
+                                    {% endif %}
+                                {% else %}
+                                    <button type="submit" id="salbar-btn" class="btn btn-primary">Бүртгэх</button>
+                                {% endif %}
+                            </div>
+                        </form>
+                        {% if sub_org_id and not 'sub-company-create' in request.permissions %}
+                            <div class="inactive p-2">
+                                <p class="fs-18">Танд эрх байхгүй байна</p>
+                            </div>
+                        {% elif pk and not 'sub-company-update' in request.permissions and pk and not 'sub-company-delete' in request.permissions %}
+                            <div class="inactive p-2">
+                                <p class="fs-18">Танд эрх байхгүй байна</p>
+                            </div>
+                        {% elif not pk and not 'sub-company-create' in request.permissions %}
+                            <div class="inactive p-2">
+                                <p class="fs-18">Танд эрх байхгүй байна</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+
+<script src="{% static 'app-assets/vendors/js/forms/select/select2.full.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/form-select2.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/extensions/jstree.min.js' %}"></script>
+<!-- <script src="{% static 'app-assets/js/scripts/extensions/ext-component-tree.js' %}"></script> -->
+
+<script>
+    const subOrgsFormInputs = [ "name", "address", "social", "web"]
+
+    const logoElemnet = document.getElementById("logo")
+    logoElemnet.onchange = function(event) {
+        const logoViewElement = document.getElementById("viewSubOrgLogo")
+        logoViewElement.src = window.URL.createObjectURL(event.target.files[0])
+    }
+
+    var subOrgZJqFrom = $('#subOrgZ')
+
+    let validateSubOrgZ
+
+    $.validator.addMethod(
+        "regex",
+        function(value, element, regexp) {
+            var re = new RegExp(regexp);
+            return this.optional(element) || re.test(value);
+        },
+        "Энэ талбарыг бөглөнө үү"
+    );
+
+    if (subOrgZJqFrom.length) {
+        validateSubOrgZ = subOrgZJqFrom.validate({
+            rules: {
+                "name": {
+                    required: true
+                },
+            },
+            messages: {
+                'name': {
+                    required: 'Байгууллагын нэр оруулна уу.',
+                },
+            }
+        });
+    }
+
+    let wtf = []
+    let submenu = $('#jstree-orgs-menu')
+    submenu.jstree(
+    {
+        "core" : {
+            'data' : {
+                'url' : function (node)
+                {
+                    return node.id === '#' ? '/suborg/json/' : '/suborg/json/';
+                },
+                'data' : function (node)
+                {
+                    return { 'id' : node.id };
+                }
+            }
+        },
+        plugins: ['types', 'contextmenu', 'state'],
+        types: {
+            default: {
+                icon: 'far fa-flag text-primary-green'
+            },
+            sub: {
+                icon: 'fas fa-landmark text-primary'
+            },
+            sub1: {
+                icon: 'far fa-circle text-success'
+            },
+            sub2: {
+                icon: "far fa-circle text-success"
+            },
+            sub3: {
+                icon: 'far fa-circle text-success'
+            }
+        }
+    });
+    submenu.bind(
+        "select_node.jstree",
+        function (e, data)
+        {
+            if (data.node.parent !== '#' && data.node.a_attr.href !== window.location.pathname && wtf.length > 0)
+            {
+                window.location.href = data.node.a_attr.href
+            }
+            wtf.push(data.node.a_attr.href)
+        }
+    )
+</script>
+
+{% endblock js %}

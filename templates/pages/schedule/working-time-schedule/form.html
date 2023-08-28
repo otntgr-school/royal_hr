@@ -1,0 +1,354 @@
+
+<!--
+    URL: /schedule/working-time-schedule/
+    Нэр: Цагийн хуваарийн төрөл form
+    Төрөл: Form
+    Дэлгэрэнгүй: Шинээр бүртгэх болон засах дарахад гарж ирнэ
+-->
+
+<div class="modal modal-slide-in new-user-modal fade" id="modals-slide-in">
+    <div class="modal-dialog custom-50" >
+
+        <form class="add-new-timetable modal-content pt-0" action="{% url 'working-time-schedule' %}" method="post" id="workingTimeSchedule" onsubmit="logSubmit(event)">
+
+            {% csrf_token %}
+            <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+            >
+                ×
+            </button>
+            <div class="modal-header mb-1">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    Цагийн хуваарийн төрөл хадгалах
+                </h5>
+            </div>
+            <span id="loaderwtt-update" style="margin-top: -14px;"></span>
+
+            <div class="modal-body flex-grow-1 mt-2 text-center" id="update_loader_display" style="display: none;">
+                Уншиж байна...
+            </div>
+
+            <div class="modal-body flex-grow-1" id="update_main_display" style="display: block;">
+                <div class="mb-1">
+                    <input type="hidden" class="form-control" id="org" name="org" value="{{ request.employee.org.id }}" />
+                    <input type="hidden" name="id" id="id" value="">
+                </div>
+                <div class="mb-1">
+                    <label class="form-label">Нэр *</label>
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Нэр" data-msg="Нэр талбарыг бөглөнө үү"/>
+                </div>
+                <div class="mb-1">
+                    <label class="form-label" for="type">Төрөл *</label>
+                    <select class="form-select" id="type" name="type" onclick=(typeClick()) data-msg="Ажиллах цагийн хуваарийн төрөлийг сонгоно уу">
+                        <option value="" data-code="0">-- сонгох --</option>
+                        {% for working_time_schedule_type in working_time_schedule_types %}
+                            <option value="{{ working_time_schedule_type.id }}" data-code="{{ working_time_schedule_type.code }}">{{ working_time_schedule_type.name }}</option>
+                        {% endfor %}
+
+                    </select>
+                </div>
+                <!-- <div class="mb-1">
+                    <div class="form-check form-check-inline mb-1" id="vacationDisplay" style="display: none;">
+                        <input class="form-check-input" type="checkbox" id="vacation" name="vacation" value="True" {% if serializer.vacation.value %}checked{% endif %}>
+                        <label class="form-check-label" for="vacation">Амралтын өдрүүдэд ажиллана</label>
+                    </div>
+                    <div class="form-check form-check-inline" id="holidayDisplay" style="display: none;">
+                        <input class="form-check-input" type="checkbox" id="holiday" name="holiday" value="True" {% if serializer.holiday.value %}checked{% endif %}>
+                        <label class="form-check-label" for="holiday">Баярын өдрүүдэд ажиллана</label>
+                    </div>
+                </div> -->
+                <div class="mb-1">
+                    <label class="form-label">Тайлбар</label>
+                    <textarea class="form-control" rows="3" id="description" name="description" placeholder="Тайлбар"></textarea>
+                </div>
+                <!-- <div class="mb-1">
+                    <label class="form-label">Ирсэн цагаа бүртгүүлээгүй тохиолдолд торгууль ногдуулах бол *</label>
+                    <input type="number" class="form-control" placeholder="Торгууль" id="start_time_penalty" name="start_time_penalty" data-msg="Талбарыг бөглөнө үү" />
+                </div>
+                <div class="mb-1">
+                    <label class="form-label">Явсан цагаа бүртгүүлээгүй тохиолдолд торгууль ногдуулах бол *</label>
+                    <input type="number" class="form-control" placeholder="Торгууль" id="end_time_penalty" name="end_time_penalty" data-msg="Талбарыг бөглөнө үү" />
+                </div> -->
+                <div class="mb-1 border p-1" id="xy_form" style="display: none;">
+                    <!-- <div class="mb-1">
+                        <label class="form-label">Ирсэн цаг бүртгэж эхлэх хугацаа *</label>
+                        <input type="text" class="form-control time-mask" id="registration_start_time" name="registration_start_time" placeholder="цц:мм:сс" data-msg="Талбарыг бөглөнө үү"/>
+                    </div>
+                    <div class="mb-1">
+                        <label class="form-label">Явсан цаг бүртгэж дуусах хугацаа *</label>
+                        <input type="text" class="form-control time-mask" id="registration_end_time" name="registration_end_time" placeholder="цц:мм:сс" data-msg="Талбарыг бөглөнө үү"/>
+                    </div> -->
+                    <!-- <div class="mb-1">
+                        <label class="form-label">Хоцорч болох лимит *</label>
+                        <input type="text" class="form-control time-mask" id="hotorch_boloh_limit" name="hotorch_boloh_limit" placeholder="цц:мм:сс" data-msg="Талбарыг бөглөнө үү"/>
+                    </div> -->
+                    <!-- <div class="mb-1">
+                        <label class="form-label">Цайны цаг *</label>
+                        <input type="text" class="form-control time-mask" id="lunch_time" name="lunch_time" placeholder="цц:мм:сс" data-msg="Талбарыг бөглөнө үү"/>
+                    </div> -->
+                    <div class="mb-1">
+                        <label class="form-label">Ажиллах цаг</label>
+                        <input type="number" class="form-control" id="ajillah_time" name="ajillah_time" data-msg="Ажиллах цаг талбарыг бөглөнө үү" />
+                    </div>
+                    <div class="mb-1">
+                        <label class="form-label">Амрах цаг</label>
+                        <input type="number" class="form-control" id="amrah_time" name="amrah_time" data-msg="Амрах цаг талбарыг бөглөнө үү" />
+                    </div>
+                </div>
+                <div class="mb-1 border p-1" id="days_form" style="display: none;">
+                    <div class="row d-flex align-items-center">
+                        <div class="col-md-2 mbc-1">
+                            <span class="fs-12 fw-bolder">Даваа</span>
+                        </div>
+                        <div class="col-md-2 mbc-1">
+                            <div class="form-check form-chec1-inline fs-12">
+                                <input class="form-check-input" type="checkbox" id="mon_work" name="mon_work" value="True" {% if serializer.mon_work.value %}checked{% endif %}>
+                                <label class="form-check-label" for="mon_work">Ажиллана</label>
+                            </div>
+                        </div>
+                        <div class="col-md-8 mbc-1">
+
+                            <div class="mb-1" id='multiWrapper'>
+                                <label class="form-label" for="time_schedule">Ажиллах цагийн төрөл</label>
+                                <select class="form-select select_with_dtable" id="mon_time_schedule" name="mon_time_schedule" data-msg="Ажиллах цагийн төрөлийг сонгоно уу" >
+                                    <optgroup class='def-cursor' label='Нэр' data-start_time="Эхлэх цаг" data-end_time="Дуусах цаг" data-lunch_time="Цайны цаг">
+                                        <option value="" selected>-- Сонгох --</option>
+                                    {% for time_schedule in time_schedules %}
+                                        <option
+                                            value="{{ time_schedule.id }}"
+                                            data-end_time="{{ time_schedule.end_time|date:'G:i' }}"
+                                            data-lunch_time="{{ time_schedule.lunch_time_start_time|date:'G:i' }} - {{ time_schedule.lunch_time_start_time|date:'G:i' }}"
+                                            data-start_time="{{ time_schedule.start_time|date:'G:i' }}"
+                                            id="{{ time_schedule.id }}"
+                                        >
+                                            {{ time_schedule.name }}
+                                        </option>
+                                    {% endfor %}
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <hr />
+                        </div>
+                    </div>
+                    <div class="row d-flex align-items-center">
+                        <div class="col-md-2 mbc-1">
+                            <span class="fs-12 fw-bolder">Мягмар</span>
+                        </div>
+                        <div class="col-md-2 mbc-1">
+                            <div class="form-check form-check-inline fs-12">
+                                <input class="form-check-input" type="checkbox" id="tue_work" name="tue_work" value="True" {% if serializer.tue_work.value %}checked{% endif %}>
+                                <label class="form-check-label" for="tue_work">Ажиллана</label>
+                            </div>
+                        </div>
+                        <div class="col-md-8 mbc-1">
+                            <div class="mb-1" id='multiWrapper'>
+                                <label class="form-label" for="time_schedule">Ажиллах цагийн төрөл</label>
+                                <select class="form-select select_with_dtable" id="tue_time_schedule" name="tue_time_schedule" data-msg="Ажиллах цагийн төрөлийг сонгоно уу" >
+                                    <optgroup class='def-cursor' label='Нэр' data-start_time="Эхлэх цаг" data-end_time="Дуусах цаг" data-lunch_time="Цайны цаг">
+                                        <option value="" selected>-- Сонгох --</option>
+                                    {% for time_schedule in time_schedules %}
+                                        <option
+                                            value="{{ time_schedule.id }}"
+                                            data-end_time="{{ time_schedule.end_time|date:'G:i' }}"
+                                            data-lunch_time="{{ time_schedule.lunch_time_start_time|date:'G:i' }} - {{ time_schedule.lunch_time_start_time|date:'G:i' }}"
+                                            data-start_time="{{ time_schedule.start_time|date:'G:i' }}"
+                                            id="{{ time_schedule.id }}"
+                                        >
+                                            {{ time_schedule.name }}
+                                        </option>
+                                    {% endfor %}
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <hr />
+                        </div>
+                    </div>
+                    <div class="row d-flex align-items-center">
+                        <div class="col-md-2 mbc-1">
+                            <span class="fs-12 fw-bolder">Лхагва</span>
+                        </div>
+                        <div class="col-md-2 mbc-1">
+                            <div class="form-check form-check-inline fs-12">
+                                <input class="form-check-input" type="checkbox" id="wed_work" name="wed_work" value="True" {% if serializer.wed_work.value %}checked{% endif %}>
+                                <label class="form-check-label" for="wed_work">Ажиллана</label>
+                            </div>
+                        </div>
+                        <div class="col-md-8 mbc-1">
+                            <div class="mb-1" id='multiWrapper'>
+                                <label class="form-label" for="time_schedule">Ажиллах цагийн төрөл</label>
+                                <select class="form-select select_with_dtable" id="wed_time_schedule" name="wed_time_schedule" data-msg="Ажиллах цагийн төрөлийг сонгоно уу" >
+                                    <optgroup class='def-cursor' label='Нэр' data-start_time="Эхлэх цаг" data-end_time="Дуусах цаг" data-lunch_time="Цайны цаг">
+                                        <option value="" selected>-- Сонгох --</option>
+                                    {% for time_schedule in time_schedules %}
+                                        <option
+                                            value="{{ time_schedule.id }}"
+                                            data-end_time="{{ time_schedule.end_time|date:'G:i' }}"
+                                            data-lunch_time="{{ time_schedule.lunch_time_start_time|date:'G:i' }} - {{ time_schedule.lunch_time_start_time|date:'G:i' }}"
+                                            data-start_time="{{ time_schedule.start_time|date:'G:i' }}"
+                                            id="{{ time_schedule.id }}"
+                                        >
+                                            {{ time_schedule.name }}
+                                        </option>
+                                    {% endfor %}
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <hr />
+                        </div>
+                    </div>
+                    <div class="row d-flex align-items-center">
+                        <div class="col-md-2 mbc-1">
+                            <span class="fs-12 fw-bolder">Пүрэв</span>
+                        </div>
+                        <div class="col-md-2 mbc-1">
+                            <div class="form-check form-check-inline fs-12">
+                                <input class="form-check-input" type="checkbox" id="thu_work" name="thu_work" value="True" {% if serializer.thu_work.value %}checked{% endif %}>
+                                <label class="form-check-label" for="thu_work">Ажиллана</label>
+                            </div>
+                        </div>
+                        <div class="col-md-8 mbc-1">
+                            <div class="mb-1" id='multiWrapper'>
+                                <label class="form-label" for="time_schedule">Ажиллах цагийн төрөл</label>
+                                <select class="form-select select_with_dtable" id="thu_time_schedule" name="thu_time_schedule" data-msg="Ажиллах цагийн төрөлийг сонгоно уу" >
+                                    <optgroup class='def-cursor' label='Нэр' data-start_time="Эхлэх цаг" data-end_time="Дуусах цаг" data-lunch_time="Цайны цаг">
+                                        <option value="" selected>-- Сонгох --</option>
+                                    {% for time_schedule in time_schedules %}
+                                        <option
+                                            value="{{ time_schedule.id }}"
+                                            data-end_time="{{ time_schedule.end_time|date:'G:i' }}"
+                                            data-lunch_time="{{ time_schedule.lunch_time_start_time|date:'G:i' }} - {{ time_schedule.lunch_time_start_time|date:'G:i' }}"
+                                            data-start_time="{{ time_schedule.start_time|date:'G:i' }}"
+                                            id="{{ time_schedule.id }}"
+                                        >
+                                            {{ time_schedule.name }}
+                                        </option>
+                                    {% endfor %}
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <hr />
+                        </div>
+                    </div>
+                    <div class="row d-flex align-items-center">
+                        <div class="col-md-2 mbc-1">
+                            <span class="fs-12 fw-bolder">Баасан</span>
+                        </div>
+                        <div class="col-md-2 mbc-1">
+                            <div class="form-check form-check-inline fs-12">
+                                <input class="form-check-input" type="checkbox" id="fri_work" name="fri_work" value="True" {% if serializer.fri_work.value %}checked{% endif %}>
+                                <label class="form-check-label" for="fri_work">Ажиллана</label>
+                            </div>
+                        </div>
+                        <div class="col-md-8 mbc-1">
+                            <div class="mb-1" id='multiWrapper'>
+                                <label class="form-label" for="time_schedule">Ажиллах цагийн төрөл</label>
+                                <select class="form-select select_with_dtable" id="fri_time_schedule" name="fri_time_schedule" data-msg="Ажиллах цагийн төрөлийг сонгоно уу" >
+                                    <optgroup class='def-cursor' label='Нэр' data-start_time="Эхлэх цаг" data-end_time="Дуусах цаг" data-lunch_time="Цайны цаг">
+                                        <option value="" selected>-- Сонгох --</option>
+                                    {% for time_schedule in time_schedules %}
+                                        <option
+                                            value="{{ time_schedule.id }}"
+                                            data-end_time="{{ time_schedule.end_time|date:'G:i' }}"
+                                            data-lunch_time="{{ time_schedule.lunch_time_start_time|date:'G:i' }} - {{ time_schedule.lunch_time_start_time|date:'G:i' }}"
+                                            data-start_time="{{ time_schedule.start_time|date:'G:i' }}"
+                                            id="{{ time_schedule.id }}"
+                                        >
+                                            {{ time_schedule.name }}
+                                        </option>
+                                    {% endfor %}
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <hr />
+                        </div>
+                    </div>
+                    <div class="row d-flex align-items-center">
+                        <div class="col-md-2 mbc-1">
+                            <span class="fs-12 fw-bolder">Бямба</span>
+                        </div>
+                        <div class="col-md-2 mbc-1">
+                            <div class="form-check form-check-inline fs-12">
+                                <input class="form-check-input" type="checkbox" id="sat_work" name="sat_work" value="True" {% if serializer.sat_work.value %}checked{% endif %}>
+                                <label class="form-check-label" for="sat_work">Ажиллана</label>
+                            </div>
+                        </div>
+                        <div class="col-md-8 mbc-1">
+                            <div class="mb-1" id='multiWrapper'>
+                                <label class="form-label" for="time_schedule">Ажиллах цагийн төрөл</label>
+                                <select class="form-select select_with_dtable" id="sat_time_schedule" name="sat_time_schedule" data-msg="Ажиллах цагийн төрөлийг сонгоно уу" >
+                                    <optgroup class='def-cursor' label='Нэр' data-start_time="Эхлэх цаг" data-end_time="Дуусах цаг" data-lunch_time="Цайны цаг">
+                                        <option value="" selected>-- Сонгох --</option>
+                                    {% for time_schedule in time_schedules %}
+                                        <option
+                                            value="{{ time_schedule.id }}"
+                                            data-end_time="{{ time_schedule.end_time|date:'G:i' }}"
+                                            data-lunch_time="{{ time_schedule.lunch_time_start_time|date:'G:i' }} - {{ time_schedule.lunch_time_start_time|date:'G:i' }}"
+                                            data-start_time="{{ time_schedule.start_time|date:'G:i' }}"
+                                            id="{{ time_schedule.id }}"
+                                        >
+                                            {{ time_schedule.name }}
+                                        </option>
+                                    {% endfor %}
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <hr />
+                        </div>
+                    </div>
+                    <div class="row d-flex align-items-center">
+                        <div class="col-md-2 mbc-1">
+                            <span class="fs-12 fw-bolder">Ням</span>
+                        </div>
+                        <div class="col-md-2 mbc-1">
+                            <div class="form-check form-check-inline fs-12">
+                                <input class="form-check-input" type="checkbox" id="sun_work" name="sun_work" value="True" {% if serializer.sun_work.value %}checked{% endif %}>
+                                <label class="form-check-label" for="sun_work">Ажиллана</label>
+                            </div>
+                        </div>
+                        <div class="col-md-8 mbc-1">
+                            <div class="mb-1" id='multiWrapper'>
+                                <label class="form-label" for="time_schedule">Ажиллах цагийн төрөл</label>
+                                <select class="form-select select_with_dtable" id="sun_time_schedule" name="sun_time_schedule" data-msg="Ажиллах цагийн төрөлийг сонгоно уу" >
+                                    <optgroup class='def-cursor' label='Нэр' data-start_time="Эхлэх цаг" data-end_time="Дуусах цаг" data-lunch_time="Цайны цаг">
+                                        <option value="" selected>-- Сонгох --</option>
+                                    {% for time_schedule in time_schedules %}
+                                        <option
+                                            value="{{ time_schedule.id }}"
+                                            data-end_time="{{ time_schedule.end_time|date:'G:i' }}"
+                                            data-lunch_time="{{ time_schedule.lunch_time_start_time|date:'G:i' }} - {{ time_schedule.lunch_time_start_time|date:'G:i' }}"
+                                            data-start_time="{{ time_schedule.start_time|date:'G:i' }}"
+                                            id="{{ time_schedule.id }}"
+                                        >
+                                            {{ time_schedule.name }}
+                                        </option>
+                                    {% endfor %}
+                                    </optgroup>
+                                </select>
+                            </div>
+                        </div>
+                        <div>
+                            <hr />
+                        </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary me-1 data-submit">Хадгалах</button>
+                <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Болих</button>
+            </div>
+        </form>
+    </div>
+</div>

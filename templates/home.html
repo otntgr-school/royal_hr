@@ -1,0 +1,257 @@
+{% extends './base.html' %}
+{% load static %}
+{% load mytags %}
+
+{% block css %}
+	<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}" />
+{% endblock css %}
+
+{% block content %}
+<div class="content-body">
+	<section id="dashboard-ecommerce">
+		<div class="row match-height">
+			<div class="col-xl-4 col-md-6 col-12">
+				<div class="card">
+					<div class="card-header">
+						<h4 class="card-title">Улаанбаатрын цаг:</h4>
+					</div>
+					<div class="card-body pt-1">
+						<div>
+							<div class="circle mt-2 mb-3">
+								<div class="face">
+									<div id="hour" class="hour"></div>
+									<div id="minute" class="minute"></div>
+									<div id="second" class="second"></div>
+								</div>
+							</div>
+							<label class="form-label" for="first-name-vertical">Системийн цаг:</label>
+							<h4 class="card-border" id="nowTime">
+							</h4>
+						</div>
+					</div>
+				</div>
+			</div>
+			{% if request.employee %}
+				<div class="col-xl-8 col-lg-6 col-md-6 col-12">
+					<div class="card card-developer-meetup">
+						<div class="card-header">
+							<div class="meetup-header d-flex align-items-center mb-0">
+								<div class="meetup-day">
+									<h6 class="mb-0" id="todayWeekText" ></h6>
+									<h3 class="mb-0">{{ today|date:"d" }}</h3>
+								</div>
+								<div class="my-auto">
+									<h4 class="card-title mb-25">
+										Өнөөдрийн үйл ажиллагаа
+									</h4>
+									<p class="card-text mb-0" id="today-title">
+									</p>
+								</div>
+							</div>
+						</div>
+						<div class="card-body card-transaction" id="today-activate" style="overflow: auto; height: 200px;">
+						</div>
+					</div>
+				</div>
+
+				{% if 'home-page-employee-show' in request.permissions %}
+					<div class="col-xl-4 col-md-6 col-12">
+						<div class="card">
+							<div class="table-responsive">
+								<table class="table home-coming-emps m-0 pt-0 small-text-thead" style="margin: 0px!important">
+									<thead class="table-light">
+										<tr>
+											<th
+												class="text-center"
+												style="font-size: 11px!important; padding: 10px!important;"
+												colspan="6"
+											>өнөөдөр ирсэн ажилтнууд</th>
+										</tr>
+										<tr class="">
+											<th></th>
+											<th></th>
+											<th>Нэр</th>
+											<th>Албан тушаал</th>
+											<th>Ирсэн цаг</th>
+											<th>Явсан цаг</th>
+										</tr>
+									</thead>
+									<tfoot class="table-light">
+										<tr>
+											<th></th>
+											<th></th>
+											<th>Нэр</th>
+											<th>Албан тушаал</th>
+											<th>Ирсэн цаг</th>
+											<th>Явсан цаг</th>
+										</tr>
+									</tfoot>
+								</table>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-xl-8 col-lg-6 col-md-6 col-12">
+						<div class="card">
+							<div class="table-responsive">
+								<table class="table home-emp-list m-0 pt-0 small-text-thead" style="margin: 0px!important">
+									<thead class="table-light">
+										<tr>
+											<th
+												class=""
+												style="font-size: 11px!important; padding: 10px!important; padding-left: 40px!important;"
+												colspan="20"
+											><span class="position-sticky" style="left: 40px;">Нийт ажилчид</span></th>
+										</tr>
+										<tr class="">
+											<th></th>
+											<th>Овог</th>
+											<th>Нэр</th>
+											<th>Сургуулийн нэр</th>
+											<th>Тэнхимийн нэр</th>
+											<th>Ажлын байр</th>
+											<th>Цахим хаяг</th>
+											<th>id</th>
+											<th>id</th>
+											<th>id</th>
+											<th>id</th>
+											<th>Утасны дугаар</th>
+											<th>Хүйс</th>
+											<th>Регистр</th>
+											<th>ЭМДД</th>
+											<th>НДД №</th>
+											<th>Хаяг</th>
+											<th>Аймаг/хот</th>
+											<th>Сум/дүүрэг</th>
+										</tr>
+									</thead>
+									<tfoot class="table-light">
+										<tr>
+											<th></th>
+											<th>Овог</th>
+											<th>Нэр</th>
+											<th>Сургуулийн нэр</th>
+											<th>Тэнхимийн нэр</th>
+											<th>Ажлын байр</th>
+											<th>Цахим хаяг</th>
+											<th>id</th>
+											<th>id</th>
+											<th>id</th>
+											<th>id</th>
+											<th>Утасны дугаар</th>
+											<th>Хүйс</th>
+											<th>Регистр</th>
+											<th>ЭМДД</th>
+											<th>НДД №</th>
+											<th>Хаяг</th>
+											<th>Аймаг/хот</th>
+											<th>Сум/дүүрэг</th>
+										</tr>
+									</tfoot>
+								</table>
+							</div>
+						</div>
+					</div>
+				{% endif %}
+			{% endif %}
+		</div>
+	</section>
+</div>
+{% endblock %}
+
+{% block js %}
+<script>
+	const _isMobile = "{% if request.user_agent.is_mobile %}true{% else %}{%endif%}"
+</script>
+<script src="{% static 'app-assets/vendors/js/extensions/moment.min.js' %}"></script>
+{% if request.employee %}
+
+	{% if request.employee.is_hr %}
+		<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+		<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+		<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+		<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.js' %}"></script>
+		<script src="{% static 'app-assets/vendors/js/tables/datatable/vfs_fonts.js' %}"></script>
+		<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js' %}"></script>
+		<script src="{% static 'app-assets/js/scripts/tables/table-datatables-advanced.js' %}"></script>
+		<script src="{% static 'app-assets/js/scripts/tables/table-datatables-fixedColumns.min.js' %}"></script>
+		<script src="{% static 'assets/js/pages/home/workers.js' %}"></script>
+		<script src="{% static 'assets/js/pages/home/coming-workers.js' %}"></script>
+	{% endif %}
+	<script src="{% static 'assets/js/pages/home/works.js' %}"></script>
+{% endif %}
+<script>
+
+	const todayWeekTextId = document.getElementById('todayWeekText')
+
+	if (todayWeekTextId)
+	{
+		let text = ''
+
+		switch('{{ today|date:"D" }}')
+		{
+			case 'Mon':
+				text = 'Даваа'
+				break;
+			case 'Two':
+				text = 'Мягмар'
+				break;
+			case 'Wed':
+				text = 'Лхагва'
+				break;
+			case 'Thu':
+				text = 'Пүрэв'
+				break;
+			case 'Fri':
+				text = 'Баасан'
+				break;
+			case 'Sat':
+				text = 'Бямба'
+				break;
+			case 'Sun':
+				text = 'Ням'
+				break;
+			default:
+				break;
+		}
+
+		todayWeekTextId.innerText = text
+	}
+
+	/** 1 => 01 болгох Format */
+    const zeroFill = n => {
+        return ('0' + n).slice(-2);
+    }
+
+	let nowDateValue = new Date({{ today|date:"Y" }}, parseInt({{ today|date:"m" }}) - 1, {{ today|date:"d" }}, {{ today|date:"G" }}, {{ today|date:"i" }}, {{ today|date:"s" }})
+
+	// 1 sec болгон утга авч хэвлэнэ
+	const interval = setInterval(() =>
+	{
+		nowDateValue.setSeconds(nowDateValue.getSeconds() + 1)
+
+		// 2022 оны 07 сарын 19-н 11:46:16 --- Форматын дагуу
+		const dateTime = nowDateValue.getFullYear() + ' оны ' + zeroFill(nowDateValue.getMonth() + 1) + ' сарын ' + zeroFill(nowDateValue.getDate()) + '-н' + ' ' + zeroFill(nowDateValue.getHours()) + ':' + zeroFill(nowDateValue.getMinutes()) + ':' + zeroFill(nowDateValue.getSeconds());
+
+		/** цагийн зургийн утгыг өгч байна */
+		second = moment(nowDateValue).seconds() * 6,
+		minute = moment(nowDateValue).minutes() * 6 + second / 60,
+		hour = ((moment(nowDateValue).hours() % 12) / 12) * 360 + 90 + minute / 12;
+		$('#hour').css("transform", "rotate(" + hour + "deg)");
+		$('#minute').css("transform", "rotate(" + minute + "deg)");
+		$('#second').css("transform", "rotate(" + second + "deg)");
+
+		/** Цагийг дэлгэцэнд харуулах */
+		document.getElementById('nowTime').innerHTML = dateTime;
+
+		if (document.getElementById('timeBtn'))
+		{
+			// Цагны мэдээлэл уншихад button дарж болохоор болно
+			document.getElementById('timeBtn').disabled = false
+		}
+
+	}, 1000);
+
+</script>
+
+{% endblock js %}

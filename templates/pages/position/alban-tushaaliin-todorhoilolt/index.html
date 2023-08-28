@@ -1,0 +1,475 @@
+<div class="modal fade" id="alban-tushaaliin-todorhoilolt" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered modal-edit-user">
+        <div class="modal-content">
+            <div id="todorhoilolt-form-load" class="content-body">
+                <section class="app-user-view-connections">
+                    <div class="row">
+                        <div class="col">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Албан тушаалын тодорхойлолтын боловсруулсан үндэслэл </h4>
+                                </div>
+                                <div class="card-body">
+                                    <form onsubmit="onSubmitTodorhoilolt(event)" id="todorhoiloltForm" class="add-new-user pt-0">
+                                        <div class=" row" style="margin: 0;">
+                                            <!-- Ерөнхий мэдээлэл START -->
+                                            <h4 style="background-color: #595957; color: #fff">I. Ерөнхий мэдээлэл</h4>
+                                            <div class="mb-1 specialInputContainer">
+                                                <label name="gg" class="form-label" style="margin-bottom: 5px; font-size: 14px" for="holiday">Төрийн албаны тухай хэрэгжиж эхэлсэнтэй холбогдуулан шинэчлэн боловсруулсан:</label><br>
+                                                <div class="row">
+                                                    <label><input class="form-check-input" type="radio" value="1" name="turiin_albanii_huulitai_holbootoi"> Тийм</label>
+                                                    <label><input class="form-check-input" type="radio" value="0" name="turiin_albanii_huulitai_holbootoi"> Үгүй</label>
+                                                </div>
+                                            </div>
+                                            <div class="mb-1 specialInputContainer">
+                                                <label name="gg" class="form-label" style="margin-bottom: 5px; font-size: 14px" for="holiday">Хууль тогтоомжоор байгууллагын чиг үүрэгт өөрчлөлт орсон</label><br>
+                                                <div class="row">
+                                                    <label><input class="form-check-input" type="radio" value="1" name="huuli_togtoomjtoi_holbootoi_chiglel_vvrgiin_oorchlolt"> Тийм</label>
+                                                    <label><input class="form-check-input" type="radio" value="0" name="huuli_togtoomjtoi_holbootoi_chiglel_vvrgiin_oorchlolt"> Үгүй</label>
+                                                </div>
+                                            </div>
+                                            <div class="mb-1 col-md-6">
+                                                <label class="form-label">Холбогдох хууль тогтоомжийн нэр:</label>
+                                                <input id="chig_vvreg_oorchlogdson_ner" name="chig_vvreg_oorchlogdson_ner" type="text" class="form-control" data-msg="Энэ талбарыг бөглөнө үү" />
+                                            </div>
+                                            <div class="mb-1 col-md-6 position-relative">
+                                                <label class="form-label">Холбогдох хууль тогтоомжийн огноо:</label>
+                                                <input type="date" id="chig_vvreg_oorchlogdson_ognoo" name="chig_vvreg_oorchlogdson_ognoo" class="form-control pickadate-months-year-1900-2030 flatpickr-input" placeholder="YYYY-MM-DD" data-msg="Хугацаа сонгоно уу" />
+                                            </div>
+                                            <div class="mb-1 col-md-6 position-relative">
+                                                <label class="form-label">Дагаж мөрдөх огноо:</label>
+                                                <input type="date" id="dagaj_murduh_ognoo" name="dagaj_murduh_ognoo" class="form-control pickadate-months-year-1900-2100 flatpickr-input" placeholder="YYYY-MM-DD" data-msg="Хугацаа сонгоно уу" />
+                                            </div>
+                                            <div class="mb-1 col-md-6 position-relative">
+                                                <label class="form-label">Албан тушаалын тодорхойлолтыг баталсан огноо:</label>
+                                                <input type="date" id="alban_tushaal_batalsan_ognoo" name="alban_tushaal_batalsan_ognoo" class="form-control pickadate-months-year-1900-2030 flatpickr-input" placeholder="YYYY-MM-DD" data-msg="Хугацаа сонгоно уу" />
+                                            </div>
+                                            <div class="mb-1 col-md-6">
+                                                <label class="form-label">Нэгжийн нэр:</label>
+                                                <input id="negj" name="negj" type="text" class="form-control" data-msg="Энэ талбарыг бөглөнө үү" />
+                                            </div>
+                                            <!-- <div class="mb-1 col-md-6">
+                                                <label class="form-label">Албан тушаалын нэр:</label>
+                                                <input id="total_cost" name="total_cost" type="text" class="form-control" data-msg="Энэ талбарыг бөглөнө үү" />
+                                            </div> -->
+                                            <div class="mb-1 col-md-6">
+                                                <label class="form-label">Албан тушаалын ангилал:</label>
+                                                <input id="alban_tushaal_angilal" name="alban_tushaal_angilal" type="text" class="form-control" data-msg="Энэ талбарыг бөглөнө үү" />
+                                            </div>
+                                            <div class="mb-1 col-md-6">
+                                                <label class="form-label">Ажлын цаг:</label>
+                                                <input id="ajliin_tsag" name="ajliin_tsag" type="text" class="form-control" data-msg="Энэ талбарыг бөглөнө үү" />
+                                            </div>
+                                            <div class="mb-1 col-md-6">
+                                                <label class="form-label">Ажлын байрны албан ёсны байршил:</label>
+                                                <input id="ajliin_bairnii_bairshil" name="ajliin_bairnii_bairshil" type="text" class="form-control" data-msg="Энэ талбарыг бөглөнө үү" />
+                                            </div>
+                                            <div class="mb-1 col-md-6">
+                                                <label class="form-label">Хөдөлмөрийн нөхцөл:</label>
+                                                <input id="hudulmuriin_nuhtsul" name="hudulmuriin_nuhtsul" type="text" class="form-control" data-msg="Энэ талбарыг бөглөнө үү" />
+                                            </div>
+                                            <div class="mb-1 col-md-6">
+                                                <label class="form-label">Онцгой нөхцөл:</label>
+                                                <input id="ontsgoi_nuhtsul" name="ontsgoi_nuhtsul" type="text" class="form-control" data-msg="Энэ талбарыг бөглөнө үү" />
+                                            </div>
+                                            <!-- Ерөнхий мэдээлэл END -->
+                                            <!-- Албан тушаалын зорилго, зорилт, чиг үүрэг START -->
+                                            <h4 style="background-color: #595957; color: #fff">II. Албан тушаалын зорилго, зорилт, чиг үүрэг</h4>
+                                            <div class="mb-1 col-md-12">
+                                                <label class="form-label">Албан тушаалын зорилго:</label>
+                                                <textarea id="alban_tushaaliin_zorilgo" name="alban_tushaaliin_zorilgo" type="text" class="form-control" data-msg="Энэ талбарыг бөглөнө үү" ></textarea>
+                                            </div>
+                                            <div class="bigZoriltRepeater">
+                                                <div data-repeater-list="bigZoriltRepeater">
+                                                    <div data-repeater-item>
+                                                        <div class="row d-flex align-items-end">
+                                                            <div class="col-md-9 col-12">
+                                                                <div class="mb-1">
+                                                                    <label class="form-label" for="itemname">Албан тушаалын зорилт</label>
+                                                                    <input name="desicription" type="text" class="form-control" aria-describedby="itemname" placeholder="Зорилт" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3 col-12 mb-50">
+                                                                <div class="mb-1 d-flex">
+                                                                    <button class="btn btn-outline-danger text-nowrap px-1 me-1 zorilt_delete_btn" data-repeater-delete type="button">
+                                                                        <i data-feather="x" class="me-25"></i>
+                                                                        <span>Устгах</span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="ms-5 chig_vvreg">
+                                                            <div data-repeater-list="chig_vvreg">
+                                                                <button data-repeater-create class="btn btn-icon btn-primary" type="button">
+                                                                    <i data-feather="plus" class="me-25"></i>
+                                                                    <span>Чиг үүрэг нэмэх</span>
+                                                                </button>
+                                                                <div data-repeater-item>
+                                                                    <div class="row">
+                                                                        <div class="col-md-4 col-12">
+                                                                            <div class="mb-1">
+                                                                                <label class="form-label" for="itemname">Зорилтын чиг үүрэг</label>
+                                                                                <textarea name="vvreg" type="text" class="form-control" placeholder="Үүрэг"> </textarea>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4 col-12">
+                                                                            <div class="mb-1">
+                                                                                <label class="form-label" for="itemname">Зорилтын шалгуур</label>
+                                                                                <textarea name="shalguur" type="text" class="form-control" placeholder="Шалгуур"> </textarea>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-4 col-12">
+                                                                            <div class="mb-1" name="select-containerz">
+                                                                                <label class="form-label" for="oroltsoonii_turul">Хариуцлага оролцооны хэлбэр</label><br>
+                                                                                <input type="checkbox" value="1">
+                                                                                <label> Туслах</label><br>
+                                                                                <input type="checkbox" value="2">
+                                                                                <label> Хариуцан гүйцэтгэх</label><br>
+                                                                                <input type="checkbox" value="3">
+                                                                                <label> Хянах</label><br>
+                                                                                <input type="checkbox" value="4">
+                                                                                <label> Шийдвэрлэх</label><br>
+                                                                                <!-- <div class="medehgivee"></div> -->
+                                                                                <!-- <select name="oroltsoonii_turul" class="select2 medehgivee form-select" multiple data-msg="Cонгоно уу">
+                                                                                    <option value="1">Туслах
+                                                                                    <option value="2">Хариуцан гүйцэтгэх
+                                                                                    <option value="3">Хянах
+                                                                                    <option value="4">Шийдвэрлэх
+                                                                                </select> -->
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="col-md-3 col-12 d-flex align-items-center">
+                                                                            <button class="btn btn-outline-danger text-nowrap px-1 me-1 chig_delete_btn" data-repeater-delete type="button">
+                                                                                <i data-feather="x" class="me-25"></i>
+                                                                                <span>Устгах</span>
+                                                                            </button>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <hr />
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <button class="btn btn-icon btn-primary" type="button" data-repeater-create>
+                                                            <i data-feather="plus" class="me-25"></i>
+                                                            <span>Нэмэх</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Албан тушаалын зорилго, зорилт, чиг үүрэг END -->
+                                            <!-- Албан тушаалд тавигдах тусгай шаардлага START -->
+                                            <h4 style="background-color: #595957; color: #fff" class="mt-1">III. Албан тушаалд тавигдах тусгай шаардлага</h4>
+                                            <div class="mb-1 col-md-6">
+                                                <label class="form-label">Боловсрол:</label>
+                                                <input id="bolowsor" name="bolowsor" type="text" class="form-control" data-msg="Энэ талбарыг бөглөнө үү" />
+                                            </div>
+                                            <div class="mt-1 mb-1 mergejil">
+                                                <div>Мэргэжил</div>
+                                                <div data-repeater-list="mergejil">
+                                                    <div data-repeater-item>
+                                                        <div class="row d-flex align-items-end">
+                                                            <div class="col-md-10 col-12">
+                                                                <div class="mb-1">
+                                                                    <input type="text" name="mergejil" class="form-control"/>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2 col-12 mb-50">
+                                                                <div class="mb-1">
+                                                                    <button class="btn btn-outline-danger text-nowrap px-1" data-repeater-delete type="button">
+                                                                        <i data-feather="x" class="me-25"></i>
+                                                                        <span>Устгах</span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <button class="btn btn-icon btn-primary" type="button" data-repeater-create>
+                                                            <i data-feather="plus" class="me-25"></i>
+                                                            <span>Нэмэх</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr />
+                                            <div class="mb-1 col-md-6">
+                                                <label class="form-label">Мэргэшил:</label>
+                                                <input id="mergeshil" name="mergeshil" type="text" class="form-control" data-msg="Энэ талбарыг бөглөнө үү" />
+                                            </div>
+                                            <div class="mb-1 col-md-6">
+                                                <label class="form-label">Туршлага:</label>
+                                                <input id="turshlaga" name="turshlaga" type="text" class="form-control" data-msg="Энэ талбарыг бөглөнө үү" />
+                                            </div>
+                                            <div class="mt-1 mb-1 udirdan_zohion_baiguulah">
+                                                <div>Удирдан зохион байгуулах ур чадвар</div>
+                                                <div data-repeater-list="udirdan_zohion_baiguulah">
+                                                    <div data-repeater-item>
+                                                        <div class="row d-flex align-items-end">
+                                                            <div class="col-md-10 col-12">
+                                                                <div class="mb-1">
+                                                                    <input type="text" name="udirdan_zohion_baiguulah" class="form-control"/>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2 col-12 mb-50">
+                                                                <div class="mb-1">
+                                                                    <button class="btn btn-outline-danger text-nowrap px-1" data-repeater-delete type="button">
+                                                                        <i data-feather="x" class="me-25"></i>
+                                                                        <span>Устгах</span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <button class="btn btn-icon btn-primary" type="button" data-repeater-create>
+                                                            <i data-feather="plus" class="me-25"></i>
+                                                            <span>Нэмэх</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr />
+                                            <div class="mt-1 mb-1 dvn_shinjilgee_hiih">
+                                                <div>Дүн шинжилгээ хийх ур чадвар</div>
+                                                <div data-repeater-list="dvn_shinjilgee_hiih">
+                                                    <div data-repeater-item>
+                                                        <div class="row d-flex align-items-end">
+                                                            <div class="col-md-10 col-12">
+                                                                <div class="mb-1">
+                                                                    <input type="text" class="form-control" name="dvn_shinjilgee_hiih" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2 col-12 mb-50">
+                                                                <div class="mb-1">
+                                                                    <button class="btn btn-outline-danger text-nowrap px-1" data-repeater-delete type="button">
+                                                                        <i data-feather="x" class="me-25"></i>
+                                                                        <span>Устгах</span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <button class="btn btn-icon btn-primary" type="button" data-repeater-create>
+                                                            <i data-feather="plus" class="me-25"></i>
+                                                            <span>Нэмэх</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr />
+                                            <div class="mt-1 mb-1 asuudal_shiidwerleh">
+                                                <div>Асуудал шийдвэрлэх</div>
+                                                <div data-repeater-list="asuudal_shiidwerleh">
+                                                    <div data-repeater-item>
+                                                        <div class="row d-flex align-items-end">
+                                                            <div class="col-md-10 col-12">
+                                                                <div class="mb-1">
+                                                                    <input type="text" class="form-control" name="asuudal_shiidwerleh" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2 col-12 mb-50">
+                                                                <div class="mb-1">
+                                                                    <button class="btn btn-outline-danger text-nowrap px-1" data-repeater-delete type="button">
+                                                                        <i data-feather="x" class="me-25"></i>
+                                                                        <span>Устгах</span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <button class="btn btn-icon btn-primary" type="button" data-repeater-create>
+                                                            <i data-feather="plus" class="me-25"></i>
+                                                            <span>Нэмэх</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr />
+                                            <div class="mt-1 mb-1 manlailah">
+                                                <div>Манлайлах</div>
+                                                <div data-repeater-list="manlailah">
+                                                    <div data-repeater-item>
+                                                        <div class="row d-flex align-items-end">
+                                                            <div class="col-md-10 col-12">
+                                                                <div class="mb-1">
+                                                                    <input type="text" class="form-control" name="manlailah" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2 col-12 mb-50">
+                                                                <div class="mb-1">
+                                                                    <button class="btn btn-outline-danger text-nowrap px-1" data-repeater-delete type="button">
+                                                                        <i data-feather="x" class="me-25"></i>
+                                                                        <span>Устгах</span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <button class="btn btn-icon btn-primary" type="button" data-repeater-create>
+                                                            <i data-feather="plus" class="me-25"></i>
+                                                            <span>Нэмэх</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr />
+                                            <div class="mt-1 mb-1 busad">
+                                                <div>Бусад</div>
+                                                <div data-repeater-list="busad">
+                                                    <div data-repeater-item>
+                                                        <div class="row d-flex align-items-end">
+                                                            <div class="col-md-10 col-12">
+                                                                <div class="mb-1">
+                                                                    <input type="text" class="form-control" name="busad" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2 col-12 mb-50">
+                                                                <div class="mb-1">
+                                                                    <button class="btn btn-outline-danger text-nowrap px-1" data-repeater-delete type="button">
+                                                                        <i data-feather="x" class="me-25"></i>
+                                                                        <span>Устгах</span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <button class="btn btn-icon btn-primary" type="button" data-repeater-create>
+                                                            <i data-feather="plus" class="me-25"></i>
+                                                            <span>Нэмэх</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr />
+                                            <!-- Албан тушаалд тавигдах тусгай шаардлага END -->
+                                            <h4 style="background-color: #595957; color: #fff">IV. Албан тушаалтны харилцах субъект</h4>
+                                            <div class="mb-1 col-md-6">
+                                                <label class="form-label">Албан тушаалыг шууд харьялан удирдах албан тушаалын нэр:</label>
+                                                <input id="hariyalan_udirdah_alban_tushaaliin_ner" name="hariyalan_udirdah_alban_tushaaliin_ner" type="text" class="form-control" data-msg="Энэ талбарыг бөглөнө үү" />
+                                            </div>
+                                            <div class="mb-1 col-md-6">
+                                                <label class="form-label">Ахлах мэргэжилтэн:</label>
+                                                <input id="ahlah_mergejilten" name="ahlah_mergejilten" type="text" class="form-control" data-msg="Энэ талбарыг бөглөнө үү" />
+                                            </div>
+                                            <div class="mb-1 col-md-6">
+                                                <label class="form-label">Mэргэжилтэн:</label>
+                                                <input id="mergejilten" name="mergejilten" type="text" class="form-control" data-msg="Энэ талбарыг бөглөнө үү" />
+                                            </div>
+                                            <div class="mb-1 col-md-6">
+                                                <label class="form-label">Төрийн үйлчилгээний албан хаагч:</label>
+                                                <input id="turiin_vilchilgeenii_alban_haagch" name="turiin_vilchilgeenii_alban_haagch" type="text" class="form-control" data-msg="Энэ талбарыг бөглөнө үү" />
+                                            </div>
+                                            <div class="mb-1 col-md-6">
+                                                <label class="form-label">Нийт:</label>
+                                                <input id="niit" name="niit" type="number" class="form-control" data-msg="Энэ талбарыг бөглөнө үү" />
+                                            </div>
+                                            <hr />
+                                            <div class="mt-1 mb-1 busad_hariltsah_subject">
+                                                <div>Бусад харилцах субъект</div>
+                                                <div data-repeater-list="busad_hariltsah_subject">
+                                                    <div data-repeater-item>
+                                                        <div class="row d-flex align-items-end">
+                                                            <div class="col-md-10 col-12">
+                                                                <div class="mb-1">
+                                                                    <input type="text" class="form-control" name="busad_hariltsah_subject" />
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-2 col-12 mb-50">
+                                                                <div class="mb-1">
+                                                                    <button class="btn btn-outline-danger text-nowrap px-1" data-repeater-delete type="button">
+                                                                        <i data-feather="x" class="me-25"></i>
+                                                                        <span>Устгах</span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <button class="btn btn-icon btn-primary" type="button" data-repeater-create>
+                                                            <i data-feather="plus" class="me-25"></i>
+                                                            <span>Нэмэх</span>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <h4 style="background-color: #595957; color: #fff">V. Албан тушаалын тодорхойлолтын баталгаажуулалт</h4>
+                                            <div class="mb-1 col-md-6">
+                                                <label class="form-label">Албан тушаалын тодорхойлолтыг боловсруулсан:</label>
+                                                <input id="todorhoiloltiig_bolowsruulsan" name="todorhoiloltiig_bolowsruulsan" type="text" class="form-control" data-msg="Энэ талбарыг бөглөнө үү" />
+                                            </div>
+                                            <div class="mb-1 col-md-6">
+                                                <label class="form-label">Албан тушаалын тодорхойлолтыг хянаж, батлах зөвшөөрөл олгосон байгууллагын шийдвэр:</label>
+                                                <input id="todorhoiloltiig_batlah_zowshoorol" name="todorhoiloltiig_batlah_zowshoorol" type="text" class="form-control" data-msg="Энэ талбарыг бөглөнө үү" />
+                                            </div>
+                                            <div class="mb-1 col-md-6">
+                                                <label class="form-label">Албан тушаал:</label>
+                                                <input id="alban_tushaal" name="alban_tushaal" type="text" class="form-control" data-msg="Энэ талбарыг бөглөнө үү" />
+                                            </div>
+                                            <div class="mb-1 col-md-6">
+                                                <label class="form-label">Байгууллагын нэр:</label>
+                                                <input id="baiguullagiin_ner" name="baiguullagiin_ner" type="text" class="form-control" data-msg="Энэ талбарыг бөглөнө үү" />
+                                            </div>
+                                            <div class="mb-1 col-md-6 position-relative">
+                                                <label class="form-label">Шийдвэрийн огноо:</label>
+                                                <input type="date" id="shiidweriin_ognoo_batalgaajuulalt" name="shiidweriin_ognoo_batalgaajuulalt" class="form-control pickadate-months-year-1900-2030 flatpickr-input" placeholder="YYYY-MM-DD" data-msg="Хугацаа сонгоно уу" />
+                                            </div>
+                                            <div class="mb-1 col-md-6">
+                                                <label class="form-label">Шийдвэрийн дугаар:</label>
+                                                <input id="dugaar_batalgaajuulalt" name="dugaar_batalgaajuulalt" type="number" class="form-control" data-msg="Энэ талбарыг бөглөнө үү" />
+                                            </div>
+                                            <h4 style="background-color: #595957; color: #fff">VI. Албан тушаалын тодорхойлолтыг баталсан</h4>
+                                            <div class="mb-1 col-md-6 position-relative">
+                                                <label class="form-label">Шийдвэрийн огноо:</label>
+                                                <input type="date" id="shiidweriin_ognoo" name="shiidweriin_ognoo" class="form-control pickadate-months-year-1900-2030 flatpickr-input" placeholder="YYYY-MM-DD" data-msg="Хугацаа сонгоно уу" />
+                                            </div>
+                                            <div class="mb-1 col-md-6">
+                                                <label class="form-label">Шийдвэрийн дугаар:</label>
+                                                <input id="dugaar" name="dugaar" type="number" class="form-control" data-msg="Энэ талбарыг бөглөнө үү" />
+                                            </div>
+                                            <div class="mb-1 col-md-6">
+                                                <label class="form-label">Дарга:</label>
+                                                <input id="darga" name="darga" type="text" class="form-control" data-msg="Энэ талбарыг бөглөнө үү" />
+                                            </div>
+                                            <div class="col-md-12">
+                                                <button type="submit" class="btn btn-primary data-submit">Хадгалах</button>
+                                                <button id="alban-tushaal-modal-close-bnt" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">
+                                                    Хаах
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div class="modal modal-slide-in new-user-modal fade" id="modals-slide-in">
+                                <div class="modal-dialog custom-50">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </div>
+</div>

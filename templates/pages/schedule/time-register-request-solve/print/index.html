@@ -1,0 +1,137 @@
+{% load static %}
+
+{% block vendorcss %}
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/forms/select/select2.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/pickadate/pickadate.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/jkanban/jkanban.min.css' %}">
+{% endblock vendorcss %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/form-validation.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-pickadate.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Inconsolata&amp;family=Roboto+Slab&amp;family=Slabo+27px&amp;family=Sofia&amp;family=Ubuntu+Mono&amp;display=swap">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/pages/app-kanban.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/schedule.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'assets/css/loader.css' %}" />
+
+
+<title>HR - Монголын үндэсний их сургууль</title>
+<link rel="shortcut icon" type="image/x-icon" href="{% static 'app-assets/images/logo/muis_vacation_logo.png' %}" />
+<link rel="stylesheet" href="{% static 'assets/css/vacation/print.css' %}">
+
+<style>
+    html body {
+        height: auto !important;
+    }
+</style>
+
+{% endblock css %}
+
+{% block content %}
+
+<div>
+    <img
+        src="{% static 'app-assets/images/logo/muis_vacation_logo.png' %}"
+        alt="muis_vacation_logo"
+        width="75px"
+    />
+
+    <p style="text-align: center;"><b>БАГШ, АЖИЛТАН ХУВИЙН ЧӨЛӨӨ ХҮСЭХ ХУУДАС</b></p>
+
+    <table>
+        <tr>
+            <td style="width: 40%;">Багш / ажилтны овог, нэр:</td>
+            <td style="width: 60%;">{{ employee.user.user_info.last_name }} {{ employee.user.user_info.first_name }}</td>
+        </tr>
+        <tr>
+            <td style="width: 40%;">Багш / ажилтны албан тушаал</td>
+            <td style="width: 60%;">{{ employee.org_position.name }}</td>
+        </tr>
+        <tr>
+            <td style="width: 40%;">Чөлөөний үргэлжлэх хугацаа</td>
+            <td style="width: 60%;">
+                {% if during_the_day %}
+                    {{ start_day|slice:"0:4" }} оны {{ start_day|slice:"5:7" }} сарын {{ start_day|slice:"8:10" }} өдрөөс {{ end_day|slice:"0:4" }} оны {{ end_day|slice:"5:7" }} сарын {{ end_day|slice:"8:10" }} өдөр хүртэл<br>
+                    (<span id="differenceDate"></span>-н өдөр / 0-н цаг)
+                {% elif during_the_hours %}
+                    {{ start_day|slice:"0:4" }} оны {{ start_day|slice:"5:7" }} сарын {{ start_day|slice:"8:10" }} өдрийн {{ start_time|slice:"0:2" }} цаг {{ start_time|slice:"3:5" }} минутаас {{ end_time|slice:"0:2" }} цаг {{ end_time|slice:"3:5" }} минут хүртэл<br>
+                    ( <span id="differenceHours"></span>-н цаг)
+                {% endif %}
+            </td>
+        </tr>
+
+        {% for branch_type in branch_types %}
+            <tr>
+                <td style="width: 40%;">{{ branch_type.name }}: ({{ branch_type.org_position.name }})</td>
+                <td style="width: 60%; height: 70px;">
+                    {% if branch_type.answers %}
+                        Зөвшөөрсөн /<span style="text-transform: uppercase;">{{ branch_type.answers.employee.user.user_info.last_name }} {{ branch_type.answers.employee.user.user_info.first_name }}</span>/
+                    {% else %}
+                        .............................. /.............................../
+                    {% endif %}
+                </td>
+            </tr>
+        {% endfor %}
+
+    </table>
+
+    <p style="margin-left: 25px; margin-top: 25px;">
+        <b>Хүлээн авсан:</b> ХНА-ны менежер: ...............................
+        <br>
+        <b>Хүлээн авсан огноо:</b> <span id="dateYear"></span> оны <span id="dateMonth"></span> сарын <span id="dateDay"></span> өдөр
+    </p>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+
+<script>
+
+    const date = new Date()
+
+    document.getElementById('dateYear').innerText = date.getFullYear()
+    document.getElementById('dateMonth').innerText = date.getMonth() + 1
+    document.getElementById('dateDay').innerText = date.getDate();
+
+    if ('{{ during_the_day }}' == 'True')
+    {
+        let firstDate = new Date('{{ start_day }}')
+        let lastDate = new Date('{{ end_day }}')
+        let differenceDay = ((lastDate - firstDate) / 1000 / 60 / 60 / 24)
+
+        document.getElementById('differenceDate').innerText = differenceDay
+    }
+    else if ('{{ during_the_hours }}' == 'True')
+    {
+        let firstDate = new Date('{{ start_day }} {{ start_time }}')
+        let lastDate = new Date('{{ start_day }} {{ end_time }}')
+        let difference = ((lastDate - firstDate) / 1000 / 60 / 60)
+
+        document.getElementById('differenceHours').innerText = difference % 1 == 0 ? difference : difference.toFixed(1)
+    }
+
+    /** Хуудас ачааллахад PRINT үйлдэл шууд хийгдэнэ */
+    window.onload = function()
+    {
+        window.print();
+    }
+
+    /** PRINT or CANCEL дарахад хуудасыг шууд хаана */
+    window.onafterprint = function()
+    {
+        window.close()
+    }
+</script>
+
+{% endblock js %}

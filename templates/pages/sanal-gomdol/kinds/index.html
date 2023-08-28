@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+
+{% load rest_framework %}
+
+{% block content %}
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/forms/select/select2.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/extensions/jstree.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/extensions/ext-component-tree.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+
+{% endblock css %}
+
+<div class="content-body">
+    <div class="row">
+        <div class="col-xl-4 col-lg-5 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Санал, Гомдлын төрлүүд</h4>
+                </div>
+                <div class="card-body">
+                    <div id="jstree-calendar-kinds"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-8 col-lg-7 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">
+                        Төрөл
+                        {% if pk %}
+                            засах
+                        {% else %}
+                            бүртгэх
+                        {% endif %}
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="position-relative">
+                        {% if pk %}
+                            <form class="form-inline" action="{% url 'sanal-gomdol-turul' pk %}" method="post">
+                        {% else %}
+                            <form class="form-inline" action="{% url 'sanal-gomdol-turul' %}" method="post">
+                        {% endif %}
+                            {% csrf_token %}
+                            {% render_form serializer %}
+                            <div class="col-xl-12 col-md-12 col-12 mt-2">
+                                {% if pk %}
+                                    {% if 'sanal-gomdol-turul-update' in request.permissions %}
+                                    <button type="submit" id="salbar-btn" class="btn btn-primary">Засах</button>
+                                    {% endif %}
+                                    {% if 'sanal-gomdol-turul-delete' in request.permissions %}
+                                    <a href="{% url 'sanal-gomdol-turul-delete' pk %}" class="btn btn-danger">Устгах</a>
+                                    {% endif %}
+                                {% else %}
+                                    <button type="submit" id="salbar-btn" class="btn btn-primary">Бүртгэх</button>
+                                {% endif %}
+                            </div>
+                        </form>
+                        {% if 'sanal-gomdol-turul-create' not in request.permissions %}
+                            <div class="inactive p-2">
+                                <p class="fs-18">Танд эрх байхгүй байна</p>
+                            </div>
+                        {% elif pk and not 'sanal-gomdol-turul-update' in request.permissions and pk and not 'sanal-gomdol-turul-delete' in request.permissions %}
+                            <div class="inactive p-2">
+                                <p class="fs-18">Танд эрх байхгүй байна</p>
+                            </div>
+                        {% elif not pk and not 'sanal-gomdol-turul-create' in request.permissions %}
+                            <div class="inactive p-2">
+                                <p class="fs-18">Танд эрх байхгүй байна</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+
+<script src="{% static 'app-assets/vendors/js/forms/select/select2.full.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/form-select2.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/extensions/jstree.min.js' %}"></script>
+
+<script>
+    let submenu = $('#jstree-calendar-kinds')
+    submenu.jstree(
+    {
+        "core" : {
+            'data' : {
+                'url' : "{% url 'sanal-gomdol-turul-list' %}",
+            }
+        },
+        plugins: ['types', 'contextmenu', 'state'],
+        types: {
+            default: {
+                icon: 'far fa-flag text-primary-green'
+            },
+            sub: {
+                icon: 'fas fa-landmark text-primary'
+            },
+            sub1: {
+                icon: 'far fa-circle text-success'
+            },
+            sub2: {
+                icon: "far fa-circle text-success"
+            },
+            sub3: {
+                icon: 'far fa-circle text-success'
+            }
+        }
+    })
+    .on(
+        "activate_node.jstree",
+        function(e, data)
+        {
+            window.location.href = data.node.a_attr.href;
+        }
+    )
+</script>
+
+{% endblock js %}

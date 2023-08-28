@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+
+{% load rest_framework %}
+
+{% block content %}
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/forms/select/select2.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/extensions/jstree.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/extensions/ext-component-tree.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+
+{% endblock css %}
+
+<div class="content-body">
+    hi
+</div>
+
+{% endblock content %}
+
+{% block js %}
+
+<script src="{% static 'app-assets/vendors/js/forms/select/select2.full.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/form-select2.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/extensions/jstree.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/extensions/ext-component-tree.js' %}"></script>
+
+<script>
+
+</script>
+
+<script>
+
+</script>
+
+{% endblock js %}

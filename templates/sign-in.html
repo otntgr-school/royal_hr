@@ -1,0 +1,158 @@
+{% load static %}
+{% block title %}
+{% load rest_framework %}
+{% endblock %}
+
+{% block content %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimal-ui" />
+		<meta name="description" content="HR - Монголын үндэсний их сургууль" />
+		<meta name="keywords" content="admin template, Vuexy admin template, dashboard template, flat admin template, responsive admin template, web app"/>
+		<meta name="author" content="PIXINVENT" />
+		<title>HR - Монголын үндэсний их сургууль</title>
+        <link rel="apple-touch-icon" href="{% static 'app-assets/images/ico/apple-icon-120.png' %}" />
+        <link rel="shortcut icon" type="image/x-icon" href="{% static 'app-assets/images/logo/favicon.png' %}" />
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet" />
+
+        <link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/vendors.min.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/extensions/toastr.min.css' %}" />
+        <!-- END: Vendor CSS-->
+
+        <!-- BEGIN: Theme CSS-->
+        <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/bootstrap.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/bootstrap-extended.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/colors.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/themes/dark-layout.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/themes/bordered-layout.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/themes/semi-dark-layout.css' %}" />
+
+        <!-- BEGIN: Page CSS-->
+        <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/core/menu/menu-types/vertical-menu.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/form-validation.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static '/app-assets/css/plugins/extensions/ext-component-toastr.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/pages/authentication.css' %}" />
+        <!-- END: Page CSS-->
+
+        <!-- BEGIN: Custom CSS-->
+        <link rel="stylesheet" type="text/css" href="{% static 'assets/css/style.css' %}" />
+        <!-- END: Custom CSS-->
+
+    </head>
+    <body class="vertical-layout vertical-menu-modern blank-page navbar-floating footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="blank-page">
+        {% include './message/messages.html' %}
+        <div class="app-content content ">
+            <div class="content-overlay"></div>
+            <div class="header-navbar-shadow"></div>
+            <div class="content-wrapper">
+                <div class="content-header row">
+                </div>
+                <div class="content-body">
+                    <div class="auth-wrapper auth-cover">
+                        <div class="auth-inner row m-0">
+                            <div class="brand-logo d-flex align-items-center">
+                                <img style="width: 80px" src="{% static 'app-assets/images/logo/muis_vacation_logo.png' %}"/>
+                                <h2 style="color: #e35728 !important" class="brand-text text-primary ms-1 mb-0">Хүний нөөцийн систем</h2>
+                            </div>
+                            <div class="d-none d-lg-flex col-lg-8 align-items-center p-5">
+                                <div class="w-100 d-lg-flex align-items-center justify-content-center px-5">
+                                    <img class="img-fluid" src="{% static 'app-assets/images/pages/login-v2.svg' %}" alt="Login V2" />
+                                </div>
+                            </div>
+                            <div class="d-flex col-lg-4 align-items-center auth-bg px-2 p-lg-5">
+                                <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-2 mx-auto">
+                                    <h2 class="card-title fw-bold mb-1">Системд нэвтрэх</h2>
+                                    <form class="form-inline" action="{% url 'account-user-login' %}" method="post" novalidate>
+                                        {% csrf_token %}
+                                        <div class="mb-1">
+                                            <label class="form-label" for="login-email">И-мэйл эсвэл утасны дугаар</label>
+                                            <input
+                                                class="form-control"
+                                                name="email"
+                                                id="login-email"
+                                                type="text"
+                                                placeholder="И-мэйл эсвэл утасны дугаар"
+                                                aria-describedby="login-email"
+                                                {% if not email %} autofocus {% endif %}
+                                                tabindex="1"
+                                                value="{{email}}"
+                                            />
+                                        </div>
+                                        <div class="mb-1">
+                                            <div class="d-flex justify-content-between">
+                                                <label class="form-label" for="login-password">Нууц үг</label><a href="{% url 'forgot-password'%}"><small>Нууц үг мартсан?</small></a>
+                                            </div>
+                                            <div class="input-group input-group-merge form-password-toggle">
+                                                <input
+                                                    class="form-control form-control-merge"
+                                                    type="password"
+                                                    name="cpassword"
+                                                    placeholder="············"
+                                                    aria-describedby="login-password"
+                                                    tabindex="2"
+                                                    autocomplete="on"
+                                                    {% if email %} autofocus {% endif %}
+                                                />
+                                                <span class="input-group-text cursor-pointer">
+                                                    <i data-feather="eye"></i>
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-1">
+                                            <div class="form-check">
+                                                <input
+                                                    class="form-check-input"
+                                                    id="remember-me"
+                                                    name="remember"
+                                                    type="checkbox"
+                                                    tabindex="3"
+                                                    {% if email %} checked {% endif %}
+                                                />
+                                                <label class="form-check-label" for="remember-me"> Намайг сана</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-xl-12 col-md-12 col-12 mt-2">
+                                            <button class="btn btn-primary w-100" type="submit" tabindex="4">Нэвтрэх</button>
+                                        </div>
+                                    </form>
+                                    <!-- <p class="text-center mt-2"><span>Бүртгэлгүй бол</span><a href="{% url 'user-register' %}"><span>&nbsp;Бүртгүүлэх</span></a></p> -->
+                                    <!-- <div class="divider my-2">
+                                        <div class="divider-text">Эсвэл</div>
+                                    </div>
+                                    <div class="auth-footer-btn">
+                                        <button class="btn btn-outline-primary w-100">
+                                            ДАН-аар нэвтрэх
+                                        </button>
+                                    </div> -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script src="{% static 'app-assets/vendors/js/vendors.min.js' %}"></script>
+        <script src="{% static 'app-assets/vendors/js/forms/validation/jquery.validate.min.js' %}"></script>
+        <script src="{% static 'app-assets/vendors/js/extensions/toastr.min.js' %}"></script>
+        <script src="{% static 'app-assets/js/core/app-menu.js' %}"></script>
+        <script src="{% static 'app-assets/js/core/app.js' %}"></script>
+        <script src="{% static 'app-assets/js/scripts/pages/auth-login.js' %}"></script>
+        <script>
+            $(window).on("load", function ()
+            {
+                if (feather)
+                {
+                    feather.replace({
+                        width: 14,
+                        height: 14,
+                    });
+                }
+            });
+        </script>
+    </body>
+</html>
+{% endblock content %}

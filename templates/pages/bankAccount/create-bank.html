@@ -1,0 +1,188 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+
+{% load rest_framework %}
+
+{% block content %}
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/forms/select/select2.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/extensions/jstree.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/extensions/ext-component-tree.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/extensions/dragula.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/extensions/ext-component-drag-drop.css' %}">
+
+{% endblock css %}
+
+<div class="content-body">
+    <div class="row">
+        <div class="col-xl-4 col-lg-5 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Бүртгэгдсэн банкнууд</h4>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group" id="card-drag-area">
+                    </ul>
+                    <a href="/bank/" class="text-primary fw-bold fs-12 mt-1 mb-2 d-block text-center">
+                        <i data-feather='plus'></i> Шинээр үүсгэх
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-8 col-lg-7 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">
+                        Банк
+                        {% if pk %}
+                            засах
+                        {% else %}
+                            бүртгэх
+                        {% endif %}
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="position-relative">
+                        {% if pk %}
+                            <form enctype="multipart/form-data" class="form-inline" action="{% url 'static-bank' pk %}" method="POST">
+                        {% else %}
+                            <form enctype="multipart/form-data" class="form-inline" action="{% url 'static-bank' %}" method="POST">
+                        {% endif %}
+                            {% csrf_token %}
+                            <div class="col-12 mt-1">
+                                <label class="form-label">Нэр:</label>
+                                <input type="text" id="name" name="name" class="form-control" value="{{ serializer.data.name|default:"" }}" placeholder="Банк нэр"  data-msg="Байгууллагын нэр оруулна уу" />
+                            </div>
+                            <div class="d-flex mt-2 custom-flex">
+                                <div class="me-2">
+                                    <div class="orgLogoDiv">
+                                        <img id="viewImage" onerror="this.onerror=null; this.src='/media/400x245.jpg'" src="{{ serializer.data.image }}" />
+                                    </div>
+                                </div>
+                                <div class="w-100">
+                                    <label class="form-label">Лого:</label>
+                                    <input accept="image/*" type="file" id="image" name="image" class="form-control" src="{{ serializer.data.image }}" value="{{ serializer.data.image|default:"" }}" placeholder="ad" data-msg="Лого оруулна уу"/>
+                                </div>
+                            </div>
+                            <div class="col-xl-12 col-md-12 col-12 mt-2">
+                                {% if pk %}
+                                    <button type="submit" class="btn btn-primary">Засах</button>
+                                    <a href="{% url 'static-bank-delete' pk %}" class="btn btn-danger">Устгах</a>
+                                {% else %}
+                                    <button type="submit" class="btn btn-primary">Бүртгэх</button>
+                                {% endif %}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+
+<script src="{% static 'app-assets/vendors/js/forms/select/select2.full.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/form-select2.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/extensions/jstree.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/extensions/dragula.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/extensions/ext-component-tree.js' %}"></script>
+
+<script>
+
+    let dragArea = $("#card-drag-area")
+
+    const logoElemnet = document.getElementById("image")
+    logoElemnet.onchange = function(event) {
+        const logoViewElement = document.getElementById("viewImage")
+        logoViewElement.src = window.URL.createObjectURL(event.target.files[0])
+    }
+
+    /** Банкын нэг айтем */
+    function shagnalItem(data)
+    {
+        let imageIrl = "/media/" + data.image
+        let html = `
+            <li class="list-group-item draggable" data-cid="${data.id}">
+                <div class="d-flex justify-content-between" style="display:flex; align-items: center; justify-content: center">
+                    <div class="avatar avatar-border">
+                        <img
+                            src="${imageIrl ? imageIrl : "/media/53x53.jpg"}"
+                            alt="avatar"
+                            height="42"
+                            width="42"
+                            onerror="this.onerror=null; this.src='/media/53x53.jpg'"
+                        >
+                    </div>
+                    <div>
+                        <h5 style="text-align: center">
+                            ${data.name}
+                        </h5>
+                    </div>
+                    <a role="button" class="text-success" href="/bank/${data.id}/">
+                        ${feather.icons["edit"].toSvg({
+                            class: "font-small-4 ms-1",
+                        })}
+                    </a>
+                </div>
+            </li>
+        `
+        return html
+    }
+
+    /** Банкуудыг дуудах нь */
+    function getDatas()
+    {
+        useLoader(fetchData("{% url 'bank_info_list' %}"), dragArea)
+            .then(
+                ({ success, data, errors, error }) =>
+                {
+                    data.map(
+                        (item, idx) =>
+                        {
+                            let htmlitem = shagnalItem(item)
+                            dragArea.append(htmlitem)
+                        }
+                    )
+                    drake = dragula([document.getElementById('card-drag-area')], {
+                        revertOnSpill: true
+                    });
+                    drake.on("drop", changingOrder)
+                }
+            )
+    }
+
+    /** зөөгдсөн дарааллыг зассан бас back дээрээ хадгалсан */
+    function changingOrder(el, target, source, sibling)
+    {
+        const fromId = $(el).data("cid")
+        const toId = $(sibling).data("cid")
+        const body = {
+            "to_id": toId,
+            "from_id": fromId
+        }
+        useLoader(fetchData("{% url 'bank-info-change-order' %}", body, "PUT"), dragArea.parent()).catch(err => err)
+            .then(
+                ({ success, data, errors }) =>
+                {
+                    if (!success)
+                    {
+                        drake.cancel()
+                    }
+                }
+            )
+    }
+
+    getDatas()
+
+</script>
+
+{% endblock js %}

@@ -1,0 +1,21 @@
+<div class="form-group {% if field.errors %}has-error{% endif %}">
+
+    <div class="col-sm-12">
+        <input type="checkbox" class="form-check-input" name="{{ field.name }}" value="true" id="{{ field.name }}" />
+        {% if field.label %}
+            <label class="{% if style.hide_label %}sr-only{% endif %}" for="{{ field.name }}">
+            {{ field.label }}
+        </label>
+        {% endif %}
+
+      {% if field.errors %}
+        {% for error in field.errors %}
+          <span class="help-block">{{ error }}</span>
+        {% endfor %}
+      {% endif %}
+
+      {% if field.help_text %}
+        <span class="help-block">{{ field.help_text|safe }}</span>
+      {% endif %}
+    </div>
+</div>

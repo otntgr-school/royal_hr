@@ -1,0 +1,251 @@
+{% extends './base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+{% block content %}
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/pickadate/pickadate.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-pickadate.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/forms/select/select2.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}">
+
+{% endblock css %}
+
+<div class="content-body">
+    <div class="card">
+        <div class="card-body overflow-hidden">
+            <div class="row d-flex algin-items-center">
+                <div class="col-md-3 d-flex align-items-center mbc-1 custom-flex">
+                    <div class="me-1">
+                        <label class="form-label">Огноо</label>
+                    </div>
+                    <div class="w-100">
+                        <input type="text" id="fp-default" class="form-control flatpickr-basic flatpickr-input" placeholder="YYYY-MM-DD" readonly="readonly">
+                    </div>
+                </div>
+                <div class="col-md-3 d-flex align-items-center mbc-1 custom-flex">
+                    <div class="me-1">
+                        <label class="form-label" for="select2-basic">Алба нэгж</label>
+                    </div>
+                    <div class="w-100">
+                        <select class="select2 form-select w-100" id="select2-basic">
+                            <option value="AK">Албан тушаал 01 </option>
+                            <option value="HI">Албан тушаал 02</option>
+                            <option value="CA">Албан тушаал 03</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="col-md-2 mbc-1">
+                    <button class="btn btn-outline-primary waves-effect w-100">
+                        <i data-feather='refresh-cw'></i>
+                        Шинэчлэх
+                    </button>
+                </div>
+                <div class="col-md-4 d-flex align-items-center custom-flex">
+                    <div class="d-flex align-items-center me-1 mbc-1">
+                        <label class="identification bg-danger rounded-circle"></label>
+                        <label class="fs-12">Илгэгдээгүй</label>
+                    </div>
+                    <div class="d-flex align-items-center me-1 mbc-1">
+                        <label class="identification bg-success rounded-circle"></label>
+                        <label class="fs-12">Илгээгдсэн</label>
+                    </div>
+                    <div class="d-flex align-items-center mbc-1">
+                        <label class="identification bg-primary rounded-circle"></label>
+                        <label class="fs-12">Батлагдсан</label>
+                    </div>
+                </div>
+            </div>
+            <div class="card-inner mt-2">
+                <div class="card-body">
+                    <div class="line_graph_grid">
+                        <div>
+                            <div class="d-flex align-items-center item">
+                                <label class="identification color-1"></label>
+                                <label class="fs-12">Ажиллах өдөр</label>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-flex align-items-center item">
+                                <label class="identification color-2"></label>
+                                <label class="fs-12">Ажиллахгүй</label>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-flex align-items-center item">
+                                <label class="identification color-3"></label>
+                                <label class="fs-12">Өвчтэй</label>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-flex align-items-center item">
+                                <label class="identification color-4"></label>
+                                <label class="fs-12">Сургалт семинар</label>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-flex align-items-center item">
+                                <label class="identification color-5"></label>
+                                <label class="fs-12">Чөлөө(дотоод журмаар олгогдох цалин)</label>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-flex align-items-center item">
+                                <label class="identification color-6"></label>
+                                <label class="fs-12">Чөлөөтэй эсвэл дэкриттэй</label>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-flex align-items-center item">
+                                <label class="identification color-7"></label>
+                                <label class="fs-12">Цалингүй чөлөө</label>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-flex align-items-center item">
+                                <label class="identification color-8"></label>
+                                <label class="fs-12">Нөхөн амралт</label>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-flex align-items-center item">
+                                <label class="identification color-9"></label>
+                                <label class="fs-12">Гадуур ажилтай</label>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-flex align-items-center item">
+                                <label class="identification color-10"></label>
+                                <label class="fs-12">Ээжлийн амралт</label>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-flex align-items-center item">
+                                <label class="identification color-11"></label>
+                                <label class="fs-12">Томилолт</label>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-flex align-items-center item">
+                                <label class="identification color-12"></label>
+                                <label class="fs-12">Чөлөө (3 хүртэл өдрийн цалингүй)</label>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="d-flex align-items-center item">
+                                <label class="identification color-13"></label>
+                                <label class="fs-12">Байгууллагад байхгүй</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section id="complex-header-datatable">
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header border-bottom">
+                        <h4 class="card-title">Цуваа график</h4>
+                    </div>
+                    <div class="card-datatable">
+                        <table class="dt-complex-header table table-bordered table-responsive text-center">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2">#</th>
+                                    <th colspan="5">Ажилтны мэдээлэл</th>
+                                    <th colspan="30">Огноо</th>
+                                </tr>
+                                <tr>
+                                    <th>Эцэг/эхийн нэр</th>
+                                    <th>Өөрийн нэр</th>
+                                    <th>Байгууллага</th>
+                                    <th>Албан нэгж</th>
+                                    <th>Албан тушаал</th>
+                                    <th>1</th>
+                                    <th>2</th>
+                                    <th>3</th>
+                                    <th>4</th>
+                                    <th>5</th>
+                                    <th>6</th>
+                                    <th>7</th>
+                                    <th>8</th>
+                                    <th>9</th>
+                                    <th>10</th>
+                                    <th>11</th>
+                                    <th>12</th>
+                                    <th>13</th>
+                                    <th>14</th>
+                                    <th>15</th>
+                                    <th>16</th>
+                                    <th>17</th>
+                                    <th>18</th>
+                                    <th>19</th>
+                                    <th>20</th>
+                                    <th>21</th>
+                                    <th>22</th>
+                                    <th>23</th>
+                                    <th>24</th>
+                                    <th>25</th>
+                                    <th>26</th>
+                                    <th>27</th>
+                                    <th>28</th>
+                                    <th>29</th>
+                                    <th class="cell-fit">30</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <th>adf</th>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock content %}
+
+{% block js %}
+
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.checkboxes.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.buttons.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jszip.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/pdfmake.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/vfs_fonts.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.html5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.printm.in.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+
+<script src="{% static 'app-assets/js/scripts/tables/table-datatables-basic.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/tables/table-datatables-advanced.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.date.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.time.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/legacy.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/pickers/form-pickers.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/forms/select/select2.full.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/form-select2.js' %}"></script>
+
+{% endblock js %}

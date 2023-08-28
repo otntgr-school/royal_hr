@@ -1,0 +1,688 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+
+{% block vendorcss %}
+<!-- BEGIN: Vendor CSS-->
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/forms/select/select2.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/pickadate/pickadate.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/jkanban/jkanban.min.css' %}">
+
+{% endblock vendorcss %}
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/schedule.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'assets/css/loader.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/form-validation.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-pickadate.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Inconsolata&amp;family=Roboto+Slab&amp;family=Slabo+27px&amp;family=Sofia&amp;family=Ubuntu+Mono&amp;display=swap">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/pages/app-kanban.css' %}">
+
+{% endblock css %} {% block content %}
+
+<div class="content-body">
+	<section class="app-user-list">
+		<div class="card">
+			<div class="card-body border-bottom">
+				<h4 class="card-title d-inline">Хүсэлт илгээх</h4>
+				<div class="row">
+					<div class="col-md-4 user_role"></div>
+					<div class="col-md-4 user_plan"></div>
+					<div class="col-md-4 user_status"></div>
+				</div>
+			</div>
+			<div class="card-datatable table-responsive pt-0" id="loader_main_display">
+				<div class="custom-cell">
+					<table class="time-list-table table text-center">
+						<thead class="table-light">
+							<tr class="filter-container"></tr>
+							<tr>
+								<th>ID</th>
+								<th>Огноо</th>
+								<th>Он сар</th>
+								<th>Тайлбар</th>
+								<th>Төлөв</th>
+								<th>Үйлдэл</th>
+						</thead>
+						<tfoot class="table-light">
+							<tr>
+								<th>ID</th>
+								<th>Огноо</th>
+								<th>Он сар</th>
+								<th>Тайлбар</th>
+								<th>Төлөв</th>
+								<th>Үйлдэл</th>
+						</tfoot>
+					</table>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+
+<!-- Form-->
+{% include "pages/schedule/time-register-request/form.html" %}
+
+<!-- Model -->
+{% include "pages/schedule/time-register-request/modal/reason_for.html" with id="reasonFor" %}
+{% include "pages/schedule/time-register-request/modal/reason_detail.html" with id="reasonDetail" %}
+{% include "pages/main/warning-modal.html" %}
+
+{% endblock %}
+
+{% block js %}
+
+<script src="{% static 'app-assets/vendors/js/forms/select/select2.full.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.buttons.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jszip.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/pdfmake.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/vfs_fonts.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.html5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.print.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/cleave.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/addons/cleave-phone.us.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.date.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.time.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/legacy.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+
+<script src="{% static 'app-assets/js/scripts/pages/app-user-list.js' %}"></script>
+
+<script src="{% static 'app-assets/js/scripts/tables/table-datatables-advanced.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/pickers/form-pickers.js' %}"></script>
+
+<script>
+	/** Tooltip */
+	$(document).ready(function() {
+        $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+    });
+
+	let table_detail = document.getElementById("detail_table");
+
+	/** үндсэн хуудасны loader арилгана */
+    let loaderTurnOffMain = function()
+    {
+        document.getElementById('loader_employee').classList.remove('loaderWew')
+        document.getElementById('loader_display').style.display = 'none'
+        document.getElementById('loader_main_display').style.display = 'block'
+    }
+
+	async function reasonDetailsFunction(detailData)
+	{
+		let status = ''
+		if (detailData.status == 2)
+		{
+			status = 'Татгалзсан'
+		}
+		else if (detailData.status == 3)
+		{
+			status = 'Зөвшөөрсөн'
+		}
+		else
+		{
+			status = 'Хүлээгдэж буй'
+		}
+
+		let last_value = detailData.start_day
+		if(detailData.end_day)
+		{
+			last_value = last_value.concat(' - ', detailData.end_day)
+		}
+		if(detailData.start_time)
+		{
+			last_value = last_value.concat('  ', detailData.start_time)
+		}
+		if(detailData.end_time)
+		{
+			last_value = last_value.concat(' - ', detailData.end_time)
+		}
+
+		document.getElementById('title_reason_agreed_detail').textContent = status
+		document.getElementById('reason_date_detail').textContent = detailData.created_at
+		document.getElementById('reason_request_date_detail').textContent = last_value
+		document.getElementById('description_detail').textContent = detailData.description
+
+		const { data, success, errors } = await fetchData(`/schedule/time-register-request-org-pos/${detailData.vacation_type}/${detailData.id}/`, null, 'GET')
+
+        if(success)
+        {
+			data.map((val, idx) =>
+			{
+				let row = table_detail.insertRow(-1);
+
+				let c1 = row.insertCell(0);
+				let c2 = row.insertCell(1);
+				let c3 = row.insertCell(2);
+				let c4 = row.insertCell(2);
+
+				c1.innerText = idx + 1
+				c2.innerText = val?.org_position.name
+				c3.innerText = val?.answer ? val?.answer?.message : ''
+				c4.innerText = val?.answer ? val?.answer?.is_confirm ? 'зөвшөөрсөн' : 'татгалзсан' : 'хүлээгдэж буй'
+			})
+        }
+	}
+
+	/**  Header дээр input ийг clone хийж гаргах нь */
+	cloneFooter('.time-list-table', [1])
+
+	/** DATATABLE */
+	const dataTable = $(".time-list-table")
+		.on('preXhr.dt', function ()
+		{
+			addLoader($('#loader_main_display'))
+		})
+		.on( 'draw.dt', function () {
+			rmLoader($('#loader_main_display'))
+        })
+		.DataTable({
+			processing: false,
+			dom: 'lBfrtip',
+			serverSide: true,
+			ajax: { url: `{% url 'time-register-request-json' %}` },
+			columns: [
+				{ data: "id" },
+				{ data: "created_at" },
+				{ data: "date" },
+				{ data: "description" },
+				{ data: "state" },
+				{ data: "id" },
+			],
+			//  order хийхэд input үүдийн утгаар нь хайх нь
+			initComplete: function()
+			{
+				// loaderTurnOffMain()
+			},
+			bFilter: true,
+			columnDefs: [
+				{
+					targets: 0,
+					title: "#",
+					orderable: false,
+					render: function (data, type, full, meta)
+					{
+						if (full.status == 1)
+						{
+							meta.settings.aoData[meta.row].nTr.className = meta.settings.aoData[meta.row].nTr.className + " gray-border "
+						}
+						if (full.status == 2)
+						{
+							meta.settings.aoData[meta.row].nTr.className = meta.settings.aoData[meta.row].nTr.className + " red-decline-border "
+						}
+						if (full.status == 3)
+						{
+							meta.settings.aoData[meta.row].nTr.className = meta.settings.aoData[meta.row].nTr.className + " green-agree-border "
+						}
+
+						return (
+							meta.settings._iDisplayStart + meta.row + 1
+						);
+					},
+				},
+				{
+					targets: 2,
+					orderable: true,
+					render: function (data, type, full, meta)
+					{
+						let last_value = full.start_day
+						if(full.end_day)
+						{
+							last_value = last_value.concat(' - ', full.end_day)
+						}
+						if(full.start_time)
+						{
+							last_value = last_value.concat('  ', full.start_time)
+						}
+						if(full.end_time)
+						{
+							last_value = last_value.concat(' - ', full.end_time)
+						}
+						return last_value
+					},
+				},
+				{
+					targets: 3,
+					orderable: false,
+					render: function (data, type, full, meta)
+					{
+						return (
+							`<span class='d-inline-block text-truncate' style='max-width: 250px;'>${data}</span>`
+						)
+					},
+				},
+				{
+					targets: 4,
+					orderable: true,
+					render: function (data, type, full, meta)
+					{
+						let allData = JSON.stringify(full)
+
+						if (full.status == 2)
+						{
+							return (
+								`<a
+									data-toggle="tooltip"
+									title="Татгалзсан шалтгаан"
+									data-bs-toggle="modal"
+									data-bs-target="#reasonFor"
+									class="text-danger delete-record ms-1"
+									onclick='reasonFunction(
+										${allData}
+									)'
+								>
+									${feather.icons["clipboard"].toSvg(
+									{
+										class: "font-small-4",
+									})}
+								</a><span style="display: none;">Татгалзсан</span>`
+							)
+						}
+
+						if (full.status == 3)
+						{
+							return (
+								`<a
+									data-toggle="tooltip"
+									title="Зөвшөөрсөн"
+									data-bs-toggle="modal"
+									data-bs-target="#reasonFor"
+									onclick='reasonFunction(
+										${allData}
+									)'
+									class="text-success delete-record ms-1"
+								>
+									${feather.icons["clipboard"].toSvg(
+									{
+										class: "font-small-4",
+									})}
+								</a><span style="display: none;">Зөвшөөрсөн</span>`
+							)
+						}
+						return (
+							'Хүлээгдэж буй'
+						);
+					},
+				},
+				{
+					targets: 5,
+					orderable: true,
+					render: function (data, type, full, meta)
+					{
+						let allData = JSON.stringify(full)
+
+						return (
+							`<a
+								data-toggle="tooltip"
+								title="Дэлгэрэнгүй"
+								data-bs-toggle="modal"
+								data-bs-target="#reasonDetail"
+								class="text-info delete-record ms-1"
+								onclick='reasonDetailsFunction(
+									${allData}
+								)'
+							>
+								${feather.icons["file-text"].toSvg(
+								{
+									class: "font-small-5",
+								})}
+							</a>`
+						)
+					},
+					},
+			],
+			order: [[1, "desc"]],
+			lengthMenu: [
+                [10, 25, 50, 100, -1],
+                [10, 25, 50, 100, 'Бүгд'],
+            ],
+			dom:
+				'<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+				'<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+				'<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+				">t" +
+				'<"d-flex justify-content-between mx-2 row mb-1"' +
+				'<"col-sm-12 col-md-6"i>' +
+				'<"col-sm-12 col-md-6"p>' +
+				">",
+			oLanguage: {
+				sProcessing: "Ачааллаж байна. ",
+				sSearch: "Хайх: ",
+				sEmptyTable: "Бичлэг байхгүй",
+				sInfoEmpty: "Нийт 0 бичлэг",
+				sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+				sInfoFiltered: " - _MAX_ бичлэгээс",
+				sLengthMenu: "_MENU_ бичлэг",
+				oPaginate: {
+					sFirst: "Эхэнд",
+					sLast: "Төгсгөлд",
+					sNext: "Дараах",
+					sPrevious: "Өмнөх",
+				},
+			},
+			// Buttons with Dropdown
+			buttons: [
+				{
+					extend: "collection",
+					className: "btn btn-outline-secondary dropdown-toggle me-2",
+					text:
+						feather.icons["external-link"].toSvg({
+							class: "font-small-4 me-50",
+						}) + "Export",
+					buttons: [
+						{
+							extend: "print",
+							text:
+								feather.icons["printer"].toSvg({
+									class: "font-small-4 me-50",
+								}) + "Print",
+							className: "dropdown-item",
+							exportOptions: { columns: [0, 1, 2, 3, 4] },
+						},
+						{
+							extend: "csv",
+							text:
+								feather.icons["file-text"].toSvg({
+									class: "font-small-4 me-50",
+								}) + "Csv",
+							className: "dropdown-item",
+							exportOptions: { columns: [0, 1, 2, 3, 4] },
+						},
+						{
+							extend: "excel",
+							text:
+								feather.icons["file"].toSvg({
+									class: "font-small-4 me-50",
+								}) + "Excel",
+							className: "dropdown-item",
+							exportOptions: { columns: [0, 1, 2, 3, 4] },
+						},
+						{
+							extend: "pdf",
+							text:
+								feather.icons["clipboard"].toSvg({
+									class: "font-small-4 me-50",
+								}) + "Pdf",
+							className: "dropdown-item",
+							exportOptions: { columns: [0, 1, 2, 3, 4] },
+						},
+						{
+							extend: "copy",
+							text:
+								feather.icons["copy"].toSvg({
+									class: "font-small-4 me-50",
+								}) + "Copy",
+							className: "dropdown-item",
+							exportOptions: { columns: [0, 1, 2, 3, 4] },
+						},
+					],
+					init: function (api, node, config) {
+						$(node).removeClass("btn-secondary");
+						$(node).parent().removeClass("btn-group");
+						setTimeout(function () {
+							$(node)
+								.closest(".dt-buttons")
+								.removeClass("btn-group")
+								.addClass("d-inline-flex mt-50");
+						}, 50);
+					},
+				},
+				{
+					text: "Шинээр бүртгэх",
+					className: "add-new btn btn-primary",
+					attr: {
+						"data-bs-toggle": "modal",
+						"data-bs-target": "{% if 'request-create' in request.permissions %} #modals-slide-in {% else %} #warning-modal {% endif %}",
+					},
+					init: function (api, node, config) {
+						$(node).removeClass("btn-secondary").addClass('click_btn')
+
+					},
+				},
+			],
+		});
+	searchFooter(dataTable)
+
+</script>
+
+<script>
+
+	let startEndTime = document.getElementById('startEndTime').style
+	let endDay = document.getElementById('endDay').style
+	// let reasonDisplay = document.getElementById('reason').style
+	let allDisplay = document.getElementById('allDisplay').style
+
+	let duringTheDayId = document.getElementById('during_the_day_id').style
+	let duringTheHoursId = document.getElementById('during_the_hours_id').style
+
+	// let select = document.getElementById('special_reason')
+
+	/** Radiobutton алийг идэвхжүүлсэнийг олж мэдэх name-г солих */
+	/** Мөн аль аль input-үүдийг харуулахыг шийднэ */
+	function radioChange()
+	{
+		let checkedRadio = document.querySelector('input[type="radio"]:checked')
+		allRadios = document.getElementsByClassName('radioBtnClass')
+
+		startEndTime.display = 'none'
+		endDay.display = 'none'
+
+		for (let i=0; i<allRadios.length; i++)
+		{
+			allRadios[i].setAttribute('name', checkedRadio.id)
+		}
+
+		if (checkedRadio.id == 'during_the_hours') {
+			startEndTime.display = 'block'
+		} else if (checkedRadio.id == 'during_the_day') {
+			endDay.display = 'block'
+		}
+	}
+
+	const selectOptions = JSON.parse('{{vacation_types_reasons_json|safe}}')
+
+	/** Чөлөөний төрөлөөс шалтгаалж дэлгэцэнд харагдах input-үүд ондоо болгодог функц */
+    function typeClick()
+    {
+
+		// document.getElementById('all_times').setAttribute('data-bs-original-title', 'selectedData.times')
+
+		/** Хэрвээ өөр modal дээр validation ажилж алдаа заагдсан байвал цэвэрлэнэ */
+		var jqForm = $('#timeRegisterRequestForm')
+		jqForm.validate().resetForm();
+
+		/** Бүх утыг хоослоно */
+		$('#timeRegisterRequestForm').find("input[type=text], textarea").val("");
+		let checkedRadio = document.querySelector('input[type="radio"]:checked')
+		if (checkedRadio) {
+			checkedRadio.checked = false
+		}
+		duringTheDayId.display = 'none'
+		duringTheHoursId.display = 'none'
+		// reasonDisplay.display = 'none'
+		startEndTime.display = 'none'
+		endDay.display = 'none'
+
+		/** Аль хүсэлтийг сонгосноор цааш үйлдлүүд хийгдана */
+        let element = document.getElementById("vacation_type");
+        let selectedCode = element.options[element.selectedIndex].getAttribute("data-code");
+		let vacation_key = Object.keys(selectOptions).find(key => selectOptions[key].id == selectedCode)
+		let selectedData = selectOptions[vacation_key]
+
+		/** Юу ч сонгоогүй бол хоосон буцаана */
+		if (!selectedData)
+		{
+			allDisplay.display = 'none'
+			return
+		}
+
+		allDisplay.display = 'inline'
+
+		/** Хэдэн эрх үлдсэн байгааг тоолох */
+		let times = selectedData.times - selectedData.len_residual_times
+
+		/** Сөрөг тоо байвал 0 болгох */
+		if (times <= 0) {
+			times = 0
+		}
+
+		/** Хэдэн удаа авч болох тоо */
+		const tooltipElement = document.getElementById('all_times')
+		let bsTooltip = new bootstrap.Tooltip(tooltipElement)
+		tooltipElement.title = `Сард нийт ${selectedData.times} удаа авч болно.`
+		bsTooltip = new bootstrap.Tooltip(tooltipElement)
+
+		document.getElementById('times').innerHTML = times
+
+		/**  Өдрөөр Цагаар 2 btn */
+		if (selectedData.many_days_vacation) {
+			duringTheDayId.display = 'inline-block'
+		}
+		if (selectedData.one_day_vacation) {
+			duringTheHoursId.display = 'inline-block'
+		}
+
+		// /** Шалтгааны сонголтын утгуудыг хоослох */
+		// var length = select.options.length;
+		// for (i = length-1; i >= 1; i--) {
+		// 	select.options[i] = null;
+		// }
+
+		// /** Шалтгаантай бол option-гуудыг нэмнэ */
+		// if (selectedData.reason.length != 0)
+		// {
+		// 	reasonDisplay.display = 'block'
+
+		// 	for (let reason of selectedData.reason)
+		// 	{
+		// 		var option = document.createElement("option");
+		// 		option.text = reason.name;
+		// 		option.value = reason.id;
+		// 		select.add(option);
+		// 	}
+		// }
+    }
+
+</script>
+
+<script>
+
+	let jqForm = $('#timeRegisterRequestForm')
+
+	/** Шалгах утгууд */
+	if (jqForm.length)
+	{
+		$(document).ready(function(){
+
+			jQuery.validator.addMethod("noSpace", function(value, element)
+			{
+				return value.trim().length !== 0;
+			});
+
+			jQuery.validator.addMethod("timeLength", function(value, element)
+			{
+				return value.length === 8
+			})
+
+			validate = jqForm.validate(
+			{
+				rules: {
+					'vacation_type': {
+						required: true
+					},
+					'start_day': {
+						required: true
+					},
+					'end_day': {
+						required: true
+					},
+					'start_time': {
+						required: true,
+						timeLength: true
+					},
+					'end_time': {
+						required: true,
+						timeLength: true
+					},
+					// 'special_reason': {
+					// 	required: true
+					// },
+					'temporary_leave_reason': {
+						required: true
+					},
+					'description': {
+						required: true,
+						noSpace: true,
+					},
+					'during_the_day': {
+						required: true
+					},
+					'during_the_hours': {
+						required: true
+					}
+				}
+			})
+		})
+	}
+
+	/** Шалтгааны модалд утгыг онооно */
+    async function reasonFunction(data)
+    {
+        /** Нэрний формат */
+        let lastName = data.agreed.user.user_info.last_name[0]
+        let firstName = data.agreed.user.user_info.first_name
+        let fullName = ''
+        if (lastName)
+        {
+            fullName = lastName + '.'
+        }
+        fullName = fullName + firstName
+
+        document.getElementById('reason_agreed').textContent = fullName
+        document.getElementById('reason_date').textContent = data.resolved_date
+
+        /** Татгалзсан бол шалтгаан байгаа үгүйг шалгана */
+        if (data.status == 3)
+        {
+            document.getElementById('reason_reason').style.display = 'none'
+            document.getElementById('title_reason_agreed').textContent = 'Зөвшөөрсөн'
+        }
+        else
+        {
+            document.getElementById('reason_reason').style.display = 'block'
+            document.getElementById('reason_text').textContent = data.reason_for_rejection
+            document.getElementById('title_reason_agreed').textContent = 'Татгалзсан'
+        }
+    }
+
+	/** Submit дарахад loader ажиллуулах */
+	function formSubmit(event)
+	{
+		if(!jqForm.valid())
+        {
+            return
+        }
+		addLoader($('#timeRegisterRequestForm'))
+	}
+</script>
+
+{% endblock js %}

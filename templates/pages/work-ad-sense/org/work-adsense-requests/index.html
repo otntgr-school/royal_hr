@@ -1,0 +1,628 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+{% load mytags %}
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css' %}">
+
+{% endblock css %}
+<!--prettier-ignore-->
+{% block content %}
+<!-- fixed column -->
+<div class="content-body">
+    <section class="app-user-view-connections">
+        {% jsonloads tree_data as s_options %}
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Ажлын байранд орох хүсэлт</h4>
+                    </div>
+                    <div class="table-body">
+                        <div class="table-responsive card-datatable">
+                            <table class="table allowance-table ">
+                                <thead class="table-light">
+                                    <tr class="filter-container"></tr>
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th>Нэр</th>
+                                        <th>Ажлын байр</th>
+                                        <th>Огноо</th>
+                                        <th>Төлөв</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tfoot class="table-light">
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th>Нэр</th>
+                                        <th>Ажлын байр</th>
+                                        <th>Огноо</th>
+                                        <th>Төлөв</th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="modal fade" id="warning-modal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog modal-sm modal-dialog-centered modal-edit-user">
+			<div class="modal-content">
+				<div class="modal-header bg-transparent">
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body text-center">
+					<div class="text-center">
+						<i class="fas fa-exclamation-circle text-warning fs-40"></i>
+					</div>
+					<h6 class="mt-1 mb-1 fw-bolder">Анхааруулга<h6>
+					Та цуцлахдаа итгэлтэй байна уу
+				</div>
+				<div class="modal-footer">
+					<button
+						class="btn btn-primary"
+						data-bs-dismiss="modal"
+						type="button"
+						onclick="rejectRequest(event)"
+					>
+						<span>Тийм</span>
+					</button>
+					<button
+						class="btn btn-outline-secondary"
+						data-bs-dismiss="modal"
+					>
+						Үгүй
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+    <div class="modal fade" id="warning-chigluuleh-modal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog modal-sm modal-dialog-centered modal-edit-user">
+			<div class="modal-content">
+				<div class="modal-header bg-transparent">
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body text-center">
+					<div class="text-center">
+						<i class="fas fa-exclamation-circle text-warning fs-40"></i>
+					</div>
+					<h6 class="mt-1 mb-1 fw-bolder">Анхааруулга<h6>
+					<span class="cmain-text"></span>
+				</div>
+				<div class="modal-footer">
+					<button
+						class="btn btn-primary"
+						data-bs-dismiss="modal"
+						type="button"
+						onclick="sendChigluul(event)"
+					>
+						<span>Тийм</span>
+					</button>
+					<button
+						class="btn btn-outline-secondary"
+						data-bs-dismiss="modal"
+					>
+						Үгүй
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+    {% include './modal/employee-create.html' %}
+</div>
+{% endblock content %}
+{% block js %}
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.checkboxes.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.buttons.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/jszip.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/pdfmake.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/vfs_fonts.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.print.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js' %}"></script>
+
+    <script>
+        var donateTable
+        var employeeCreateModal = $("#employeeCreate-modal")
+        var warninChigluulehModal = $("#warning-chigluuleh-modal")
+        var chigluulehText = warninChigluulehModal.find(".cmain-text")
+        var userId = null
+        let table = $(".allowance-table")
+
+        "{% if 'donate-read' in request.permissions %}"
+
+            cloneFooter(
+                ".allowance-table",
+                [
+                    2, 3, 4
+                ]
+            )
+
+
+            donateTable = table.DataTable({
+                fixedColumns:   {
+                    left: 0,
+                    right: 1
+                },
+                processing: false,
+                dom: 'lBfrtip',
+                serverSide: true,
+                ajax: { url: "{% url 'org-work-adsense-request-paginate' request_states.0.0 %}" }, // JSON file to add data
+                columns: [
+                    { data: null },
+                    { data: null },
+                    { data: "full_name" },
+                    { data: "org_position_name" },
+                    { data: "created_at" },
+                    { data: "state_name" },
+                    { data: null },
+                ],
+                columnDefs: [
+                    {
+                        // For Responsive
+                        className: "control",
+                        orderable: false,
+                        responsivePriority: 2,
+                        targets: 0,
+                        render: function (data, type, full, meta) {
+                            return "";
+                        },
+                    },
+                    {
+                        // Actions
+                        targets: -1,
+                        title: "Үйлдэл",
+                        orderable: false,
+                        render: function (data, type, full, meta) {
+                            if(full.state !== 1) return null
+                            return (
+                                `
+                                {% if 'workad-join-request-create' in request.permissions %}
+                                    <span
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        data-bs-original-title="Ажилд авах"
+                                        onclick="getOneDonate('${full.id}', event)"
+                                        class="cursor-pointer delete-record text-primary me-1 approve_gei"
+                                    >
+                                        <i class="fas fa-check"></i>
+                                    </span>
+                                {% endif %}
+                                {% if 'workad-join-request-create' in request.permissions %}
+                                    <span
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        data-bs-original-title="Чиглүүлэх хөтөлбөр ${full.is_send_uureg ? "болиулах" : "илгээх"}"
+                                        onclick="sendWarningChigluuleh('${full.id}', ${full.is_send_uureg}, event)"
+                                        class="cursor-pointer delete-record text-primary me-1 ${full.is_send_uureg ? "text-success" : ""}"
+                                    >
+                                        ${
+                                            feather.icons['book-open'].toSvg()
+                                        }
+                                    </span>
+                                {% endif %}
+                                {% if 'workad-join-request-delete' in request.permissions %}
+                                    <span
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        data-bs-original-title="Цуцлах"
+                                        onclick="showWarningModal('${full.id}')"
+                                        class="cursor-pointer delete-record text-primary-orange decline_gei"
+                                    >
+                                        <i class="fas fa-times"></i>
+                                    </span>
+                                {% endif %}
+                                `
+                            );
+                        },
+                    },
+                    {
+                        targets: 2,
+                        orderable: true,
+                        render: function (data, type, full, meta) {
+                            return `<a
+                                        style="text-decoration: underline"
+                                        href="/work-ad/work-adsense-requested/?token=${full.id}"
+                                    >
+                                        ${data}
+                                    </a>`
+                        },
+                    },
+                    {
+                        targets: 4,
+                        orderable: true,
+                        width: 150,
+                        render: function (data, type, full, meta) {
+                            return `<div>${timeZoneToDateString(full.created_at, false)}</div>`
+                        },
+                    },
+                    {
+                        targets: 5,
+                        orderable: false,
+                        render: function (data, type, full, meta) {
+                            const colors = {
+                                'Хүлээгдэж буй': 'info',
+                                'Зөвшөөрсөн': 'success',
+                                'Цуцалсан': 'danger',
+                            }
+                            return `<span class="text-${colors[data]}">${data}</span>`
+                        },
+                    },
+                    {
+                        targets: 1,
+                        title: "#",
+                        orderable: false,
+                        render: function (data, type, full, meta) {
+                            return (
+                                meta.settings._iDisplayStart + meta.row + 1
+                            );
+                        },
+                    },
+                ],
+                order: [[4, "desc"]],
+                lengthMenu: [
+                    [10, 25, 50, 100, -1],
+                    [10, 25, 50, 100, 'Бүгд'],
+                ],
+                dom:
+                '<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75 float-right"' +
+                    '<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+                    '<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+                    ">t" +
+                    '<"d-flex justify-content-between mx-2 row mb-1"' +
+                    '<"col-sm-12 col-md-6"i>' +
+                    '<"col-sm-12 col-md-6"p>' +
+                    ">",
+                oLanguage: {
+                    sProcessing: "Ачааллаж байна. ",
+                    sSearch: "Хайх: ",
+                    sEmptyTable: "Бичлэг байхгүй",
+                    sInfoEmpty: "Нийт 0 бичлэг",
+                    sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+                    sInfoFiltered: " - _MAX_ бичлэгээс",
+                    sLengthMenu: "_MENU_ бичлэг",
+                    oPaginate: {
+                        sFirst: "Эхэнд",
+                        sLast: "Төгсгөлд",
+                        sNext: "Дараах",
+                        sPrevious: "Өмнөх",
+                    },
+                },
+                // Buttons with Dropdown
+                buttons: [
+                    {
+                        extend: "collection",
+                        className: "btn btn-outline-secondary dropdown-toggle me-2",
+                        text:
+                            feather.icons["external-link"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Export",
+                        buttons: [
+                            {
+                                extend: "print",
+                                text:
+                                    feather.icons["printer"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    }) + "Print",
+                                className: "dropdown-item",
+                                exportOptions: { columns: [1, 2, 3, 4, 5] },
+                            },
+                            {
+                                extend: "csv",
+                                text:
+                                    feather.icons["file-text"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    }) + "Csv",
+                                className: "dropdown-item",
+                                exportOptions: { columns: [1, 2, 3, 4, 5] },
+                            },
+                            {
+                                extend: "excel",
+                                text:
+                                    feather.icons["file"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    }) + "Excel",
+                                className: "dropdown-item",
+                                exportOptions: { columns: [1, 2, 3, 4, 5] },
+                            },
+                            {
+                                extend: "pdf",
+                                text:
+                                    feather.icons["clipboard"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    }) + "Pdf",
+                                className: "dropdown-item",
+                                exportOptions: { columns: [1, 2, 3, 4, 5] },
+                            },
+                            {
+                                extend: "copy",
+                                text:
+                                    feather.icons["copy"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    }) + "Copy",
+                                className: "dropdown-item",
+                                exportOptions: { columns: [1, 2, 3, 4, 5] },
+                            },
+                        ],
+                        init: function (api, node, config) {
+                            $(node).removeClass("btn-secondary");
+                            $(node).parent().removeClass("btn-group");
+                            setTimeout(function () {
+                                $(node)
+                                    .closest(".dt-buttons")
+                                    .removeClass("btn-group")
+                                    .addClass("d-inline-flex mt-50");
+                            }, 50);
+                        },
+                    },
+                    {
+                        extend: "collection",
+                        className: "btn btn-outline-secondary dropdown-toggle me-2",
+                        text: 'Төлөв: {{request_states.0.1}}',
+                        attr: {
+                            "id": "state-filter",
+                        },
+                        buttons: [
+                            {% for id, name in request_states %}
+                                {
+                                    extend: "",
+                                    text: "{{name}}",
+                                    className: "dropdown-item",
+                                    action: (...args) => stateFilter(...args, '{{id}}', '{{name}}')
+                                },
+                            {% endfor %}
+                        ]
+                    },
+                ],
+            });
+        searchFooter(donateTable)
+
+        /** Tooltip ажиллуулж байна */
+        $(document).ready(function() {
+            $("body").tooltip({ selector: '[data-bs-toggle=tooltip]' });
+        });
+
+        async function sendChigluul(event)
+        {
+            const id = warninChigluulehModal.attr("data-cid")
+            const { success } = await useLoader(
+                fetchData(`/work-ad/send-chigluuleh/`, id, 'PUT'),
+                table
+            )
+            if (success)
+            {
+                donateTable.ajax.reload(null, true)
+            }
+        }
+
+        function sendWarningChigluuleh(id, isSend, event)
+        {
+            let text = isSend
+                        ? "Чиглүүлэх хөтөлбөр буцаахдаа итгэлтэй байна уу?"
+                        : "Чиглүүлэх хөтөлбөр явуулахдаа итгэлтэй байна уу?"
+
+            chigluulehText.text(text)
+            warninChigluulehModal.modal("show")
+            warninChigluulehModal.attr("data-cid", id)
+        }
+
+        const dropDownBtn = $('#state-filter')
+        function stateFilter(e, slipTable, node, config, id, name)
+        {
+            dropDownBtn.trigger("click")
+            // dotoodState = id
+            dropDownBtn.html(`Төлөв: ${name}`)
+            slipTable.ajax.url(`/work-ad/work-adsense-request-paginate/${id}/`).load()
+        }
+
+        "{% endif %}"
+
+        var warningModal = $("#warning-modal")
+        let actionType = 'create'
+
+
+        function showWarningModal(id)
+        {
+            actionType = id
+            warningModal.modal("show")
+        }
+
+        const rejectRequest = async () =>
+        {
+            const { success, data } = await fetchData(`{% url 'org-work-adsense-request-reject' %}`, {token: actionType}, 'POST')
+            if(success)
+            {
+                donationInputs.map(
+                    (input) =>
+                    {
+                        actionType = 'create'
+                    }
+                )
+                donateTable.ajax.reload(null, false)
+            }
+        }
+
+    const selectOptions = {{tree_data|safe}}
+    const defaultOption = new Option("-----------------", ``)
+
+    /** select ийн утга солигдох үед дараачийн select ийн утгыг хайх нь */
+    function setOptions(id, index, elementId)
+    {
+        const options = selectOptions[index]['children']
+
+        $("#salbar-select").html(defaultOption)
+        // example: https://github.com/clivezhg/select2-to-tree/blob/master/example/example.html
+        $("#salbar-select").select2ToTree({
+                treeData: {
+                    dataArr: options,
+                    valFld: "id",
+                    labelFld: "name",
+                    incFld: 'children'
+                }
+            }
+        )
+    }
+
+    /** select ийн утга солигдох үед */
+    function handleChangeSubSalbar(event)
+    {
+        const selectId = event.target.id
+        const selectedValue = event.target.value
+
+        if (selectId === "suborg-select" && selectedValue)
+        {
+            const [id, index] = selectedValue.split("-")
+            const options = setOptions(id, index, '#salbar-select')
+        }
+    }
+
+    /** Тухайн select ийн анхны утгыг оноох нь */
+    function initialSelectValues()
+    {
+        const salbarId = "{{request.employee.salbar.id}}"
+        const subOrgId = "{{request.employee.sub_org.id}}"
+        const orgId = "{{request.employee.org.id}}"
+        if (salbarId)
+        {
+            // example: https://github.com/clivezhg/select2-to-tree/blob/master/example/example.html
+            $("#salbar-select").select2ToTree({
+                    treeData: {
+                        dataArr: selectOptions,
+                        valFld: "id",
+                        labelFld: "name",
+                        incFld: 'children'
+                    }
+                }
+            )
+        }
+        else if (subOrgId)
+        {
+            $("#suborg-select option").each(
+                (index, element) =>
+                {
+                    const [id, eindex] = element.value.split("-")
+                    if (subOrgId == id)
+                    {
+                        $("#suborg-select").val(`${id}-${eindex}`).change()
+                    }
+                }
+            )
+        }
+        else if (orgId)
+        {
+            $("#suborg-select").prepend(defaultOption)
+            $("#suborg-select").val("").change()
+        }
+    }
+    initialSelectValues()
+
+    function setSelectValue(full)
+    {
+        $("#org_position").val(full.org_position_id).change()
+        if(full.sub_org)
+        {
+            $("#suborg-select option").each(
+                (index, element) =>
+                {
+                    const [id, eindex] = element.value.split("-")
+                    if (full.sub_org == id)
+                    {
+                        $("#suborg-select").val(`${id}-${eindex}`).change()
+                    }
+                }
+            )
+        }
+        else
+        {
+            $("#suborg-select").prepend(defaultOption)
+            $("#suborg-select").val("").change()
+        }
+        if(full.salbar)
+        {
+            $("#salbar-select").val(`${full.salbar}`).change()
+        }
+        else
+        {
+            $("#salbar-select").empty();
+        }
+    }
+    function getOneDonate(id, event)
+    {
+        let clickedTarget = $(event.target)
+		let row = clickedTarget.parent().closest("tr")
+		let full = donateTable.row(row).data()
+        userId = id
+
+        setSelectValue(full)
+        employeeCreateModal.modal("show")
+    }
+
+    const validate = $('#createEmployee-form').validate({
+        rules: {
+            'command': {
+                required: true,
+            },
+            'worker_type': {
+                required: true,
+            },
+        },
+        messages: {
+            'command': {
+                required: "Тушаалын дугаар сонгоно уу."
+            },
+            'worker_type': {
+                required: "Ажилтны гэрээний төрлийг сонгоно уу."
+            },
+        }
+    });
+
+    async function employeeCreateSubmit(event)
+    {
+        if(!validate.checkForm())
+        {
+            return
+        }
+
+        event.preventDefault()
+
+        const formData = new FormData(event.target)
+        const data = Object.fromEntries(formData)
+
+        if(userId)
+            data.user = userId
+
+        if(data.sub_org && data.sub_org.includes('-'))
+        {
+            const [id, eindex] = data.sub_org.split("-")
+            data.sub_org = id
+        }
+
+        const { success, errors } = await fetchData(`{% url 'create-employee-request' %}`, data, 'POST')
+        if (!success)
+        {
+            displayError(errors)
+        }
+        else {
+            deleteError(errors)
+            employeeCreateModal.modal("hide")
+            donateTable.ajax.reload(null, false)
+        }
+    }
+
+    </script>
+{% endblock js %}

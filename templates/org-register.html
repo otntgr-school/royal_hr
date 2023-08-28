@@ -1,0 +1,91 @@
+{% extends './base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+
+{% block content %}
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/forms/select/select2.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/extensions/jstree.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/extensions/ext-component-tree.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+
+{% endblock css %}
+
+{% load rest_framework %}
+
+<div class="content-body">
+    <div class="row">
+        <div class="col-xl-4 col-lg-5 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Бүртгэгдсэн байгууллагууд</h4>
+                </div>
+                <div class="card-body">
+                    <div id="org-menu"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-8 col-lg-7 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Байгууллага бүртгэх</h4>
+                </div>
+                <div class="card-body">
+                    {% if pk %}
+                        <div class="d-flex">
+                            <button type="button" class="btn btn-primary ms-auto" onclick="toNew()">
+                                Шинээр үүсгэх
+                            </button>
+                        </div>
+                    {% endif %}
+                    {% if pk %}
+                        <form action="{% url 'org-register' pk %}" id="org-form" method="POST">
+                    {% else %}
+                        <form action="{% url 'org-register' %}" id="org-form" method="post">
+                    {% endif %}
+                        {% csrf_token %}
+                        {% render_form serializer %}
+                        <div class="col-xl-12 col-md-12 col-12 mt-2">
+                            <button type="submit" id="org-btn" class="btn btn-primary">
+                                {% if pk %}
+                                    Засах
+                                {% else %}
+                                    Бүртгэх
+                                {% endif %}
+                            </button>
+                            {% if pk %}
+                                <a href="{% url 'org-delete' pk %}" class="btn btn-danger">Устгах</a>
+                            {% endif %}
+                            {% comment %} <form class="form-inline" action="{% url 'org-register' %}" method="put" novalidate>
+                            <button type="submit" class="btn btn-primary">Засах</button> {% endcomment %}
+                        </div>
+                    </form>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+
+<script src="{% static 'app-assets/vendors/js/forms/select/select2.full.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/form-select2.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/extensions/jstree.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/extensions/ext-component-tree.js' %}"></script>
+<script type="text/javascript" src= "{% static 'assets/js/org.js' %}"></script>
+
+<script>
+    function toNew()
+    {
+        window.location.href = '/org/org-register/'
+    }
+</script>
+{% endblock js %}

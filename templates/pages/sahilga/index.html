@@ -1,0 +1,1188 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+
+{% block vendorcss %}
+<!-- BEGIN: Vendor CSS-->
+
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}"
+/>
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}"
+/>
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="{% static 'app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css' %}"
+/>
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="{% static 'app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css' %}"
+/>
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/extensions/jstree.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/file-uploaders/dropzone.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/form-file-uploader.min.css' %}">
+
+<!-- END: Vendor CSS-->
+{% endblock vendorcss %} {% block css %}
+
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="{% static 'app-assets/css/plugins/forms/form-validation.css' %}"
+/>
+{% endblock css %} {% block content %}
+<div class="content-body">
+	<!-- users list start -->
+	<section>
+		<!-- list and filter start -->
+		<div class="card">
+			<div class="card-body border-bottom">
+				<h4 class="card-title">Сахилга авсан ажилчидын жагсаалт</h4>
+				<div class="row">
+					<div class="col-md-4 user_role"></div>
+					<div class="col-md-4 user_plan"></div>
+					<div class="col-md-4 user_status"></div>
+				</div>
+			</div>
+			<div class="card-datatable table-responsive pt-0">
+				<table class="sahilga-list-dt table">
+					<thead class="table-light">
+						<tr class="filter-container"></tr>
+						<tr>
+							<th></th>
+							<th></th>
+							<th>Ажилтны овог</th>
+							<th>Ажилтны нэр</th>
+							<th>Идэвхтэй Сахилгын тоо</th>
+							<th>Үйлдэл</th>
+						</tr>
+					</thead>
+					<tfoot>
+						<tr>
+							<th></th>
+							<th></th>
+							<th>Ажилтны овог</th>
+							<th>Ажилтны нэр</th>
+							<th>Идэвхтэй Сахилгын тоо</th>
+							<th>Үйлдэл</th>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+
+			<div class="modal fade" id="employee-sahilga-list" tabindex="-1" aria-hidden="true">
+				<div class="modal-dialog modal-xl modal-dialog-centered modal-edit-user">
+					<div class="modal-content">
+						<div class="modal-header bg-transparent">
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body text-center">
+							<div class="card-datatable table-responsive pt-0">
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="modal fade" id="employee-sahilga-detail" tabindex="-1" aria-hidden="true">
+				<div class="modal-dialog modal-xl modal-dialog-centered modal-edit-user">
+					<div class="modal-content">
+						<div class="modal-header bg-transparent">
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-header mb-1">
+							<h5 class="modal-title" id="exampleModalLabel">
+								Сахилгын дэлгэрэнгүй
+							</h5>
+						</div>
+						<div class="modal-body">
+							<div class="mb-1">
+								<label class="form-label">Тайлбар:</label>
+								<p>
+									<span id="detail-description"></span>
+								</p>
+							</div>
+							<div class="mb-1">
+								<label class="form-label">Хугацаа:</label>
+								<div class="detail-ognoo">
+								</div>
+							</div>
+							<div class="mb-1">
+								<label class="form-label">Хэдэн сар:</label>
+								<div class="detail-month">
+								</div>
+							</div>
+							<div class="mb-1">
+								<label class="form-label">Хэдэн сар:</label>
+								<div class="detail-percent">
+								</div>
+							</div>
+							<div class="mb-1">
+								<label class="form-label">Хавсралт:</label>
+								<div class="row attachment-list">
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Modal to add new user starts-->
+			<div class="modal modal-slide-in new-user-modal fade" id="new-sahilga">
+				<div class="modal-dialog">
+					<form class="add-new-user modal-content pt-0" onsubmit="handleSubmit(event)">
+						<button
+							type="button"
+							class="btn-close"
+							data-bs-dismiss="modal"
+							aria-label="Close"
+						>
+							×
+						</button>
+						<div class="modal-header mb-1">
+							<h5 class="modal-title" id="exampleModalLabel">
+								Сахилга шийтгэл нэмэх
+							</h5>
+						</div>
+						<div class="modal-body flex-grow-1">
+                            <small class="">
+								<i data-feather='alert-triangle'></i> Зөвхөн нэг ажилчинд оноож өгнө.
+								<p></p>
+								<i data-feather='alert-triangle'></i> Регистрийн дугаар болон нэрээр хайх боломжтой.
+								<p></p>
+							</small>
+                            <div class="mb-1 emp-filter">
+                                <label
+                                    class="form-label"
+                                    for="employee"
+                                >
+                                    Ажилтан хайх
+                                </label>
+                                <div class="input-group">
+                                    <input type="text" id="employee" name="employee" class="form-control" placeholder="Регист, нэрээр хайх" aria-label="Регист, нэрээр хайх" aria-describedby="s-employee" />
+                                </div>
+                                <ul class="list-group employees-filter" style="max-height: 325px; overflow: auto;"></ul>
+                            </div>
+							<div class="mb-1">
+								<label
+									class="form-label"
+									for="description"
+                                >
+                                    Тайлбар
+                                </label>
+								<textarea
+									type="text"
+									id="description"
+									class="form-control"
+									placeholder="Тайлбар"
+									name="description"
+								></textarea>
+							</div>
+							<div class="mb-1">
+								<label
+									class="form-label"
+									for="during_month"
+                                >
+                                    Хэдэн сар
+                                </label>
+								<input
+									type="number"
+									id="during_month"
+									class="form-control"
+									placeholder="0"
+									name="during_month"
+                                    step="1"
+								/>
+							</div>
+							<div class="mb-1">
+								<label
+									class="form-label"
+									for="percent"
+                                >
+                                    Цалингийн хувь
+                                </label>
+								<input
+									type="number"
+									id="percent"
+									class="form-control"
+									placeholder="%"
+									name="percent"
+								/>
+							</div>
+							<div class="mb-1">
+                                <label
+                                    class="form-label"
+                                    for="start_date"
+                                >
+                                    Эхлэх огноо
+                                </label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="start_date"
+                                    placeholder="Хэзээ авсан"
+                                    name="start_date"
+                                />
+                            </div>
+                            <div class="mb-1">
+                                <label
+                                    class="form-label"
+                                    for="end_date"
+                                >
+                                    Дуусах огноо
+                                </label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="end_date"
+                                    placeholder="Хэзээ авсан"
+                                    name="end_date"
+                                />
+                            </div>
+                            <div class="mb-1">
+                                <label for="file-upload" class="form-label" id="attachments">Хавсралт</label>
+                                <div id="dZUpload" class="dropzone">
+                                    <div class="dz-default dz-message"></div>
+                                </div>
+                            </div>
+							<button
+								type="submit"
+								class="btn btn-primary me-1 data-submit"
+							>
+								Хадгалах
+							</button>
+							<button
+								type="reset"
+								class="btn btn-outline-secondary"
+								data-bs-dismiss="modal"
+							>
+								Болих
+							</button>
+						</div>
+						{% if not 'work-list-create' in request.permissions %}
+							<div class="inactive p-2">
+								<p class="fs-18">Танд эрх байхгүй байна</p>
+							</div>
+						{% endif %}
+					</form>
+				</div>
+			</div>
+
+			<div class="modal fade" id="warning-alert" tabindex="-1" aria-hidden="true">
+				<div class="modal-dialog modal-sm modal-dialog-centered modal-edit-user">
+					<div class="modal-content">
+						<div class="modal-header bg-transparent">
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body text-center">
+							<div class="text-center">
+								<i class="fas fa-exclamation-circle text-warning fs-40"></i>
+							</div>
+							<h6 class="mt-1 mb-1 fw-bolder">Анхааруулга<h6>
+							Танд эрх байхгүй байна
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Modal to add new user Ends-->
+		</div>
+		<!-- list and filter end -->
+	</section>
+
+</div>
+
+{% endblock content %}
+<!--prettier-ignore-->
+{% block js %}
+<!-- BEGIN: Page Vendor JS-->
+<!-- BEGIN: Page Vendor JS-->
+<script src="{% static 'app-assets/vendors/js/file-uploaders/dropzone.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.buttons.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jszip.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/pdfmake.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/vfs_fonts.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.html5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.print.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/tables/table-datatables-advanced.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/extensions/moment.min.js' %}"></script>
+<script src="{% static 'assets/js/throttle.js' %}"></script>
+
+<!-- END: Page Vendor JS-->
+
+<!-- BEGIN: Page JS-->
+<!-- <script src="{% static 'app-assets/js/scripts/pages/app-user-list.js' %}"></script> -->
+<!-- END: Page JS-->
+
+<!-- DATATABLE Script -->
+<script>
+	const employeeIn = document.getElementById("employee")
+
+	let clickedRow = null
+	cloneFooter(
+		".sahilga-list-dt",
+		[
+			2, 3,
+		]
+	)
+	const dt = $(".sahilga-list-dt").DataTable({
+		processing: false,
+		dom: 'lBfrtip',
+		serverSide: true,
+		scrollCollapse: true,
+        scrollX: true,
+		scrollY: "450px",
+		ajax: { url: "{% url 'sahilga-list' %}" }, // JSON file to add data
+		columns: [
+			// columns according to JSON
+			{ data: null },
+			{ data: null },
+			{ data: "last_name" },
+			{ data: "first_name" },
+			{ data: "count" },
+			{ data: null },
+		],
+		columnDefs: [
+			{
+				orderable: false,
+				className: "control",
+				responsivePriority: 2,
+				targets: 0,
+				render: function (data, type, full, meta) {
+					return "";
+				},
+			},
+			{
+				targets: 1,
+				title: "#",
+				orderable: false,
+				render: function (data, type, full, meta) {
+					return (
+						meta.settings._iDisplayStart + meta.row + 1
+					);
+				},
+			},
+			{
+				targets: [2, 3],
+				render: function (data, type, full, meta) {
+					return (
+						(`
+							<a
+								class="text-decoration-underline text-dark"
+								onclick="openEmployeeSahilga(event, ${full.employee_id})"
+							>
+								${data}
+							</a>
+						`
+					)
+					);
+				},
+			},
+			{
+				// Actions
+				targets: -1,
+				title: "Үйлдэл",
+				orderable: false,
+				render: function (data, type, full, meta) {
+					const id = `${full.email}${meta.row}`
+					return (
+						`
+							<a
+								class="delete-record text-primary"
+								onclick="openEmployeeSahilga(event, ${full.employee_id})"
+							>
+								<span
+									data-bs-toggle="tooltip"
+									data-bs-placement="left"
+									data-bs-original-title="Харах"
+								>
+									${feather.icons["eye"].toSvg({
+										class: "font-small-4 me-50",
+									})}
+								</span>
+							</a>
+						`
+					);
+				},
+			},
+		],
+		order: [[3, "asc"]],
+		lengthMenu: [
+			[10, 25, 50, 100, -1],
+			[10, 25, 50, 100, 'Бүгд'],
+		],
+		dom:
+			'<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75 float-right"' +
+			'<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+			'<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+			">t" +
+			'<"d-flex justify-content-between mx-2 row mb-1"' +
+			'<"col-sm-12 col-md-6"i>' +
+			'<"col-sm-12 col-md-6"p>' +
+			">",
+		oLanguage: {
+			sProcessing: "Ачааллаж байна. ",
+			sSearch: "Хайх: ",
+			sEmptyTable: "Бичлэг байхгүй",
+			sInfoEmpty: "Нийт 0 бичлэг",
+			sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+			sInfoFiltered: " - _MAX_ бичлэгээс",
+			sLengthMenu: "_MENU_ бичлэг",
+			oPaginate: {
+				sFirst: "Эхэнд",
+				sLast: "Төгсгөлд",
+				sNext: "Дараах",
+				sPrevious: "Өмнөх",
+			},
+		},
+		// Buttons with Dropdown
+		buttons: [
+			{
+				extend: "collection",
+				className: "btn btn-outline-secondary dropdown-toggle me-2",
+				text:
+					feather.icons["external-link"].toSvg({
+						class: "font-small-4 me-50",
+					}) + "Export",
+				buttons: [
+					{
+						extend: "print",
+						text:
+							feather.icons["printer"].toSvg({
+								class: "font-small-4 me-50",
+							}) + "Print",
+						className: "dropdown-item",
+						exportOptions: { columns: [1, 2, 3, 4] },
+					},
+					{
+						extend: "csv",
+						text:
+							feather.icons["file-text"].toSvg({
+								class: "font-small-4 me-50",
+							}) + "Csv",
+						className: "dropdown-item",
+						exportOptions: { columns: [1, 2, 3, 4] },
+					},
+					{
+						extend: "excel",
+						text:
+							feather.icons["file"].toSvg({
+								class: "font-small-4 me-50",
+							}) + "Excel",
+						className: "dropdown-item",
+						exportOptions: { columns: [1, 2, 3, 4] },
+					},
+					{
+						extend: "pdf",
+						text:
+							feather.icons["clipboard"].toSvg({
+								class: "font-small-4 me-50",
+							}) + "Pdf",
+						className: "dropdown-item",
+						exportOptions: { columns: [1, 2, 3, 4] },
+					},
+					{
+						extend: "copy",
+						text:
+							feather.icons["copy"].toSvg({
+								class: "font-small-4 me-50",
+							}) + "Copy",
+						className: "dropdown-item",
+						exportOptions: { columns: [1, 2, 3, 4] },
+					},
+				],
+				init: function (api, node, config) {
+					$(node).removeClass("btn-secondary");
+					$(node).parent().removeClass("btn-group");
+					setTimeout(function () {
+						$(node)
+							.closest(".dt-buttons")
+							.removeClass("btn-group")
+							.addClass("d-inline-flex mt-50");
+					}, 50);
+				},
+			},
+			{
+				text: "Шинээр бүртгэх",
+				className: "add-new btn btn-primary",
+				attr: {
+					"data-bs-toggle": "modal",
+					"data-bs-target": "{% if 'sahilga-create' in request.permissions %}#new-sahilga{% else %}#warning-alert{%endif%}",
+					"onclick": "mainNewBtn(event)"
+				},
+				init: function (api, node, config) {
+					$(node).removeClass("btn-secondary");
+				},
+			},
+		],
+	});
+	searchFooter(dt)
+
+</script>
+
+<script>
+    Dropzone.autoDiscover = false;
+
+    let employeeInput = $("input[name='employee']")
+    let fEmployeeCon = $(".employees-filter")
+    let startDateInput = $("input[name='start_date']")
+    let endDateInput = $("input[name='end_date']")
+    let duringMonthInput = $("input[name='during_month']")
+    let descriptionInput = $("texterea[name='description']")
+    let percentInput = $("input[name='percent']")
+    let employeeId = null
+	let isFromEmployee = false
+    let formModal = $("#new-sahilga")
+
+	let employeeSahilgaDT = null
+	let employeeSahilgaModal = $("#employee-sahilga-list")
+	let empFilter = $(".emp-filter")
+	let employeeSahilgaDetailModal = $("#employee-sahilga-detail")
+	let warningAlert = $("#warning-alert")
+
+    let isCreate = true
+    let removeFiles = [] //  арилгасан файлууд зөвхөн засах үед
+
+	let detailOgnoo = $(".detail-ognoo"),
+		detailMonth = $(".detail-month"),
+		detailPercent = $(".detail-percent"),
+		attachmentList = $(".attachment-list")
+		detailDesc = $("#detail-description")
+
+    var end = endDateInput.flatpickr({
+        altFormat: 'Y-m-d',
+        onReady: function (selectedDates, dateStr, instance) {
+            if (instance.isMobile) {
+                $(instance.mobileInput).attr('step', null);
+            }
+        },
+    });
+
+    /** эхлэл хугацаа дээр сарыг нэмж төгсгөл хугацааг олох нь */
+    function _addMonth(datastr, duringMonth)
+    {
+        const date = new Date(datastr)
+        var endDate = new Date(date.setMonth(date.getMonth()+duringMonth));
+        endDateInput.val(endDate)
+        end.setDate(endDate)
+    }
+
+    var start = startDateInput.flatpickr({
+        altFormat: 'Y-m-d',
+        onReady: function (selectedDates, dateStr, instance) {
+            if (instance.isMobile) {
+                $(instance.mobileInput).attr('step', null);
+            }
+        },
+        onChange: function(selecedDates, datastr, instance)
+        {
+            const duringMonth = parseInt(duringMonthInput.val())
+            if (isNaN(duringMonth))
+            {
+                return
+            }
+
+            _addMonth(datastr, duringMonth)
+        }
+    });
+
+    duringMonthInput.on("keyup", handleDuringMonth)
+
+    function handleDuringMonth(event)
+    {
+        const value = event.target.valueAsNumber
+		const startVal = startDateInput.val()
+        if (isNaN(value) || !startVal)
+        {
+            return
+        }
+
+        _addMonth(startDateInput.val(), value)
+    }
+
+    let dz = new Dropzone("#dZUpload", {
+        url: "/test",
+        clickable: true,
+        paramName: 'file', // The name that will be used to transfer the file
+        autoProcessQueue: false,
+        addRemoveLinks: true,
+        accept: function(file, done)
+        {
+            if (file.size > 1*1024*1024) {
+                this.removeFile(file);
+                alert('file too big');
+                return false;
+            }
+
+            $(".dz-progress").remove();
+            $(".dz-remove").html(
+                `<div><span class='fa fa-trash text-danger'></span></div>`
+            );
+            return file.previewElement.classList.add("dz-success");
+        },
+        removedfile: function(file) {
+            //  зөвхөн засаж байгаа үед хуучин байсан зургаас id ийг авна
+            file.id && removeFiles.push(file.id)
+
+            $(file.previewElement).remove();
+        }
+    });
+
+    /** Ажилчидаас хайсан үр дүнг харуулах */
+    function displayEmployeeFilterd(employees)
+    {
+        fEmployeeCon.html("")
+        employees
+            .map(
+                (employee, idx) =>
+                {
+                    let html = `
+                        <li class="list-group-item list-group-item-action" role="button" onclick="handleEmployee(event, ${employee.id})">
+                            <div class="avatar avatar-border">
+                                <img
+                                    src="${employee.real_photo ? employee.real_photo : "/media/53x53.jpg"}"
+                                    alt="avatar"
+                                    height="42"
+                                    width="42"
+									onerror="this.onerror=null; this.src='/media/53x53.jpg'"
+                                >
+                            </div>
+                            ${employee.last_name}. ${employee.first_name}
+                        </li>
+                    `
+                    fEmployeeCon.append(html)
+                }
+            )
+    }
+
+    /** Жагсаалтанд байгаа active el ийг арилгах нь */
+    function removeActiveList(activeClassName)
+    {
+        fEmployeeCon.children()
+            .each(
+                (index, el) =>
+                {
+                    let $el = $(el)
+                    $el.removeClass(activeClassName)
+                }
+            )
+    }
+
+    /** Хайлтын үр дүнгээс ажилтан сонгох нь */
+    function handleEmployee(event, aEmployeeId)
+    {
+        let activeClassName = 'active'
+        let liEL = $(event.target).closest('li')
+
+        removeActiveList(activeClassName)
+        liEL.addClass(activeClassName)
+
+        employeeId = aEmployeeId
+    }
+
+    /** Шагнал оноох ажилтныг регистрээр нь хайж олох нь */
+    function filterEmployee()
+    {
+        const register = employeeInput.val()
+		if(register)
+		{
+			useLoader(fetchData("{% url 'find-worker' %}" + `?register=${register}&exactly=0`), employeeInput.parent()).catch(err => err)
+            .then(
+                ({ success, data, error }) =>
+                {
+                    if (success)
+                    {
+                        displayEmployeeFilterd(data)
+                    }
+                }
+            )
+		}
+		else
+		{
+			fEmployeeCon.html("")
+		}
+    }
+
+	throttle("#employee", filterEmployee)
+
+	/** Формын утгыг хоослоно */
+	function resetValues()
+	{
+		dz.files.map(
+            (_file, idx) =>
+            {
+                $(_file.previewElement).remove();
+                dz.emit("removefile", _file);
+            }
+        )
+
+        dz.files = []
+
+		employeeInput.val("")
+		fEmployeeCon.html("")
+		startDateInput.val("")
+		start.setDate(null)
+		endDateInput.val("")
+		end.setDate(null)
+		duringMonthInput.val("")
+		descriptionInput.val("")
+		percentInput.val("")
+		employeeId = null
+		isFromEmployee = null
+		deleteError()
+	}
+
+    async function handleSubmit(event)
+    {
+        event.preventDefault()
+        const formdata = new FormData(event.target)
+        const attachemnts = dz.files.filter(el => !el.cfile)
+        for(var i = 0; i < attachemnts.length; i ++) {
+            const element = attachemnts[i];
+            formdata.append("attachments", element, element.name)
+        }
+        formdata.append("removed_attachments", JSON.stringify(removeFiles))
+        formdata.set('employee', employeeId)
+
+        let fetch
+        if (isCreate)
+            fetch = fetchData("{% url 'sahilga-action' %}", formdata, 'POST', '', false)
+        else
+            fetch = fetchData(`/feedback/action/${selectedData.id}/`, formdata, 'PUT', '', false)
+
+        const { success, data, errors } = await useLoader(fetch, $(event.target))
+        if (success)
+        {
+            formModal.modal("hide")
+			dt.ajax.reload(null, true)
+			isFromEmployee
+				&& employeeSahilgaDT.ajax.reload(null, true)
+			resetValues()
+        }
+		else {
+			displayError(errors)
+		}
+    }
+
+	cloneFooter(
+		".employee-sahilga-list-dt",
+		[
+			2, 3,
+		]
+	)
+	/** Тухайн дарсан ажилтны сахилгын жагсаалтыг авах нь */
+	function openEmployeeSahilga(event, clickedEmployeeId)
+	{
+		employeeSahilgaModal.find('.card-datatable').html(
+			`
+			<table class="employee-sahilga-list-dt table">
+				<thead class="table-light">
+					<tr class="filter-container"></tr>
+					<tr>
+						<th></th>
+						<th></th>
+						<th>Тайлбар</th>
+						<th>Сар</th>
+						<th>Хувь</th>
+						<th>Эхлэх хугацаа</th>
+						<th>Үйлдэл</th>
+					</tr>
+				</thead>
+				<tfoot>
+					<tr>
+						<th></th>
+						<th></th>
+						<th>Тайлбар</th>
+						<th>Сар</th>
+						<th>Хувь</th>
+						<th>Эхлэх хугацаа</th>
+						<th>Үйлдэл</th>
+					</tr>
+				</tfoot>
+			</table>
+			`
+		)
+		let employeeSahilgaDTEl = $(".employee-sahilga-list-dt")
+		employeeSahilgaDT = employeeSahilgaDTEl.DataTable(
+			{
+				processing: true,
+				dom: 'lBfrtip',
+				serverSide: true,
+				ajax: { url: `/sahilga/employee/${clickedEmployeeId}/` },
+				columns: [
+					// columns according to JSON
+					{ data: null },
+					{ data: null },
+					{ data: "description" },
+					{ data: "during_month" },
+					{ data: "percent" },
+					{ data: "start_date" },
+					{ data: null },
+				],
+				columnDefs: [
+					{
+						orderable: false,
+						className: "control",
+						responsivePriority: 2,
+						targets: 0,
+						render: function (data, type, full, meta) {
+							return "";
+						},
+					},
+					{
+						targets: 1,
+						title: "#",
+						orderable: false,
+						render: function (data, type, full, meta) {
+							return (
+								meta.settings._iDisplayStart + meta.row + 1
+							);
+						},
+					},
+					{
+						// Actions
+						targets: -1,
+						title: "Үйлдэл",
+						orderable: false,
+						render: function (data, type, full, meta) {
+							const id = `${full.email}${meta.row}`
+							return (
+								`
+									<a
+										class="delete-record text-primary"
+										onclick="displayDetail(event, ${full.id})"
+									>
+										<span
+											data-toggle="tooltip"
+											data-bs-placement="left"
+											data-bs-original-title="Дэлгэрэнгүй харах"
+										>
+											${feather.icons["eye"].toSvg({
+												class: "font-small-4 me-50",
+											})}
+										</span>
+									</a>
+									${
+										full.state == 1 // Идэвхитэй
+										?
+										`
+											<a
+												class="delete-record text-primary-orange"
+												onclick="handleState(event, ${full.id}, 'refuse')"
+											>
+												<span
+													data-toggle="tooltip"
+													data-bs-placement="left"
+													data-bs-original-title="Цуцлах"
+												>
+													${feather.icons["x"].toSvg({
+														class: "font-small-4 me-50",
+													})}
+												</span>
+											</a>
+										`
+										: ""
+									}
+									${
+										full.state == 2 // Цуцлагдсан
+										?
+										`
+											<a
+												class="text-info"
+												onclick="handleState(event, ${full.id}, 'reset')"
+											>
+												<span
+													data-toggle="tooltip"
+													data-bs-placement="left"
+													data-bs-original-title="Сэргээх"
+												>
+													${feather.icons["repeat"].toSvg({
+														class: "font-small-4 me-50",
+													})}
+												</span>
+											</a>
+										`
+										: ""
+									}
+								`
+							);
+						},
+					},
+				],
+				order: [[5, "desc"]],
+				dom:
+					'<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75 float-right"' +
+					'<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+					'<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap custom-search"<"me-1">B>>' +
+					">t" +
+					'<"d-flex justify-content-between mx-2 row mb-1"' +
+					'<"col-sm-12 col-md-6"i>' +
+					'<"col-sm-12 col-md-6"p>' +
+					">",
+				oLanguage: {
+					sProcessing: "Ачааллаж байна. ",
+					sSearch: "Хайх: ",
+					sEmptyTable: "Бичлэг байхгүй",
+					sInfoEmpty: "Нийт 0 бичлэг",
+					sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+					sInfoFiltered: " - _MAX_ бичлэгээс",
+					sLengthMenu: "_MENU_ бичлэг",
+					oPaginate: {
+						sFirst: "Эхэнд",
+						sLast: "Төгсгөлд",
+						sNext: "Дараах",
+						sPrevious: "Өмнөх",
+					},
+				},
+				// Buttons with Dropdown
+				buttons: [
+					{
+						extend: "collection",
+						className: "btn btn-outline-secondary dropdown-toggle me-2",
+						text:
+							feather.icons["external-link"].toSvg({
+								class: "font-small-4 me-50",
+							}) + "Export",
+						buttons: [
+							{
+								extend: "print",
+								text:
+									feather.icons["printer"].toSvg({
+										class: "font-small-4 me-50",
+									}) + "Print",
+								className: "dropdown-item",
+								exportOptions: { columns: [1, 2, 3, 4, 5] },
+							},
+							{
+								extend: "csv",
+								text:
+									feather.icons["file-text"].toSvg({
+										class: "font-small-4 me-50",
+									}) + "Csv",
+								className: "dropdown-item",
+								exportOptions: { columns: [1, 2, 3, 4, 5] },
+							},
+							{
+								extend: "excel",
+								text:
+									feather.icons["file"].toSvg({
+										class: "font-small-4 me-50",
+									}) + "Excel",
+								className: "dropdown-item",
+								exportOptions: { columns: [1, 2, 3, 4, 5] },
+							},
+							{
+								extend: "pdf",
+								text:
+									feather.icons["clipboard"].toSvg({
+										class: "font-small-4 me-50",
+									}) + "Pdf",
+								className: "dropdown-item",
+								exportOptions: { columns: [1, 2, 3, 4, 5] },
+							},
+							{
+								extend: "copy",
+								text:
+									feather.icons["copy"].toSvg({
+										class: "font-small-4 me-50",
+									}) + "Copy",
+								className: "dropdown-item",
+								exportOptions: { columns: [1, 2, 3, 4, 5] },
+							},
+						],
+						init: function (api, node, config) {
+							$(node).removeClass("btn-secondary");
+							$(node).parent().removeClass("btn-group");
+							setTimeout(function () {
+								$(node)
+									.closest(".dt-buttons")
+									.removeClass("btn-group")
+									.addClass("d-inline-flex mt-50");
+							}, 50);
+						},
+					},
+					{
+						text: "Шинээр бүртгэх",
+						className: "add-new btn btn-primary",
+						attr: {
+							"onclick": `openNewModalWithEmployee(event, ${clickedEmployeeId})`
+						},
+						init: function (api, node, config) {
+							$(node).removeClass("btn-secondary");
+						},
+					},
+				],
+				initComplete: () =>
+				{
+					$(document).ready(function() {
+						$("body").tooltip({ selector: '[data-toggle=tooltip]' });
+					});
+				}
+			}
+		);
+		$(".custom-search").prepend(`
+			<label class="form-label" htmlFor="state">Төрөл:</label>
+			<select class="form-select w-25 mt-50" id="state" onchange="handleStateChange(event, ${clickedEmployeeId})">
+				{% for id, name in states %}
+					<option value="{{id}}" {% if id == 1 %}selected{%endif%}>
+						{{name}}
+					</option>
+				{% endfor %}
+			</select>`
+		)
+		searchFooter(employeeSahilgaDT)
+		employeeSahilgaModal.modal("show")
+	}
+
+	/** 2 дахь хүснэгтээс ажилтан хайх хэсгийг нууж гаргах нь */
+	function openNewModalWithEmployee(event, empId)
+	{
+		if (!"{% if 'sahilga-create' in request.permissions %}1{%endif%}")
+		{
+			warningAlert.modal("show")
+			return
+		}
+		formModal.modal("show")
+		employeeId = empId
+		isFromEmployee = true
+		empFilter.addClass("d-none")
+	}
+
+	/** Хамгийн том дата хүснэгтийн шинээр бүртгэх дарах үед ажилтан хайдаг input ийг харуулах нь */
+	function mainNewBtn()
+	{
+		employeeId = null
+		isFromEmployee = false
+		empFilter.removeClass("d-none")
+	}
+
+	/** Цуцлах үед */
+	function handleState(event, sahilgaId, state)
+	{
+
+		if (state === 'refuse')
+		{
+			if (!"{% if 'sahilga-refuse' in request.permissions %}1{%endif%}")
+			{
+				warningAlert.modal("show")
+				return
+			}
+		}
+
+		if (state === 'reset')
+		{
+			if (!"{% if 'sahilga-restore' in request.permissions %}1{%endif%}")
+			{
+				warningAlert.modal("show")
+				return
+			}
+		}
+
+		useLoader((async () => {
+			const { success } = await fetchData(`/sahilga/${state}/${sahilgaId}/`, '', 'DELETE')
+			if (success)
+			{
+				employeeSahilgaDT.ajax.reload(null, true)
+				dt.ajax.reload(null, true)
+			}
+		})(), employeeSahilgaModal)
+	}
+
+	/** state ийн төрөл солигдох үед шинээр хайх */
+	function handleStateChange(event, clickedEmployeeId)
+	{
+		const value = event.target.value
+		employeeSahilgaDT.ajax.url(`/sahilga/employee/${clickedEmployeeId}/?state=${value}`).load()
+	}
+
+	/** хавсралтыг дэлгэц дээр гаргах */
+    function setHawsralt(data)
+    {
+        data.attachments.map(
+            (attachment, idx) =>
+            {
+                let html = `
+                    <div class="col-md-6">
+                        ${idx + 1})
+                        <a class="text-decoration-underline" role="button" target="_blank" href="${attachment.url}">
+                            ${attachment.name}
+                        </a>
+                    </div>
+                    <div class="col-md-4">
+                        ${attachment.size}
+                    </div>
+					${
+						attachment.has_file
+						?
+							`
+							<div class='text-danger cursor-pointer' style='text-decoration: underline' value='Download' onclick='handleDownloadAttach(${attachment.id})'>
+								Татах
+							</div>
+							`
+						:
+							"<small>Файл устсан байна</small>"
+					}
+                `
+                attachmentList.append($(html))
+            }
+        )
+    }
+
+	function resetDetail()
+	{
+		detailOgnoo.text("")
+		detailMonth.text("")
+		detailPercent.text("")
+		attachmentList.html("")
+	}
+
+	/** Дэлгэц дээр харуулах */
+	function setDisplayDeital(data)
+	{
+		function checkEmpty(val) { return val ? val : "-" }
+
+		detailOgnoo.text(`${checkEmpty(timeZoneToDateString(data.start_date, false))} -с ${checkEmpty(timeZoneToDateString(data.end_date, false))}`)
+		detailMonth.text(checkEmpty(data.during_month))
+		detailPercent.text(`${checkEmpty(data.percent)}%`)
+		detailDesc.text(checkEmpty(data.description))
+        setHawsralt(data)
+	}
+
+	/** Модалаар тухайн сахилгын дэлгэрэнгүй мэдээлэл харуулах */
+	function displayDetail(event, sahilgaId)
+	{
+
+		resetDetail("")
+		employeeSahilgaDetailModal.modal("show")
+		useLoader(fetchData(`/sahilga/detail/${sahilgaId}/`), employeeSahilgaDetailModal)
+			.then(
+				({ success, data, error }) =>
+				{
+					if (success)
+					{
+						setDisplayDeital(data)
+					}
+				}
+			)
+	}
+
+</script>
+
+{% endblock js %}

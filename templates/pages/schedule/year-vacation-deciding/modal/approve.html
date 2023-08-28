@@ -1,0 +1,32 @@
+
+<div class="modal fade" id="{{id}}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <div class="modal-content" >
+            <form method="post" action="{% url 'year-vacation-deciding-approve' %}" id="year-vacation-deciding-approve-form" onsubmit="logApprove(event)" >
+                {% csrf_token %}
+                <input class="d-none" type="text" id="approve_input" name="approve_input" >
+                <div class="modal-body text-center" id="modalbody">
+                    <div class="text-center mt-2 mb-2">
+                        <i class="fas fa-check-circle text-success fs-40"></i>
+                    </div>
+                    <div style="margin-top: 10px">
+                        <div class="mb-1">
+                            <label class="form-label text-start w-100" for="days">Хэд хоног амрах өдөр</label>
+                            <input type="number" class="form-control" placeholder="амрах өдөр" id="days" name="days" data-msg="Талбарыг бөглөнө үү" >
+                        </div>
+                        <div class="mb-1 position-relative">
+                            <label class="form-label text-start w-100" for="start_date">Эхлэх өдөр</label>
+                            <input type="text" style="cursor: pointer;" class="form-control pickadate-months-year-00-30" placeholder="YYYY-MM-DD" id="start_date" name="start_date" data-msg="Эхлэх өдөр талбарыг бөглөнө үү" />
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary" >Тийм</button>
+                    <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">
+                        Болих
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

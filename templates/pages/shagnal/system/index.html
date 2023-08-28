@@ -1,0 +1,158 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+
+{% load rest_framework %}
+
+{% block content %}
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/forms/select/select2.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/extensions/jstree.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/extensions/ext-component-tree.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/extensions/dragula.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/extensions/ext-component-drag-drop.css' %}">
+
+{% endblock css %}
+
+<div class="content-body">
+    <div class="row">
+        <div class="col-xl-4 col-lg-5 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Шагналууд</h4>
+                </div>
+                <div class="card-body">
+                    <div class="bd-callout bd-callout-primary-green">
+                        Шагнал нь хамгийн томоос жижиг рүү гэж дараалсан байгаа
+                    </div>
+                    <ul class="list-group" id="card-drag-area">
+                    </ul>
+                    <a href="/shagnal/static/" class="text-primary fw-bold fs-12 mt-1 mb-2 d-block text-center">
+                        <i data-feather='plus'></i> Шинээр үүсгэх
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-8 col-lg-7 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">
+                        Шагнал
+                        {% if pk %}
+                            засах
+                        {% else %}
+                            бүртгэх
+                        {% endif %}
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="position-relative">
+                        {% if pk %}
+                            <form class="form-inline" action="{% url 'static-shagnal' pk %}" method="post">
+                        {% else %}
+                            <form class="form-inline" action="{% url 'static-shagnal' %}" method="post">
+                        {% endif %}
+                            {% csrf_token %}
+                            {% render_form serializer %}
+                            <div class="col-xl-12 col-md-12 col-12 mt-2">
+                                {% if pk %}
+                                    <button type="submit" id="salbar-btn" class="btn btn-primary">Засах</button>
+                                    <a href="{% url 'static-shagnal-delete' pk %}" class="btn btn-danger">Устгах</a>
+                                {% else %}
+                                    <button type="submit" id="salbar-btn" class="btn btn-primary">Бүртгэх</button>
+                                {% endif %}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+
+<script src="{% static 'app-assets/vendors/js/forms/select/select2.full.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/form-select2.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/extensions/jstree.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/extensions/dragula.min.js' %}"></script>
+
+<script>
+
+    let dragArea = $("#card-drag-area")
+
+    /** Шагналын нэг айтем */
+    function shagnalItem(data)
+    {
+        let html = `
+            <li class="list-group-item draggable" data-cid="${data.id}">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5>${data.name}</h5>
+                    </div>
+                    <a role="button" class="text-success" href="/shagnal/static/${data.id}/">
+                        ${feather.icons["edit"].toSvg({
+                            class: "font-small-4 ms-1",
+                        })}
+                    </a>
+                </div>
+            </li>
+        `
+        return html
+    }
+
+    /** Шагналуудыг дуудах нь */
+    function getDatas()
+    {
+        useLoader(fetchData("{% url 'static-shagnal-list' %}"), dragArea)
+            .then(
+                ({ success, data, errors, error }) =>
+                {
+                    data.map(
+                        (item, idx) =>
+                        {
+                            let htmlitem = shagnalItem(item)
+                            dragArea.append(htmlitem)
+                        }
+                    )
+                    drake = dragula([document.getElementById('card-drag-area')], {
+                        revertOnSpill: true
+                    });
+                    drake.on("drop", changingOrder)
+                }
+            )
+    }
+
+    /** зөөгдсөн дарааллыг зассан бас back дээрээ хадгалсан */
+    function changingOrder(el, target, source, sibling)
+    {
+        const fromId = $(el).data("cid")
+        const toId = $(sibling).data("cid")
+        const body = {
+            "to_id": toId,
+            "from_id": fromId
+        }
+        useLoader(fetchData("{% url 'static-shagnal-change-order' %}", body, "PUT"), dragArea.parent()).catch(err => err)
+            .then(
+                ({ success, data, errors }) =>
+                {
+                    if (!success)
+                    {
+                        drake.cancel()
+                    }
+                }
+            )
+    }
+
+    getDatas()
+
+</script>
+
+{% endblock js %}

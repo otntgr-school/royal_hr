@@ -1,0 +1,103 @@
+<div class="modal fade" id="employeeCreate-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-edit-user">
+        <div class="modal-content">
+            <div class="modal-header bg-transparent">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pb-5 px-sm-5 pt-50">
+                <div class="text-center mb-2">
+                    <h1 class="mb-1">Ажилтны мэдээлэл</h1>
+                </div>
+                <form id="createEmployee-form" class="row gy-1 pt-75" onsubmit="employeeCreateSubmit(event)">
+                    <div class="row">
+                        {% if pos in 'suborg, org' %}
+                        <div class="col-12">
+                            <div class="mb-2 row">
+                                <div class="col-sm-3">
+                                    <label class="col-form-label" for="suborg-select">Харьяалагдах алба нэгж</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <select class="select2 form-select" id="suborg-select" name="sub_org" onchange="handleChangeSubSalbar(event)">
+                                        {% for option in s_options %}
+                                            <option value="{{option.id}}-{{ forloop.counter0 }}">
+                                                {{option.name}}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        {% if pos in 'suborg, salbar, org' %}
+                        <div class="col-12">
+                            <div class="mb-2 row">
+                                <div class="col-sm-3">
+                                    <label class="col-form-label" for="salbar-select">Тэнхим</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <select class="form-select" id="salbar-select" name="salbar" onchange="handleChangeSubSalbar(event)">
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        {% endif %}
+                        <div class="col-12">
+                            <div class="mb-2 row">
+                                <div class="col-sm-3">
+                                    <label class="col-form-label" for="org_position">Албан тушаал</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <select class="select2 form-select" id="org_position" name="org_position">
+                                        <option value="">-----------------</option>
+                                        {% for option in org_positions %}
+                                            <option value="{{option.id}}">{{option.name}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="mb-2 row">
+                                <div class="col-sm-3">
+                                    <label class="col-form-label" for="command">Тушаалын дугаар</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <select class="select2 form-select" id="command" name="command">
+                                        <option value="">-----------------</option>
+                                        {% for option in command %}
+                                            <option value="{{option.id}}">{{option.command_number}} /{{option.name}}/</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="mb-2 row">
+                                <div class="col-sm-4">
+                                    <label class="col-form-label" for="worker_type">Ажилтны гэрээний төрөл</label>
+                                </div>
+                                <div class="col-sm-8">
+                                    {% for id, name in worker_type %}
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="worker_type" value="{{id}}" id="worker_type-{{id}}">
+                                            <label class="form-check-label" for="worker_type-{{id}}">
+                                                {{name}}
+                                            </label>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 text-center mt-2 pt-50">
+                        <button type="submit" class="btn btn-primary me-1">Ажилд авах</button>
+                        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">
+                            Болих
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <span id="loaderWeew"></span>
+        </div>
+    </div>
+</div>

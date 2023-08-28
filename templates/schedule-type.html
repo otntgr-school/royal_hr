@@ -1,0 +1,1108 @@
+
+<!--
+    URL: /schedule/working-time-schedule/ || /schedule/working-time-schedule/<pk>
+    Нэр: Цагийн хуваарийн төрөл хуудас
+    Төрөл: Хуудас
+-->
+
+{% extends './base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+{% block content %}
+
+{% load rest_framework %}
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/schedule.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-pickadate.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/pickadate/pickadate.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+
+{% endblock css %}
+
+<div class="content-body">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Цагийн хуваарийн төрөл</h4>
+                </div>
+                <div class="table-responsive">
+                    <div class="card-datatable table-responsive pt-0">
+                        <table class="time-list-table table text-center">
+                            <thead class="table-light">
+                                <tr class="filter-container"></tr>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Нэр</th>
+                                    <th>Амралтын өдрүүдэд ажиллах эсэх</th>
+                                    <th>Баярын өдрүүдэд ажиллах эсэх</th>
+                                    <th>Торгууль</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tfoot class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Нэр</th>
+                                    <th>Амралтын өдрүүдэд ажиллах эсэх</th>
+                                    <th>Баярын өдрүүдэд ажиллах эсэх</th>
+                                    <th>Торгууль</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal modal-slide-in new-user-modal fade" id="modals-slide-in">
+                    <div class="modal-dialog custom-50" >
+
+                        <form class="add-new-timetable modal-content pt-0" action="{% url 'working-time-schedule' %}" method="post" id="workingTimeSchedule" onsubmit="logSubmit(event)">
+
+                            {% csrf_token %}
+                            <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                            >
+                                ×
+                            </button>
+                            <div class="modal-header mb-1">
+                                <h5 class="modal-title" id="exampleModalLabel">
+                                    Цагийн хуваарийн төрөл бүртгэх
+                                </h5>
+                            </div>
+                            <div class="modal-body flex-grow-1">
+                                <div class="mb-1">
+                                    <label class="form-label">Байгууллагын нэр</label>
+                                    <input type="text" id="org_name" name="org_name" class="form-control" placeholder="Байгууллагын нэр" disabled value="{{ request.employee.org }}" />
+                                    <input type="hidden" class="form-control" id="org" name="org" value="{{ request.employee.org.id }}" />
+                                    <input type="hidden" name="id" id="id" value="">
+                                </div>
+                                <div class="mb-1">
+                                    <label class="form-label">Нэр *</label>
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="Нэр" data-msg="Нэр талбарыг бөглөнө үү"/>
+                                </div>
+                                <div class="mb-1">
+                                    <label class="form-label" for="type">Төрөл *</label>
+                                    <select class="form-select" id="type" name="type" onclick=(type_click()) data-msg="Ажиллах цагийн хуваарийн төрөлийг сонгоно уу">
+                                        <option value="" data-code="0">-- сонгох --</option>
+                                        {% for working_time_schedule_type in working_time_schedule_types %}
+                                            <option value="{{ working_time_schedule_type.id }}" data-code="{{ working_time_schedule_type.code }}">{{ working_time_schedule_type.name }}</option>
+                                        {% endfor %}
+
+                                    </select>
+                                </div>
+                                <div class="mb-1">
+                                    <div class="form-check form-check-inline mb-1" id="vacationDisplay" style="display: none;">
+                                        <input class="form-check-input" type="checkbox" id="vacation" name="vacation" value="True" {% if serializer.vacation.value %}checked{% endif %}>
+                                        <label class="form-check-label" for="vacation">Амралтын өдрүүдэд ажиллана</label>
+                                    </div>
+                                    <div class="form-check form-check-inline" id="holidayDisplay" style="display: none;">
+                                        <input class="form-check-input" type="checkbox" id="holiday" name="holiday" value="True" {% if serializer.holiday.value %}checked{% endif %}>
+                                        <label class="form-check-label" for="holiday">Баярын өдрүүдэд ажиллана</label>
+                                    </div>
+                                </div>
+                                <div class="mb-1">
+                                    <label class="form-label">Тайлбар</label>
+                                    <textarea class="form-control" rows="3" id="description" name="description"></textarea>
+                                </div>
+                                <div class="mb-1">
+                                    <label class="form-label">Ирсэн цагаа бүртгүүлээгүй тохиолдолд торгууль ногдуулах бол *</label>
+                                    <input type="number" class="form-control" placeholder="Минут" id="start_time_penalty" name="start_time_penalty" data-msg="Талбарыг бөглөнө үү" />
+                                </div>
+                                <div class="mb-1">
+                                    <label class="form-label">Явсан цагаа бүртгүүлээгүй тохиолдолд торгууль ногдуулах бол *</label>
+                                    <input type="number" class="form-control" placeholder="Минут" id="end_time_penalty" name="end_time_penalty" data-msg="Талбарыг бөглөнө үү" />
+                                </div>
+                                <div class="mb-1 border p-1 text-dark" id="xy_form" style="display: none;">
+                                    <div class="mb-1" id='multiWrapper'>
+                                        <label class="form-label" for="time_schedule">Ажиллах цагийн төрөл</label>
+                                        <select class="form-select select_with_dtable" id="xy_time_schedule" name="xy_time_schedule">
+                                            <optgroup id="xy_time_scheduledsa" class='def-cursor' label='Нэр' data-start_time="Эхлэх цаг" data-end_time="Дуусах цаг" data-lunch_time="Цайны цаг">
+                                                <option value="" selected>-- Сонгох --</option>
+                                            {% for time_schedule in time_schedules %}
+                                                <option
+                                                    value="{{ time_schedule.id }}"
+                                                    data-end_time="{{ time_schedule.end_time|date:'G:i' }}"
+                                                    data-lunch_time="{{ time_schedule.lunch_time_start_time|date:'G:i' }} - {{ time_schedule.lunch_time_start_time|date:'G:i' }}"
+                                                    data-start_time="{{ time_schedule.start_time|date:'G:i' }}"
+                                                    id="{{ time_schedule.id }}"
+                                                >
+                                                    {{ time_schedule.name }}
+                                                </option>
+                                            {% endfor %}
+                                            </optgroup>
+
+                                        </select>
+                                    </div>
+                                    <div class="mb-1">
+                                        <label class="form-label">Ажиллах хоног</label>
+                                        <input type="number" class="form-control" placeholder="" id="ajillah_time" name="ajillah_time" />
+                                    </div>
+                                    <div class="mb-1">
+                                        <label class="form-label">Амрах хоног</label>
+                                        <input type="number" class="form-control" placeholder="" id="amrah_time" name="amrah_time"  />
+                                    </div>
+                                </div>
+                                <div class="mb-1 border p-1" id="days_form" style="display: none;">
+                                    <div class="row d-flex align-items-center">
+                                        <div class="col-md-2 mbc-1">
+                                            <span class="fs-12 fw-bolder">Даваа</span>
+                                        </div>
+                                        <div class="col-md-2 mbc-1">
+                                            <div class="form-check form-chec1-inline fs-12">
+                                                <input class="form-check-input" type="checkbox" id="mon_work" name="mon_work" value="True" {% if serializer.mon_work.value %}checked{% endif %}>
+                                                <label class="form-check-label" for="mon_work">Ажиллана</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8 mbc-1">
+
+                                            <div class="mb-1" id='multiWrapper'>
+                                                <label class="form-label" for="time_schedule">Ажиллах цагийн төрөл</label>
+                                                <select class="form-select select_with_dtable" id="mon_time_schedule" name="mon_time_schedule">
+                                                    <optgroup class='def-cursor' label='Нэр' data-start_time="Эхлэх цаг" data-end_time="Дуусах цаг" data-lunch_time="Цайны цаг">
+                                                        <option value="" selected>-- Сонгох --</option>
+                                                    {% for time_schedule in time_schedules %}
+                                                        <option
+                                                            value="{{ time_schedule.id }}"
+                                                            data-end_time="{{ time_schedule.end_time|date:'G:i' }}"
+                                                            data-lunch_time="{{ time_schedule.lunch_time_start_time|date:'G:i' }} - {{ time_schedule.lunch_time_start_time|date:'G:i' }}"
+                                                            data-start_time="{{ time_schedule.start_time|date:'G:i' }}"
+                                                            id="{{ time_schedule.id }}"
+                                                        >
+                                                            {{ time_schedule.name }}
+                                                        </option>
+                                                    {% endfor %}
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <hr />
+                                        </div>
+                                    </div>
+                                    <div class="row d-flex align-items-center">
+                                        <div class="col-md-2 mbc-1">
+                                            <span class="fs-12 fw-bolder">Мягмар</span>
+                                        </div>
+                                        <div class="col-md-2 mbc-1">
+                                            <div class="form-check form-check-inline fs-12">
+                                                <input class="form-check-input" type="checkbox" id="tue_work" name="tue_work" value="True" {% if serializer.tue_work.value %}checked{% endif %}>
+                                                <label class="form-check-label" for="tue_work">Ажиллана</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8 mbc-1">
+                                            <div class="mb-1" id='multiWrapper'>
+                                                <label class="form-label" for="time_schedule">Ажиллах цагийн төрөл</label>
+                                                <select class="form-select select_with_dtable text-dark" id="tue_time_schedule" name="tue_time_schedule">
+                                                    <optgroup class='def-cursor' label='Нэр' data-start_time="Эхлэх цаг" data-end_time="Дуусах цаг" data-lunch_time="Цайны цаг">
+                                                        <option value="" selected>-- Сонгох --</option>
+                                                    {% for time_schedule in time_schedules %}
+                                                        <option
+                                                            value="{{ time_schedule.id }}"
+                                                            data-end_time="{{ time_schedule.end_time|date:'G:i' }}"
+                                                            data-lunch_time="{{ time_schedule.lunch_time_start_time|date:'G:i' }} - {{ time_schedule.lunch_time_start_time|date:'G:i' }}"
+                                                            data-start_time="{{ time_schedule.start_time|date:'G:i' }}"
+                                                            id="{{ time_schedule.id }}"
+                                                        >
+                                                            {{ time_schedule.name }}
+                                                        </option>
+                                                    {% endfor %}
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <hr />
+                                        </div>
+                                    </div>
+                                    <div class="row d-flex align-items-center">
+                                        <div class="col-md-2 mbc-1">
+                                            <span class="fs-12 fw-bolder">Лхагва</span>
+                                        </div>
+                                        <div class="col-md-2 mbc-1">
+                                            <div class="form-check form-check-inline fs-12">
+                                                <input class="form-check-input" type="checkbox" id="wed_work" name="wed_work" value="True" {% if serializer.wed_work.value %}checked{% endif %}>
+                                                <label class="form-check-label" for="wed_work">Ажиллана</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8 mbc-1">
+                                            <div class="mb-1" id='multiWrapper'>
+                                                <label class="form-label" for="time_schedule">Ажиллах цагийн төрөл</label>
+                                                <select class="form-select select_with_dtable" id="wed_time_schedule" name="wed_time_schedule">
+                                                    <optgroup class='def-cursor' label='Нэр' data-start_time="Эхлэх цаг" data-end_time="Дуусах цаг" data-lunch_time="Цайны цаг">
+                                                        <option value="" selected>-- Сонгох --</option>
+                                                    {% for time_schedule in time_schedules %}
+                                                        <option
+                                                            value="{{ time_schedule.id }}"
+                                                            data-end_time="{{ time_schedule.end_time|date:'G:i' }}"
+                                                            data-lunch_time="{{ time_schedule.lunch_time_start_time|date:'G:i' }} - {{ time_schedule.lunch_time_start_time|date:'G:i' }}"
+                                                            data-start_time="{{ time_schedule.start_time|date:'G:i' }}"
+                                                            id="{{ time_schedule.id }}"
+                                                        >
+                                                            {{ time_schedule.name }}
+                                                        </option>
+                                                    {% endfor %}
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <hr />
+                                        </div>
+                                    </div>
+                                    <div class="row d-flex align-items-center">
+                                        <div class="col-md-2 mbc-1">
+                                            <span class="fs-12 fw-bolder">Пүрэв</span>
+                                        </div>
+                                        <div class="col-md-2 mbc-1">
+                                            <div class="form-check form-check-inline fs-12">
+                                                <input class="form-check-input" type="checkbox" id="thu_work" name="thu_work" value="True" {% if serializer.thu_work.value %}checked{% endif %}>
+                                                <label class="form-check-label" for="thu_work">Ажиллана</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8 mbc-1">
+                                            <div class="mb-1" id='multiWrapper'>
+                                                <label class="form-label" for="time_schedule">Ажиллах цагийн төрөл</label>
+                                                <select class="form-select select_with_dtable" id="thu_time_schedule" name="thu_time_schedule">
+                                                    <optgroup class='def-cursor' label='Нэр' data-start_time="Эхлэх цаг" data-end_time="Дуусах цаг" data-lunch_time="Цайны цаг">
+                                                        <option value="" selected>-- Сонгох --</option>
+                                                    {% for time_schedule in time_schedules %}
+                                                        <option
+                                                            value="{{ time_schedule.id }}"
+                                                            data-end_time="{{ time_schedule.end_time|date:'G:i' }}"
+                                                            data-lunch_time="{{ time_schedule.lunch_time_start_time|date:'G:i' }} - {{ time_schedule.lunch_time_start_time|date:'G:i' }}"
+                                                            data-start_time="{{ time_schedule.start_time|date:'G:i' }}"
+                                                            id="{{ time_schedule.id }}"
+                                                        >
+                                                            {{ time_schedule.name }}
+                                                        </option>
+                                                    {% endfor %}
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <hr />
+                                        </div>
+                                    </div>
+                                    <div class="row d-flex align-items-center">
+                                        <div class="col-md-2 mbc-1">
+                                            <span class="fs-12 fw-bolder">Баасан</span>
+                                        </div>
+                                        <div class="col-md-2 mbc-1">
+                                            <div class="form-check form-check-inline fs-12">
+                                                <input class="form-check-input" type="checkbox" id="fri_work" name="fri_work" value="True" {% if serializer.fri_work.value %}checked{% endif %}>
+                                                <label class="form-check-label" for="fri_work">Ажиллана</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8 mbc-1">
+                                            <div class="mb-1" id='multiWrapper'>
+                                                <label class="form-label" for="time_schedule">Ажиллах цагийн төрөл</label>
+                                                <select class="form-select select_with_dtable" id="fri_time_schedule" name="fri_time_schedule">
+                                                    <optgroup class='def-cursor' label='Нэр' data-start_time="Эхлэх цаг" data-end_time="Дуусах цаг" data-lunch_time="Цайны цаг">
+                                                        <option value="" selected>-- Сонгох --</option>
+                                                    {% for time_schedule in time_schedules %}
+                                                        <option
+                                                            value="{{ time_schedule.id }}"
+                                                            data-end_time="{{ time_schedule.end_time|date:'G:i' }}"
+                                                            data-lunch_time="{{ time_schedule.lunch_time_start_time|date:'G:i' }} - {{ time_schedule.lunch_time_start_time|date:'G:i' }}"
+                                                            data-start_time="{{ time_schedule.start_time|date:'G:i' }}"
+                                                            id="{{ time_schedule.id }}"
+                                                        >
+                                                            {{ time_schedule.name }}
+                                                        </option>
+                                                    {% endfor %}
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <hr />
+                                        </div>
+                                    </div>
+                                    <div class="row d-flex align-items-center">
+                                        <div class="col-md-2 mbc-1">
+                                            <span class="fs-12 fw-bolder">Бямба</span>
+                                        </div>
+                                        <div class="col-md-2 mbc-1">
+                                            <div class="form-check form-check-inline fs-12">
+                                                <input class="form-check-input" type="checkbox" id="sat_work" name="sat_work" value="True" {% if serializer.sat_work.value %}checked{% endif %}>
+                                                <label class="form-check-label" for="sat_work">Ажиллана</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8 mbc-1">
+                                            <div class="mb-1" id='multiWrapper'>
+                                                <label class="form-label" for="time_schedule">Ажиллах цагийн төрөл</label>
+                                                <select class="form-select select_with_dtable" id="sat_time_schedule" name="sat_time_schedule">
+                                                    <optgroup class='def-cursor' label='Нэр' data-start_time="Эхлэх цаг" data-end_time="Дуусах цаг" data-lunch_time="Цайны цаг">
+                                                        <option value="" selected>-- Сонгох --</option>
+                                                    {% for time_schedule in time_schedules %}
+                                                        <option
+                                                            value="{{ time_schedule.id }}"
+                                                            data-end_time="{{ time_schedule.end_time|date:'G:i' }}"
+                                                            data-lunch_time="{{ time_schedule.lunch_time_start_time|date:'G:i' }} - {{ time_schedule.lunch_time_start_time|date:'G:i' }}"
+                                                            data-start_time="{{ time_schedule.start_time|date:'G:i' }}"
+                                                            id="{{ time_schedule.id }}"
+                                                        >
+                                                            {{ time_schedule.name }}
+                                                        </option>
+                                                    {% endfor %}
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <hr />
+                                        </div>
+                                    </div>
+                                    <div class="row d-flex align-items-center">
+                                        <div class="col-md-2 mbc-1">
+                                            <span class="fs-12 fw-bolder">Ням</span>
+                                        </div>
+                                        <div class="col-md-2 mbc-1">
+                                            <div class="form-check form-check-inline fs-12">
+                                                <input class="form-check-input" type="checkbox" id="sun_work" name="sun_work" value="True" {% if serializer.sun_work.value %}checked{% endif %}>
+                                                <label class="form-check-label" for="sun_work">Ажиллана</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-8 mbc-1">
+                                            <div class="mb-1" id='multiWrapper'>
+                                                <label class="form-label" for="time_schedule">Ажиллах цагийн төрөл</label>
+                                                <select class="form-select select_with_dtable" id="sun_time_schedule" name="sun_time_schedule">
+                                                    <optgroup class='def-cursor' label='Нэр' data-start_time="Эхлэх цаг" data-end_time="Дуусах цаг" data-lunch_time="Цайны цаг">
+                                                        <option value="" selected>-- Сонгох --</option>
+                                                    {% for time_schedule in time_schedules %}
+                                                        <option
+                                                            value="{{ time_schedule.id }}"
+                                                            data-end_time="{{ time_schedule.end_time|date:'G:i' }}"
+                                                            data-lunch_time="{{ time_schedule.lunch_time_start_time|date:'G:i' }} - {{ time_schedule.lunch_time_start_time|date:'G:i' }}"
+                                                            data-start_time="{{ time_schedule.start_time|date:'G:i' }}"
+                                                            id="{{ time_schedule.id }}"
+                                                        >
+                                                            {{ time_schedule.name }}
+                                                        </option>
+                                                    {% endfor %}
+                                                    </optgroup>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <hr />
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="submit" class="btn btn-primary me-1 data-submit">Хадгалах</button>
+                                <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Болих</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% include "pages/schedule/delete.html" with id="userReward" deletebtn="deletebtn" %}
+        {% include "pages/schedule/schedule-detail.html" with id="scheduleDetail" %}
+    </div>
+</div>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.buttons.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jszip.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/pdfmake.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/vfs_fonts.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.html5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.print.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/cleave.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/addons/cleave-phone.us.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.date.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.time.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/legacy.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+
+<script src="{% static 'app-assets/js/scripts/pages/app-user-list.js' %}"></script>
+
+<script src="{% static 'app-assets/js/scripts/tables/table-datatables-advanced.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/pickers/form-pickers.js' %}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.0/select2.min.js"></script>
+
+<script>
+
+    /** Засах товчлуурыг дарахад гарж ирэх модалд утгуудыг оноож өгч байна */
+    async function wts_update(pk)
+    {
+        document.querySelector(".click_btn").click()
+
+        const { data } = await fetchData(`/schedule/working-time-schedule-ajax/${pk}/`, null, 'GET')
+
+        let qwerty = document.getElementById('workingTimeSchedule')
+
+        if (data)
+        {
+            document.getElementById("name").value = data.name;
+            document.getElementById("type").value = data.type.code;
+
+            /** Ажиллах цагийн хуваарийн төрөл сонгогдсон байвал тэрийг бас сонгогдсон болгоно */
+            type_click()
+
+            document.getElementById("vacation").checked = data.vacation;
+            document.getElementById("holiday").checked = data.holiday;
+            document.getElementById("description").value = data.description? data.description : '';
+            document.getElementById("start_time_penalty").value = data.start_time_penalty;
+            document.getElementById("end_time_penalty").value = data.end_time_penalty;
+            document.getElementById("org").value = data.org.id;
+            document.getElementById("id").value = pk
+
+            if (data.type.code == 2)
+            {
+                document.getElementById("xy_time_schedule").value = data.xy_time_schedule?data.xy_time_schedule.id:'';
+                document.querySelector('#s2id_xy_time_schedule .select2-chosen').textContent = data.xy_time_schedule?data.xy_time_schedule.name:'-- Сонгох --';
+                document.getElementById("ajillah_time").value = data.ajillah_time ? data.ajillah_time : 0;
+                document.getElementById("amrah_time").value = data.amrah_time ? data.amrah_time : 0;
+            } else if (data.type.code == 1)
+            {
+                document.getElementById("mon_work").checked = data.mon_work;
+                document.getElementById("tue_work").checked = data.tue_work;
+                document.getElementById("wed_work").checked = data.wed_work;
+                document.getElementById("thu_work").checked = data.thu_work;
+                document.getElementById("fri_work").checked = data.fri_work;
+                document.getElementById("sat_work").checked = data.sat_work;
+                document.getElementById("sun_work").checked = data.sun_work;
+
+                document.getElementById("mon_time_schedule").value = data.mon_time_schedule?data.mon_time_schedule.id:'';
+                document.querySelector('#s2id_mon_time_schedule .select2-chosen').textContent = data.mon_time_schedule?data.mon_time_schedule.name:'-- Сонгох --';
+                document.getElementById("tue_time_schedule").value = data.tue_time_schedule?data.tue_time_schedule.id:'';
+                document.querySelector('#s2id_tue_time_schedule .select2-chosen').textContent = data.tue_time_schedule?data.tue_time_schedule.name:'-- Сонгох --';
+                document.getElementById("wed_time_schedule").value = data.wed_time_schedule?data.wed_time_schedule.id:'';
+                document.querySelector('#s2id_wed_time_schedule .select2-chosen').textContent = data.wed_time_schedule?data.wed_time_schedule.name:'-- Сонгох --';
+                document.getElementById("thu_time_schedule").value = data.thu_time_schedule?data.thu_time_schedule.id:'';
+                document.querySelector('#s2id_thu_time_schedule .select2-chosen').textContent = data.thu_time_schedule?data.thu_time_schedule.name:'-- Сонгох --';
+                document.getElementById("fri_time_schedule").value = data.fri_time_schedule?data.fri_time_schedule.id:'';
+                document.querySelector('#s2id_fri_time_schedule .select2-chosen').textContent = data.fri_time_schedule?data.fri_time_schedule.name:'-- Сонгох --';
+                document.getElementById("sat_time_schedule").value = data.sat_time_schedule?data.sat_time_schedule.id:'';
+                document.querySelector('#s2id_sat_time_schedule .select2-chosen').textContent = data.sat_time_schedule?data.sat_time_schedule.name:'-- Сонгох --';
+                document.getElementById("sun_time_schedule").value = data.sun_time_schedule?data.sun_time_schedule.id:'';
+                document.querySelector('#s2id_sun_time_schedule .select2-chosen').textContent = data.sun_time_schedule?data.sun_time_schedule.name:'-- Сонгох --';
+            }
+        }
+    }
+
+    /** Select-ийн option-д datatable гарж ирэх функц */
+    function formatResultMulti(data) {
+        var end_time = $(data.element).data('end_time') ? $(data.element).data('end_time') : '';
+        var start_time = $(data.element).data('start_time') ? $(data.element).data('start_time') : '';
+        var lunch_time = $(data.element).data('lunch_time') ? $(data.element).data('lunch_time') : '';
+        var classAttr = $(data.element).attr('class');
+        var hasClass = typeof classAttr != 's';
+        classAttr = hasClass ? ' ' + classAttr : '';
+
+        var $result = $(
+            '<div class="row">' +
+                '<div style="font-size: 12px;" class="col-3 col-md-3 col-xs-3 ' + classAttr + '">' + data.text + '</div>' +
+                '<div style="font-size: 12px;" class="col-3 col-md-3 col-xs-3' + classAttr + '">' + end_time + '</div>' +
+                '<div style="font-size: 12px;" class="col-3 col-md-3 col-xs-3' + classAttr + '">' + start_time + '</div>' +
+                '<div style="font-size: 12px;" class="col-3 col-md-3 col-xs-3' + classAttr + '">' + lunch_time + '</div>' +
+            '</div>'
+        );
+        return $result;
+    }
+
+    /** Аль аль select-д datatable-тэй option-г гаргаж ирэхийг заана */
+    $(function()
+    {
+        $('#xy_time_schedule').select2(
+        {
+            width: '100%',
+            formatResult: formatResultMulti
+        });
+        $('#mon_time_schedule').select2(
+        {
+            width: '100%',
+            formatResult: formatResultMulti
+        });
+        $('#tue_time_schedule').select2(
+        {
+            width: '100%',
+            formatResult: formatResultMulti
+        });
+        $('#wed_time_schedule').select2(
+        {
+            width: '100%',
+            formatResult: formatResultMulti
+        });
+        $('#thu_time_schedule').select2(
+        {
+            width: '100%',
+            formatResult: formatResultMulti
+        });
+        $('#fri_time_schedule').select2(
+        {
+            width: '100%',
+            formatResult: formatResultMulti
+        });
+        $('#sat_time_schedule').select2(
+        {
+            width: '100%',
+            formatResult: formatResultMulti
+        });
+        $('#sun_time_schedule').select2(
+        {
+            width: '100%',
+            formatResult: formatResultMulti
+        });
+    })
+
+    /** Form домоос барих */
+    var jqForm = $('#workingTimeSchedule')
+
+    /** Шалгах утгууд (validation) */
+    if (jqForm.length) {
+        validate = jqForm.validate({
+            rules: {
+                'name': {
+                    required: true
+                },
+                'type': {
+                    required: true
+                },
+                'start_time_penalty': {
+                    required: true
+                },
+                'end_time_penalty': {
+                    required: true
+                }
+            }
+        });
+    }
+
+    /** Хадгаолах товч дарахад үе (submit) */
+    async function logSubmit(event)
+    {
+
+        // validation давж чадахгүй бол буцаагаад алдаа заана
+        if(!validate.checkForm())
+        {
+            return
+        }
+
+        /** Хэрвээ ID-тай байвал POST биш шинэчлэхгэж байгааг мэдээд утгуудаа авч хадгална */
+        if(document.getElementById('id').value)
+        {
+            /** Бүх утгаа хадгалах хувьсагч */
+		    let booleanDatas = ['vacation', 'holiday', 'mon_work', 'tue_work', 'wed_work', 'tue_work', 'fri_work', 'sat_work', 'sun_work']
+
+            /** Хуудас refresh хийлгэхгүй */
+            event.preventDefault()
+
+            /** Хэрэгтэй модалуудын утгуудыг л авна  */
+            /** TODO: Yukionna Ойлгох */
+            const formData = new FormData(event.target)
+            const data = Object.fromEntries(formData)
+
+            /** csrfmiddlewaretoken устгаж байна */
+            delete data.csrfmiddlewaretoken;
+
+            /** checkbox-ийн утгуудыг true гэдгийг буцаагаад false-ийг буцаахгүй байсан тул */
+            /** бүх checkbox утгуудыг хайгаад байхгүй байвал false утгатай хадгална */
+            for (let i=0; i<booleanDatas.length; i++)
+            {
+                if (!data[booleanDatas[i]])
+                {
+                    data[booleanDatas[i]] = 'False'
+                }
+            }
+
+            /** Хүсэлтээ шидэж байна */
+            const { success } = await fetchData(`/schedule/working-time-schedule-ajax/${document.getElementById('id').value}/`, data, 'PUT')
+
+            /** Амжилттай болбол Datatable refresh хийж modal-ийг хаана */
+            if (success)
+            {
+                dataTable.ajax.reload(null, false)
+
+                setTimeout(function()
+                {
+                    document.querySelector(".btn-close").click()
+                },
+                300)
+            }
+        }
+    }
+
+    /** Ажиллах цагийн хуваарийн төрөлөөс шалтгаалж дэлгэцэнд харагдах input-үүд ондоо болгодог функц */
+    function type_click()
+    {
+
+        let element = document.getElementById("type");
+        let selectedCode = element.options[element.selectedIndex].getAttribute("data-code");
+
+        var vac = document.getElementById("vacationDisplay");
+        var hol = document.getElementById("holidayDisplay");
+        var xyForm = document.getElementById("xy_form");
+        var daysForm = document.getElementById("days_form");
+
+        if (selectedCode == 1)
+        {
+            vac.style.display = "none";
+            hol.style.display = "block";
+            xyForm.style.display = "none";
+            daysForm.style.display = "block";
+        }
+        else if (selectedCode == 2)
+        {
+            vac.style.display = "block";
+            hol.style.display = "block";
+            xyForm.style.display = "block";
+            daysForm.style.display = "none";
+
+        }
+        else if (selectedCode == 0)
+        {
+            vac.style.display = "none";
+            hol.style.display = "none";
+            xyForm.style.display = "none";
+            daysForm.style.display = "none";
+        }
+    }
+
+    //  header дээр input ийг clone хийж гаргах нь
+	cloneFooter('.time-list-table', [1, 4])
+
+    // DATA-TABLE
+    const dataTable = $(".time-list-table").DataTable({
+		processing: false,
+		dom: 'lBfrtip',
+		serverSide: true,
+		ajax: { url: "/schedule/working-time-schedule-json" },
+		columns: [
+			// columns according to JSON
+			{ data: "id" },
+			{ data: "name" },
+			{ data: "vacation" },
+			{ data: "holiday" },
+			{ data: "start_time_penalty" },
+			{ data: "" },
+		],
+		bFilter: true,
+		columnDefs: [
+			{
+				// Actions
+				targets: -1,
+				title: "Үйлдэл",
+				orderable: false,
+				render: function (data, type, full, meta)
+				{
+
+					var url = `{% url 'working-time-schedule' %}`
+
+					return (
+						`<a data-toggle="tooltip" title="Засах" onclick="wts_update(${full.id})" class="text-primary delete-record">` +
+						feather.icons["edit-3"].toSvg(
+						{
+							class: "font-small-4",
+						}) +
+						"</a>" +
+						`<a data-toggle="tooltip" title="Устгах" data-bs-toggle="modal" data-bs-target="#userReward" onclick=(changeChoosedId(function(){delete_function(${full.id})})) class="text-primary-orange delete-record ms-1">` +
+						feather.icons["trash-2"].toSvg(
+						{
+							class: "font-small-4",
+						}) +
+						"</a>" +
+                        `<a data-toggle="tooltip" title="Дэлгэрэнгүй" data-bs-toggle="modal" data-bs-target="#scheduleDetail" onclick=(get_detail_function(${full.id})) class="text-secondary delete-record ms-1">` +
+						feather.icons["info"].toSvg(
+						{
+							class: "font-small-4",
+						}) +
+						"</a>"
+					);
+				},
+			},
+			{
+				targets: 0,
+				title: "#",
+				orderable: false,
+				render: function (data, type, full, meta) {
+					return (
+						meta.settings._iDisplayStart + meta.row + 1
+					);
+				},
+			},
+            {
+				targets: 2,
+				render: function (data, type, full, meta) {
+					if(!full.vacation)
+					{
+						return (
+							`<input class="form-check-input" type="checkbox" id="inlineCheckbox1" disabled/>`
+						);
+					}
+					return (
+						`<input class="form-check-input" type="checkbox" id="inlineCheckbox1" checked disabled/>`
+					);
+				},
+			},
+            {
+				targets: 3,
+				render: function (data, type, full, meta) {
+					if(!full.holiday)
+					{
+						return (
+							`<input class="form-check-input" type="checkbox" id="inlineCheckbox1" disabled/>`
+						);
+					}
+					return (
+						`<input class="form-check-input" type="checkbox" id="inlineCheckbox1" checked disabled/>`
+					);
+				},
+			},
+		],
+		order: [[2, "desc"]],
+        lengthMenu: [
+            [10, 25, 50, 100, -1],
+            [10, 25, 50, 100, 'Бүгд'],
+        ],
+		dom:
+			'<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+			'<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+			'<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+			">t" +
+			'<"d-flex justify-content-between mx-2 row mb-1"' +
+			'<"col-sm-12 col-md-6"i>' +
+			'<"col-sm-12 col-md-6"p>' +
+			">",
+		oLanguage: {
+			sProcessing: "Ачааллаж байна. ",
+			sSearch: "Хайх: ",
+			sEmptyTable: "Бичлэг байхгүй",
+			sInfoEmpty: "Нийт 0 бичлэг",
+			sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+			sInfoFiltered: " - _MAX_ бичлэгээс",
+			sLengthMenu: "_MENU_ бичлэг",
+			oPaginate: {
+				sFirst: "Эхэнд",
+				sLast: "Төгсгөлд",
+				sNext: "Дараах",
+				sPrevious: "Өмнөх",
+			},
+		},
+		// Buttons with Dropdown
+		buttons: [
+			{
+				extend: "collection",
+				className: "btn btn-outline-secondary dropdown-toggle me-2",
+				text:
+					feather.icons["external-link"].toSvg({
+						class: "font-small-4 me-50",
+					}) + "Export",
+				buttons: [
+					{
+						extend: "print",
+						text:
+							feather.icons["printer"].toSvg({
+								class: "font-small-4 me-50",
+							}) + "Print",
+						className: "dropdown-item",
+						exportOptions: { columns: [1, 2, 3, 4, 5, 6] },
+					},
+					{
+						extend: "csv",
+						text:
+							feather.icons["file-text"].toSvg({
+								class: "font-small-4 me-50",
+							}) + "Csv",
+						className: "dropdown-item",
+						exportOptions: { columns: [1, 2, 3, 4, 5, 6] },
+					},
+					{
+						extend: "excel",
+						text:
+							feather.icons["file"].toSvg({
+								class: "font-small-4 me-50",
+							}) + "Excel",
+						className: "dropdown-item",
+						exportOptions: { columns: [1, 2, 3, 4, 5, 6] },
+					},
+					{
+						extend: "pdf",
+						text:
+							feather.icons["clipboard"].toSvg({
+								class: "font-small-4 me-50",
+							}) + "Pdf",
+						className: "dropdown-item",
+						exportOptions: { columns: [1, 2, 3, 4, 5, 6] },
+					},
+					{
+						extend: "copy",
+						text:
+							feather.icons["copy"].toSvg({
+								class: "font-small-4 me-50",
+							}) + "Copy",
+						className: "dropdown-item",
+						exportOptions: { columns: [1, 2, 3, 4, 5, 6] },
+					},
+				],
+				init: function (api, node, config) {
+					$(node).removeClass("btn-secondary");
+					$(node).parent().removeClass("btn-group");
+					setTimeout(function () {
+						$(node)
+							.closest(".dt-buttons")
+							.removeClass("btn-group")
+							.addClass("d-inline-flex mt-50");
+					}, 50);
+				},
+			},
+			{
+				text: "Шинээр бүртгэх",
+				className: "add-new btn btn-primary",
+				attr: {
+					"data-bs-toggle": "modal",
+					"data-bs-target": "#modals-slide-in",
+                    "onClick": "clear_form_datas()"
+				},
+				init: function (api, node, config) {
+					$(node).removeClass("btn-secondary").addClass('click_btn')
+
+				},
+			},
+		],
+	});
+
+    $(document).ready(function() {
+        $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+    });
+
+    function clear_form_datas()
+    {
+        document.getElementById("name").value = '';
+        document.getElementById("type").value = '';
+        document.getElementById("vacation").checked = '';
+        document.getElementById("holiday").checked = '';
+        document.getElementById("description").value = '';
+        document.getElementById("start_time_penalty").value = '';
+        document.getElementById("end_time_penalty").value = '';
+        document.getElementById("xy_time_schedule").value = '';
+        document.querySelector('#s2id_xy_time_schedule .select2-chosen').textContent = '-- Сонгох --';
+        document.getElementById("ajillah_time").value = 0;
+        document.getElementById("amrah_time").value = 0;
+
+        document.getElementById("mon_time_schedule").value = '';
+        document.querySelector('#s2id_mon_time_schedule .select2-chosen').textContent = '-- Сонгох --';
+        document.getElementById("tue_time_schedule").value = '';
+        document.querySelector('#s2id_tue_time_schedule .select2-chosen').textContent = '-- Сонгох --';
+        document.getElementById("wed_time_schedule").value = '';
+        document.querySelector('#s2id_wed_time_schedule .select2-chosen').textContent = '-- Сонгох --';
+        document.getElementById("thu_time_schedule").value = '';
+        document.querySelector('#s2id_thu_time_schedule .select2-chosen').textContent = '-- Сонгох --';
+        document.getElementById("fri_time_schedule").value = '';
+        document.querySelector('#s2id_fri_time_schedule .select2-chosen').textContent = '-- Сонгох --';
+        document.getElementById("sat_time_schedule").value = '';
+        document.querySelector('#s2id_sat_time_schedule .select2-chosen').textContent = '-- Сонгох --';
+        document.getElementById("sun_time_schedule").value = '';
+        document.querySelector('#s2id_sun_time_schedule .select2-chosen').textContent = '-- Сонгох --';
+
+        document.getElementById("mon_work").checked = false;
+        document.getElementById("tue_work").checked = false;
+        document.getElementById("wed_work").checked = false;
+        document.getElementById("thu_work").checked = false;
+        document.getElementById("fri_work").checked = false;
+        document.getElementById("sat_work").checked = false;
+        document.getElementById("sun_work").checked = false;
+        document.getElementById("id").value = '';
+
+        /** Ажиллах цагийн хуваарийн төрөл сонгогдсон байвал тэрийг бас сонгогдсон болгоно */
+        type_click()
+    }
+
+    // Устгах үйлдэл
+    async function delete_function(choosedId)
+    {
+        const { success } = await fetchData(`/schedule/working-time-schedule-ajax/${choosedId}/`, null, 'DELETE')
+
+        if (success)
+        {
+            dataTable.ajax.reload(null, false)
+        }
+    }
+
+    // Дэлгэрэнгүй дарах үеийн үйлдэл
+    // Утгаа баазаас ajax авчирж харуулна
+    async function get_detail_function(pk)
+    {
+        const { data } = await fetchData(`/schedule/working-time-schedule-ajax/${pk}/`, null, 'GET')
+
+        if (data)
+        {
+
+            var vac = document.getElementById("vacationDisplayDetail");
+            var hol = document.getElementById("holidayDisplayDetail");
+            var xyForm = document.getElementById("xy_formDetail");
+            var daysForm = document.getElementById("days_formDetail");
+
+            document.getElementById("nameDetail").value = data.name;
+            document.getElementById("typeDetail").value = data.type.name;
+            document.getElementById("vacationDetail").checked = data.vacation;
+            document.getElementById("holidayDetail").checked = data.holiday;
+            document.getElementById("descriptionDetail").value = data.description;
+            document.getElementById("start_time_penaltyDetail").value = data.start_time_penalty;
+            document.getElementById("end_time_penaltyDetail").value = data.end_time_penalty;
+            document.getElementById("orgDetail").value = data.org.name;
+
+            // Ажиллах цагийн хуваарийн төрөлөөс шалтгаалж дэлгэцэнд харагдах тул IF statement ашигласан
+            if (data.type.code == 1)
+            {
+
+                const weekly_values = [
+                    {
+                        'check': 'mon_work',
+                        'checkDisplay': 'mon_workDetail',
+                        'datas': 'mon_time_schedule',
+                        'display': 'mon_display'
+                    },
+                    {
+                        'check': 'tue_work',
+                        'checkDisplay': 'tue_workDetail',
+                        'datas': 'tue_time_schedule',
+                        'display': 'tue_display'
+                    },
+                    {
+                        'check': 'wed_work',
+                        'checkDisplay': 'wed_workDetail',
+                        'datas': 'wed_time_schedule',
+                        'display': 'wed_display'
+                    },
+                    {
+                        'check': 'thu_work',
+                        'checkDisplay': 'thu_workDetail',
+                        'datas': 'thu_time_schedule',
+                        'display': 'thu_display'
+                    },
+                    {
+                        'check': 'fri_work',
+                        'checkDisplay': 'fri_workDetail',
+                        'datas': 'fri_time_schedule',
+                        'display': 'fri_display'
+                    },
+                    {
+                        'check': 'sat_work',
+                        'checkDisplay': 'sat_workDetail',
+                        'datas': 'sat_time_schedule',
+                        'display': 'sat_display'
+                    },
+                    {
+                        'check': 'sun_work',
+                        'checkDisplay': 'sun_workDetail',
+                        'datas': 'sun_time_schedule',
+                        'display': 'sun_display'
+                    },
+                ]
+
+                /** давталт ашиглаад утгуудаа онооно 1-7 хоногийн цагийн төрөл */
+                for(var i = 0, weekly_value; weekly_value = weekly_values[i++];)
+                {
+                    let check_value = weekly_value.check
+
+                    document.getElementById(weekly_value.checkDisplay).checked = data[check_value]
+
+                    if (!data[check_value])
+                    {
+                        document.getElementById(weekly_value.display).style.display = "none"
+                        continue
+                    }
+
+                    /** FORM input-үүдэд утгуудаа онооно */
+                    let qwerty = document.getElementById(weekly_value.display)
+
+                    for (let i = 0, element; element = qwerty.elements[i++];)
+                    {
+                        if (element.localName === "input" && (element.type === 'text' || element.type === 'number' ))
+                        {
+                            if (!data[weekly_value.datas][element.id])
+                            {
+                                continue
+                            }
+                            element.value = data[weekly_value.datas][element.id]
+                        }
+                        else if (element.localName === "input" && element.type === 'checkbox')
+                        {
+                            if (!data[weekly_value.datas][element.id])
+                            {
+                                continue
+                            }
+                            element.checked = data[weekly_value.datas][element.id]
+                        }
+                    }
+                }
+
+                vac.style.display = "none";
+                hol.style.display = "block";
+                xyForm.style.display = "none";
+                daysForm.style.display = "flex";
+
+            }
+            else if (data.type.code == 2)
+            {
+                vac.style.display = "block";
+                hol.style.display = "block";
+                xyForm.style.display = "flex";
+                daysForm.style.display = "none";
+
+                document.getElementById("ajillah_timeDetail").value = data.ajillah_time;
+                document.getElementById("amrah_timeDetail").value = data.amrah_time;
+
+                if (data.xy_time_schedule)
+                {
+                    document.getElementById("time_schedule_nameDetail").value = data.xy_time_schedule.name;
+                    document.getElementById("time_schedule_uyn_khatanDetail").checked = data.xy_time_schedule.uyn_khatan;
+                    document.getElementById("time_schedule_start_timeDetail").value = data.xy_time_schedule.start_time;
+                    document.getElementById("time_schedule_end_timeDetail").value = data.xy_time_schedule.end_time;
+                    document.getElementById("time_schedule_lunch_time_start_timeDetail").value = data.xy_time_schedule.lunch_time_start_time;
+                    document.getElementById("time_schedule_lunch_time_end_timeDetail").value = data.xy_time_schedule.lunch_time_end_time;
+                    document.getElementById("time_schedule_registration_start_timeDetail").value = data.xy_time_schedule.registration_start_time;
+                    document.getElementById("time_schedule_registration_end_timeDetail").value = data.xy_time_schedule.registration_end_time;
+                    document.getElementById("time_schedule_time_rangeDetail").value = data.xy_time_schedule.time_range;
+                }
+            }
+        }
+    }
+
+</script>
+
+{% endblock js %}

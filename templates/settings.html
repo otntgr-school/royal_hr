@@ -1,0 +1,378 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+{% block content %}
+
+{% block css %}
+
+<link
+    rel="stylesheet"
+    type="text/css"
+    href="{% static 'app-assets/css/plugins/forms/form-validation.css' %}"
+/>
+
+<link
+    rel="stylesheet"
+    type="text/css"
+    href="{% static 'app-assets/vendors/css/forms/select/select2.min.css' %}"
+/>
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/vendors.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'assets/css/loader.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/pickadate/pickadate.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-pickadate.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+
+{% endblock css %}
+
+<div class="content-body">
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Тохиргоо</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <form id="resetPassForm" class="row" onsubmit="resetPassSubmit(event)">
+                            <div class="col-12">
+                                <div class="mb-1 row">
+                                    <div class="col-sm-3">
+                                        <label class="col-form-label" for="email-id" style="font-size: 1rem">Хуучин нууц үг</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <div class="input-group form-password-toggle input-group-merge">
+                                            <input type="password" class="form-control" name="oldPassword" id="oldPassword" placeholder="Хуучин нууц үг" data-error="#errNm1">
+                                            <div class="input-group-text cursor-pointer">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                            </div>
+                                        </div>
+                                        <div class="errorTxt">
+                                            <span id="errNm1"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="mb-1 row">
+                                    <div class="col-sm-3">
+                                        <label class="col-form-label" for="email-id" style="font-size: 1rem">Шинэ нууц үг</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <div class="input-group form-password-toggle input-group-merge">
+                                            <input type="password" class="form-control" name="password" id="password" placeholder="Шинэ нууц үг" data-error="#errNm2">
+                                            <div class="input-group-text cursor-pointer">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                            </div>
+                                        </div>
+                                        <div class="errorTxt">
+                                            <span id="errNm2"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="mb-1 row">
+                                    <div class="col-sm-3">
+                                        <label class="col-form-label" for="contact-info" style="font-size: 1rem">Шинэ нууц үг давтах</label>
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <div class="input-group form-password-toggle input-group-merge">
+                                            <input type="password" class="form-control" name="confirm" id="confirm" placeholder="Шинэ нууц үг давтах" data-error="#errNm3">
+                                            <div class="input-group-text cursor-pointer">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-eye"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                                            </div>
+                                        </div>
+                                        <div class="errorTxt">
+                                            <span id="errNm3"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-9 offset-sm-3">
+                                <button type="submit" class="btn btn-primary me-1 waves-effect waves-float waves-light" id="resetPassSubmitBtn"  >Өөрчлөх</button>
+                                <button type="reset" class="btn btn-outline-secondary waves-effect" id="cancelPassSubmit" onclick="window.location.reload();">Болих</button>
+                            </div>
+                            <div class="col-12 mt-1">
+                                <p class="fw-bolder">Анхааруулга:</p>
+                                <ul class="ps-1 ms-25">
+                                    <li class="mb-50">Хамгийн багадаа 8 тэмдэгт (илүү их байх тусмаа сайн)</li>
+                                    <li class="mb-50">Дор хаяж нэг том үсэг</li>
+                                    <li>Дор хаяж нэг тоо эсвэл тэмдэгт</li>
+                                </ul>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <span id="loaderWeew"></span>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card card-transaction">
+                <div class="card-header">
+                    <h4 class="card-title">Хандалтын түүхүүд</h4>
+                </div>
+                <div class="card-body" >
+                    <div id="history"> </div>
+                    <ul class="pagination justify-content-center start-links mt-2" id="pagination"></ul>
+                    <div id="haventWorkerHystory" style="display: flex; align-items: center; justify-content: center; height: 434px;" >
+                        <div>
+                            <div class="col-12 col-md-6" style="width:auto;display:flex; justify-content: center; align-items: center; height:80%">
+                                <i data-feather='file' style="width:30%; height:80%;"></i>
+                            </div>
+                            <div class="avatar-icon font-medium-3" style="width:auto;display:flex; justify-content: center; align-items: center; height:20%">
+                                Хандалтын түүх байхгүй...
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+
+<script src="{% static 'app-assets/vendors/js/pagination/jquery.bootpag.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pagination/jquery.twbsPagination.min.js' %}"></script>
+
+<script src="{% static 'app-assets/js/scripts/pagination/components-pagination.js' %}"></script>
+
+<script>
+
+    var contactInfoJqFrom = $('#resetPassForm')
+    const contactLoader = document.getElementById('loaderWeew')
+    let historyContainer = document.getElementById('history')
+    var totalData = 0
+    var isWorked = false
+
+    let validateContactInfoK
+
+    window.onload = function(e)
+    {
+        getData()
+    }
+
+    $.validator.addMethod(
+        "regex",
+        function(value, element, regexp) {
+            var re = new RegExp(regexp);
+            return this.optional(element) || re.test(value);
+        },
+        "Энэ талбарыг бөглөнө үү"
+    );
+
+    if (contactInfoJqFrom.length) {
+        validateContactInfoK = contactInfoJqFrom.validate({
+            rules: {
+                "oldPassword": {
+                    required: true,
+                },
+                "password": {
+                    required: true,
+                    minlength: 8,
+                    regex: /^.*(?=.*[a-z_а-я])(?=.*[A-Z_А-Я])(?=.*[!@#$%^&*_0-9]).*$/,
+                },
+                "confirm": {
+                    equalTo : "#password"
+                },
+            },
+            messages: {
+                'oldPassword': {
+                    required: 'Хуучин нууц үг талбарыг бөглөнө үү.',
+                },
+                'password': {
+                    required: 'Шинэ нууц үг талбарыг бөглөнө үү.',
+                    minlength: 'Нууц үг хамгийн бага даа 8 тэмдэгтийн урттай байна.',
+                    regex: 'Нууц үг нь дор хаяж нэг том ,жижиг үсэг болон тоо эсвэл тусгай тэмдэгт(!@#$%^&*) агуулсан байх ёстой'
+                },
+                'confirm': {
+                    equalTo: 'Шинээр оруулж байгаа нууц үг ижил байх ёстой.'
+                },
+            },
+        });
+    }
+
+    function clearThis(target) {
+            target.value = "";
+        }
+
+    function setInitForm(inputs=[], callback){
+        inputs.map(
+            (input) =>
+            {
+                clearThis(document.getElementById(input))
+            }
+        )
+        callback && callback()
+    }
+
+    const resetPassInputs = ['oldPassword','password', 'confirm']
+    const resetPassSubmit = async (event) =>
+    {
+        event.preventDefault()
+        if(!validateContactInfoK.checkForm())
+        {
+            return
+        }
+        const generalBody = {}
+        const generalInfoSubmit = document.getElementById('resetPassSubmitBtn')
+
+        resetPassInputs.map(
+            (input) =>
+            {
+                const domElement = document.getElementById(input)
+                let elemetValue = domElement.value
+                generalBody[input] = elemetValue
+            }
+        )
+
+        // хүсэлт илгээгүй бол шинээр үүсгэх POST else put
+        generalInfoSubmit.disabled = true
+        contactLoader.classList.add('loaderWew')
+        const { success, errors } = await useLoader(
+            fetchData(`/account/user-reset-password/`, generalBody, 'PUT'),
+            validateContactInfoK
+        ).catch(err => err)
+            .finally(() => { generalInfoSubmit.disabled = false; contactLoader.classList.remove('loaderWew') })
+        if(errors)
+        {
+            // input ийг validate алдаа г харуулах
+            displayError(errors)
+        } else {
+            // input ийн харагдсан байгаа validate алдаануудыг устгах
+            deleteError(errors)
+        }
+        // амжилтатй үүсвэл id ирээд form цэвэрлэх
+        if(success)
+        {
+            setInitForm(resetPassInputs)
+            generalInfoSubmit.disabled = true
+            document.querySelector('#cancelPassSubmit').click()
+            setTimeout(() => {
+                generalInfoSubmit.disabled = false
+            }, 100);
+        }
+    }
+
+    async function getData()
+    {
+        if(!isWorked)
+        {
+            const { success, data } = await useLoader(
+                fetchData(`/account/access-history/`, null, "GET"),
+            )
+            if(success && data && data.length > 0)
+            {
+                totalData = calculateTotal(data.length)
+                $('#haventWorkerHystory').hide()
+                $('#pagination').twbsPagination('destroy');
+                $('#pagination').twbsPagination(
+                {
+                    totalPages: totalData,
+                    startPage: 1,
+                    prev: ` `,
+                    first: `${feather.icons["chevrons-left"].toSvg({
+                                class: "avatar-icon font-medium-3",
+                            })}`,
+                    last: `${feather.icons["chevrons-right"].toSvg({
+                                class: "avatar-icon font-medium-3",
+                            })}`,
+                    next: ` `,
+                    onPageClick: function (event, page) {
+                        calculateData(data, page)
+                        setTimeout(function () {
+                            $('.pagination').find('li').addClass('page-item');
+                            $('.pagination').find('a').addClass('page-link');
+                        }, 500);
+                    }
+                });
+            }
+            else
+            {
+                $('.pagination').hide()
+            }
+            isWorked=true
+        }
+    }
+    // Page нийт дугаарыг тооцоолох
+    function calculateTotal(length)
+    {
+        return length / 5 + (1 ? length%5 > 0 : 0)
+    }
+    // хэрэглэгчидhхаруулах data-г тодорхойлох
+    function calculateData(data, page)
+    {
+        const mainDiv = document.getElementById("history");
+        mainDiv.innerHTML = '';
+
+        const start = 5 * (page - 1)
+        const end = 5 * page
+        var eachData = data.slice(start, end)
+
+        eachData.map(function(element)
+        {
+            addRow(element)
+        })
+    }
+
+    function addRow(data) {
+        const div = document.createElement('div');
+        div.classList.add('transaction-item')
+        div.innerHTML = `
+        <div class="d-flex">
+            <div class="avatar bg-light-primary rounded float-start" style="width:auto;display:flex; justify-content: center; align-items: center;">
+                <div class="avatar-content">
+                    ${renderIcon(data.is_mobile)}
+                </div>
+            </div>
+            <div class="transaction-percentage">
+                    <h6 class="transaction-title">${data.device}</h6>
+                        <small>${data.location} - ${data.created_at}
+                    </small>
+                </div>
+            </div>
+        <div class="fw-bolder text-danger">${renderState(data.state, data.state_display)}</div>
+        `;
+        historyContainer.appendChild(div);
+    }
+
+    function renderState(state, text)
+    {
+        if(state===1)
+            return `<div class="fw-bolder text-success">${text}</div>`
+        else
+            return `<div class="fw-bolder text-danger">${text}</div>`
+    }
+
+    function renderIcon(is_mobile)
+    {
+        if(is_mobile)
+            return `
+            ${feather.icons['smartphone'].toSvg( {
+                } )
+            }`
+        else
+            return `
+            ${feather.icons['airplay'].toSvg( {
+                } )
+            }`
+    }
+
+</script>
+{% endblock js %}

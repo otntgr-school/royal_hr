@@ -1,0 +1,116 @@
+<div class="card-border">
+    <div class="card-body crepeat family">
+        <h4 class="card-title text-center">
+            1.7. Гэр бүлийн байдал (зөвхөн гэр бүлийн бүртгэлд байгаа хүмүүсийг бичнэ)
+        </h4>
+        <hr>
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered small-text-thead">
+                <thead>
+                    <tr>
+                        <th>Таны юу болох</th>
+                        <th>Гэр бүлийн гишүүний нэр</th>
+                        <th>Төрсөн он</th>
+                        <th>Төрсөн аймаг, хот, сум, дүүрэг</th>
+                        <th>Одоо эрхэлж буй ажил</th>
+                        <th style="width: 80px;">Үйлдэл</th>
+                    </tr>
+                </thead>
+                <tbody data-repeater-list="family">
+                    <tr data-repeater-item>
+                        <td>
+                            <input type="text" class="form-control form-control-sm d-none" placeholder="Сургуулийн нэр" name="id" id="id">
+                            <input type="text" class="form-control form-control-sm d-none" placeholder="Сургуулийн нэр" name="cid">
+                            <input type="text" class="form-control form-control-sm" placeholder="Таны юу болох" name="is_who" />
+                        </td>
+                        <td>
+                            <input type="text" class="form-control form-control-sm" placeholder="Гэр бүлийн гишүүний Овог нэр" name="full_name" />
+                        </td>
+                        <td>
+                            <input type="text" class="form-control form-control-sm cyear-and-month" placeholder="2000-01-20" name="birthday" />
+                        </td>
+                        <td>
+                            <input type="text" class="form-control form-control-sm" placeholder="Төрсөн аймаг, хот, сум, дүүрэг" name="birthplace" />
+                        </td>
+                        <td>
+                            <input type="text" class="form-control form-control-sm" placeholder="Одоо эрхэлж буй ажил" name="job" />
+                        </td>
+                        <td class="mt-10"><button type="button" class="btn btn-sm btn-danger" data-repeater-delete>Устгах</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <span data-repeater-create class="text-primary fw-bold fs-12 mt-1 mb-2 d-block text-center cursor-pointer">
+            <i data-feather='plus'></i> Шинээр нэмэх
+        </span>
+    </div>
+    <div class="card-body crepeat family2">
+        <h4 class="card-title text-center">1.8. Садан төрлийн байдал (Таны эцэг, эх, төрсөн ах, эгч, дүү, өрх тусгаарласан хүүхэд болон таны эхнэр/нөхөр/-ийн эцэг, эхийг оруулна.)</h4>
+        <hr>
+        <div class="table-responsive">
+            <table id="faqs" class="table table-hover table-bordered small-text-thead">
+                <thead>
+                    <tr>
+                        <th>Таны юу болох</th>
+                        <th>Гэр бүлийн гишүүний нэр</th>
+                        <th>Төрсөн он</th>
+                        <th>Төрсөн аймаг, хот, сум, дүүрэг</th>
+                        <th>Одоо эрхэлж буй ажил</th>
+                        <th style="width: 80px;">Үйлдэл</th>
+                    </tr>
+                </thead>
+                <tbody data-repeater-list="family2">
+                    <tr data-repeater-item>
+                        <td>
+                            <input type="text" class="form-control form-control-sm d-none" placeholder="Сургуулийн нэр" name="id" id="id">
+                            <input type="text" class="form-control form-control-sm d-none" placeholder="Сургуулийн нэр" name="cid">
+                            <input type="text" class="form-control form-control-sm" placeholder="Таны юу болох" name="is_who" />
+                        </td>
+                        <td>
+                            <input type="text" class="form-control form-control-sm" placeholder="Садан төрлийн хүмүүсийн Овог нэр" name="full_name" />
+                        </td>
+                        <td>
+                            <input type="text" class="form-control form-control-sm cyear-and-month" placeholder="2000-01-20" name="birthday" />
+                        </td>
+                        <td>
+                            <input type="text" class="form-control form-control-sm" placeholder="Төрсөн аймаг, хот, сум, дүүрэг" name="birthplace" />
+                        </td>
+                        <td>
+                            <input type="text" class="form-control form-control-sm" placeholder="Одоо эрхэлж буй ажил" name="job" />
+                        </td>
+                        <td class="mt-10"><button type="button" class="btn btn-sm btn-danger" data-repeater-delete>Устгах</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <span data-repeater-create class="text-primary fw-bold fs-12 mt-1 mb-2 d-block text-center cursor-pointer">
+            <i data-feather='plus'></i> Шинээр нэмэх
+        </span>
+    </div>
+    <div class="card-body">
+        <div class="form-group">
+            <div>1.9. Оршин суугаа хаяг {{request.info.unit1.name|default:"________"}} аймаг, хот {{request.info.unit2.name|default:"________"}} сум, дүүрэг
+                гэрийн хаяг {{request.info.address|default:"________"}}
+            </div>
+        </div>
+        <div class="form-group">
+            <div>1.10. Шуудангийн хаяг {{request.user.email}}</div>
+        </div>
+        <div class="crepeat numbers">
+            <label for="" class="form-label">1.11. Онцгой шаардлага гарвал харилцах хүмүүс</label>
+            <div data-repeater-list="numbers">
+                <div class="form-group form-inline" data-repeater-item>
+                    <input type="text" class="form-control d-none" placeholder="Сургуулийн нэр" name="cid">
+                    <input type="text" class="form-control d-none" placeholder="Сургуулийн нэр" name="id" id="id">
+                    <label for="" class="form-label">Нэр</label>
+                    <input type="text" class="form-control" name="full_name" />
+                    <label for="" class="form-label">Түүний дугаар</label>
+                    <input type="text" class="form-control" name="number" />
+                    <button type="button" class="btn btn-danger btn-sm mt-1" data-repeater-delete>Хасах</button>
+                    <hr>
+                </div>
+            </div>
+            <button class="btn btn-primary btn-sm" type="button" data-repeater-create>Нэмэх</button>
+        </div>
+    </div>
+</div>

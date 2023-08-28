@@ -1,0 +1,124 @@
+<div class="card-border">
+    <div class="card-body crepeat mergeshil mergeshil1">
+        <h4 class="card-title text-center">3.1. Мэргэшлийн бэлтгэл /Мэргэжлийн болон бусад чиглэлээр нарийн мэргэшүүлэх сургалтанд хамрагдсан байдлыг бичнэ/</h4>
+        <hr>
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered small-text-thead">
+                <thead>
+                    <tr>
+                        <th>Хаана, ямар байгууллагад</th>
+                        <th>Эхлэсэн он, сар, өдөр</th>
+                        <th>Дууссан он, сар, өдөр</th>
+                        <th>Хугацаа /хоног/</th>
+                        <th>Ямар чиглэлээр</th>
+                        <th>Үнэмлэх, гэрчилгээний дугаар, олгосон он, сар, өдөр</th>
+                        <th>Мэргэжил дээшлүүлсэн байдал</th>
+                        <th style="width: 80px;">Үйлдэл</th>
+                    </tr>
+                </thead>
+                <tbody data-repeater-list="mergeshil1">
+                    <tr data-repeater-item>
+                        <td><input type="text" class="form-control form-control-sm" placeholder="Хаана, ямар байгууллагад" name="where" /></td>
+                        <td>
+                            <input type="text" class="form-control form-control-sm d-none" placeholder="Сургуулийн нэр" name="id" id="id">
+                            <input type="text" class="form-control form-control-sm d-none" placeholder="Сургуулийн нэр" name="cid">
+                            <input type="text" class="form-control form-control-sm cyear-and-month" name="start_date" placeholder="2000-01-20" />
+                        </td>
+                        <td>
+                            <input type="text" class="form-control form-control-sm cyear-and-month" name="end_date" placeholder="2000-01-20" />
+                        </td>
+                        <td>
+                            <input type="text" class="form-control form-control-sm" name="learned_days" placeholder="Хугацаа /хоног/" />
+                        </td>
+                        <td><input type="text" class="form-control form-control-sm" placeholder="Ямар чиглэлээр" name="profession" /></td>
+                        <td><input type="text" class="form-control form-control-sm" placeholder="Үнэмлэх, гэрчилгээний дугаар" name="license_number" /></td>
+                        <td>
+                            <select class="form-select form-select-sm" name="where_country">
+                                <option value="1">
+                                    Дотоодод
+                                </option>
+                                <option value="2">
+                                    Гадаадад
+                                </option>
+                            </select>
+                        </td>
+                        <td class="mt-10"><button class="btn btn-sm btn-danger" type="button" data-repeater-delete>Устгах</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <span data-repeater-create class="text-primary fw-bold fs-12 mt-1 mb-2 d-block text-center cursor-pointer">
+            <i data-feather='plus'></i> Шинээр нэмэх
+        </span>
+    </div>
+    <div class="card-body crepeat mergeshil mergeshil2">
+        <h4 class="card-title text-center">3.2. Албан тушаалын зэрэг дэв, цол</h4>
+        <hr>
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered small-text-thead">
+                <thead>
+                    <tr>
+                        <th>Албан тушаалын ангилал, зэрэглэл</th>
+                        <th>Зэрэг дов, цолны нэр</th>
+                        <th>Зарлиг, захирамж, тушаалын нэр, он, сар, өдөр, дугаар</th>
+                        <th>Үнэмлэхний дугаар</th>
+                        <th style="width: 80px;">Үйлдэл</th>
+                    </tr>
+                </thead>
+                <tbody data-repeater-list="mergeshil2">
+                    <tr data-repeater-item>
+                        <td><input type="text" class="form-control form-control-sm" placeholder="Албан тушаалын ангилал, зэрэглэл" name="alban_tushaal" /></td>
+                        <td>
+                            <input type="text" class="form-control form-control-sm d-none" placeholder="Сургуулийн нэр" name="id" id="id">
+                            <input type="text" class="form-control form-control-sm d-none" placeholder="Сургуулийн нэр" name="cid">
+                            <input type="text" class="form-control form-control-sm" placeholder="Зэрэг дов, цолны нэр" name="zereg" />
+                        </td>
+                        <td>
+                            <input type="text" class="form-control form-control-sm" name="zarlig" placeholder="Зарлиг, захирамж" />
+                        </td>
+                        <td><input type="text" class="form-control form-control-sm" placeholder="Үнэмлэхний дугаар" name="license_number" /></td>
+                        <td class="mt-10"><button class="btn btn-sm btn-danger" type="button" data-repeater-delete>Устгах</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <span data-repeater-create class="text-primary fw-bold fs-12 mt-1 mb-2 d-block text-center cursor-pointer">
+            <i data-feather='plus'></i> Шинээр нэмэх
+        </span>
+    </div>
+    <div class="card-body crepeat mergeshil mergeshil3">
+        <h4 class="card-title text-center">3.3. Эрдмийн цол /дэд профессор, профессор, академийн гишүүнийг оролцуулан/</h4>
+        <hr>
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered small-text-thead">
+                <thead>
+                    <tr>
+                        <th>Цол</th>
+                        <th>Цол олгосон байгууллага</th>
+                        <th>Он, сар</th>
+                        <th>Гэрчилгээ, дипломын дугаар</th>
+                        <th style="width: 80px;">Үйлдэл</th>
+                    </tr>
+                </thead>
+                <tbody data-repeater-list="mergeshil3">
+                    <tr data-repeater-item>
+                        <td><input type="text" class="form-control form-control-sm" placeholder="Цол" name="tsol" /></td>
+                        <td>
+                            <input type="text" class="form-control form-control-sm d-none" placeholder="Сургуулийн нэр" name="cid">
+                            <input type="text" class="form-control form-control-sm d-none" placeholder="Сургуулийн нэр" name="id" id="id">
+                            <input type="text" class="form-control form-control-sm" name="tsol_olgoson_org" placeholder="Цол олгосон байгууллага" />
+                        </td>
+                        <td>
+                            <input type="text" id="fp-default" class="form-control form-control-sm cyear-and-month" placeholder="2000-01-20" name="give_date" />
+                        </td>
+                        <td><input type="text" class="form-control form-control-sm" placeholder="Гэрчилгээ, дипломын дугаар" name="license_number" /></td>
+                        <td class="mt-10"><button class="btn btn-sm btn-danger" type="button" data-repeater-delete>Устгах</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <span data-repeater-create class="text-primary fw-bold fs-12 mt-1 mb-2 d-block text-center cursor-pointer">
+            <i data-feather='plus'></i> Шинээр нэмэх
+        </span>
+    </div>
+</div>

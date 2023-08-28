@@ -1,0 +1,52 @@
+
+<div class="modal fade" id="additiveMedical" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-edit-user">
+        <div class="modal-content">
+            <div class="modal-header bg-transparent">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pb-5 px-sm-5 pt-50">
+                <div class="text-center mb-2">
+                    <h1 class="mb-1">Бие бялдарын нэмэлт үзүүлэлт</h1>
+                </div>
+                <form id="additionMedicalForm" class="row gy-1 pt-75" onsubmit="additionMedicalSubmit(event)">
+                    <div class="col-12 col-md-6 position-relative">
+                        <label class="form-label">Огноо:</label>
+                        <input type="date" id="b_date" name="b_date" class="form-control pickadate-months-year-1900-2030 flatpickr-input" value="{{ datas.b_date|date:'Y-m-d' }}" placeholder="YYYY-MM-DD" data-msg="Хугацаа сонгоно уу" />
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">Хурд:</label>
+                        <input type="text" id="speed" name="speed" class="form-control numeral-only-mask" placeholder="хурд" value="{{ datas.speed }}" />
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">Хүч:</label>
+                        <input type="text" id="power" name="power" class="form-control numeral-only-mask" placeholder="хүч" value="{{ datas.power }}"/>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">Уян хатан:</label>
+                        <input type="text" id="flexible" name="flexible" class="form-control numeral-only-mask" placeholder="уян хатан" value="{{ datas.flexible }}" />
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">Тэсвэр:</label>
+                        <input type="text" id="endurance" name="endurance" class="form-control numeral-only-mask" placeholder="тэсвэр" value="{{ datas.endurance }}" />
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">Тэвчээр:</label>
+                        <input type="text" id="patience" name="patience" class="form-control numeral-only-mask" placeholder="тэвчээр" value="{{ datas.patience }}" />
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">Нийт:</label>
+                        <input type="text" id="total" name="total" class="form-control numeral-only-mask" placeholder="нийт" value="{{ datas.total }}" />
+                    </div>
+
+                    <div class="col-12 text-center mt-2 pt-50">
+                        <button type="submit" class="btn btn-primary me-1">Засах</button>
+                        <button type="button" id="closeAdditionModal" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">
+                            Болих
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

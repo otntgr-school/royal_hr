@@ -1,0 +1,69 @@
+
+<div class="modal fade" id="mainMedical" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-edit-user">
+        <div class="modal-content">
+            <div class="modal-header bg-transparent">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pb-5 px-sm-5 pt-50">
+                <div class="text-center mb-2">
+                    <h1 class="mb-1">Бие бялдарын ерөнхий үзүүлэлт</h1>
+                </div>
+                <form id="mainMedicalForm" class="row gy-1 pt-75" onsubmit="mainMedicalSubmit(event)">
+                    <div class="col-12 col-md-6 position-relative">
+                        <label class="form-label">Огноо:</label>
+                        <input type="date" id="a_date" name="a_date" class="form-control pickadate-months-year-1900-2030 flatpickr-input" value="{{ datas.a_date|date:'Y-m-d' }}" placeholder="YYYY-MM-DD" data-msg="Хугацаа сонгоно уу" />
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">Өндөр:</label>
+                        <div class="input-group">
+                            <input type="text" id="height" name="height" class="form-control numeral-only-mask" placeholder="өндөр" value="{{ datas.height }}"/>
+                            <span class="input-group-text">см</span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">Жин:</label>
+                        <div class="input-group">
+                            <input type="text" id="weight" name="weight" class="form-control numeral-only-mask" placeholder="жин" value="{{ datas.weight }}"/>
+                            <span class="input-group-text">кг</span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">Жингийн индекс:</label>
+                        <input type="text" id="weight_index" name="weight_index" class="form-control numeral-only-mask" placeholder="жингийн индекс" value="{{ datas.weight_index }}" />
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">Цусны даралт /зүүн/:</label>
+                        <input type="text" id="blood_pressure_left" name="blood_pressure_left" class="form-control numeral-only-mask" placeholder="цусны даралт /зүүн/" value="{{ datas.blood_pressure_left }}" />
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">Цусны даралт /баруун/:</label>
+                        <input type="text" id="blood_pressure_right" name="blood_pressure_right" class="form-control numeral-only-mask" placeholder="цусны даралт /баруун/" value="{{ datas.blood_pressure_right }}" />
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">Хараа /зүүн/:</label>
+                        <input type="text" id="eye_left" name="eye_left" class="form-control numeral-only-mask" placeholder="хараа /зүүн/" value="{{ datas.eye_left }}" />
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">Хараа /баруун/:</label>
+                        <input type="text" id="eye_right" name="eye_right" class="form-control numeral-only-mask" placeholder="хараа /баруун/" value="{{ datas.eye_right }}" />
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">Судасны цохилт:</label>
+                        <div class="input-group">
+                            <input type="text" id="pulse" name="pulse" class="form-control numeral-only-mask" placeholder="судасны цохилт" value="{{ datas.pulse }}" />
+                            <span class="input-group-text">мин/цохилт</span>
+                        </div>
+                    </div>
+
+                    <div class="col-12 text-center mt-2 pt-50">
+                        <button type="submit" class="btn btn-primary me-1">Засах</button>
+                        <button type="button" id="closeMainModal" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">
+                            Болих
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

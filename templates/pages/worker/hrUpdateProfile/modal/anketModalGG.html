@@ -1,0 +1,296 @@
+{% load static %}
+<div class="modal fade" id="anketModalGG" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-fullscreen modal-dialog-centered modal-edit-user">
+        <div class="modal-content">
+            <div class="modal-header bg-transparent">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <button style="width: fit-content; margin-left: 50%;" class="btn btn-primary p-1" type="button" onclick="printJS({printable: 'printJS-form', type:'html', documentTitle: '' })">
+                Хэвлэх
+            </button>
+            <div id="printJS-form" class="modal-body pb-5 px-sm-5 pt-50" style="padding: 20px; size: auto; margin: 0;">
+                <div class="mb-2">
+                    <h3 style="text-align: center;" class=" mb-1">АЛБАН ХААГЧИЙН АНКЕТ</h3>
+                    <div>
+                        <div style="width: 50%;">Регистрийн дугаар: <span style="text-decoration: underline;" id="__register"></span></div>
+                        <div style="width: 50%;">Нийгмийн даатгалын дэвтрийн дугаар: <span style="text-decoration: underline;" id="__ndd_number"></span></div>
+                        <div style="width: 50%;">Эрүүл мэндийн даатгалын гэрчилгээний дугаар: <span style="text-decoration: underline;" id="__emdd_number"></span></div>
+                    </div>
+                    <hr/>
+                    <h4 style="text-align: center;" class=" mt-3">1. ХУВЬ ХҮНИЙ ТАЛААРХ МЭДЭЭЛЭЛ</h2>
+                    <div>
+                        1.1. Эцэг/эх/-ийн нэр: <span style="text-decoration: underline;" id="__last_name"></span> Нэр: <span style="text-decoration: underline;" id="__first_name"></span>
+                    </div>
+                    <div>
+                        1.2. Хүйс: <span style="text-decoration: underline;" id="__gender" style="margin-right: 10px;"></span> 1.3. Төрсөн: <span style="text-decoration: underline;" id="__birthday"></span>
+                    </div>
+                    <div>
+                        1.4. Төрсөн аймаг, хот: <span style="text-decoration: underline;" id="__unit1"></span> сум, дүүрэг: <span style="text-decoration: underline;" id="__unit2"></span>
+                    </div>
+                    <div>
+                        1.5. Үндэс, угсаа: <span style="text-decoration: underline;" id="__ys_undes" style="margin-right: 10px;"></span> 1.6. Нийгмийн гарал: <span style="text-decoration: underline;" id='__niigmiin_garal'></span>
+                    </div>
+                    <div>
+                        1.7. Гэр бүлийн байдал:
+                        <table style="margin-bottom: 10px; border: 1px solid #595957; width: 100%; margin-top: 10px;">
+                            <thead>
+                                <tr>
+                                    <th style="border: 1px solid #595957; text-align: center;">Таны юу болох</th>
+                                    <th style="border: 1px solid #595957; text-align: center; max-width: 300px;">Гэр бүлийн гишүүдийн эцэг /эх/-ийн нь болон өөрийн нэр нь</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Төрсөн он</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Төрсөн аймаг, хот, сум, дүүрэг</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Одоо эрхэлж буй ажил</th>
+                                </tr>
+                            </thead>
+                            <tbody id="family"></tbody>
+                        </table>
+                    </div>
+                    <div>
+                        1.8. Садан төрлийн байдал:
+                        <table style="margin-bottom: 10px; border: 1px solid #595957; width: 100%; margin-top: 10px;">
+                            <thead>
+                                <tr>
+                                    <th style="border: 1px solid #595957; text-align: center;">Таны юу болох</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Садан төрлийн хүмүүсийн эцэг /эх/-ийн нь болон өөрийн нэр нь</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Төрсөн он</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Төрсөн аймаг, хот, сум, дүүрэг</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Одоо эрхэлж буй ажил</th>
+                                </tr>
+                            </thead>
+                            <tbody id="family2"></tbody>
+                        </table>
+                    </div>
+                    <div>
+                        1.9. Оршин суугаа хаяг: <span style="text-decoration: underline;" name='__unit1'></span> аймаг, хот <span style="text-decoration: underline;" name='__unit2'></span> сум, дүүрэг
+                        <br/>
+                        гэрийн хаяг: <span style="text-decoration: underline;" id='__address'></span>
+                        <br/>
+                        Утас, үүрэн утас: <span style="text-decoration: underline;" id='__phone_number'></span> И-мэйл хаяг: <span style="text-decoration: underline;" id='__email'></span>
+                    </div>
+                    <div>
+                        1.10. Шуудангийн хаяг _________________________ Индекс ________________________________
+                    </div>
+                    <div>
+                        1.11. Онцгой шаардлаша гарвал харилцах
+                        <ul id="numbers"></ul>
+                    </div>
+                    <hr/>
+                    <h4 style="text-align: center;" class=" mt-3">2. БОЛОВСРОЛЫН ТАЛААРХ МЭДЭЭЛЭЛ</h2>
+                    <div>
+                        2.1. Боловсрол:
+                        <table style="margin-bottom: 10px; border: 1px solid #595957; width: 100%; margin-top: 10px;">
+                            <thead>
+                                <tr>
+                                    <th style="border: 1px solid #595957; text-align: center;">Сургуулын нэр</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Орсон он, cap</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Төгссөн он, сар</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Эзэмшсэн боловсрол</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Мэргэжил</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Гэрчилгээ, дипломын дугаар</th>
+                                </tr>
+                            </thead>
+                            <tbody id="education1"></tbody>
+                        </table>
+                    </div>
+                    <div>
+                        2.2. Боловсролын доктор болон шинжлэх ухааны докторын зэрэг:
+                        <table style="margin-bottom: 10px; border: 1px solid #595957; width: 100%; margin-top: 10px;">
+                            <thead>
+                                <tr>
+                                    <th style="border: 1px solid #595957; text-align: center;">Зэрэг</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Хамгаалсан газар</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Он, сар</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Гэрчилгээ, дипломын дугаар</th>
+                                </tr>
+                            </thead>
+                            <tbody id="education2"></tbody>
+                        </table>
+                        <div>Боловсролын докторын зэрэг хамгаалсан сэдэв: <span style="text-decoration: underline;" id='__bachelor_sedew'></span></div>
+                        <div>Шинжлэх ухааны доктор хамгаалсан сэдэв: <span style="text-decoration: underline;" id='__dr_sedew'></span></div>
+                    </div>
+                    <h4 style="text-align: center;" class=" mt-3">3. МЭРГЭШЛИЙН БЭЛТГЭЛИЙН ТАЛААРХ МЭДЭЭЛЭЛ</h2>
+                    <div>
+                        3.1. Мэргэшлийн бэлтгэл:
+                        <table style="margin-bottom: 10px; border: 1px solid #595957; width: 100%; margin-top: 10px;">
+                            <thead>
+                                <tr>
+                                    <th style="border: 1px solid #595957; text-align: center;">Хаана, ямар байгууллагад</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Эхэлсэн дууссан он, сар, өдөр</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Хугацаа /хоногоор/</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Ямар чиглэлээр</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Үнэмлэх гэрчилгээний дугаар, олгосон он, cap, өдөр</th>
+                                </tr>
+                            </thead>
+                            <tbody id="mergeshil1"></tbody>
+                        </table>
+                    </div>
+                    <div>
+                        3.2. Албан тушаалын зэрэг дэв, цол:
+                        <table style="margin-bottom: 10px; border: 1px solid #595957; width: 100%; margin-top: 10px;">
+                            <thead>
+                                <tr>
+                                    <th style="border: 1px solid #595957; text-align: center;">Албан тушаалын ангилал, зэрэглэл</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Зэрэг дэв, цолны нэр</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Зарлиг захирамж, тушаалын нэр, он, cap, өдөр, дугаар</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Үнэмлэхний дугаар</th>
+                                </tr>
+                            </thead>
+                            <tbody id="mergeshil2"></tbody>
+                        </table>
+                    </div>
+                    <div>
+                        3.3. Эрдмийн цол:
+                        <table style="margin-bottom: 10px; border: 1px solid #595957; width: 100%; margin-top: 10px;">
+                            <thead>
+                                <tr>
+                                    <th style="border: 1px solid #595957; text-align: center;">Цол</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Цол олгосон байгууллага</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Он, сар</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Гэрчилгээ, дипломын дугаар</th>
+                                </tr>
+                            </thead>
+                            <tbody id="mergeshil3"></tbody>
+                        </table>
+                    </div>
+                    <h4 style="text-align: center;" class=" mt-3">4. УР ЧАДВАРЫН ТАЛААРХ МЭДЭЭЛЭЛ</h2>
+                    <div>
+                        4.1. Ур чадвар/1-тааруу, 2-дунд, 3-сайн/
+                        <table style="margin-bottom: 10px; width: 100%">
+                            <tbody id="huwi_hvnii">
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                        4.2. Гадаад хэлний мэдлэг
+                        <table style="margin-bottom: 10px; border: 1px solid #595957; width: 100%; margin-top: 10px;">
+                            <thead>
+                                <tr>
+                                    <th rowspan="2" style="border: 1px solid #595957; text-align: center;">Гадаад хэлний нэр</th>
+                                    <th colspan="3" style="border: 1px solid #595957; text-align: center;">сонсож ойлгох</th>
+                                    <th colspan="3" style="border: 1px solid #595957; text-align: center;">ярих</th>
+                                    <th colspan="3" style="border: 1px solid #595957; text-align: center;">унших</th>
+                                    <th colspan="3" style="border: 1px solid #595957; text-align: center;">бичих</th>
+                                </tr>
+                                <tr>
+                                    <th style="border: 1px solid #595957; text-align: center;">Дунд</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Сайн</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Онц</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Дунд</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Сайн</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Онц</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Дунд</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Сайн</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Онц</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Дунд</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Сайн</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Онц</th>
+                                </tr>
+                            </thead>
+                            <tbody id="languages"></tbody>
+                        </table>
+                    </div>
+                    <div>
+                        4.3. Компьютерийн болон оффисийн тоног төхөөрөмж, технологи эзэмшсэн байдал
+                        <div class="flex">
+                            <div>
+                                <table style="margin-bottom: 10px; border: 1px solid #595957; width: 100%; margin-top: 10px;">
+                                    <thead>
+                                        <tr>
+                                            <th rowspan="2" style="border: 1px solid #595957; text-align: center;">Эзэмшсэн программын нэр</th>
+                                            <th colspan="3" style="border: 1px solid #595957; text-align: center;">Түвшин</th>
+                                        </tr>
+                                        <tr>
+                                            <th style="border: 1px solid #595957; text-align: center;">Дунд</th>
+                                            <th style="border: 1px solid #595957; text-align: center;">Сайн</th>
+                                            <th style="border: 1px solid #595957; text-align: center;">Онц</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="pc-chadwar"></tbody>
+                                </table>
+                            </div>
+                            <div style="margin-top: 10px;">
+                                <table style="margin-bottom: 10px; width: 100%;">
+                                    <tbody>
+                                        <tr>
+                                            <td style="border: 1px solid #595957; text-align: center; font-weight: 600;"  colspan="2" rowspan="2">Эзэмшсэн оффисийн тоног төхөөрөмж, технологийн нэр</td>
+                                            <td style="border: 1px solid #595957; text-align: center; font-weight: 600;"  colspan="3">Түвшин</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid #595957; text-align: center;" >Дунд</td>
+                                            <td style="border: 1px solid #595957; text-align: center;" >Сайн</td>
+                                            <td style="border: 1px solid #595957; text-align: center;" >Онц</td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid #595957; text-align: center;"  colspan="2">Интернетийн орчинд ажиллах</td>
+                                            <td style="border: 1px solid #595957; text-align: center;" name="internet_usage" ></td>
+                                            <td style="border: 1px solid #595957; text-align: center;" name="internet_usage" ></td>
+                                            <td style="border: 1px solid #595957; text-align: center;" name="internet_usage" ></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid #595957; text-align: center;"  colspan="2">Дотоод сүлжээ ашиглах</td>
+                                            <td style="border: 1px solid #595957; text-align: center;" name="local_network"></td>
+                                            <td style="border: 1px solid #595957; text-align: center;" name="local_network"></td>
+                                            <td style="border: 1px solid #595957; text-align: center;" name="local_network"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid #595957; text-align: center;"  rowspan="5">Оффисийн тоног төхөөрөмж ашиглах</td>
+                                            <td style="border: 1px solid #595957; text-align: center;" >скайнер</td>
+                                            <td style="border: 1px solid #595957; text-align: center;" name="scaner"></td>
+                                            <td style="border: 1px solid #595957; text-align: center;" name="scaner"></td>
+                                            <td style="border: 1px solid #595957; text-align: center;" name="scaner"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid #595957; text-align: center;" >принтер</td>
+                                            <td style="border: 1px solid #595957; text-align: center;" name="printer"></td>
+                                            <td style="border: 1px solid #595957; text-align: center;" name="printer"></td>
+                                            <td style="border: 1px solid #595957; text-align: center;" name="printer"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid #595957; text-align: center;" >хувилагч</td>
+                                            <td style="border: 1px solid #595957; text-align: center;" name="copier"></td>
+                                            <td style="border: 1px solid #595957; text-align: center;" name="copier"></td>
+                                            <td style="border: 1px solid #595957; text-align: center;" name="copier"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid #595957; text-align: center;" >факс</td>
+                                            <td style="border: 1px solid #595957; text-align: center;" name="fax"></td>
+                                            <td style="border: 1px solid #595957; text-align: center;" name="fax"></td>
+                                            <td style="border: 1px solid #595957; text-align: center;" name="fax"></td>
+                                        </tr>
+                                        <tr>
+                                            <td style="border: 1px solid #595957; text-align: center;" >гэрэл зургийн болон видео бичлэгийн аппарат г.м</td>
+                                            <td style="border: 1px solid #595957; text-align: center;" name="media"></td>
+                                            <td style="border: 1px solid #595957; text-align: center;" name="media"></td>
+                                            <td style="border: 1px solid #595957; text-align: center;" name="media"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <h4 style="text-align: center;" class=" mt-3">5. ТУРШЛАГЫН ТАЛААРХ МЭДЭЭЛЭЛ</h2>
+                    <div>
+                        5.1. Хөдөлмөр эрхлэлтийн байдал
+                        <table style="border: 1px solid #595957; width: 100%; margin-top: 10px; margin-bottom: 10px;">
+                            <thead>
+                                <tr>
+                                    <th style="border: 1px solid #595957; text-align: center;">Ажилласан байгууллага, газар, түүний хэлтэс, алба</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Албан тушаал</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Ажилд орсон он, cap</th>
+                                    <th style="border: 1px solid #595957; text-align: center;">Ажлаас гарсан он, cap</th>
+                                </tr>
+                            </thead>
+                            <tbody id="experience"></tbody>
+                        </table>
+                    </div>
+                    <div>
+                        Дээрх мэдээлэл үнэн зөв болохын баталж /гарын үсэг/__________________________/...................................../
+                    </div>
+                    <div style="text-align: center;">
+                        201__он__сар__өдөр
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

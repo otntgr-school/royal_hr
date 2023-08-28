@@ -1,0 +1,707 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+
+{% block vendorcss %}
+<!-- BEGIN: Vendor CSS-->
+
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="{% static 'app-assets/vendors/css/forms/select/select2.min.css' %}"
+/>
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}"
+/>
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}"
+/>
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="{% static 'app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css' %}"
+/>
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="{% static 'app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css' %}"
+/>
+
+{% endblock vendorcss %} {% block css %}
+
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="{% static 'assets/css/loader.css' %}"
+/>
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="{% static 'app-assets/css/plugins/forms/form-validation.css' %}"
+/>
+
+{% endblock css %} {% block content %}
+
+<div class="content-body">
+	<section class="app-user-list" id="app-user-list">
+		<div class="card">
+			<div class="card-body border-bottom">
+				<h4 class="card-title d-inline">Ажлын цагийн төрөл</h4>
+				<div class="row">
+					<div class="col-md-4 user_role"></div>
+					<div class="col-md-4 user_plan"></div>
+					<div class="col-md-4 user_status"></div>
+				</div>
+			</div>
+			<div class="card-datatable table-responsive pt-0">
+				<table class="time-list-table table text-center">
+					<thead class="table-light">
+						<tr class="filter-container"></tr>
+						<tr>
+							<th>ID</th>
+							<th>Нэр</th>
+							<!-- <th>Уян хатан</th> -->
+							<th>Ажлын цаг</th>
+							<!-- <th>Цайны цаг</th> -->
+							<th>Ажиллах цаг</th>
+							<!-- <th>Хоцорч болох лимит</th> -->
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tfoot class="table-light">
+						<tr>
+							<th>ID</th>
+							<th>Нэр</th>
+							<!-- <th>Уян хатан</th> -->
+							<th>Ажлын цаг</th>
+							<!-- <th>Цайны цаг</th> -->
+							<th>Ажиллах цаг</th>
+							<!-- <th>Хоцорч болох лимит</th> -->
+							<th>Actions</th>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+
+			<!-- Form-->
+			{% include "pages/schedule/work-time-type/form.html" %}
+
+			<!-- Modal -->
+			{% include "pages/schedule/work-time-type/modal/delete.html" with id="userReward" deletebtn="deletebtn" %}
+			{% include "pages/schedule/work-time-type/modal/work-time-type-update.html" with id="work-time-type-update" %}
+			{% include "pages/main/warning-modal.html" %}
+
+		</div>
+	</section>
+
+</div>
+
+{% endblock content %}
+<!--prettier-ignore-->
+{% block js %}
+<!-- BEGIN: Page Vendor JS-->
+<!-- BEGIN: Page Vendor JS-->
+<script src="{% static 'app-assets/vendors/js/forms/select/select2.full.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.buttons.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jszip.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/pdfmake.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/vfs_fonts.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.html5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.print.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/cleave.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/addons/cleave-phone.us.js' %}"></script>
+<!-- END: Page Vendor JS-->
+
+<!-- BEGIN: Page JS-->
+<script>
+	/** Tooltip ажиллуулагч */
+	$(document).ready(function() {
+        $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+    });
+
+	/**  Header дээр input ийг clone хийж гаргах нь */
+	cloneFooter('.time-list-table', [ 1 ])
+	/** DATATABLE */
+	const dataTable = $(".time-list-table")
+		.on('preXhr.dt', function ()
+		{
+			addLoader($('#app-user-list'))
+		})
+		.on( 'draw.dt', function () {
+			rmLoader($('#app-user-list'))
+        })
+		.DataTable({
+			processing: false,
+			dom: 'lBfrtip',
+			serverSide: true,
+			ajax: { url: `{% url 'work-time-type-json' %}` },
+			columns: [
+				// columns according to JSON
+				{ data: "id" },
+				{ data: "name" },
+				// { data: "uyn_khatan" },
+				{ data: "start_time" },
+				// { data: "lunch_time_start_time" },
+				{ data: "time_range" },
+				// { data: "hotorch_boloh_limit" },
+				{ data: "" },
+			],
+			bFilter: true,
+			columnDefs: [
+				{
+					// Actions
+					targets: -1,
+					title: "Үйлдэл",
+					orderable: false,
+					render: function (data, type, full, meta)
+					{
+
+						var url = `{% url 'work-time-type' %}`
+						return (
+							`<a
+								data-toggle="tooltip"
+								title="Засах"
+								data-bs-toggle="modal"
+								data-bs-target="{% if 'work-time-type-update' in request.permissions %} #work-time-type-update {% else %} #warning-modal {% endif %}"
+								onclick=(getDetail(${full.id}))
+								class="text-primary delete-record"
+							>` +
+							feather.icons["edit-3"].toSvg(
+							{
+								class: "font-small-4 me-50",
+							}) +
+							"</a>" +
+							`<a
+								data-toggle="tooltip"
+								title="Устгах"
+								data-bs-toggle="modal"
+								data-bs-target="{% if 'work-time-type-delete' in request.permissions %} #userReward {% else %} #warning-modal {% endif %}"
+								onclick=(changeChoosedId(function(){deletewtt(${full.id})}))
+								class="text-primary-orange delete-record mt-1"
+							>` +
+							feather.icons["trash-2"].toSvg(
+							{
+								class: "font-small-4 me-50",
+							}) +
+							"</a>"
+						);
+					},
+				},
+				{
+					targets: 0,
+					title: "#",
+					orderable: false,
+					render: function (data, type, full, meta) {
+						return (
+							meta.settings._iDisplayStart + meta.row + 1
+						);
+					},
+				},
+				// {
+				// 	targets: 2,
+				// 	orderable: false,
+				// 	render: function (data, type, full, meta) {
+				// 		if(!full.uyn_khatan)
+				// 		{
+				// 			return (
+				// 				`<input class="form-check-input" type="checkbox" id="inlineCheckbox1" disabled/>
+				// 				<p style="display: none;">Үгүй</p>
+				// 				`
+				// 			);
+				// 		}
+				// 		return (
+				// 			`<input class="form-check-input" type="checkbox" id="inlineCheckbox1" checked disabled/>
+				// 			<p style="display: none;">Тийм</p>`
+				// 		);
+				// 	},
+				// },
+				{
+					targets: 2,
+					orderable: true,
+					render: function (data, type, full, meta) {
+						return (
+							full.start_time + ` - ` + full.end_time
+						);
+					},
+				},
+				// {
+				// 	targets: 3,
+				// 	orderable: true,
+				// 	render: function (data, type, full, meta) {
+				// 		return (
+				// 			full.lunch_time_start_time
+				// 		);
+				// 	},
+				// },
+			],
+			order: [[1, "desc"]],
+			lengthMenu: [
+                [10, 25, 50, 100, -1],
+                [10, 25, 50, 100, 'Бүгд'],
+            ],
+			dom:
+				'<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+				'<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+				'<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+				">t" +
+				'<"d-flex justify-content-between mx-2 row mb-1"' +
+				'<"col-sm-12 col-md-6"i>' +
+				'<"col-sm-12 col-md-6"p>' +
+				">",
+			oLanguage: {
+				sProcessing: "Ачааллаж байна. ",
+				sSearch: "Хайх: ",
+				sEmptyTable: "Бичлэг байхгүй",
+				sInfoEmpty: "Нийт 0 бичлэг",
+				sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+				sInfoFiltered: " - _MAX_ бичлэгээс",
+				sLengthMenu: "_MENU_ бичлэг",
+				oPaginate: {
+					sFirst: "Эхэнд",
+					sLast: "Төгсгөлд",
+					sNext: "Дараах",
+					sPrevious: "Өмнөх",
+				},
+			},
+			// Buttons with Dropdown
+			buttons: [
+				{
+					extend: "collection",
+					className: "btn btn-outline-secondary dropdown-toggle me-2",
+					text:
+						feather.icons["external-link"].toSvg({
+							class: "font-small-4 me-50",
+						}) + "Export",
+					buttons: [
+						{
+							extend: "print",
+							text:
+								feather.icons["printer"].toSvg({
+									class: "font-small-4 me-50",
+								}) + "Print",
+							className: "dropdown-item",
+							exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6] },
+						},
+						{
+							extend: "csv",
+							text:
+								feather.icons["file-text"].toSvg({
+									class: "font-small-4 me-50",
+								}) + "Csv",
+							className: "dropdown-item",
+							exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6] },
+						},
+						{
+							extend: "excel",
+							text:
+								feather.icons["file"].toSvg({
+									class: "font-small-4 me-50",
+								}) + "Excel",
+							className: "dropdown-item",
+							exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6] },
+						},
+						{
+							extend: "pdf",
+							text:
+								feather.icons["clipboard"].toSvg({
+									class: "font-small-4 me-50",
+								}) + "Pdf",
+							className: "dropdown-item",
+							exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6] },
+						},
+						{
+							extend: "copy",
+							text:
+								feather.icons["copy"].toSvg({
+									class: "font-small-4 me-50",
+								}) + "Copy",
+							className: "dropdown-item",
+							exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6] },
+						},
+					],
+					init: function (api, node, config) {
+						$(node).removeClass("btn-secondary");
+						$(node).parent().removeClass("btn-group");
+						setTimeout(function () {
+							$(node)
+								.closest(".dt-buttons")
+								.removeClass("btn-group")
+								.addClass("d-inline-flex mt-50");
+						}, 50);
+					},
+				},
+				{
+					text: "Шинээр бүртгэх",
+					className: "add-new btn btn-primary",
+					attr: {
+						"data-bs-toggle": "modal",
+						"data-bs-target": "{% if 'work-time-type-create' in request.permissions %} #modals-slide-in {% else %} #warning-modal {% endif %}",
+					},
+					init: function (api, node, config) {
+						$(node).removeClass("btn-secondary").addClass('click_btn')
+
+					},
+				},
+			],
+		});
+	searchFooter(dataTable)
+
+	/** Устгах үйлдэл */
+    async function deletewtt(choosedId)
+    {
+		addLoader($('#app-user-list'))
+        const { success } = await fetchData(`/schedule/work-time-type-ajax/${choosedId}/`, null, 'DELETE')
+        if (success)
+        {
+            dataTable.ajax.reload(null, false)
+        }
+    }
+
+	/** valdiation давсан үгүйг хадгалах хувьсагч */
+	var createFormVal
+
+	/** Бүртгүүлэх үеийн FORM-VALIDATION */
+	$(document).ready(function ()
+	{
+		jQuery.validator.addMethod("noSpace", function(value, element)
+		{
+			return value.trim().length !== 0;
+		});
+
+		jQuery.validator.addMethod("timeLength", function(value, element)
+		{
+			return value.length === 8
+		})
+
+
+		jQuery.validator.addMethod("hotsroltVal", function(value, element)
+		{
+			let errorMes = document.querySelector(`label[for=${element.id}]`).textContent.trim()
+			jQuery.validator.messages['hotsroltVal'] = `${errorMes} талбарт эхлэх цагаас хойшоо цаг сонгоно уу`
+			start_time_value = document.getElementById('start_time').value
+			return start_time_value < value
+		})
+
+		createFormVal = $('#timetable_form').validate(
+		{
+			rules: {
+				'name': {
+					required: true,
+					noSpace: true
+				},
+				'start_time': {
+					required: true,
+					timeLength: true
+				},
+				'end_time': {
+					required: true,
+					timeLength: true,
+					hotsroltVal: true
+				},
+				'lunch_time_start_time': {
+					required: true,
+					timeLength: true,
+					hotsroltVal: true
+				},
+				// 'lunch_time_end_time': {
+				// 	required: true,
+				// 	timeLength: true,
+				// 	hotsroltVal: true
+				// },
+				'hotorch_boloh_limit': {
+					required: true,
+					timeLength: true,
+					hotsroltVal: true
+				},
+				// 'registration_start_time': {
+				// 	required: true,
+				// 	timeLength: true
+				// },
+				// 'registration_end_time': {
+				// 	required: true,
+				// 	timeLength: true
+				// },
+				'time_range': {
+					required: true
+				},
+			},
+			messages: {
+				'name': {
+                    required: 'Ажлын цагийн төрлийн нэр талбарыг бөглөнө үү',
+					noSpace: 'Ажлын цагийн төрлийн нэр талбарыг бөглөнө үү'
+                },
+				'start_time': {
+					required: 'Эхлэх цаг талбарыг бөглөнө үү',
+					timeLength: 'Цагийн форматын дагуу бөглөнө үү',
+				},
+				'end_time': {
+					required: 'Дуусах цаг талбарыг бөглөнө үү',
+					timeLength: 'Цагийн форматын дагуу бөглөнө үү'
+				},
+				'lunch_time_start_time': {
+					required: 'Цайны цаг эхлэх талбарыг бөглөнө үү',
+					timeLength: 'Цагийн форматын дагуу бөглөнө үү'
+				},
+				// 'lunch_time_end_time': {
+				// 	required: 'Цайны цаг дуусах талбарыг бөглөнө үү',
+				// 	timeLength: 'Цагийн форматын дагуу бөглөнө үү'
+				// },
+				'hotorch_boloh_limit': {
+					required: 'Хоцорч болох лимит талбарыг бөглөнө үү',
+					timeLength: 'Цагийн форматын дагуу бөглөнө үү',
+					// hotsroltVal: 'Эхлэх цаг талбараас хойшоо цаг оруулна уу'
+				},
+				// 'registration_start_time': {
+				// 	required: 'Ирсэн цаг бүртгэж эхлэх хугацаа талбарыг бөглөнө үү',
+				// 	timeLength: 'Цагийн форматын дагуу бөглөнө үү'
+				// },
+				// 'registration_end_time': {
+				// 	required: 'Явсан цаг бүртгэж дуусах хугацаа талбарыг бөглөнө үү',
+				// 	timeLength: 'Цагийн форматын дагуу бөглөнө үү'
+				// },
+				'time_range': {
+					required: 'Ажиллах цаг талбарыг бөглөнө үү'
+				},
+			}
+		})
+	})
+
+</script>
+
+<script>
+
+	/** Datatable-ээс cонгогдсон утгын ID хадгална */
+	let wttuChoosedId
+
+	/** Modal гарж ирэх үед утгаа татаж оноож өгнө */
+	async function getDetail(pk)
+	{
+
+		let loaderText = document.getElementById('loading-text').style
+		let modalDisplay = document.getElementById('timetable-update-modal').style
+		const contactLoader = document.getElementById('loaderwtt')
+
+		/** loader харуулж модалийг нууна */
+		loaderText.display = 'block'
+		modalDisplay.display = 'none'
+		contactLoader.classList.add('loaderWew')
+
+		/** Хэрвээ өөр modal дээр validation ажилж алдаа заагдсан байвал цэвэрлэнэ */
+		var jqForm = $('#timetable_update_form')
+		jqForm.validate().resetForm();
+		$('#timetable_update_form input').removeClass('error');
+
+		/** cонгогдсон утгын ID оноож байна */
+		wttuChoosedId = pk
+
+		/** Аjax-аар хүсэлтээ шиднэ */
+		const { data } = await fetchData(`/schedule/work-time-type-ajax/${pk}/`, null, 'GET')
+
+		/** FORM input-үүдэд утгуудаа онооно */
+		let forms = document.getElementsByClassName('timetable_update_form')[0]
+
+		for (var i = 0, element; element = forms.elements[i++];)
+		{
+			if (element.localName === "input" && (element.type === 'text' || element.type === 'number' ))
+			{
+				if (!data[element.id])
+				{
+					continue
+				}
+				element.value = data[element.id]
+			} else if (element.localName === "input" && element.type === 'checkbox')
+			{
+				element.checked = data[element.id]
+			}
+		}
+
+		/** loader ийг арилгаж модалийг харуулна */
+		loaderText.display = 'none'
+		modalDisplay.display = 'block'
+		contactLoader.classList.remove('loaderWew')
+
+	}
+
+	/** Form домоос барих */
+    var jqForm = $('#timetable_update_form')
+
+    /** Шалгах утгууд (validation) */
+    if (jqForm.length) {
+		jQuery.validator.addMethod("noSpace", function(value, element)
+		{
+			return value.trim().length !== 0;
+		});
+		jQuery.validator.addMethod("timeLength", function(value, element)
+		{
+			return value.length === 8
+		})
+
+		jQuery.validator.addMethod("hotsroltVal", function(value, element)
+		{
+			let errorMes = document.querySelector(`label[for=${element.id}]`).textContent.trim()
+			jQuery.validator.messages['hotsroltVal'] = `${errorMes} талбарт эхлэх цагаас хойшоо цаг сонгоно уу`
+			start_time_value = document.getElementById('start_time').value
+			return start_time_value < value
+		})
+
+        validate = jqForm.validate({
+            rules: {
+				'name': {
+					required: true,
+					noSpace: true
+				},
+				'start_time': {
+					required: true,
+					timeLength: true
+				},
+				'end_time': {
+					required: true,
+					timeLength: true
+				},
+				'lunch_time_start_time': {
+					required: true,
+					timeLength: true
+				},
+				// 'lunch_time_end_time': {
+				// 	required: true,
+				// 	timeLength: true
+				// },
+				'hotorch_boloh_limit': {
+					required: true,
+					timeLength: true,
+					hotsroltVal: true
+				},
+				// 'registration_start_time': {
+				// 	required: true,
+				// 	timeLength: true
+				// },
+				// 'registration_end_time': {
+				// 	required: true,
+				// 	timeLength: true
+				// },
+				'time_range': {
+					required: true
+				},
+            }
+        });
+    }
+
+	/** Шинэчлэх үйлдэл */
+	const updateData = async (event) =>
+	{
+		/** validation давж чадахгүй бол буцаагаад алдаа заана */
+        if(!validate.checkForm())
+        {
+            return
+        }
+
+		/** Хуудас refresh хийлгэхгүй */
+		event.preventDefault()
+
+		let forms = document.getElementsByClassName('timetable_update_form')[0]
+
+		const formData = new FormData(forms)
+		const data = Object.fromEntries(formData)
+		data['lunch_time_end_time'] = data['lunch_time_start_time']
+
+		/** Утгуудаа хадгалж байна */
+		/** checkbox-ийн checked-ийн утгыг авч байна */
+		$('.timetable_update_form input[type="checkbox"]').map(function(key, value) {
+			data[value.name] = value.checked
+		})
+
+		addLoader($('#app-user-list'))
+		addLoader($('#timetable_update_form'))
+
+		/** Хүсэлтээ шидэж байна */
+		const { success } = await fetchData(`/schedule/work-time-type-ajax/${wttuChoosedId}/`, data, 'PUT')
+
+		/** Амжилттай болбол Datatable refresh хийж modal-ийг хаана */
+		if (success)
+        {
+            dataTable.ajax.reload(null, false)
+
+			setTimeout(function()
+			{
+				rmLoader($('#timetable_update_form'))
+				document.querySelector("#wttu_close_btn").click()
+			},
+			300)
+        }
+	}
+
+	/** Шинээр үүсгэх үеийн loader */
+	function timeTableSubmit()
+	{
+		if(createFormVal.checkForm())
+        {
+			addLoader($('#timetable_form'))
+        }
+	}
+
+	/** millisecond-ээс цаг минут бодох */
+	function msToTime(s) {
+		var ms = s % 1000;
+		s = (s - ms) / 1000;
+		var secs = s % 60;
+		s = (s - secs) / 60;
+		var mins = s % 60;
+		var hrs = (s - mins) / 60;
+
+		return { 'hour': hrs, 'minute': mins };
+	}
+
+	/** Ажлын эхлэх дуусах цагийг оруулахад автоматаар бодож ажиллах цагийг бодно (Шинээр бүртгэх) */
+	document.querySelectorAll('#timetable_form #end_time, #timetable_form #start_time').forEach((event) =>
+	{
+		event.addEventListener('change', (event) =>
+		{
+			let start_time = document.querySelector('#timetable_form #start_time').value
+			let end_time = document.querySelector('#timetable_form #end_time').value
+
+			let start_time_date = new Date("01/01/2007 " + start_time)
+			let end_time_date = new Date("01/01/2007 " + end_time)
+			let minus_date = end_time_date - start_time_date
+
+			let time_range_value = msToTime(minus_date)
+			let time = time_range_value.hour
+			if (time_range_value.minute >= 30) time = time + 1
+
+			document.getElementsByName('time_range')[0].value = time
+		})
+	})
+
+	/** Ажлын эхлэх дуусах цагийг оруулахад автоматаар бодож ажиллах цагийг бодно (Өөрчлөх үед) */
+	document.querySelectorAll('#timetable_update_form #end_time, #timetable_update_form #start_time').forEach((event) =>
+	{
+		event.addEventListener('change', (event) =>
+		{
+			let start_time = document.querySelector('#timetable_update_form #start_time').value
+			let end_time = document.querySelector('#timetable_update_form #end_time').value
+
+			let start_time_date = new Date("01/01/2007 " + start_time)
+			let end_time_date = new Date("01/01/2007 " + end_time)
+			let minus_date = end_time_date - start_time_date
+
+			let time_range_value = msToTime(minus_date)
+			let time = time_range_value.hour
+			if (time_range_value.minute >= 30) time = time + 1
+
+			document.getElementsByName('time_range')[1].value = time
+		})
+	})
+
+</script>
+<!-- END: Page JS-->
+
+{% endblock js %}

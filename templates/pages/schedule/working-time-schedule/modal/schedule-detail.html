@@ -1,0 +1,269 @@
+
+<!--
+    URL: /schedule/working-time-schedule/
+    Нэр: Цагийн хуваарийн төрөл хуудас
+    Төрөл: Modal
+    Дэлгэрэнгүй: Дэлгэрэнгүй дарахад гарж ирэх modal
+-->
+
+<div class="modal fade" id="{{id}}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content row" >
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center" id="modalbody">
+                <div class="text-center">
+                    <i class="fas fa-exclamation-circle fs-40"></i>
+                </div>
+                <div style="margin-top: 10px">
+                    Дэлгэрэнгүй мэдээлэл
+                </div>
+            </div>
+            <div class="mb-1">
+                <span id="loaderwts"></span>
+                <div class="modal-body row text-center" id="detail_loader_display" style="display: block;">
+                    Уншиж байна...
+                </div>
+
+                <div class="modal-body row" id="detail_main_display" style="display: none;">
+
+                    <div class="mb-1 col-12 col-sm-4">
+                        <label class="form-label">Байгууллагын нэр</label>
+                        <input type="text" class="form-control" id="orgDetail" name="orgDetail" readonly="readonly" />
+                    </div>
+                    <div class="mb-1 col-12 col-sm-4">
+                        <label class="form-label">Нэр</label>
+                        <input type="text" class="form-control" id="nameDetail" name="nameDetail" readonly="readonly" />
+                    </div>
+                    <div class="mb-1 col-12 col-sm-4">
+                        <label class="form-label" for="type">Төрөл</label>
+                        <input type="text" class="form-control" id="typeDetail" name="typeDetail" readonly="readonly" />
+                    </div>
+                    <div class="mb-1 col-12">
+                        <label class="form-label">Тайлбар</label>
+                        <textarea class="form-control" rows="3" id="descriptionDetail" name="descriptionDetail" readonly="readonly"></textarea>
+                    </div>
+                    <!-- <div class="mb-1 col-12 col-sm-6 col-md-4">
+                        <label class="form-label">Ирсэн цагаа бүртгүүлээгүй тохиолдолд торгууль ногдуулах бол</label>
+                        <input type="number" class="form-control" id="start_time_penaltyDetail" name="start_time_penaltyDetail" data-msg="Талбарыг бөглөнө үү" readonly="readonly" />
+                    </div>
+                    <div class="mb-1 col-12 col-sm-6 col-md-4">
+                        <label class="form-label">Явсан цагаа бүртгүүлээгүй тохиолдолд торгууль ногдуулах бол</label>
+                        <input type="number" class="form-control" id="end_time_penaltyDetail" name="end_time_penaltyDetail" data-msg="Талбарыг бөглөнө үү" readonly="readonly" />
+                    </div> -->
+
+                    <!-- XY - Цагийн төрөл -->
+                    <div class="mb-1 border p-1 row" id="xy_formDetail" style="margin-left: 3px;" >
+                        <div class="mb-1 col-12 col-sm-6">
+                            <label class="form-label">Ажиллах цаг</label>
+                            <input type="number" class="form-control" placeholder="" id="ajillah_timeDetail" name="ajillah_timeDetail" readonly="readonly" />
+                        </div>
+                        <div class="mb-1 col-12 col-sm-6">
+                            <label class="form-label">Амрах цаг</label>
+                            <input type="number" class="form-control" placeholder="" id="amrah_timeDetail" name="amrah_timeDetail" readonly="readonly" />
+                        </div>
+                    </div>
+
+                    <!-- 1 дэх цагийн төрөл -->
+                    <div class="row" id="days_formDetail">
+                        <div class="mb-1 border p-1 row" style="margin-left: 3px;" >
+                            <div class="mb-1 col-12">
+                                <label class="form-check-label" style="font-size: 13px;" for="holiday">Даваад ажиллана</label>
+                                <input class="form-check-input" type="checkbox" id="mon_workDetail" name="mon_workDetail" {% if mon_workDetail.value %}checked{% endif %} disabled >
+                            </div>
+                            <form id="mon_display" style="display: flex;" class="row col-12">
+
+                                <div class="mb-1 col-12 col-sm-6 col-md-3">
+                                    <label class="form-label" for="time_schedule">Ажлын цагийн төрлийн нэр</label>
+                                    <input type="text" id="name" name="name" class="form-control time-mask" placeholder="цц:мм:сс" readonly="readonly">
+                                </div>
+                                <div class="mb-1 col-12 col-sm-6 col-md-3">
+                                    <label class="form-label" for="time_schedule">Эхлэх цаг</label>
+                                    <input type="text" id="start_time" name="start_time" class="form-control time-mask" placeholder="цц:мм:сс" readonly="readonly">
+                                </div>
+                                <div class="mb-1 col-12 col-sm-6 col-md-3">
+                                    <label class="form-label" for="time_schedule">Дуусах цаг</label>
+                                    <input type="text" id="end_time" name="end_time" class="form-control time-mask" placeholder="цц:мм:сс" readonly="readonly">
+                                </div>
+                                <div class="mb-1 col-12 col-sm-6 col-md-3">
+                                    <label class="form-label" for="time_schedule">Ирэх, явах цагийн хязгаар</label>
+                                    <input type="text" id="time_range" name="time_range" class="form-control time-mask" placeholder="цц:мм:сс" readonly="readonly">
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- 2 дэх цагийн төрөл -->
+                        <div class="mb-1 border p-1 row" style="margin-left: 3px;" >
+                            <div class="mb-1 col-12">
+                                <label class="form-check-label" style="font-size: 13px;" for="holiday">Мягмарт ажиллана</label>
+                                <input class="form-check-input" type="checkbox" id="tue_workDetail" name="tue_workDetail" {% if tue_workDetail.value %}checked{% endif %} disabled >
+                            </div>
+                            <form id="tue_display" style="display: flex;" class="row col-12">
+
+                                <div class="mb-1 col-12 col-sm-6 col-md-3">
+                                    <label class="form-label" for="time_schedule">Ажлын цагийн төрлийн нэр</label>
+                                    <input type="text" id="name" name="name" class="form-control time-mask" placeholder="цц:мм:сс" readonly="readonly">
+                                </div>
+                                <div class="mb-1 col-12 col-sm-6 col-md-3">
+                                    <label class="form-label" for="time_schedule">Эхлэх цаг</label>
+                                    <input type="text" id="start_time" name="start_time" class="form-control time-mask" placeholder="цц:мм:сс" readonly="readonly">
+                                </div>
+                                <div class="mb-1 col-12 col-sm-6 col-md-3">
+                                    <label class="form-label" for="time_schedule">Дуусах цаг</label>
+                                    <input type="text" id="end_time" name="end_time" class="form-control time-mask" placeholder="цц:мм:сс" readonly="readonly">
+                                </div>
+                                <div class="mb-1 col-12 col-sm-6 col-md-3">
+                                    <label class="form-label" for="time_schedule">Ирэх, явах цагийн хязгаар</label>
+                                    <input type="text" id="time_range" name="time_range" class="form-control time-mask" placeholder="цц:мм:сс" readonly="readonly">
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- 3 дэх цагийн төрөл -->
+                        <div class="mb-1 border p-1 row" style="margin-left: 3px;" >
+                            <div class="mb-1 col-12">
+                                <label class="form-check-label" style="font-size: 13px;" for="holiday">Лхагвад ажиллана</label>
+                                <input class="form-check-input" type="checkbox" id="wed_workDetail" name="wed_workDetail" {% if wed_workDetail.value %}checked{% endif %} disabled >
+                            </div>
+                            <form id="wed_display" style="display: flex;" class="row col-12">
+
+                                <div class="mb-1 col-12 col-sm-6 col-md-3">
+                                    <label class="form-label" for="time_schedule">Ажлын цагийн төрлийн нэр</label>
+                                    <input type="text" id="name" name="name" class="form-control time-mask" placeholder="цц:мм:сс" readonly="readonly">
+                                </div>
+                                <div class="mb-1 col-12 col-sm-6 col-md-3">
+                                    <label class="form-label" for="time_schedule">Эхлэх цаг</label>
+                                    <input type="text" id="start_time" name="start_time" class="form-control time-mask" placeholder="цц:мм:сс" readonly="readonly">
+                                </div>
+                                <div class="mb-1 col-12 col-sm-6 col-md-3">
+                                    <label class="form-label" for="time_schedule">Дуусах цаг</label>
+                                    <input type="text" id="end_time" name="end_time" class="form-control time-mask" placeholder="цц:мм:сс" readonly="readonly">
+                                </div>
+                                <div class="mb-1 col-12 col-sm-6 col-md-3">
+                                    <label class="form-label" for="time_schedule">Ирэх, явах цагийн хязгаар</label>
+                                    <input type="text" id="time_range" name="time_range" class="form-control time-mask" placeholder="цц:мм:сс" readonly="readonly">
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- 4 дэх цагийн төрөл -->
+                        <div class="mb-1 border p-1 row" style="margin-left: 3px;" >
+                            <div class="mb-1 col-12">
+                                <label class="form-check-label" style="font-size: 13px;" for="holiday">Пүрэвт ажиллана</label>
+                                <input class="form-check-input" type="checkbox" id="thu_workDetail" name="thu_workDetail" {% if thu_workDetail.value %}checked{% endif %} disabled >
+                            </div>
+                            <form id="thu_display" style="display: flex;" class="row col-12">
+
+                                <div class="mb-1 col-12 col-sm-6 col-md-3">
+                                    <label class="form-label" for="time_schedule">Ажлын цагийн төрлийн нэр</label>
+                                    <input type="text" id="name" name="name" class="form-control time-mask" placeholder="цц:мм:сс" readonly="readonly">
+                                </div>
+                                <div class="mb-1 col-12 col-sm-6 col-md-3">
+                                    <label class="form-label" for="time_schedule">Эхлэх цаг</label>
+                                    <input type="text" id="start_time" name="start_time" class="form-control time-mask" placeholder="цц:мм:сс" readonly="readonly">
+                                </div>
+                                <div class="mb-1 col-12 col-sm-6 col-md-3">
+                                    <label class="form-label" for="time_schedule">Дуусах цаг</label>
+                                    <input type="text" id="end_time" name="end_time" class="form-control time-mask" placeholder="цц:мм:сс" readonly="readonly">
+                                </div>
+                                <div class="mb-1 col-12 col-sm-6 col-md-3">
+                                    <label class="form-label" for="time_schedule">Ирэх, явах цагийн хязгаар</label>
+                                    <input type="text" id="time_range" name="time_range" class="form-control time-mask" placeholder="цц:мм:сс" readonly="readonly">
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- 5 дэх цагийн төрөл -->
+                        <div class="mb-1 border p-1 row" style="margin-left: 3px;" >
+                            <div class="mb-1 col-12">
+                                <label class="form-check-label" style="font-size: 13px;" for="holiday">Баасанд ажиллана</label>
+                                <input class="form-check-input" type="checkbox" id="fri_workDetail" name="fri_workDetail" {% if fri_workDetail.value %}checked{% endif %} disabled >
+                            </div>
+                            <form id="fri_display" style="display: flex;" class="row col-12">
+
+                                <div class="mb-1 col-12 col-sm-6 col-md-3">
+                                    <label class="form-label" for="time_schedule">Ажлын цагийн төрлийн нэр</label>
+                                    <input type="text" id="name" name="name" class="form-control time-mask" placeholder="цц:мм:сс" readonly="readonly">
+                                </div>
+                                <div class="mb-1 col-12 col-sm-6 col-md-3">
+                                    <label class="form-label" for="time_schedule">Эхлэх цаг</label>
+                                    <input type="text" id="start_time" name="start_time" class="form-control time-mask" placeholder="цц:мм:сс" readonly="readonly">
+                                </div>
+                                <div class="mb-1 col-12 col-sm-6 col-md-3">
+                                    <label class="form-label" for="time_schedule">Дуусах цаг</label>
+                                    <input type="text" id="end_time" name="end_time" class="form-control time-mask" placeholder="цц:мм:сс" readonly="readonly">
+                                </div>
+                                <div class="mb-1 col-12 col-sm-6 col-md-3">
+                                    <label class="form-label" for="time_schedule">Ирэх, явах цагийн хязгаар</label>
+                                    <input type="text" id="time_range" name="time_range" class="form-control time-mask" placeholder="цц:мм:сс" readonly="readonly">
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- 6 дэх цагийн төрөл -->
+                        <div class="mb-1 border p-1 row" style="margin-left: 3px;" >
+                            <div class="mb-1 col-12">
+                                <label class="form-check-label" style="font-size: 13px;" for="holiday">Бямбад ажиллана</label>
+                                <input class="form-check-input" type="checkbox" id="sat_workDetail" name="sat_workDetail" {% if sat_workDetail.value %}checked{% endif %} disabled >
+                            </div>
+                            <form id="sat_display" style="display: flex;" class="row col-12">
+
+                                <div class="mb-1 col-12 col-sm-6 col-md-3">
+                                    <label class="form-label" for="time_schedule">Ажлын цагийн төрлийн нэр</label>
+                                    <input type="text" id="name" name="name" class="form-control time-mask" placeholder="цц:мм:сс" readonly="readonly">
+                                </div>
+                                <div class="mb-1 col-12 col-sm-6 col-md-3">
+                                    <label class="form-label" for="time_schedule">Эхлэх цаг</label>
+                                    <input type="text" id="start_time" name="start_time" class="form-control time-mask" placeholder="цц:мм:сс" readonly="readonly">
+                                </div>
+                                <div class="mb-1 col-12 col-sm-6 col-md-3">
+                                    <label class="form-label" for="time_schedule">Дуусах цаг</label>
+                                    <input type="text" id="end_time" name="end_time" class="form-control time-mask" placeholder="цц:мм:сс" readonly="readonly">
+                                </div>
+                                <div class="mb-1 col-12 col-sm-6 col-md-3">
+                                    <label class="form-label" for="time_schedule">Ирэх, явах цагийн хязгаар</label>
+                                    <input type="text" id="time_range" name="time_range" class="form-control time-mask" placeholder="цц:мм:сс" readonly="readonly">
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- 7 дэх цагийн төрөл -->
+                        <div class="mb-1 border p-1 row" style="margin-left: 3px;" >
+                            <div class="mb-1 col-12">
+                                <label class="form-check-label" style="font-size: 13px;" for="holiday">Нямд ажиллана</label>
+                                <input class="form-check-input" type="checkbox" id="sun_workDetail" name="sun_workDetail" {% if sun_workDetail.value %}checked{% endif %} disabled >
+                            </div>
+                            <form id="sun_display" style="display: flex;" class="row col-12">
+
+                                <div class="mb-1 col-12 col-sm-6 col-md-3">
+                                    <label class="form-label" for="time_schedule">Ажлын цагийн төрлийн нэр</label>
+                                    <input type="text" id="name" name="name" class="form-control time-mask" placeholder="цц:мм:сс" readonly="readonly">
+                                </div>
+                                <div class="mb-1 col-12 col-sm-6 col-md-3">
+                                    <label class="form-label" for="time_schedule">Эхлэх цаг</label>
+                                    <input type="text" id="start_time" name="start_time" class="form-control time-mask" placeholder="цц:мм:сс" readonly="readonly">
+                                </div>
+                                <div class="mb-1 col-12 col-sm-6 col-md-3">
+                                    <label class="form-label" for="time_schedule">Дуусах цаг</label>
+                                    <input type="text" id="end_time" name="end_time" class="form-control time-mask" placeholder="цц:мм:сс" readonly="readonly">
+                                </div>
+                                <div class="mb-1 col-12 col-sm-6 col-md-3">
+                                    <label class="form-label" for="time_schedule">Ирэх, явах цагийн хязгаар</label>
+                                    <input type="text" id="time_range" name="time_range" class="form-control time-mask" placeholder="цц:мм:сс" readonly="readonly">
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">
+                    Болих
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

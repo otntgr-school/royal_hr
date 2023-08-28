@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/forms/select/select2.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+
+{% endblock css %}
+{% load rest_framework %}
+
+<!--prettier-ignore-->
+{% block content %}
+
+    <div class="card">
+        <div class="card-header">
+            <h4 class="card-title">Эрх {% if pk %} засах {% else %} үүсгэх {% endif %} </h4>
+        </div>
+        <div class="card-body">
+            {% if pk %}
+                <form action="{% url 'permission-action' pk %}" id="salbar-form" method="POST">
+            {% else %}
+                <form action="{% url 'permission-action' %}" id="salbar-form" method="POST">
+            {% endif %}
+                {% csrf_token %}
+                {% render_form serializer %}
+                <div class="col-xl-12 col-md-12 col-12 mt-2">
+                    <button type="submit" id="salbar-btn" class="btn btn-primary">
+                        {% if pk %}
+                            Засах
+                        {% else %}
+                            Бүртгэх
+                        {% endif %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block js %}
+
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/forms/select/select2.full.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/form-select2.js' %}"></script>
+
+<script src="{% static 'app-assets/js/scripts/tables/table-datatables-advanced.js' %}"></script>
+
+{% endblock js %}

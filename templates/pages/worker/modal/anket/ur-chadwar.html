@@ -1,0 +1,320 @@
+<div class="card-border">
+    <div class="card-body">
+        <h4 class="card-title text-center">
+            4.1. Ур чадвар (та өөрийн ур чадварын түвшинг 1-3 баллаар үнэлнэ үү /1-тааруу, 2-дунд, 3-сайн/)
+        </h4>
+        <hr>
+        <div class="skill-table">
+
+        </div>
+        <div class="crepeat extra-skill-table mt-2">
+            <div class="table-responsive">
+                <table class="table table-hover table-bordered small-text-thead">
+                    <thead>
+                        <tr>
+                            <th>Дээд дурдсанаас бусад ур чадвараасаа заримыг нэрлэнэ үү</th>
+                            <th style="width: 120px">Түвшин</th>
+                            <th style="width: 80px;">Үйлдэл</th>
+                        </tr>
+                    </thead>
+                    <tbody data-repeater-list="extra-skills">
+                        <tr data-repeater-item>
+                            <td>
+                                <input type="text" class="form-control form-control-sm d-none" placeholder="Сургуулийн нэр" name="id" id="id">
+                                <input type="text" class="form-control form-control-sm d-none" placeholder="Сургуулийн нэр" name="cid">
+                                <input type="text" name="name" class="form-control form-control-sm" />
+                            </td>
+                            <td class="d-flex align-items-center">
+                                {% for id, name in s_skill_choices %}
+                                    <div class="mx-1">
+                                        <input class="form-check-input" type="radio" name="level" value="{{id}}" id="extrautga-{{id}}-utga">
+                                        <label class="form-check-label d-flex justify-content-center" for="extrautga-{{id}}-utga">
+                                            {{name}}
+                                        </label>
+                                    </div>
+                                {% endfor %}
+                            </td>
+                            <td class="mt-10"><button class="btn btn-sm btn-danger" type="button" data-repeater-delete>Устгах</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <span data-repeater-create class="text-primary fw-bold fs-12 mt-1 mb-2 d-block text-center cursor-pointer">
+                <i data-feather='plus'></i> Шинээр нэмэх
+            </span>
+        </div>
+    </div>
+    <div class="card-body crepeat languages">
+        <h4 class="card-title text-center">4.2. Гадаад хэлний мэдлэг</h4>
+        <hr>
+        <div class="table-responsive">
+            <table class="table table-hover table-bordered small-text-thead">
+                <thead>
+                    <tr>
+                        <th>Гадаад хэлний нэр</th>
+                        <th>Сонсож ойлгох</th>
+                        <th>Ярих</th>
+                        <th>Унших</th>
+                        <th>Бичих</th>
+                        <th style="width: 80px;">Үйлдэл</th>
+                    </tr>
+                </thead>
+                <tbody data-repeater-list="languages">
+                    <tr data-repeater-item>
+                        <td>
+                            <input type="text" class="form-control form-control-sm d-none" placeholder="Сургуулийн нэр" name="id" id="id">
+                            <input type="text" class="form-control form-control-sm d-none" placeholder="Сургуулийн нэр" name="cid">
+                            <input type="text" class="form-control form-control-sm" placeholder="Гадаад хэлний нэр" name="langage" />
+                        </td>
+                        <td>
+                            <select class="form-select form-select-sm" name="listen">
+                                <option value="1">
+                                    Дунд
+                                </option>
+                                <option value="2">
+                                    Сайн
+                                </option>
+                                <option value="3">
+                                    Онц
+                                </option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="form-select form-select-sm" name="talk">
+                                <option value="1">
+                                    Дунд
+                                </option>
+                                <option value="2">
+                                    Сайн
+                                </option>
+                                <option value="3">
+                                    Онц
+                                </option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="form-select form-select-sm" name="read">
+                                <option value="1">
+                                    Дунд
+                                </option>
+                                <option value="2">
+                                    Сайн
+                                </option>
+                                <option value="3">
+                                    Онц
+                                </option>
+                            </select>
+                        </td>
+                        <td>
+                            <select class="form-select form-select-sm" name="write">
+                                <option value="1">
+                                    Дунд
+                                </option>
+                                <option value="2">
+                                    Сайн
+                                </option>
+                                <option value="3">
+                                    Онц
+                                </option>
+                            </select>
+                        </td>
+                        <td class="mt-10"><button type="button" class="btn btn-sm btn-danger" data-repeater-delete>Устгах</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <span data-repeater-create class="text-primary fw-bold fs-12 mt-1 mb-2 d-block text-center cursor-pointer">
+            <i data-feather='plus'></i> Шинээр нэмэх
+        </span>
+    </div>
+    <div class="card-body">
+        <h4 class="card-title text-center">4.3. Компьютерийн болон оффисийн тоног төхөөрөмж, технологи эзэмшсэн байдал</h4>
+        <hr>
+        <div class="row">
+            <div class="crepeat pc-chadwar">
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered small-text-thead">
+                        <thead>
+                            <tr>
+                                <th>Эзэмшсэн программын нэр</th>
+                                <th style="width: 120px">Түвшин</th>
+                                <th style="width: 80px;">Үйлдэл</th>
+                            </tr>
+                        </thead>
+                        <tbody data-repeater-list="pc-chadwar">
+                            <tr data-repeater-item>
+                                <td>
+                                    <input type="text" class="form-control form-control-sm d-none" placeholder="Сургуулийн нэр" name="id" id="id">
+                                    <input type="text" class="form-control form-control-sm d-none" placeholder="Сургуулийн нэр" name="cid">
+                                    <input type="text" class="form-control form-control-sm" placeholder="Эзэмшсэн программын нэр" name="name" />
+                                </td>
+                                <td>
+                                    <select class="form-select form-select-sm" name="level">
+                                        <option value="1">
+                                            Дунд
+                                        </option>
+                                        <option value="2">
+                                            Сайн
+                                        </option>
+                                        <option value="3">
+                                            Онц
+                                        </option>
+                                    </select>
+                                </td>
+                                <td class="mt-10"><button type="button" class="btn btn-sm btn-danger" data-repeater-delete>Устгах</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <span data-repeater-create class="text-primary fw-bold fs-12 mt-1 mb-2 d-block text-center cursor-pointer">
+                    <i data-feather='plus'></i> Шинээр нэмэх
+                </span>
+            </div>
+            <div>
+                <div class="table-responsive">
+                    <table class="table table-hover table-bordered small-text-thead">
+                        <thead>
+                            <tr>
+                                <th colspan="2">Эзэмшсэн оффисийн тоног төхөөрөмж, технологийн нэр</th>
+                                <th style="width: 120px">Түвшин</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <th colspan="2">
+                                    Интернетийн орчинд ажиллах
+                                </th>
+                                <td>
+                                    <select class="form-select form-select-sm" name="internet_usage">
+                                        <option value="1">
+                                            Дунд
+                                        </option>
+                                        <option value="2">
+                                            Сайн
+                                        </option>
+                                        <option value="3">
+                                            Онц
+                                        </option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th colspan="2">
+                                    Дотоод сүлжээ ашиглах
+                                </th>
+                                <td>
+                                    <select class="form-select form-select-sm" name="local_network">
+                                        <option value="1">
+                                            Дунд
+                                        </option>
+                                        <option value="2">
+                                            Сайн
+                                        </option>
+                                        <option value="3">
+                                            Онц
+                                        </option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th rowspan="6">
+                                    Оффисийн тоног төхөөрөмж
+                                </th>
+                            </tr>
+                            <tr>
+                                <th>
+                                    Скайнер
+                                </th>
+                                <td>
+                                    <select class="form-select form-select-sm" name="scaner">
+                                        <option value="1">
+                                            Дунд
+                                        </option>
+                                        <option value="2">
+                                            Сайн
+                                        </option>
+                                        <option value="3">
+                                            Онц
+                                        </option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    Принтр
+                                </th>
+                                <td>
+                                    <select class="form-select form-select-sm" name="printer">
+                                        <option value="1">
+                                            Дунд
+                                        </option>
+                                        <option value="2">
+                                            Сайн
+                                        </option>
+                                        <option value="3">
+                                            Онц
+                                        </option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    Хувилагч
+                                </th>
+                                <td>
+                                    <select class="form-select form-select-sm" name="copier">
+                                        <option value="1">
+                                            Дунд
+                                        </option>
+                                        <option value="2">
+                                            Сайн
+                                        </option>
+                                        <option value="3">
+                                            Онц
+                                        </option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    Факс
+                                </th>
+                                <td>
+                                    <select class="form-select form-select-sm" name="fax">
+                                        <option value="1">
+                                            Дунд
+                                        </option>
+                                        <option value="2">
+                                            Сайн
+                                        </option>
+                                        <option value="3">
+                                            Онц
+                                        </option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <th>
+                                    Гэрэл зургийн болон видео бичлэгийн аппарат г.м
+                                </th>
+                                <td>
+                                    <select class="form-select form-select-sm" name="media">
+                                        <option value="1">
+                                            Дунд
+                                        </option>
+                                        <option value="2">
+                                            Сайн
+                                        </option>
+                                        <option value="3">
+                                            Онц
+                                        </option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

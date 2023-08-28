@@ -1,0 +1,37 @@
+<div class="modal fade" id="addBankAccountModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-edit-user">
+        <div class="modal-content">
+            <div class="modal-header bg-transparent">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pb-5 px-sm-5 pt-50">
+                <div class="text-center mb-2">
+                    <h1 class="mb-1">Дансны мэдээлэл</h1>
+                </div>
+                <form id="bankAccountInfoForm" class="row gy-1 pt-75" onsubmit="bankAccountInfoSubmit(event)">
+                    <div class="col-12">
+                        <label class="form-label" for="bankInfoSelect">Банк:</label>
+                        <select class="select2 form-select" id="bankInfoSelect">
+                            {% for bank in bank_info %}
+                                <option value="{{bank.id}}" title="{{bank.image}}">
+                                    {{bank.name}}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Дансны дугаар:</label>
+                        <input type="number" id="number" name="number" class="form-control" placeholder=""/>
+                    </div>
+                    <div class="col-12 text-center mt-2 pt-50">
+                        <button id="bankAccountInfoSubmitBtn" type="submit" class="btn btn-primary me-1">Хадгалах</button>
+                        <button id="bank_acc_info_modal_close_btn" type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">
+                            Болих
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <span id="loaderWeew8"></span>
+        </div>
+    </div>
+</div>

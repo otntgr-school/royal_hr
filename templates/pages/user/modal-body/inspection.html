@@ -1,0 +1,150 @@
+
+<div class="modal fade" id="inspection" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content row" >
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form id="inspectionForm" onsubmit="inspectionSubmit(event)">
+                <div class="mb-1 mt-1">
+                    <div class="modal-body row">
+
+                        {% if not hunii_noots %}
+                        <div class="col-12 col-sm-12 col-md-12 col-xl-4 insDisplay mt-5" style="display: none;" id="internalinspection_style">
+                            <div class="input-group">
+                                <span class="input-group-text">Дотор</span>
+                                <textarea class="form-control" rows="12" id="internalinspection" name="internalinspection" placeholder="дотор" data-msg="Талбарыг бөглөнө үү" >{{ inspectionValues.1.inspectionText|default:'' }}</textarea>
+                            </div>
+                            <div class="d-flex justify-content-center mt-2">
+                                {% if not hunii_noots %}
+                                <button class="btn btn-primary waves-effect waves-float waves-light">Нэмэх</button>
+                                {% endif %}
+                                <button type="reset" id="inspection_close_btn" class="btn btn-outline-secondary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                                    Болих
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-12 col-xl-4 insDisplay mt-5" style="display: none;" id="sightAndHearing_style">
+                            <div class="input-group">
+                                <span class="input-group-text">Хараа сонсгол</span>
+                                <textarea class="form-control" rows="12" id="sightAndHearing" name="sightAndHearing" placeholder="хараа сонсгол" data-msg="Талбарыг бөглөнө үү">{{ inspectionValues.2.inspectionText|default:'' }}</textarea>
+                            </div>
+                            <div class="d-flex justify-content-center mt-2">
+                                {% if not hunii_noots %}
+                                <button class="btn btn-primary waves-effect waves-float waves-light">Нэмэх</button>
+                                {% endif %}
+                                <button type="reset" id="inspection_close_btn" class="btn btn-outline-secondary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                                    Болих
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-12 col-xl-4 insDisplay mt-5" style="display: none;" id="infectiousTuberculosis_style">
+                            <div class="input-group">
+                                <span class="input-group-text">Халдварт сүрьеэ</span>
+                                <textarea class="form-control" rows="12" id="infectiousTuberculosis" name="infectiousTuberculosis" placeholder="халдварт сүрьеэ" data-msg="Талбарыг бөглөнө үү">{{ inspectionValues.3.inspectionText|default:'' }}</textarea>
+                            </div>
+                            <div class="d-flex justify-content-center mt-2">
+                                {% if not hunii_noots %}
+                                <button class="btn btn-primary waves-effect waves-float waves-light">Нэмэх</button>
+                                {% endif %}
+                                <button type="reset" id="inspection_close_btn" class="btn btn-outline-secondary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                                    Болих
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-12 col-xl-4 insDisplay mt-5" style="display: none;" id="genitalWarts_style">
+                            <div class="input-group">
+                                <span class="input-group-text">Арьс, БЗХ</span>
+                                <textarea class="form-control" rows="12" id="genitalWarts" name="genitalWarts" placeholder="арьс, БЗХ" data-msg="Талбарыг бөглөнө үү">{{ inspectionValues.4.inspectionText|default:'' }}</textarea>
+                            </div>
+                            <div class="d-flex justify-content-center mt-2">
+                                {% if not hunii_noots %}
+                                <button class="btn btn-primary waves-effect waves-float waves-light">Нэмэх</button>
+                                {% endif %}
+                                <button type="reset" id="inspection_close_btn" class="btn btn-outline-secondary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                                    Болих
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-12 col-xl-4 insDisplay mt-5" style="display: none;" id="woman_style">
+                            <div class="input-group">
+                                <span class="input-group-text">Эмэгтэйчүүд</span>
+                                <textarea class="form-control" rows="12" id="woman" name="woman" placeholder="эмэгтэйчүүд" data-msg="Талбарыг бөглөнө үү">{{ inspectionValues.5.inspectionText|default:'' }}</textarea>
+                            </div>
+                            <div class="d-flex justify-content-center mt-2">
+                                {% if not hunii_noots %}
+                                <button class="btn btn-primary waves-effect waves-float waves-light">Нэмэх</button>
+                                {% endif %}
+                                <button type="reset" id="inspection_close_btn" class="btn btn-outline-secondary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                                    Болих
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-12 col-xl-4 insDisplay mt-5" style="display: none;" id="nerves_style">
+                            <div class="input-group">
+                                <span class="input-group-text">Мэдрэл</span>
+                                <textarea class="form-control" rows="12" id="nerves" name="nerves" placeholder="мэдрэл" data-msg="Талбарыг бөглөнө үү">{{ inspectionValues.6.inspectionText|default:'' }}</textarea>
+                            </div>
+                            <div class="d-flex justify-content-center mt-2">
+                                {% if not hunii_noots %}
+                                <button class="btn btn-primary waves-effect waves-float waves-light">Нэмэх</button>
+                                {% endif %}
+                                <button type="reset" id="inspection_close_btn" class="btn btn-outline-secondary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                                    Болих
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-12 col-xl-4 insDisplay mt-5" style="display: none;" id="tooth_style">
+                            <div class="input-group">
+                                <span class="input-group-text">Шүд</span>
+                                <textarea class="form-control" rows="12" id="tooth" name="tooth" placeholder="шүд" data-msg="Талбарыг бөглөнө үү">{{ inspectionValues.7.inspectionText|default:'' }}</textarea>
+                            </div>
+                            <div class="d-flex justify-content-center mt-2">
+                                {% if not hunii_noots %}
+                                <button class="btn btn-primary waves-effect waves-float waves-light">Нэмэх</button>
+                                {% endif %}
+                                <button type="reset" id="inspection_close_btn" class="btn btn-outline-secondary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                                    Болих
+                                </button>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        <div class="{% if not hunii_noots %}col-sm-12 col-md-12 col-xl-8{% else %}col-12{% endif %}">
+
+                            <div class="card">
+                                <div class="card-header">
+                                    <h6 class="card-title">Өмнөх бүртгэлүүдийн жагсаалт</h6>
+                                </div>
+                                <div class="table-responsive" id="inspection-medical-history-table-display">
+                                    <div class="card-datatable table-responsive pt-0">
+                                        <div class="custom-cell" id="inspection-medical-history-table-loader">
+                                            <table id="inspection-medical-history-table" class="inspection-medical-history-table border-spc table text-center">
+                                                <thead class="table-light">
+                                                    <tr class="filter-container"></tr>
+                                                    <tr>
+                                                        <th style="max-width: 50px;">ID</th>
+                                                        <th style="max-width: 50px;">Огноо</th>
+                                                        <th>Тэмдэглэл</th>
+                                                    </tr>
+                                                </thead>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th>ID</th>
+                                                        <th>Огноо</th>
+                                                        <th>Тэмдэглэл</th>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

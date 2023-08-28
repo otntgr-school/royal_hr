@@ -1,0 +1,91 @@
+
+<!--
+    URL: /schedule/time-register-request/
+    Нэр: Хүсэлт илгээх form
+    Төрөл: Form
+    Дэлгэрэнгүй: Шинээр бүртгэх дарахад гарж ирнэ
+-->
+
+<div class="modal modal-slide-in new-user-modal fade" id="modals-slide-in">
+    <div class="modal-dialog custom-50" >
+
+        <form class="add-new-timetable modal-content pt-0" action="{% url 'time-register-request' %}" method="post" id="timeRegisterRequestForm" onsubmit="formSubmit(event)" >
+            <input type="hidden" id="employee" name="employee" value="{{request.employee.id}}">
+            {% csrf_token %}
+            <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+            >
+                ×
+            </button>
+            <div class="modal-header mb-1">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    Хүсэлт илгээх
+                </h5>
+            </div>
+            <div class="modal-body flex-grow-1" id="update_main_display" style="display: block;">
+                <div class="mb-1 mt-2">
+                    <label class="form-label" for="vacation_type">Чөлөөний төрөл *</label>
+                    <select class="select2 form-select" id="vacation_type" name="vacation_type" onchange=(typeClick()) data-msg="Чөлөөний төрөлийг сонгоно уу">
+                        <option value="" data-code="0">-- сонгох --</option>
+                        {% for vacation_types_reason in vacation_types_reasons %}
+                            <option value="{{ vacation_types_reason.id }}" data-code="{{ vacation_types_reason.id }}">{{ vacation_types_reason.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="mb-1">
+                    <div class="form-check-inline" id="during_the_day_id" style="display: none;">
+                        <input class="form-check-input radioBtnClass" type="radio" name="during_the_day" id="during_the_day" value="True" onchange="(radioChange())" data-msg="Төрөлөө сонгоно уу" />
+                        <label class="form-check-label" for="during_the_day">Өдрөөр</label>
+                    </div>
+                    <br />
+                    <div class="form-check-inline" id="during_the_hours_id" style="display: none; margin-top: 3px;">
+                        <input class="form-check-input radioBtnClass" type="radio" name="during_the_hours" id="during_the_hours" value="True" onchange="(radioChange())" data-msg="Төрөлөө сонгоно уу" />
+                        <label class="form-check-label" for="during_the_hours">Цагаар</label>
+                    </div>
+                </div>
+
+                <div id="allDisplay" style="display: none;">
+                <div class="mb-1 position-relative">
+                        <label class="form-label" for="start_day">Эхлэх өдөр</label>
+                        <input type="text" style="cursor: pointer;" class="form-control pickadate-months-year-00-30" placeholder="YYYY-MM-DD" id="start_day" name="start_day" data-msg="Эхлэх өдөр талбарыг бөглөнө үү" />
+                        <span id="dateCheckSpan" class="text-danger" style="font-size: 12px;"></span>
+                    </div>
+                    <div class="mb-1 position-relative" id="endDay" style="display: none;">
+                        <label class="form-label" for="end_day">Дуусах өдөр</label>
+                        <input type="text" style="cursor: pointer;" id="end_day" name="end_day" class="form-control pickadate-months-year-00-30" placeholder="YYYY-MM-DD" data-msg="Дуусах өдөр талбарыг бөглөнө үү"/>
+                    </div>
+
+                    <div id="startEndTime" style="display: none;">
+                        <div class="mb-1">
+                            <label class="form-label" for="start_time" >Эхлэх цаг</label>
+                            <input type="text" id="start_time" name="start_time" class="form-control time-mask" placeholder="ЦЦ:ММ:СС" data-msg="Эхлэх цаг талбарыг бөглөнө үү" />
+                        </div>
+
+                        <div class="mb-1">
+                            <label class="form-label" for="end_time">Дуусах цаг</label>
+                            <input type="text" id="end_time" name="end_time" class="form-control time-mask" placeholder="ЦЦ:ММ:СС" data-msg="Дуусах цаг талбарыг бөглөнө үү" />
+                        </div>
+                    </div>
+
+                    <div class="mb-1">
+                        <label class="form-label" for="description">Тайлбар</label>
+                        <textarea class="form-control" rows="6" id="description" name="description" data-msg="Тайлбар талбарыг бөглөнө үү" ></textarea>
+                    </div>
+
+                    <p class="ms-1 mb-1" style="font-size: 12px;">Таньд энэ сард нийт <span id="times" class="fw-bold"></span> эрх үлдсэн байна.
+                        <span data-bs-toggle="tooltip" data-bs-placement="top" id="all_times">
+                            <i data-feather="info"></i>
+                        </span>
+                    </p>
+
+                    <button type="submit" id="submitFormBtn" class="btn btn-primary me-1 data-submit">Хадгалах</button>
+                </div>
+                <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Болих</button>
+            </div>
+        </form>
+    </div>
+</div>

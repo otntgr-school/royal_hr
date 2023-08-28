@@ -1,0 +1,703 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+{% block content %}
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-pickadate.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/pickadate/pickadate.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Inconsolata&amp;family=Roboto+Slab&amp;family=Slabo+27px&amp;family=Sofia&amp;family=Ubuntu+Mono&amp;display=swap">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/form-quill-editor.css' %}" />
+
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/forms/spinner/jquery.bootstrap-touchspin.css' %}">
+
+{% endblock css %}
+
+
+<div class="content-body">
+    <div class="row" id="table-hover-row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Тойрох хуудас жагсаалт</h4>
+                </div>
+                <div class="table-responsive">
+                    <div class="card-datatable table-responsive pt-0">
+                        <table class="slup-list-table table text-center">
+                            <thead class="table-light">
+                                <tr class="filter-container"></tr>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th>Байгууллага</th>
+                                    <th>Албан тушаал</th>
+                                    <th>Хүсэлт гаргагч</th>
+                                    <th>Төлөв</th>
+                                    <th>Бүртгэгдсэн огноо</th>
+                                </tr>
+                            </thead>
+                            <tfoot class="table-light">
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th>Байгууллага</th>
+                                    <th>Албан тушаал</th>
+                                    <th>Хүсэлт гаргагч</th>
+                                    <th>Төлөв</th>
+                                    <th>Бүртгэгдсэн огноо</th>
+                                </tr>
+                            </tfoot>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="modal fade" id="slup-list-modal" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-xl modal-dialog-centered modal-edit-user">
+                        <div class="modal-content">
+                            <div class="modal-header bg-transparent">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body pb-15 px-sm-5 pt-50">
+                                {% include 'pages/toiroh-huudas/modal/routing-slip-list.html' %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+
+<script src="{% static 'app-assets/vendors/js/file-uploaders/dropzone.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.buttons.min.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jszip.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/pdfmake.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/vfs_fonts.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.html5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.print.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/cleave.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/addons/cleave-phone.us.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.date.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.time.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/legacy.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+
+<script src="{% static 'app-assets/js/scripts/tables/table-datatables-advanced.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/pickers/form-pickers.js' %}"></script>
+
+<script>
+
+    var clickRow = null
+    let slipInfoTable = null
+    let employee_id = "{{ request.employee.id }}"
+    var checkSlupData = null
+    var is_perm = `{% if 'routing-slip-approve' in request.permissions %}true{% else %}false{% endif %}`
+    var tableBtn = []
+    var ajaxTableUrl = 'self'
+    var tableText = 'Төлөв: Өөрт хамааралтай'
+    var clickId = null
+    const urlSearchParams = new URLSearchParams(window.location.search);
+    const params = Object.fromEntries(urlSearchParams.entries());
+
+    function checkUrlParams()
+    {
+        if(params.state && params.employee)
+        {
+            ajaxTableUrl = params.state
+            tableText = 'Төлөв: Хариулвал зохих'
+            clickId = params.employee
+        }
+        if(params.state && params.routingSlip)
+        {
+            ajaxTableUrl = params.state
+            clickId = params.routingSlip
+        }
+    }
+
+    checkUrlParams()
+
+    cloneFooter(
+        ".slup-list-table",
+        [
+            2, 3, 4, 5
+        ]
+    )
+
+    tableBtn.push(
+        {
+            extend: "",
+            text: "Өөрт хамааралтай",
+            className: "dropdown-item",
+            exportOptions: { columns: [1, 2, 3, 4, 5] },
+            action: function(e, slipTable, node, config) {
+                const dropDownBtn = $('#slipSearchBtn')
+                dropDownBtn.trigger("click")
+                dotoodState = 'self'
+                dropDownBtn.html('Төлөв: Өөрт хамааралтай')
+                slipTable.ajax.url(`/worker/slip/self/`).load()
+                ajaxTableUrl = 'self'
+            },
+        },
+    )
+
+    if (is_perm === 'true')
+    {
+        tableBtn.push(
+        {
+        extend: "",
+        text: "Хариулвал зохих",
+        className: "dropdown-item",
+        exportOptions: { columns: [1, 2, 3, 4, 5] },
+        action: function(e, slipTable, node, config) {
+            const dropDownBtn = $('#slipSearchBtn')
+            dropDownBtn.trigger("click")
+            dotoodState = 'approved'
+            dropDownBtn.html('Төлөв: Хариулвал зохих')
+            slipTable.ajax.url(`/worker/slip/approve/`).load()
+            ajaxTableUrl = 'approved'
+        },
+        },
+        {
+            extend: "",
+            text: "Хариулсан",
+            className: "dropdown-item",
+            exportOptions: { columns: [1, 2, 3, 4, 5] },
+            action: function(e, slipTable, node, config) {
+                const dropDownBtn = $('#slipSearchBtn')
+                dropDownBtn.trigger("click")
+                dotoodState = 'answer'
+                dropDownBtn.html('Төлөв: Хариулсан')
+                slipTable.ajax.url(`/worker/slip/answer/`).load()
+                ajaxTableUrl = 'answer'
+            },
+        },
+        {
+            extend: "",
+            text: "Дууссан",
+            className: "dropdown-item",
+            exportOptions: { columns: [1, 2, 3, 4, 5] },
+            action: function(e, slipTable, node, config) {
+                const dropDownBtn = $('#slipSearchBtn')
+                dropDownBtn.trigger("click")
+                dotoodState = 'end'
+                dropDownBtn.html('Төлөв: Дууссан')
+                slipTable.ajax.url(`/worker/slip/ended/`).load()
+                ajaxTableUrl = 'end'
+            },
+        },
+        )
+    }
+
+    const slipTable = $(".slup-list-table").DataTable({
+        fixedColumns:   {
+            left: 0,
+            right: 1
+        },
+        processing: false,
+        dom: 'lBfrtip',
+        serverSide: true,
+        ajax: { url: `/worker/slip/${ajaxTableUrl}/` }, // JSON file to add data
+        columns: [
+            // columns according to JSON
+            { data: null },
+            { data: null },
+            { data: "employee__org__name" },
+            { data: "employee__org_position__name" },
+            { data: "full_name" },
+            { data: "state" },
+            { data: "created_at" },
+        ],
+        columnDefs: [
+            {
+                // For Responsive
+                className: "control",
+                orderable: false,
+                responsivePriority: 2,
+                targets: 0,
+                render: function (data, type, full, meta) {
+                    return "";
+                },
+            },
+            {
+                targets: 1,
+                title: "#",
+                orderable: false,
+                render: function (data, type, full, meta) {
+                    return (
+                        meta.settings._iDisplayStart + meta.row + 1
+                    );
+                },
+            },
+            {
+				targets: 4,
+				render: function (data, type, full, meta) {
+                    if(ajaxTableUrl === 'self')
+                        return (`<a id="${full.id}" class="text-decoration-underline text-dark" onclick="hadleEmployee(event)">${full.full_name}</a>`);
+                    else
+                        return (`<a id="${full.employee}" class="text-decoration-underline text-dark" onclick="hadleEmployee(event)">${full.full_name}</a>`);
+				},
+			},
+            {
+				targets: 5,
+				render: function (data, type, full, meta) {
+                    let className = null
+                    if(full.state === 'Хүлээгдэж буй')
+                        className = 'badge rounded-pill badge-light-warning me-1'
+                    else if(full.state === 'Зөвшөөрсөн')
+                        className = 'badge rounded-pill badge-light-success me-1'
+                    else
+                    {
+                        className = 'badge rounded-pill badge-light-danger me-1'
+                    }
+                    return (`<span class="${className}">${full.state}</span>`);
+				},
+			},
+        ],
+        order: [[2, "asc"]],
+        lengthMenu: [
+            [10, 25, 50, 100, -1],
+            [10, 25, 50, 100, 'Бүгд'],
+        ],
+        dom:
+            '<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+            '<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+            '<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+            ">t" +
+            '<"d-flex justify-content-between mx-2 row mb-1"' +
+            '<"col-sm-12 col-md-6"i>' +
+            '<"col-sm-12 col-md-6"p>' +
+            ">",
+        oLanguage: {
+            sProcessing: "Ачааллаж байна. ",
+            sSearch: "Хайх: ",
+            sEmptyTable: "Бичлэг байхгүй",
+            sInfoEmpty: "Нийт 0 бичлэг",
+            sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+            sInfoFiltered: " - _MAX_ бичлэгээс",
+            sLengthMenu: "_MENU_ бичлэг",
+            oPaginate: {
+                sFirst: "Эхэнд",
+                sLast: "Төгсгөлд",
+                sNext: "Дараах",
+                sPrevious: "Өмнөх",
+            },
+        },
+        // Buttons with Dropdown
+        buttons: [
+            {
+                extend: "collection",
+                className: "btn btn-outline-secondary dropdown-toggle me-2",
+                text:
+                    feather.icons["external-link"].toSvg({
+                        class: "font-small-4 me-50",
+                    }) + "Export",
+                buttons: [
+                    {
+                        extend: "print",
+                        text:
+                            feather.icons["printer"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Print",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5, 6] },
+                    },
+                    {
+                        extend: "csv",
+                        text:
+                            feather.icons["file-text"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Csv",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5, 6] },
+                    },
+                    {
+                        extend: "excel",
+                        text:
+                            feather.icons["file"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Excel",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5, 6] },
+                    },
+                    {
+                        extend: "pdf",
+                        text:
+                            feather.icons["clipboard"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Pdf",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5, 6] },
+                    },
+                    {
+                        extend: "copy",
+                        text:
+                            feather.icons["copy"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Copy",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5, 6] },
+                    },
+                ],
+                init: function (api, node, config) {
+                    $(node).removeClass("btn-secondary");
+                    $(node).parent().removeClass("btn-group");
+                    setTimeout(function () {
+                        $(node)
+                            .removeClass("btn-group")
+                            .addClass("d-inline-flex mt-50");
+                    }, 50);
+                },
+            },
+            {
+				extend: "collection",
+				className: "btn btn-outline-secondary flaot-start px-1 me-2 dropdown-toggle custom-a-none",
+				text: tableText,
+				config: {
+					left: 0,
+					right: 0
+				},
+                attr: {
+                    "id": "slipSearchBtn",
+                    "style": "margin-top: 7px"
+                },
+				buttons: tableBtn
+			},
+        ],
+        initComplete: () =>
+        {
+            $(document).ready(function() {
+                if(clickId)
+                {
+                    const clickA = document.getElementById(clickId)
+                    if(clickA)
+                        clickA.click()
+                }
+            });
+        }
+    });
+    searchFooter(slipTable)
+
+
+	/** товч дарж модал нээх үед гарчигийг оноох */
+	const hadleEmployee = async(event) =>
+	{
+
+		let clickedTarget = $(event.target)
+		let row = clickedTarget.parent().closest("tr")
+		let full = slipTable.row(row).data()
+
+		let modal = $("#slup-list-modal")
+		let modalTitle = $("#slup-list-modal-title")
+		let modalId = $("#slup-list-modal-id")
+        let titleDate = $("#title_date")
+        let titleOrg = $("#title_org")
+        let titlePosition = $("#title_position")
+        let titlename = $("#title_name")
+        let titleCreatedBy = $("#title_created_by")
+
+		const id = full.id
+
+        titleDate.text(`Олгосон огноо: ${full.created_at}`)
+        titleOrg.text(`Байгууллага: ${full.employee__org__name}`)
+        titlePosition.text(`Албан тушаал: ${full.employee__org_position__name}`)
+        titlename.text(`Овог нэр: ${full.full_name}`)
+        titleCreatedBy.text(`Шалгаж хүлээж авсан: ${full.created_by_name}`)
+        clickRow = id
+
+        if (slipInfoTable)
+        {
+            slipInfoTable.destroy()
+        }
+
+        slipInfoTable = $(".slup-info-table").DataTable({
+            fixedColumns:   {
+                left: 0,
+                right: 1
+            },
+            processing: false,
+            dom: 'lBfrtip',
+            serverSide: true,
+            ajax: { url: `/worker/routing-slip-info/${id}/` }, // JSON file to add data
+            columns: [
+                // columns according to JSON
+                { data: null },
+                { data: null },
+                { data: "org_position" },
+                { data: "full_name" },
+                { data: "state" },
+                { data: null },
+            ],
+            columnDefs: [
+                {
+                    // For Responsive
+                    className: "control",
+                    orderable: false,
+                    responsivePriority: 2,
+                    targets: 0,
+                    render: function (data, type, full, meta) {
+                        return "";
+                    },
+                },
+                {
+                    targets: 4,
+                    render: function (data, type, full, meta) {
+                        let className = null
+
+                        if(full.state === 'Хүлээгдэж буй')
+                            className = 'badge rounded-pill badge-light-warning me-1'
+                        else if(full.state === 'Зөвшөөрсөн')
+                            className = 'badge rounded-pill badge-light-success me-1'
+                        else
+                        {
+                            className = 'badge rounded-pill badge-light-danger me-1'
+                            if(full.description)
+                            {
+                                $(`#slip-description`).text(full.description)
+                                return(`<span class="${className}">${full.state}</span>
+                                    <span class="cursor-pointer" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Тайлбар харах">
+                                        <span data-bs-toggle="modal" data-bs-target="#xSmall">
+                                            ${feather.icons["message-circle"].toSvg({
+                                            class: "text-primary curosr-pointer",
+                                        })}
+                                        </span>
+                                    </span>`);
+                            }
+                        }
+                        return (`<span class="${className}">${full.state}</span>`);
+                    },
+                },
+                {
+                    // Actions
+                    targets: -1,
+                    title: "Үйлдэл",
+                    orderable: false,
+                    render: function (data, type, full, meta) {
+                        let commanderId = full.employee__id
+                        if(commanderId.toString()=== employee_id && full.routing_slip_state==="1")
+                        {
+                            return (
+                            `
+                            <div class="dropdown">
+                                <button type="button" class="btn btn-sm dropdown-toggle hide-arrow py-0 waves-effect waves-float waves-light" data-bs-toggle="dropdown">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-vertical"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+                                </button>
+                                <div class="dropdown-menu dropdown-menu-end">
+                                    <a class="dropdown-item"
+                                        onclick="checkSlup(event, true)"
+                                    >
+                                        <i data-feather='check-circle'></i>
+                                        <span>Зөвшөөрөх</span>
+                                    </a>
+                                    <a class="dropdown-item"
+                                        onclick="checkSlup(event, false)"
+                                    >
+                                        <i data-feather='x-circle'></i>
+                                        <span>Цуцлах</span>
+                                    </a>
+                                </div>
+                            </div>
+                            `
+                        );
+                        }
+                        else
+                        {
+                            return null
+                        }
+                    },
+                },
+                {
+                    targets: 1,
+                    title: "#",
+                    orderable: false,
+                    render: function (data, type, full, meta) {
+                        return (
+                            meta.settings._iDisplayStart + meta.row + 1
+                        );
+                    },
+                },
+            ],
+            order: [[2, "asc"]],
+            lengthMenu: [
+                [10, 25, 50, 100, -1],
+                [10, 25, 50, 100, 'Бүгд'],
+            ],
+            dom:
+                '<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+                '<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" >' +
+                '<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">>>' +
+                ">t" +
+                '<"d-flex justify-content-between mx-2 row mb-1"' +
+                '<"col-sm-12 col-md-6"i>' +
+                '<"col-sm-12 col-md-6"p>' +
+                ">",
+            oLanguage: {
+                sProcessing: "Ачааллаж байна. ",
+                sSearch: "Хайх: ",
+                sEmptyTable: "Бичлэг байхгүй",
+                sInfoEmpty: "Нийт 0 бичлэг",
+                sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+                sInfoFiltered: " - _MAX_ бичлэгээс",
+                sLengthMenu: "_MENU_ бичлэг",
+                oPaginate: {
+                    sFirst: "Эхэнд",
+                    sLast: "Төгсгөлд",
+                    sNext: "Дараах",
+                    sPrevious: "Өмнөх",
+                },
+            },
+            // Buttons with Dropdown
+            buttons: [
+                {
+                    extend: "collection",
+                    className: "btn btn-outline-secondary dropdown-toggle me-2",
+                    text:
+                        feather.icons["external-link"].toSvg({
+                            class: "font-small-4 me-50",
+                        }) + "Export",
+                    buttons: [
+                        {
+                            extend: "print",
+                            text:
+                                feather.icons["printer"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Print",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [1, 2, 3, 4, 5] },
+                        },
+                        {
+                            extend: "csv",
+                            text:
+                                feather.icons["file-text"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Csv",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [1, 2, 3, 4, 5] },
+                        },
+                        {
+                            extend: "excel",
+                            text:
+                                feather.icons["file"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Excel",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [1, 2, 3, 4, 5] },
+                        },
+                        {
+                            extend: "pdf",
+                            text:
+                                feather.icons["clipboard"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Pdf",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [1, 2, 3, 4, 5] },
+                        },
+                        {
+                            extend: "copy",
+                            text:
+                                feather.icons["copy"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Copy",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [1, 2, 3, 4, 5] },
+                        },
+                    ],
+                    init: function (api, node, config) {
+                        $(node).removeClass("btn-secondary");
+                        $(node).parent().removeClass("btn-group");
+                        setTimeout(function () {
+                            $(node)
+                                .removeClass("btn-group")
+                                .addClass("d-inline-flex mt-50");
+                        }, 50);
+                    },
+                },
+            ],
+        });
+
+        modal.modal('show')
+		// setData(full)
+	}
+
+    async function checkSlup(event, is_approved)
+    {
+        const data =
+        {
+            id: clickRow,
+            is_approved: is_approved,
+        }
+
+        if (is_approved)
+        {
+            const { success, error } = await fetchData('/worker/routing-slip/create/', data, 'PUT')
+            if (success)
+            {
+                let resetPaging = false
+                slipTable.ajax.reload(null, resetPaging)
+                slipInfoTable.ajax.reload(null, resetPaging)
+            }
+        }
+        else
+        {
+            document.getElementById('diclineDescription').value = "";
+            $('#tailbar-oruulah').modal('show')
+            checkSlupData = data
+        }
+    }
+
+    async function submitDicline(event)
+    {
+        event.preventDefault()
+
+        const formData = new FormData(event.target)
+        var data = Object.fromEntries(formData)
+
+        data = {...data, ...checkSlupData}
+
+        const { success, error } = await fetchData('/worker/routing-slip/create/', data, 'PUT')
+        if (success)
+        {
+            let resetPaging = false
+            slipTable.ajax.reload(null, resetPaging)
+            slipInfoTable.ajax.reload(null, resetPaging)
+            $('#tailbar-oruulah').modal('hide')
+            $("#slup-list-modal").modal('hide')
+        }
+    }
+
+</script>
+
+{% endblock js %}

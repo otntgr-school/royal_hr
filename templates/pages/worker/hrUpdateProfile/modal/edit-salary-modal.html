@@ -1,0 +1,103 @@
+
+<div class="modal fade" id="userSalaryModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-edit-user">
+        <div class="modal-content">
+            <div class="modal-header bg-transparent">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pb-5 px-sm-5 pt-50">
+                <div class="row">
+                    <h1 class="text-center mb-1">Цалингийн мэдээлэл засах</h1>
+                    <hr>
+                    <div class="col-12 mb-2">
+                        <div class="card-border">
+
+                            <form id="userSalaryForm" class="row gy-1" onsubmit="EditSalaryFormSubmit(event)">
+                                <div class="col-12">
+                                    <div class="mb-2 row">
+                                        <div class="col-sm-4">
+                                            <label class="col-form-label" for="worker_type">Ажилтны гэрээний төрөл</label>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            {% for id, name in worker_type %}
+                                                <div class="form-check">
+                                                    <input
+                                                        class="form-check-input"
+                                                        type="radio"
+                                                        name="worker_type"
+                                                        value="{{id}}"
+                                                        id="worker_type-{{id}}"
+                                                        onclick="chooseWorkerType(`{{id}}`, `{{name}}`)"
+                                                    >
+                                                    <label class="form-check-label" for="worker_type-{{id}}">
+                                                        {{name}}
+                                                    </label>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-12" style="display: none;" id="basic_salary_information_display" >
+                                    <div class="mb-2 row">
+                                        <div class="col-sm-3">
+                                            <label class="col-form-label" for="basic_salary_information">Үндсэн цалингийн мэдээлэл</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input type="number" id="basic_salary_information" class="form-control" name="basic_salary_information" placeholder="" value='{{ selected_user_data.employee.basic_salary_information|default:0 }}' >
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12" style="display: none;" id="work_for_hire_display" >
+                                    <div class="mb-2 row">
+                                        <div class="col-sm-12">
+                                            <input
+                                                class="form-check-input"
+                                                type="checkbox"
+                                                id="work_for_hire"
+                                                name="work_for_hire"
+                                                onchange="chooseWorkForHire(this)"
+                                            >
+                                            <label class="col-form-label ms-1" for="work_for_hire">Нэмэлт цалинтай эсэх</label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12" style="display: none;" id="hourly_wage_information_display" >
+                                    <div class="mb-2 row">
+                                        <div class="col-sm-3">
+                                            <label class="col-form-label" for="hourly_wage_information">Нэг цагийн цалингийн мэдээлэл</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input type="number" id="hourly_wage_information" class="form-control" name="hourly_wage_information" placeholder="" value='{{ selected_user_data.employee.hourly_wage_information|default:0 }}' >
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12" style="display: none;" id="hire_wage_information_display" >
+                                    <div class="mb-2 row">
+                                        <div class="col-sm-3">
+                                            <label class="col-form-label" for="hire_wage_information">Нэмэлт цалингийн мэдээлэл</label>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <input type="number" id="hire_wage_information" class="form-control" name="hire_wage_information" placeholder="" value='{{ selected_user_data.employee.hire_wage_information|default:0 }}' >
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 text-center mt-2 pt-50">
+                                    <button id='submitbtn' type="submit" class="btn btn-primary me-1">Засах</button>
+                                    <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">
+                                        Болих
+                                    </button>
+                                </div>
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

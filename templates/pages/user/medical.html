@@ -1,0 +1,928 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block vendorcss %}
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/forms/select/select2.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/pickadate/pickadate.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/jkanban/jkanban.min.css' %}">
+{% endblock vendorcss %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/form-validation.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-pickadate.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/pages/app-kanban.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/schedule.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'assets/css/loader.css' %}" />
+
+{% endblock css %}
+
+{% block content %}
+
+
+<div class="content-body">
+    <section class="app-user-view-connections">
+        <div class="row">
+
+            {% include './modal-body/main-medical.html' %}
+            {% include './modal-body/main-medical-history.html' %}
+
+            {% if hunii_noots %}
+            <div class="col-12" style="display: inline-flex;">
+                <h6 class="card-border-version2">{{ full_name }}</h6>
+            </div>
+            {% endif %}
+
+            <div class="col-xl-6 col-lg-6">
+
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Бие бялдарын ерөнхий үзүүлэлт</h4>
+                        <div>
+                            <a class="btn btn-warning btn-sm " data-bs-toggle="modal" data-bs-target="#mainMedicalHistoryModal">
+                                <i data-feather="archive"></i>
+                                Түүх
+                            </a>
+                            {% if not hunii_noots %}
+                            <button class="btn btn-primary btn-sm edit-address" type="button" data-bs-toggle="modal" data-bs-target="#mainMedical">
+                                <i data-feather="edit"></i>
+                                Шинэчлэх
+                            </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xl-12 col-12">
+                                <dl class="row mb-0">
+                                    <dt class="col-sm-5 fw-bolder mb-1">Огноо:</dt>
+                                    <dd class="col-sm-7 mb-1" id="a_date_display">{{ main_datas.a_date|date:"Y-m-d"|default:'Хоосон' }}</dd>
+                                    <hr />
+
+                                    <dt class="col-sm-5 fw-bolder mb-1">Жин:</dt>
+                                    <dd class="col-sm-7 mb-1" id="weight_display">{{ main_datas.weight|default:'Хоосон' }}</dd>
+                                    <hr />
+
+                                    <dt class="col-sm-5 fw-bolder mb-1">Өндөр:</dt>
+                                    <dd class="col-sm-7 mb-1" id="height_display">{{ main_datas.height|default:'Хоосон' }}</dd>
+                                    <hr />
+
+                                    <dt class="col-sm-5 fw-bolder mb-1">Жингийн индекс:</dt>
+                                    <dd class="col-sm-7 mb-1" id="weight_index_display">{{ main_datas.weight_index|default:'Хоосон' }}</dd>
+                                    <hr />
+
+                                    <dt class="col-sm-5 fw-bolder mb-1">Цусны даралт/Зүүн/:</dt>
+                                    <dd class="col-sm-7 mb-1" id="blood_pressure_left_display">{{ main_datas.blood_pressure_left|default:'Хоосон' }}</dd>
+                                    <hr />
+
+                                    <dt class="col-sm-5 fw-bolder mb-1">Цусны даралт/Баруун/:</dt>
+                                    <dd class="col-sm-7 mb-1" id="blood_pressure_right_display">{{ main_datas.blood_pressure_right|default:'Хоосон' }}</dd>
+                                    <hr />
+
+                                    <dt class="col-sm-5 fw-bolder mb-1">Судасны цохилт:</dt>
+                                    <dd class="col-sm-7 mb-1" id="pulse_display">{{ main_datas.pulse|default:'Хоосон' }}</dd>
+                                    <hr />
+
+                                    <dt class="col-sm-5 fw-bolder mb-1">Хараа/Зүүн/:</dt>
+                                    <dd class="col-sm-7 mb-1" id="eye_left_display">{{ main_datas.eye_left|default:'Хоосон' }}</dd>
+                                    <hr />
+
+                                    <dt class="col-sm-5 fw-bolder mb-1">Хараа/Баруун/:</dt>
+                                    <dd class="col-sm-7 mb-1" id="eye_right_display">{{ main_datas.eye_right|default:'Хоосон' }}</dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% include './modal-body/additive-medical.html' %}
+            {% include './modal-body/additive-medical-history.html' %}
+            <div class="col-xl-6 col-lg-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Бие бялдарын нэмэлт үзүүлэлт</h4>
+                        <div>
+                            <a class="btn btn-warning btn-sm " data-bs-toggle="modal" data-bs-target="#additiveMedicalHistoryModal">
+                                <i data-feather="archive"></i>
+                                Түүх
+                            </a>
+                            {% if not hunii_noots %}
+                            <button class="btn btn-primary btn-sm edit-address" type="button" data-bs-toggle="modal" data-bs-target="#additiveMedical">
+                                <i data-feather="edit"></i>
+                                Шинэчлэх
+                            </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xl-12 col-12">
+                                <dl class="row mb-0">
+                                    <dt class="col-sm-5 fw-bolder mb-1">Огноо:</dt>
+                                    <dd class="col-sm-7 mb-1" id="b_date_display">{{ additive_datas.b_date|date:"Y-m-d"|default:'Хоосон' }}</dd>
+                                    <hr />
+
+                                    <dt class="col-sm-5 fw-bolder mb-1">Хурд:</dt>
+                                    <dd class="col-sm-7 mb-1" id="speed_display">{{ additive_datas.speed|default:'Хоосон' }}</dd>
+                                    <hr />
+
+                                    <dt class="col-sm-5 fw-bolder mb-1">Хүч:</dt>
+                                    <dd class="col-sm-7 mb-1" id="power_display">{{ additive_datas.power|default:'Хоосон' }}</dd>
+                                    <hr />
+
+                                    <dt class="col-sm-5 fw-bolder mb-1">Уян хатан:</dt>
+                                    <dd class="col-sm-7 mb-1" id="flexible_display">{{ additive_datas.flexible|default:'Хоосон' }}</dd>
+                                    <hr />
+
+                                    <dt class="col-sm-5 fw-bolder mb-1">Тэсвэр:</dt>
+                                    <dd class="col-sm-7 mb-1" id="endurance_display">{{ additive_datas.endurance|default:'Хоосон' }}</dd>
+                                    <hr />
+
+                                    <dt class="col-sm-5 fw-bolder mb-1">Тэвчээр:</dt>
+                                    <dd class="col-sm-7 mb-1" id="patience_display">{{ additive_datas.patience|default:'Хоосон' }}</dd>
+                                    <hr />
+
+                                    <dt class="col-sm-5 fw-bolder mb-1">Нийт:</dt>
+                                    <dd class="col-sm-7 mb-1" id="total_display">{{ additive_datas.total|default:'Хоосон' }}</dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% include './modal-body/inspection.html' %}
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Эрүүл мэндийн үзлэгийн хуудас</h4>
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xl-12 col-12">
+                                <dl class="row mb-0">
+                                    <a class="href-word-hover" onclick="inspection('internalinspection', 1, `{{ inspectionValues.1.inspectionText|default:'' }}`)" style="display: contents;">
+                                        <dt class="col-sm-3 fw-bolder mb-1 ps-1 text-decoration-underline">Дотор:</dt>
+                                        <dd class="col-sm-9 mb-1" id="internalinspection_display">{{ inspectionValues.1.inspectionText|default:'Хоосон' }}</dd>
+                                    </a>
+                                    <hr />
+
+                                    <a class="href-word-hover" onclick="inspection('sightAndHearing', 2, `{{ inspectionValues.2.inspectionText|default:'' }}` )" style="display: contents;">
+                                        <dt class="col-sm-3 fw-bolder mb-1 ps-1 text-decoration-underline">Хараа сонсгол:</dt>
+                                        <dd class="col-sm-9 mb-1" id="sightAndHearing_display">{{ inspectionValues.2.inspectionText|default:'Хоосон' }}</dd>
+                                    </a>
+                                    <hr />
+
+                                    <a class="href-word-hover" onclick="inspection('infectiousTuberculosis', 3, `{{ inspectionValues.3.inspectionText|default:'' }}`)" style="display: contents;">
+                                        <dt class="col-sm-3 fw-bolder mb-1 ps-1 text-decoration-underline">Халдварт сүрьеэ:</dt>
+                                        <dd class="col-sm-9 mb-1" id="infectiousTuberculosis_display">{{ inspectionValues.3.inspectionText|default:'Хоосон' }}</dd>
+                                    </a>
+                                    <hr />
+
+                                    <a class="href-word-hover" onclick="inspection('genitalWarts', 4, `{{ inspectionValues.4.inspectionText|default:'' }}`)" style="display: contents;">
+                                        <dt class="col-sm-3 fw-bolder mb-1 ps-1 text-decoration-underline">Арьс, БЗХ:</dt>
+                                        <dd class="col-sm-9 mb-1" id="genitalWarts_display">{{ inspectionValues.4.inspectionText|default:'Хоосон' }}</dd>
+                                    </a>
+                                    <hr />
+                                    {% if 'эмэгтэй' == request.user.info.get_gender_display %}
+                                    <a class="href-word-hover" onclick="inspection('woman', 5, `{{ inspectionValues.5.inspectionText|default:'' }}`)" style="display: contents;">
+                                        <dt class="col-sm-3 fw-bolder mb-1 ps-1 text-decoration-underline">Эмэгтэйчүүд:</dt>
+                                        <dd class="col-sm-9 mb-1" id="woman_display">{{ inspectionValues.5.inspectionText|default:'Хоосон' }}</dd>
+                                    </a>
+                                    <hr />
+                                    {% endif %}
+
+                                    <a class="href-word-hover" onclick="inspection('nerves', 6, `{{ inspectionValues.6.inspectionText|default:'' }}`)" style="display: contents;">
+                                     <dt class="col-sm-3 fw-bolder mb-1 ps-1 text-decoration-underline">Мэдрэл:</dt>
+                                        <dd class="col-sm-9 mb-1" id="nerves_display">{{ inspectionValues.6.inspectionText|default:'Хоосон' }}</dd>
+                                    </a>
+                                    <hr />
+
+                                    <a class="href-word-hover" onclick="inspection('tooth', 7, `{{ inspectionValues.7.inspectionText|default:'' }}`)" style="display: contents;">
+                                        <dt class="col-sm-3 fw-bolder mb-1 ps-1 text-decoration-underline">Шүд:</dt>
+                                        <dd class="col-sm-9 mb-1" id="tooth_display">{{ inspectionValues.7.inspectionText|default:'Хоосон' }}</dd>
+                                    </a>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+
+{% endblock content %}
+
+{% block js %}
+
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.buttons.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jszip.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/pdfmake.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/vfs_fonts.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.html5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.print.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/tables/table-datatables-advanced.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.date.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.time.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/legacy.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/pickers/form-pickers.js' %}"></script>
+
+<script src="{% static 'app-assets/js/scripts/pages/app-user-list.js' %}"></script>
+
+<script>
+
+    /** Validation */
+    let jqFormInspection = $('#inspectionForm')
+
+    /** Шалгах утгууд */
+    if (jqFormInspection.length)
+    {
+        $(document).ready(function(){
+
+            /** enter болон space авзан үед алдаа заана */
+            jQuery.validator.addMethod("noSpace", function(value, element)
+            {
+                return value.trim().length !== 0;
+            });
+
+            inspectionValidate = jqFormInspection.validate(
+            {
+                rules: {
+                    'internalinspection': {
+                        required: true,
+                        noSpace: true,
+                    },
+                    'sightAndHearing': {
+                        required: true,
+                        noSpace: true,
+                    },
+                    'infectiousTuberculosis': {
+                        required: true,
+                        noSpace: true,
+                    },
+                    'genitalWarts': {
+                        required: true,
+                        noSpace: true,
+                    },
+                    'woman': {
+                        required: true,
+                        noSpace: true,
+                    },
+                    'nerves': {
+                        required: true,
+                        noSpace: true,
+                    },
+                    'tooth': {
+                        required: true,
+                        noSpace: true,
+                    },
+                }
+            })
+        })
+    }
+
+    /** DATATABLE */
+    var inspectionDataTable
+    cloneFooter('.inspection-medical-history-table', [ 1 ])
+
+    cloneFooter('.main-medical-history-table', [ 1 ])
+    const dataMainTable = $(".main-medical-history-table")
+    .on('preXhr.dt', function ()
+    {
+        addLoader($('#main-medical-history-table-loader'))
+    })
+    .on( 'draw.dt', function () {
+        rmLoader($('#main-medical-history-table-loader'))
+    })
+    .DataTable({
+        processing: false,
+        dom: 'lBfrtip',
+        serverSide: true,
+        ajax: { url: `{% url 'medical-main-json' %}?userid={{pkStatic}}` },
+        columns: [
+            { data: "id" },
+            { data: "a_date" },
+            { data: "weight" },
+            { data: "height" },
+            { data: "weight_index" },
+            { data: "blood_pressure_left" },
+            { data: "blood_pressure_right" },
+            { data: "pulse" },
+            { data: "eye_left" },
+            { data: "eye_right" },
+        ],
+        bFilter: true,
+        columnDefs: [
+            {
+                targets: 0,
+                title: "#",
+                orderable: false,
+                render: function (data, type, full, meta) {
+                    return (
+                        meta.settings._iDisplayStart + meta.row + 1
+                    );
+                },
+            },
+            { orderable: false, targets: [0, 2, 3, 4, 5, 6, 7, 8, 9] }
+        ],
+        order: [[1, "desc"]],
+        lengthMenu: [
+            [10, 25, 50, 100, -1],
+            [10, 25, 50, 100, 'Бүгд'],
+        ],
+        dom:
+            '<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+            '<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+            '<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+            ">t" +
+            '<"d-flex justify-content-between mx-2 row mb-1"' +
+            '<"col-sm-12 col-md-6"i>' +
+            '<"col-sm-12 col-md-6"p>' +
+            ">",
+        oLanguage: {
+            sProcessing: "Ачааллаж байна. ",
+            sSearch: "Хайх: ",
+            sEmptyTable: "Бичлэг байхгүй",
+            sInfoEmpty: "Нийт 0 бичлэг",
+            sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+            sInfoFiltered: " - _MAX_ бичлэгээс",
+            sLengthMenu: "_MENU_ бичлэг",
+            oPaginate: {
+                sFirst: "Эхэнд",
+                sLast: "Төгсгөлд",
+                sNext: "Дараах",
+                sPrevious: "Өмнөх",
+            },
+        },
+        // Buttons with Dropdown
+        buttons: [
+            {
+                extend: "collection",
+                className: "btn btn-outline-secondary dropdown-toggle me-2",
+                text:
+                    feather.icons["external-link"].toSvg({
+                        class: "font-small-4 me-50",
+                    }) + "Export",
+                buttons: [
+                    {
+                        extend: "print",
+                        text:
+                            feather.icons["printer"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Print",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] },
+                    },
+                    {
+                        extend: "csv",
+                        text:
+                            feather.icons["file-text"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Csv",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] },
+                    },
+                    {
+                        extend: "excel",
+                        text:
+                            feather.icons["file"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Excel",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] },
+                    },
+                    {
+                        extend: "pdf",
+                        text:
+                            feather.icons["clipboard"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Pdf",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] },
+                    },
+                    {
+                        extend: "copy",
+                        text:
+                            feather.icons["copy"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Copy",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9] },
+                    },
+                ],
+                init: function (api, node, config) {
+                    $(node).removeClass("btn-secondary");
+                    $(node).parent().removeClass("btn-group");
+                    setTimeout(function () {
+                        $(node)
+                            .closest(".dt-buttons")
+                            .removeClass("btn-group")
+                            .addClass("d-inline-flex mt-50");
+                    }, 50);
+                },
+            },
+        ],
+    });
+    searchFooter(dataMainTable)
+
+    cloneFooter('.additive-medical-history-table', [ 1 ])
+    const dataAdditiveTable = $(".additive-medical-history-table")
+    .on('preXhr.dt', function ()
+    {
+        addLoader($('#additive-medical-history-table-loader'))
+    })
+    .on( 'draw.dt', function () {
+        rmLoader($('#additive-medical-history-table-loader'))
+    })
+    .DataTable({
+        processing: false,
+        dom: 'lBfrtip',
+        serverSide: true,
+        ajax: { url: `{% url 'medical-additive-json' %}?userid={{pkStatic}}` },
+        columns: [
+            { data: "id" },
+            { data: "b_date" },
+            { data: "speed" },
+            { data: "power" },
+            { data: "flexible" },
+            { data: "endurance" },
+            { data: "patience" },
+            { data: "total" },
+        ],
+        bFilter: true,
+        columnDefs: [
+            {
+                targets: 0,
+                title: "#",
+                orderable: false,
+                render: function (data, type, full, meta) {
+                    return (
+                        meta.settings._iDisplayStart + meta.row + 1
+                    );
+                },
+            },
+            { orderable: false, targets: [0, 2, 3, 4, 5, 6, 7] }
+        ],
+        order: [[1, "desc"]],
+        lengthMenu: [
+            [10, 25, 50, 100, -1],
+            [10, 25, 50, 100, 'Бүгд'],
+        ],
+        dom:
+            '<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+            '<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+            '<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+            ">t" +
+            '<"d-flex justify-content-between mx-2 row mb-1"' +
+            '<"col-sm-12 col-md-6"i>' +
+            '<"col-sm-12 col-md-6"p>' +
+            ">",
+        oLanguage: {
+            sProcessing: "Ачааллаж байна. ",
+            sSearch: "Хайх: ",
+            sEmptyTable: "Бичлэг байхгүй",
+            sInfoEmpty: "Нийт 0 бичлэг",
+            sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+            sInfoFiltered: " - _MAX_ бичлэгээс",
+            sLengthMenu: "_MENU_ бичлэг",
+            oPaginate: {
+                sFirst: "Эхэнд",
+                sLast: "Төгсгөлд",
+                sNext: "Дараах",
+                sPrevious: "Өмнөх",
+            },
+        },
+        // Buttons with Dropdown
+        buttons: [
+            {
+                extend: "collection",
+                className: "btn btn-outline-secondary dropdown-toggle me-2",
+                text:
+                    feather.icons["external-link"].toSvg({
+                        class: "font-small-4 me-50",
+                    }) + "Export",
+                buttons: [
+                    {
+                        extend: "print",
+                        text:
+                            feather.icons["printer"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Print",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7] },
+                    },
+                    {
+                        extend: "csv",
+                        text:
+                            feather.icons["file-text"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Csv",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7] },
+                    },
+                    {
+                        extend: "excel",
+                        text:
+                            feather.icons["file"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Excel",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7] },
+                    },
+                    {
+                        extend: "pdf",
+                        text:
+                            feather.icons["clipboard"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Pdf",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7] },
+                    },
+                    {
+                        extend: "copy",
+                        text:
+                            feather.icons["copy"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Copy",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7] },
+                    },
+                ],
+                init: function (api, node, config) {
+                    $(node).removeClass("btn-secondary");
+                    $(node).parent().removeClass("btn-group");
+                    setTimeout(function () {
+                        $(node)
+                            .closest(".dt-buttons")
+                            .removeClass("btn-group")
+                            .addClass("d-inline-flex mt-50");
+                    }, 50);
+                },
+            },
+        ],
+    });
+    searchFooter(dataAdditiveTable)
+
+</script>
+
+<script>
+
+    let modal = $("#inspection")
+    let mainModal = $("#mainMedical")
+    let additionModal = $("#additiveMedical")
+
+    /** Form домоос барих */
+	var jqFormVacation = $('#additionMedicalForm')
+    if (jqFormVacation.length) {
+
+        validate = jqFormVacation.validate({
+            rules: {
+                'b_date': {
+                    required: true,
+                }
+            }
+        });
+    }
+
+    /** Form домоос барих */
+	var jqFormMainVacation = $('#mainMedicalForm')
+    if (jqFormMainVacation.length) {
+
+        mainValidate = jqFormMainVacation.validate({
+            rules: {
+                'a_date': {
+                    required: true,
+                }
+            }
+        });
+    }
+
+    /** Бүх утгыг field-үүдэд оноох */
+    function getAllDatas(datas)
+    {
+        for (let data in datas)
+        {
+            /** input хоослох */
+            inputElement = document.getElementById(data)
+            if (inputElement)
+            {
+                inputElement.value = ''
+            }
+
+            searchValue = data + '_display'
+            element = document.getElementById(searchValue)
+
+            /** field олдохгүй бол алгасаж байвал оноож өгнө */
+            if (element)
+            {
+                element.innerHTML = datas[data] ? datas[data] : 'Хоосон'
+            }
+        }
+    }
+    let mainFormInputs = document.querySelectorAll('#mainMedicalForm input')
+
+    /** Бие бялдарын ерөнхий үзүүлэлт FORM */
+    async function mainMedicalSubmit(event)
+    {
+
+        // validation давж чадахгүй бол буцаагаад алдаа заана
+        if(!mainValidate.checkForm())
+        {
+            return
+        }
+
+        event.preventDefault();
+
+        const formData = new FormData(event.target)
+		const data = Object.fromEntries(formData);
+
+        /** Хүсэлтээ шидэж байна */
+		useLoader(fetchData(`/account/medical-main-ajax/`, data, 'POST'), $('#mainMedicalForm')).catch(err => err)
+			.then(
+				({ success, data, errors }) =>
+				{
+					if (data)
+					{
+						getAllDatas(data)
+                        dataMainTable.ajax.reload(null, true)
+                        mainModal.modal('hide')
+					}
+				}
+			)
+    }
+
+    /** Бие бялдарын нэмэлт үзүүлэлт FORM */
+    async function additionMedicalSubmit(event)
+    {
+        // validation давж чадахгүй бол буцаагаад алдаа заана
+        if(!validate.checkForm())
+        {
+            return
+        }
+
+        event.preventDefault();
+
+        const formData = new FormData(event.target)
+		const data = Object.fromEntries(formData);
+
+        /** Хүсэлтээ шидэж байна */
+		useLoader(fetchData(`/account/medical-additive-ajax/`, data, 'POST'), $('#additionMedicalForm')).catch(err => err)
+			.then(
+				({ success, data, errors }) =>
+				{
+					if (data)
+					{
+						getAllDatas(data)
+                        dataAdditiveTable.ajax.reload(null, true)
+                        additionModal.modal('hide')
+					}
+				}
+			)
+    }
+
+    /** Дарсан Эрүүл мэндийн үзлэгийн code-ийг хадгална */
+    var choosedInputId
+
+    /** Эрүүл мэндийн үзлэгийн Товчлуур дээр дарах үе */
+    function inspection(field, code, value)
+    {
+        /** Өмнө нь үүсзэн байвал устгана */
+        if (inspectionDataTable) {
+            inspectionDataTable.destroy()
+        }
+
+        inspectionDataTable = $(".inspection-medical-history-table")
+        .on('preXhr.dt', function ()
+        {
+            addLoader($('#inspection-medical-history-table-loader'))
+        })
+        .on( 'draw.dt', function () {
+            rmLoader($('#inspection-medical-history-table-loader'))
+        })
+        .DataTable({
+            processing: false,
+            dom: 'lBfrtip',
+            serverSide: true,
+            ajax: { url: `{% url 'medical-inpection-json' %}?inspectionType=${code}&userid={{pkStatic}}` },
+            columns: [
+                { data: "id" },
+                { data: "created_at" },
+                { data: "inspectionText" },
+            ],
+            bFilter: true,
+            columnDefs: [
+                {
+                    targets: 0,
+                    title: "#",
+                    orderable: false,
+                    render: function (data, type, full, meta) {
+                        return (
+                            meta.settings._iDisplayStart + meta.row + 1
+                        );
+                    },
+                },
+                { orderable: false, targets: [0, 2] }
+            ],
+            fixedColumns: true,
+            order: [[1, "desc"]],
+            lengthMenu: [
+                [10, 25, 50, 100, -1],
+                [10, 25, 50, 100, 'Бүгд'],
+            ],
+            dom:
+                '<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+                '<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+                '<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+                ">t" +
+                '<"d-flex justify-content-between mx-2 row mb-1"' +
+                '<"col-sm-12 col-md-6"i>' +
+                '<"col-sm-12 col-md-6"p>' +
+                ">",
+            oLanguage: {
+                sProcessing: "Ачааллаж байна. ",
+                sSearch: "Хайх: ",
+                sEmptyTable: "Бичлэг байхгүй",
+                sInfoEmpty: "Нийт 0 бичлэг",
+                sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+                sInfoFiltered: " - _MAX_ бичлэгээс",
+                sLengthMenu: "_MENU_ бичлэг",
+                oPaginate: {
+                    sFirst: "Эхэнд",
+                    sLast: "Төгсгөлд",
+                    sNext: "Дараах",
+                    sPrevious: "Өмнөх",
+                },
+            },
+            // Buttons with Dropdown
+            buttons: [
+                {
+                    extend: "collection",
+                    className: "btn btn-outline-secondary dropdown-toggle me-2",
+                    text:
+                        feather.icons["external-link"].toSvg({
+                            class: "font-small-4 me-50",
+                        }) + "Export",
+                    buttons: [
+                        {
+                            extend: "print",
+                            text:
+                                feather.icons["printer"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Print",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [0, 1, 2] },
+                        },
+                        {
+                            extend: "csv",
+                            text:
+                                feather.icons["file-text"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Csv",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [0, 1, 2] },
+                        },
+                        {
+                            extend: "excel",
+                            text:
+                                feather.icons["file"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Excel",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [0, 1, 2] },
+                        },
+                        {
+                            extend: "pdf",
+                            text:
+                                feather.icons["clipboard"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Pdf",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [0, 1, 2] },
+                        },
+                        {
+                            extend: "copy",
+                            text:
+                                feather.icons["copy"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Copy",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [0, 1, 2] },
+                        },
+                    ],
+                    init: function (api, node, config) {
+                        $(node).removeClass("btn-secondary");
+                        $(node).parent().removeClass("btn-group");
+                        setTimeout(function () {
+                            $(node)
+                                .closest(".dt-buttons")
+                                .removeClass("btn-group")
+                                .addClass("d-inline-flex mt-50");
+                        }, 50);
+                    },
+                },
+            ],
+        });
+        searchFooter(inspectionDataTable)
+
+        /** сонгогдсоноор солино */
+        choosedInputId = field
+
+        /** Хэрвээ хүний нөөц бол заавал бүх утга нэмэх textarie харуулахгүй */
+        {% if not hunii_noots %}
+
+        /** Эрүүл мэндийн үзлэгийн хуудас бүх field-үүдийг нуух */
+        let formInputs = document.querySelectorAll('#inspectionForm .insDisplay')
+        for (let formInput of formInputs)
+        {
+            formInput.style.display = 'none'
+        }
+
+        /** Дарсан field-ийг харуулах */
+        let fieldValue = document.getElementById(field)
+        document.getElementById(`${field}_style`).style.display = 'block'
+
+        {% endif %}
+
+        /** Модал нээх */
+        modal.modal('show')
+    }
+
+    /** Эрүүл мэндийн үзлэгийн хуудас FORM */
+    async function inspectionSubmit(event)
+    {
+        event.preventDefault();
+
+        // validation давж чадахгүй бол буцаагаад алдаа заана
+        if(!inspectionValidate.checkForm())
+        {
+            return
+        }
+
+        const formData = new FormData(event.target)
+		const data = Object.fromEntries(formData);
+
+        let inspectionCode = {
+            'internalinspection': 1,
+            'sightAndHearing': 2,
+            'infectiousTuberculosis': 3,
+            'genitalWarts': 4,
+            'woman': 5,
+            'nerves': 6,
+            'tooth': 7,
+        }
+
+        let lastValue = {
+            'code': inspectionCode[choosedInputId],
+            'text': data[choosedInputId]
+        }
+
+        /** Хүсэлтээ шидэж байна */
+		useLoader(fetchData(`/account/medical-inpection-ajax/`, lastValue, 'POST'), $('#inspectionForm')).catch(err => err)
+			.then(
+				({ success, data, errors }) =>
+				{
+					if (data)
+					{
+                        document.getElementById(choosedInputId).innerHTML = data.inspectionText
+                        document.getElementById(`${choosedInputId}_display`).innerHTML = data.inspectionText
+                        modal.modal('hide')
+					}
+				}
+			)
+    }
+
+    /** Modal дарах үед FOCUS-лах */
+    $(document).ready(function()
+    {
+        $("#inspection").on('shown.bs.modal', function()
+        {
+            inspectionDataTable.columns.adjust();
+            $(this).find(`textarea[id="${choosedInputId}"]`).focus();
+        });
+    });
+</script>
+
+{% endblock js %}

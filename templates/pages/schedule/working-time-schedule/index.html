@@ -1,0 +1,1703 @@
+
+<!--
+    URL: /schedule/work-time-type/
+    Нэр: Цагийн хуваарийн төрөл хуудас
+    Төрөл: Хуудас
+-->
+
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+{% block content %}
+
+{% load rest_framework %}
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/schedule.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-pickadate.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/pickadate/pickadate.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+<link rel="stylesheet" type="text/css" href="{% static 'assets/css/loader.css' %}" />
+
+{% endblock css %}
+
+<div class="content-body">
+    <div class="row">
+        <div class="col-12">
+            <div class="card" id="wtsDatatableLoader">
+                <div class="card-header">
+                    <h4 class="card-title">Цагийн хуваарийн төрөл</h4>
+                </div>
+                <div class="table-responsive">
+                    <div class="card-datatable table-responsive pt-0">
+                        <table class="time-list-table table text-center">
+                            <thead class="table-light">
+                                <tr class="filter-container"></tr>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Нэр</th>
+                                    <th>Амралтын өдрүүдэд ажиллах эсэх</th>
+                                    <th>Баярын өдрүүдэд ажиллах эсэх</th>
+                                    <th>Торгууль</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tfoot class="table-light">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Нэр</th>
+                                    <th>Амралтын өдрүүдэд ажиллах эсэх</th>
+                                    <th>Баярын өдрүүдэд ажиллах эсэх</th>
+                                    <th>Торгууль</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Form -->
+                {% include "pages/schedule/working-time-schedule/form.html" %}
+
+                <!-- Modals -->
+                {% include "pages/schedule/working-time-schedule/modal/delete.html" with id="userReward" deletebtn="deletebtn" %}
+                {% include "pages/schedule/working-time-schedule/modal/schedule-detail.html" with id="scheduleDetail" %}
+                {% include "pages/schedule/working-time-schedule/modal/add-employee.html" with id="add-employees-to-wts" %}
+                {% include "pages/schedule/working-time-schedule/modal/add-employee-by-xy.html" with id="add-employees-xy-wts" %}
+
+                {% include "pages/main/warning-modal.html" %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.buttons.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jszip.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/pdfmake.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/vfs_fonts.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.html5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.print.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/cleave.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/addons/cleave-phone.us.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.date.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.time.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/legacy.js' %}"></script>
+
+<script src="{% static 'app-assets/js/scripts/pages/app-user-list.js' %}"></script>
+
+<script src="{% static 'app-assets/js/scripts/tables/table-datatables-advanced.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/pickers/form-pickers.js' %}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.0/select2.min.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script> -->
+
+<script>
+    /** Хувьсагчууд */
+    let wtsEmplooyeChoosedId = 0        // Аль цагийн хуваарийн төрөлийн ID-г хадгалах
+
+    const sevenDaysTypeCode = '1'       // 7 хоногийн өдрүүдээр code
+    const xyTimeTypeCode = '2'          // Ажлын X цаг, амралтын Y цагийн code
+    const independentDaysTypeCode = '3'          // Ажлын X цаг, амралтын Y цагийн code
+
+    let hideClassName = ''              // Нэмэх гэсэн товчлуур нуух
+
+    let dataTableEmployee               // Ажилтан хасах datatable
+    let dataTableAddEmployee            // Ажилтан нэмэх datatable
+
+    let actionEmployeeValue             // Aжлын эхний өдөр дээр юу харагдахыг хадгална
+
+    let addEmployeeId                   // Цаг оруулах гэж байгаа employee id
+</script>
+
+<script>
+
+    /** Tooltip ажиллуулж байна */
+    $(document).ready(function() {
+        $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+    });
+
+    const SUB_ORGS = [{% for sub_org in sub_org_list %} {"id": "{{sub_org.id}}", "name": "{{sub_org.name}}"}, {%endfor%}]
+
+    const contactLoader = document.getElementById('loaderwts')
+
+    /** Засах товчлуурыг дарахад гарж ирэх модалд утгуудыг оноож өгч байна */
+    async function wtsUpdate(pk)
+    {
+        /** SideModal нээнэ */
+        document.querySelector(".click_btn").click()
+
+        const contactLoaderUpdate = document.getElementById('loaderwtt-update')
+
+        contactLoaderUpdate.classList.add('loaderWew')
+
+        /** Хэрвээ өөр modal дээр validation ажилж алдаа заагдсан байвал цэвэрлэнэ */
+		var jqForm = $('#workingTimeSchedule')
+		jqForm.validate().resetForm();
+		$('#workingTimeSchedule input').removeClass('error');
+
+        let loaderText = document.getElementById('update_loader_display').style
+        let modalDisplay = document.getElementById('update_main_display').style
+
+		/** loader харуулж модалийг нууна */
+		loaderText.display = 'block'
+		modalDisplay.display = 'none'
+
+        const { data } = await fetchData(`/schedule/working-time-schedule-ajax/${pk}/`, null, 'GET')
+
+        if (data)
+        {
+            document.getElementById("name").value = data.name;
+            document.getElementById("type").value = data.type.code;
+
+            /** Ажиллах цагийн хуваарийн төрөл сонгогдсон байвал тэрийг бас сонгогдсон болгоно */
+            typeClick()
+
+            // document.getElementById("vacation").checked = data.vacation;
+            // document.getElementById("holiday").checked = data.holiday;
+            document.getElementById("description").value = data.description? data.description : '';
+            // document.getElementById("start_time_penalty").value = data.start_time_penalty;
+            // document.getElementById("end_time_penalty").value = data.end_time_penalty;
+            document.getElementById("org").value = data.org.id;
+            document.getElementById("id").value = pk
+
+            if (data.type.code == 2)
+            {
+                document.getElementById("ajillah_time").value = data.ajillah_time ? data.ajillah_time : 0;
+                document.getElementById("amrah_time").value = data.amrah_time ? data.amrah_time : 0;
+                // document.getElementById("registration_start_time").value = data.registration_start_time ? data.registration_start_time : '';
+                // document.getElementById("registration_end_time").value = data.registration_end_time ? data.registration_end_time : 0;
+                // document.getElementById("lunch_time").value = data.lunch_time ? data.lunch_time : 0;
+                document.getElementById("hotorch_boloh_limit").value = data.hotorch_boloh_limit ? data.hotorch_boloh_limit : '';
+            } else if (data.type.code == 1)
+            {
+                document.getElementById("mon_work").checked = data.mon_work;
+                document.getElementById("tue_work").checked = data.tue_work;
+                document.getElementById("wed_work").checked = data.wed_work;
+                document.getElementById("thu_work").checked = data.thu_work;
+                document.getElementById("fri_work").checked = data.fri_work;
+                document.getElementById("sat_work").checked = data.sat_work;
+                document.getElementById("sun_work").checked = data.sun_work;
+
+                document.getElementById("mon_time_schedule").value = data.mon_time_schedule?data.mon_time_schedule.id:'';
+                document.querySelector('#s2id_mon_time_schedule .select2-chosen').textContent = data.mon_time_schedule?data.mon_time_schedule.name:'-- Сонгох --';
+                document.getElementById("tue_time_schedule").value = data.tue_time_schedule?data.tue_time_schedule.id:'';
+                document.querySelector('#s2id_tue_time_schedule .select2-chosen').textContent = data.tue_time_schedule?data.tue_time_schedule.name:'-- Сонгох --';
+                document.getElementById("wed_time_schedule").value = data.wed_time_schedule?data.wed_time_schedule.id:'';
+                document.querySelector('#s2id_wed_time_schedule .select2-chosen').textContent = data.wed_time_schedule?data.wed_time_schedule.name:'-- Сонгох --';
+                document.getElementById("thu_time_schedule").value = data.thu_time_schedule?data.thu_time_schedule.id:'';
+                document.querySelector('#s2id_thu_time_schedule .select2-chosen').textContent = data.thu_time_schedule?data.thu_time_schedule.name:'-- Сонгох --';
+                document.getElementById("fri_time_schedule").value = data.fri_time_schedule?data.fri_time_schedule.id:'';
+                document.querySelector('#s2id_fri_time_schedule .select2-chosen').textContent = data.fri_time_schedule?data.fri_time_schedule.name:'-- Сонгох --';
+                document.getElementById("sat_time_schedule").value = data.sat_time_schedule?data.sat_time_schedule.id:'';
+                document.querySelector('#s2id_sat_time_schedule .select2-chosen').textContent = data.sat_time_schedule?data.sat_time_schedule.name:'-- Сонгох --';
+                document.getElementById("sun_time_schedule").value = data.sun_time_schedule?data.sun_time_schedule.id:'';
+                document.querySelector('#s2id_sun_time_schedule .select2-chosen').textContent = data.sun_time_schedule?data.sun_time_schedule.name:'-- Сонгох --';
+            }
+        }
+
+        /** loader ийг арилгаж модалийг харуулна */
+		loaderText.display = 'none'
+		modalDisplay.display = 'block'
+        contactLoaderUpdate.classList.remove('loaderWew')
+    }
+
+    /** Select-ийн option-д datatable гарж ирэх функц */
+    function formatResultMulti(data)
+    {
+        var startTime = $(data.element).data('start_time') ? $(data.element).data('start_time') : '';
+        var endTime = $(data.element).data('end_time') ? $(data.element).data('end_time') : '';
+        // var lunchTime = $(data.element).data('lunch_time') ? $(data.element).data('lunch_time') : '';
+        var classAttr = $(data.element).attr('class');
+        var hasClass = typeof classAttr != 's';
+        classAttr = hasClass ? ' ' + classAttr : '';
+
+        var $result = $(
+            '<div class="row">' +
+                '<div style="font-size: 12px;" class="col-4 ' + classAttr + '">' + data.text + '</div>' +
+                '<div style="font-size: 12px;" class="col-4' + classAttr + '">' + startTime + '</div>' +
+                '<div style="font-size: 12px;" class="col-4' + classAttr + '">' + endTime + '</div>' +
+                // '<div style="font-size: 12px;" class="col-4' + classAttr + '">' + lunchTime + '</div>' +
+            '</div>'
+        );
+        return $result;
+    }
+
+    /** Аль аль select-д datatable-тэй option-г гаргаж ирэхийг заана */
+    $(function()
+    {
+        $('#mon_time_schedule').select2(
+        {
+            width: '100%',
+            formatResult: formatResultMulti
+        });
+        $('#tue_time_schedule').select2(
+        {
+            width: '100%',
+            formatResult: formatResultMulti
+        });
+        $('#wed_time_schedule').select2(
+        {
+            width: '100%',
+            formatResult: formatResultMulti
+        });
+        $('#thu_time_schedule').select2(
+        {
+            width: '100%',
+            formatResult: formatResultMulti
+        });
+        $('#fri_time_schedule').select2(
+        {
+            width: '100%',
+            formatResult: formatResultMulti
+        });
+        $('#sat_time_schedule').select2(
+        {
+            width: '100%',
+            formatResult: formatResultMulti
+        });
+        $('#sun_time_schedule').select2(
+        {
+            width: '100%',
+            formatResult: formatResultMulti
+        });
+    })
+
+    /** Form домоос барих */
+    var jqForm = $('#workingTimeSchedule')
+
+    /** Шалгах утгууд (validation) */
+    if (jqForm.length) {
+        jQuery.validator.addMethod("noSpace", function(value, element)
+		{
+			return value.trim().length !== 0;
+		});
+
+        jQuery.validator.addMethod("zeroNumber", function(value, element)
+		{
+			return value != 0;
+		});
+
+        /** Хэрвээ ажиллах өдрөө сонгосон бол төрөлөө заавал сонгох validation */
+        jQuery.validator.addMethod("sevenDays", function(value, element)
+		{
+            const checkbox_id = `${element.id.slice(0, 3)}_work`
+            const checkBoxValue = document.getElementById(checkbox_id).checked
+
+            if (!checkBoxValue)
+            {
+                return true
+            }
+
+			return value.trim().length !== 0;
+		});
+
+        jQuery.validator.addMethod("timeLength", function(value, element)
+        {
+            return value.length === 8
+        })
+
+        validate = jqForm.validate({
+            rules: {
+                'name': {
+                    required: true,
+                    noSpace: true
+                },
+                'type': {
+                    required: true
+                },
+                'start_time_penalty': {
+                    required: true
+                },
+                'end_time_penalty': {
+                    required: true
+                },
+                'ajillah_time': {
+                    required: true,
+                    zeroNumber: true,
+                },
+                'amrah_time': {
+                    required: true,
+                    zeroNumber: true,
+                },
+                'registration_start_time': {
+                    required: true,
+                    timeLength: true
+                },
+                'registration_end_time': {
+                    required: true,
+                    timeLength: true
+                },
+                'lunch_time': {
+                    required: true,
+                    timeLength: true
+                },
+                'hotorch_boloh_limit': {
+                    required: true,
+                    timeLength: true
+                },
+                'mon_time_schedule': {
+                    sevenDays: true
+                },
+                'tue_time_schedule': {
+                    sevenDays: true
+                },
+                'wed_time_schedule': {
+                    sevenDays: true
+                },
+                'thu_time_schedule': {
+                    sevenDays: true
+                },
+                'fri_time_schedule': {
+                    sevenDays: true
+                },
+                'sat_time_schedule': {
+                    sevenDays: true
+                },
+                'sun_time_schedule': {
+                    sevenDays: true
+                },
+            }
+        });
+    }
+
+    /** Хадгалах товч дарахад үе (submit) */
+    async function logSubmit(event)
+    {
+        // validation давж чадахгүй бол буцаагаад алдаа заана
+        if(!jqForm.valid())
+        {
+            return
+        }
+
+        addLoader($('#wtsDatatableLoader'))
+        addLoader($('#modals-slide-in'))
+        /** Хэрвээ ID-тай байвал POST биш шинэчлэхгэж байгааг мэдээд утгуудаа авч хадгална */
+        if(document.getElementById('id').value)
+        {
+            /** Бүх утгаа хадгалах хувьсагч */
+		    let booleanDatas = ['vacation', 'holiday', 'mon_work', 'tue_work', 'wed_work', 'tue_work', 'fri_work', 'sat_work', 'sun_work']
+
+            /** Хуудас refresh хийлгэхгүй */
+            event.preventDefault()
+
+            /** Хэрэгтэй модалуудын утгуудыг л авна  */
+            const formData = new FormData(event.target)
+            const data = Object.fromEntries(formData)
+
+            /** csrfmiddlewaretoken устгаж байна */
+            delete data.csrfmiddlewaretoken;
+
+            /** checkbox-ийн утгуудыг true гэдгийг буцаагаад false-ийг буцаахгүй байсан тул */
+            /** бүх checkbox утгуудыг хайгаад байхгүй байвал false утгатай хадгална */
+            for (let i=0; i<booleanDatas.length; i++)
+            {
+                if (!data[booleanDatas[i]])
+                {
+                    data[booleanDatas[i]] = 'False'
+                }
+            }
+
+            /** Хүсэлтээ шидэж байна */
+            useLoader(fetchData(`/schedule/working-time-schedule-ajax/${document.getElementById('id').value}/`, data, 'PUT'), $('#modals-slide-in')).catch(err => err)
+                .then(
+                    ({ success, data, errors }) =>
+                    {
+                        if (success)
+                        {
+                            dataTable.ajax.reload(null, false)
+                            setTimeout(function()
+                            {
+                                document.querySelector(".btn-close").click()
+                            },
+                            300)
+                        }
+                    }
+                )
+        }
+    }
+
+    /** Ажиллах цагийн хуваарийн төрөлөөс шалтгаалж дэлгэцэнд харагдах input-үүд ондоо болгодог функц */
+    function typeClick()
+    {
+
+        let element = document.getElementById("type");
+        let selectedCode = element.options[element.selectedIndex].getAttribute("data-code");
+
+        // var vac = document.getElementById("vacationDisplay");
+        // var hol = document.getElementById("holidayDisplay");
+        var xyForm = document.getElementById("xy_form");
+        var daysForm = document.getElementById("days_form");
+
+        if (selectedCode == 1)
+        {
+            // vac.style.display = "none";
+            // hol.style.display = "block";
+            xyForm.style.display = "none";
+            daysForm.style.display = "block";
+        }
+        else if (selectedCode == 2)
+        {
+            // vac.style.display = "block";
+            // hol.style.display = "block";
+            xyForm.style.display = "block";
+            daysForm.style.display = "none";
+
+        }
+        else if (selectedCode == 0 || selectedCode == 3)
+        {
+            // vac.style.display = "none";
+            // hol.style.display = "none";
+            xyForm.style.display = "none";
+            daysForm.style.display = "none";
+        }
+    }
+
+    //  header дээр input ийг clone хийж гаргах нь
+	cloneFooter('.time-list-table', [ 1 ])
+
+    // DATA-TABLE
+    const dataTable = $(".time-list-table")
+        .on('preXhr.dt', function ()
+		{
+			addLoader($('#wtsDatatableLoader'))
+		})
+		.on( 'draw.dt', function () {
+			rmLoader($('#wtsDatatableLoader'))
+        })
+        .DataTable({
+            processing: false,
+            dom: 'lBfrtip',
+            serverSide: true,
+            ajax: { url: `{% url 'working-time-schedule-json' %}` },
+            columns: [
+                // columns according to JSON
+                { data: "id" },
+                { data: "name" },
+                { data: "vacation" },
+                { data: "holiday" },
+                { data: "start_time_penalty" },
+                { data: "" },
+            ],
+            bFilter: true,
+            columnDefs: [
+                {
+                    // Actions
+                    targets: -1,
+                    title: "Үйлдэл",
+                    orderable: false,
+                    render: function (data, type, full, meta)
+                    {
+                        var addEmployeeHtml = ``
+
+                        if (full.type.code == sevenDaysTypeCode || full.type.code == independentDaysTypeCode)
+                        {
+                            addEmployeeHtml = `<a
+                                data-toggle="tooltip"
+                                title="Ажилтан нэмэх"
+                                onclick="updateEmplooyeId(${full.id}, ${full.type.code})"
+                                data-bs-toggle="modal"
+                                data-bs-target="{% if 'working-time-schedule-add-remove-employee' in request.permissions %} #add-employees-to-wts {% else %} #warning-modal {% endif %}"
+                                class="text-warning delete-record"
+                            >
+                            ${feather.icons["plus"].toSvg(
+                            {
+                                class: "font-small-4",
+                            })}
+                            </a>`
+                        } else if (full.type.code == xyTimeTypeCode)
+                        {
+                            addEmployeeHtml = `<a
+                                data-toggle="tooltip"
+                                title="Ажилтан нэмэх"
+                                onclick="updateEmplooyeId(${full.id}, ${full.type.code})"
+                                data-bs-toggle="modal"
+                                data-bs-target="{% if 'working-time-schedule-add-remove-employee' in request.permissions %} #add-employees-to-wts {% else %} #warning-modal {% endif %}"
+                                class="text-warning delete-record"
+                            >
+                            ${feather.icons["plus"].toSvg(
+                            {
+                                class: "font-small-4",
+                            })}
+                            </a>`
+                        }
+
+                        addEmployeeHtml = addEmployeeHtml + `<a data-toggle="tooltip" title="Засах" onclick="wtsUpdate(${full.id})" class="text-primary delete-record ms-1">
+                                ${feather.icons["edit-3"].toSvg(
+                                {
+                                    class: "font-small-4",
+                                })}
+                            </a>
+                            <a
+                                data-toggle="tooltip"
+                                title="Устгах" data-bs-toggle="modal"
+                                data-bs-target="{% if 'working-time-schedule-delete' in request.permissions %} #userReward {% else %} #warning-modal {% endif %}"
+                                onclick=(changeChoosedId(function(){deletewts(${full.id})}))
+                                class="text-primary-orange delete-record ms-1"
+                            > ${feather.icons["trash-2"].toSvg(
+                                {
+                                    class: "font-small-4",
+                                })}
+                            </a>`
+
+                        if (full.type.code == xyTimeTypeCode || full.type.code == sevenDaysTypeCode)
+                        {
+                            addEmployeeHtml = addEmployeeHtml + `<a
+                                data-toggle="tooltip"
+                                title="Дэлгэрэнгүй"
+                                data-bs-toggle="modal"
+                                data-bs-target="#scheduleDetail"
+                                onclick=(getDetailFunction(${full.id}))
+                                class="text-secondary delete-record ms-1"
+                            >
+                                ${feather.icons["info"].toSvg(
+                                {
+                                    class: "font-small-4",
+                                })}
+                            </a>`
+                        }
+
+                        return (addEmployeeHtml);
+                    },
+                },
+                {
+                    targets: 0,
+                    title: "#",
+                    orderable: false,
+                    render: function (data, type, full, meta) {
+                        return (
+                            meta.settings._iDisplayStart + meta.row + 1
+                        );
+                    },
+                },
+                {
+                    targets: 2,
+                    title: 'Төрөл',
+                    render: function (data, type, full, meta) {
+                        return full.type.name
+                    },
+                },
+                {
+                    targets: 3,
+                    title: 'Ажлын цаг',
+                    render: function (data, type, full, meta) {
+                        if (full.type.code == 1)
+                        {
+                            let work_days = []
+                            let weekdays = [
+                                { 'name': 'mon_work', 'value': 1 },
+                                { 'name': 'tue_work', 'value': 2 },
+                                { 'name': 'wed_work', 'value': 3 },
+                                { 'name': 'thu_work', 'value': 4 },
+                                { 'name': 'fri_work', 'value': 5 },
+                                { 'name': 'sat_work', 'value': 6 },
+                                { 'name': 'sun_work', 'value': 7 },
+                            ]
+
+                            for (weekday of weekdays)
+                            {
+                                if (full[weekday.name]) work_days.push(` ${weekday.value}`)
+                            }
+
+                            return (
+                                `<div>
+                                    Ажлын өдрүүд: ${work_days}
+                                </div>`
+                            );
+                        }
+                        else if (full.type.code == 2)
+                        {
+                            return (
+                                `<div>${full.ajillah_time} цаг, ${full.amrah_time} цаг</div>`
+                            )
+                        }
+                        else if (full.type.code == 3)
+                        {
+                            return (
+                                `<div>Цагт баригдахгүй</div>`
+                            )
+                        }
+                        return (
+                            ``
+                        );
+                    },
+                },
+                {
+                    targets: 4,
+                    title: 'Ажилчдын тоо',
+                    orderable: false,
+                    render: function (data, type, full, meta)
+                    {
+                        return full.employees.length
+                    }
+                }
+            ],
+            order: [[2, "desc"]],
+            lengthMenu: [
+                [10, 25, 50, 100, -1],
+                [10, 25, 50, 100, 'Бүгд'],
+            ],
+            dom:
+                '<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+                '<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+                '<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+                ">t" +
+                '<"d-flex justify-content-between mx-2 row mb-1"' +
+                '<"col-sm-12 col-md-6"i>' +
+                '<"col-sm-12 col-md-6"p>' +
+                ">",
+            oLanguage: {
+                sProcessing: "Ачааллаж байна. ",
+                sSearch: "Хайх: ",
+                sEmptyTable: "Бичлэг байхгүй",
+                sInfoEmpty: "Нийт 0 бичлэг",
+                sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+                sInfoFiltered: " - _MAX_ бичлэгээс",
+                sLengthMenu: "_MENU_ бичлэг",
+                oPaginate: {
+                    sFirst: "Эхэнд",
+                    sLast: "Төгсгөлд",
+                    sNext: "Дараах",
+                    sPrevious: "Өмнөх",
+                },
+            },
+            // Buttons with Dropdown
+            buttons: [
+                {
+                    extend: "collection",
+                    className: "btn btn-outline-secondary dropdown-toggle me-2",
+                    text:
+                        feather.icons["external-link"].toSvg({
+                            class: "font-small-4 me-50",
+                        }) + "Export",
+                    buttons: [
+                        {
+                            extend: "print",
+                            text:
+                                feather.icons["printer"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Print",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [0, 1, 2, 3, 4] },
+                        },
+                        {
+                            extend: "csv",
+                            text:
+                                feather.icons["file-text"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Csv",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [0, 1, 2, 3, 4] },
+                        },
+                        {
+                            extend: "excel",
+                            text:
+                                feather.icons["file"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Excel",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [0, 1, 2, 3, 4] },
+                        },
+                        {
+                            extend: "pdf",
+                            text:
+                                feather.icons["clipboard"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Pdf",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [0, 1, 2, 3, 4] },
+                        },
+                        {
+                            extend: "copy",
+                            text:
+                                feather.icons["copy"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Copy",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [0, 1, 2, 3, 4] },
+                        },
+                    ],
+                    init: function (api, node, config) {
+                        $(node).removeClass("btn-secondary");
+                        $(node).parent().removeClass("btn-group");
+                        setTimeout(function () {
+                            $(node)
+                                .closest(".dt-buttons")
+                                .removeClass("btn-group")
+                                .addClass("d-inline-flex mt-50");
+                        }, 50);
+                    },
+                },
+                {
+                    text: "Шинээр бүртгэх",
+                    className: "add-new btn btn-primary",
+                    attr: {
+                        "data-bs-toggle": "modal",
+                        "data-bs-target": "{% if 'working-time-schedule-create-or-update' in request.permissions %} #modals-slide-in {% else %} #warning-modal {% endif %}",
+                        "onClick": "clearFormDatas()"
+                    },
+                    init: function (api, node, config) {
+                        $(node).removeClass("btn-secondary").addClass('click_btn')
+
+                    },
+                },
+            ],
+        });
+    searchFooter(dataTable)
+
+    /** ----- Ажилтан цагийн хуваарийн төрөл дээр нэмэх хэсэг ----- */
+
+    /** Цагийн хуваарийн төрөл ID (ажилтан нэмэхийг дарах үе) */
+    let employeeLoader = document.getElementById('loaderwts-employee')
+    let employeeLoaderText = document.getElementById('employee_loader_display').style
+    let employeeDisplay = document.getElementById('employee_main_display').style
+
+    /** loader арилгана */
+    let loaderTurnOff = function()
+    {
+        employeeLoader.classList.remove('loaderWew')
+        employeeLoaderText.display = 'none'
+        employeeDisplay.display = 'block'
+    }
+
+    cloneFooter(
+        ".remove-employee-table-wts",
+        [
+            2, 3, 4
+        ],
+		{
+			4: {
+				type: "select",
+				options: SUB_ORGS,
+			}
+		}
+    )
+    cloneFooter(
+        ".add-employee-table-wts",
+        [
+            2, 3, 4
+        ],
+		{
+			4: {
+				type: "select",
+				options: SUB_ORGS,
+			}
+		}
+    )
+    async function updateEmplooyeId(id, typeCode)
+    {
+        wtsEmplooyeChoosedId = id
+
+        if (typeCode == 1 || typeCode == 3)
+        {
+            hideClassName = ''
+            actionEmployeeValue = `<span data-toggle="tooltip" title="Цагаа явуулж эхэлснээс хойш ажлын цаг бодогдож эхлэнэ." data-bs-placement="top" >
+            ${feather.icons["info"].toSvg(
+            {
+                class: "font-small-4",
+            })}
+            </span>`
+        }
+        else if (typeCode == 2)
+        {
+            hideClassName = 'hidden'
+            actionEmployeeValue = `-`
+        }
+
+        /** Loader ачааллана */
+        employeeLoader.classList.add('loaderWew')
+        employeeLoaderText.display = 'block'
+        employeeDisplay.display = 'none'
+
+        /** DATATABLE-уудаа устгаад дахиад ачааллуулна */
+        if (dataTableEmployee)
+        {
+            dataTableEmployee.destroy()
+        }
+        if (dataTableAddEmployee)
+        {
+            dataTableAddEmployee.destroy()
+        }
+
+        /** DATATABLE */
+        dataTableEmployee = await $(".remove-employee-table-wts")
+            .on('preXhr.dt', function ()
+            {
+                addLoader($('#minusEmployeeTableLoader'))
+            })
+            .on( 'draw.dt', function () {
+                rmLoader($('#minusEmployeeTableLoader'))
+            })
+            .DataTable({
+                processing: false,
+                dom: 'lBfrtip',
+                retrieve: true,
+                serverSide: true,
+                ajax: {
+                    url: `{% url 'working-time-schedule-registered-employee-json' %}`,
+                    type: 'GET',
+                    data: { 'wtsEmplooyeChoosedId': wtsEmplooyeChoosedId }
+                },
+                columns: [
+                    // columns according to JSON
+                    { data: "" },
+                    { data: "id" },
+                    { data: "first_name" },
+                    { data: "register" },
+                    { data: "ex_sub_org_id" },
+                    { data: "" }
+                ],
+                bFilter: true,
+                initComplete: function()
+                {
+                    loaderTurnOff()
+                },
+                columnDefs: [
+                    {
+                        targets: 0,
+                        searchable:false,
+                        orderable:false,
+                        render: function (data, type, full, meta){
+                            return `<input class="form-check-input" type="checkbox" value="${full.id}">`;
+                        }
+                    },
+                    {
+                        targets: 1,
+                        title: "#",
+                        orderable: false,
+                        render: function (data, type, full, meta) {
+                            return (
+                                meta.settings._iDisplayStart + meta.row + 1
+                            );
+                        },
+                    },
+                    {
+                        targets: 2,
+                        render: function (data, type, full, meta) {
+                            var fullName = full.last_name ? `${full.last_name.at(0)}.` : ''
+                            fullName = full.first_name ? `${fullName}${full.first_name}` : fullName
+                            return fullName
+                        },
+                    },
+                    {
+                        targets: 3,
+                        render: function (data, type, full, meta) {
+                            return data ? data : "-"
+                        },
+                    },
+                    {
+                        targets: 5,
+                        title: "Ажилын эхний өдөр",
+                        orderable: false,
+                        render: function (data, type, full, meta) {
+                            if (typeCode == 1 || typeCode == 3)
+                            {
+                                return actionEmployeeValue
+                            }
+                            else if (typeCode == 2)
+                            {
+                                return full.start_date
+                            }
+                            return actionEmployeeValue
+                        },
+                    },
+                ],
+                order: [[2, "desc"]],
+                lengthMenu: [
+                    [10, 25, 50, 100, -1],
+                    [10, 25, 50, 100, 'Бүгд'],
+                ],
+                dom:
+                    '<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+                    '<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+                    '<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+                    ">t" +
+                    '<"d-flex justify-content-between mx-2 row mb-1"' +
+                    '<"col-sm-12 col-md-6"i>' +
+                    '<"col-sm-12 col-md-6"p>' +
+                    ">",
+                oLanguage: {
+                    sProcessing: "Ачааллаж байна. ",
+                    sSearch: "Хайх: ",
+                    sEmptyTable: "Бичлэг байхгүй",
+                    sInfoEmpty: "Нийт 0 бичлэг",
+                    sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+                    sInfoFiltered: " - _MAX_ бичлэгээс",
+                    sLengthMenu: "_MENU_ бичлэг",
+                    oPaginate: {
+                        sFirst: "Эхэнд",
+                        sLast: "Төгсгөлд",
+                        sNext: "Дараах",
+                        sPrevious: "Өмнөх",
+                    },
+                },
+                // Buttons with Dropdown
+                buttons: [
+                    {
+                        text: 'Хасах',
+                        className: "btn btn-primary me-1 data-submit",
+                        action: async function ()
+                        {
+                            /** Товчлуур дарах үеийн дарсан хүмүүсийг устгана */
+                            $('#employee-table-wts-remove-form', async function(e)
+                            {
+                                /** Loader ачааллана */
+                                employeeLoader.classList.add('loaderWew')
+                                employeeLoaderText.display = 'block'
+                                employeeDisplay.display = 'none'
+
+                                var form = this;
+                                let allChecked = []
+
+                                // Iterate over all checkboxes in the table
+                                dataTableEmployee.$('input[type="checkbox"]').each(function()
+                                {
+                                    if (this.checked)
+                                    {
+                                        allChecked.push(this.value)
+                                    }
+                                });
+                                let data = {
+                                    'checkedUsers': allChecked
+                                }
+                                const { success } = await fetchData(`/schedule/working-time-schedule-employee-remove/${wtsEmplooyeChoosedId}/`, data, 'PUT')
+                                if (success)
+                                {
+                                    dataTableAddEmployee.ajax.reload(loaderTurnOff)
+                                    dataTableEmployee.ajax.reload(loaderTurnOff)
+                                }
+                            })
+                            /** SelectAll-ийг unchecked болгож байна! */
+                            var elRemove = $('#employee-table-remove-wts-select-all').get(0);
+                            elRemove.checked = false;
+                            var elAdd = $('#employee-table-wts-select-all').get(0);
+                            elAdd.checked = false;
+                        }
+                    },
+                    {
+                        extend: "collection",
+                        className: "btn btn-outline-secondary dropdown-toggle me-2",
+                        text:
+                            feather.icons["external-link"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Export",
+                        buttons: [
+                            {
+                                extend: "print",
+                                text:
+                                    feather.icons["printer"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    }) + "Print",
+                                className: "dropdown-item",
+                                exportOptions: { columns: [1, 2, 3, 4] },
+                            },
+                            {
+                                extend: "csv",
+                                text:
+                                    feather.icons["file-text"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    }) + "Csv",
+                                className: "dropdown-item",
+                                exportOptions: { columns: [1, 2, 3, 4] },
+                            },
+                            {
+                                extend: "excel",
+                                text:
+                                    feather.icons["file"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    }) + "Excel",
+                                className: "dropdown-item",
+                                exportOptions: { columns: [1, 2, 3, 4] },
+                            },
+                            {
+                                extend: "pdf",
+                                text:
+                                    feather.icons["clipboard"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    }) + "Pdf",
+                                className: "dropdown-item",
+                                exportOptions: { columns: [1, 2, 3, 4] },
+                            },
+                            {
+                                extend: "copy",
+                                text:
+                                    feather.icons["copy"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    }) + "Copy",
+                                className: "dropdown-item",
+                                exportOptions: { columns: [1, 2, 3, 4] },
+                            },
+                        ],
+                    },
+                ],
+            });
+        searchFooter(dataTableEmployee)
+
+        // Бүгдийг идэвхжүүлэх үйлдэл
+        $('#employee-table-wts-select-all').on('click', function()
+        {
+            /** Table-ийн бүх checkbox-уудыг бүгдийг нь идэвхжүүлж/идэвхжүүлэхгүй болгох */
+            var rows = dataTableEmployee.rows({ 'search': 'applied' }).nodes();
+            $('input[type="checkbox"]', rows).prop('checked', this.checked);
+        });
+
+        let employeeTableWtsRemoveForm = document.getElementById("employee-table-wts-remove-form")
+
+        // Бүгдийг идэвхжүүлсэн байж байгаад аль нэгийг унтраавал checkbox FALSE болох тохиргоо
+        $('#employee-table-wts-remove-form .remove-employee-table-wts tbody').on('change', 'input[type="checkbox"]', function()
+        {
+
+            /** Гараараа бүгдийг нь check-лэсэн үед select-all товч selected болно */
+            if (employeeTableWtsRemoveForm.querySelectorAll('input[type="checkbox"]').length-1 == employeeTableWtsRemoveForm.querySelectorAll('input[type="checkbox"]:checked').length)
+            {
+                var el = $('#employee-table-wts-select-all').get(0);
+                el.checked = true;
+            }
+
+            // If checkbox is not checked
+            if(!this.checked){
+                var el = $('#employee-table-wts-select-all').get(0);
+
+                // If "Select all" control is checked and has 'indeterminate' property
+                if(el && el.checked && ('indeterminate' in el)){
+                    el.checked = false;
+                }
+            }
+        });
+
+        /** Ажилчин нэмэх хэсэг */
+        dataTableAddEmployee = $(".add-employee-table-wts")
+            .on('preXhr.dt', function ()
+            {
+                addLoader($('#addEmployeeTableLoader'))
+            })
+            .on( 'draw.dt', function () {
+                rmLoader($('#addEmployeeTableLoader'))
+            })
+            .DataTable({
+                processing: false,
+                dom: 'lBfrtip',
+                serverSide: true,
+                ajax: { url: `{% url 'working-time-schedule-not-registered-employee-json' %}` },
+                columns: [
+                    // columns according to JSON
+                    { data: "" },
+                    { data: "id" },
+                    { data: "first_name" },
+                    { data: "register" },
+                    { data: "ex_sub_org_id" },
+                    { data: "" }
+                ],
+                bFilter: true,
+                initComplete: function()
+                {
+                    loaderTurnOff()
+                },
+                columnDefs: [
+                    {
+                        targets: 0,
+                        searchable:false,
+                        orderable:false,
+                        render: function (data, type, full, meta){
+                            if (typeCode == sevenDaysTypeCode || typeCode == independentDaysTypeCode)
+                            {
+                                return `<input class="form-check-input" type="checkbox" value="${full.id}">`;
+                            } else if (typeCode == xyTimeTypeCode)
+                            {
+                                return (
+                                    ``
+                                )
+                            }
+                        }
+                    },
+                    {
+                        targets: 1,
+                        title: "#",
+                        orderable: false,
+                        render: function (data, type, full, meta) {
+                            return (
+                                meta.settings._iDisplayStart + meta.row + 1
+                            );
+                        },
+                    },
+                    {
+                        targets: 2,
+                        render: function (data, type, full, meta) {
+                            var fullName = full.last_name ? `${full.last_name.at(0)}.` : ''
+                            fullName = full.first_name ? `${fullName}${full.first_name}` : fullName
+                            return fullName
+                        },
+                    },
+                    {
+                        targets: 3,
+                        render: function (data, type, full, meta) {
+                            return data ? data : "-"
+                        },
+                    },
+                    {
+                        targets: 5,
+                        orderable: false,
+                        render: function (data, type, full, meta) {
+                            if (typeCode == sevenDaysTypeCode || typeCode == independentDaysTypeCode)
+                            {
+                                return (
+                                    `-`
+                                )
+                            } else if (typeCode == xyTimeTypeCode)
+                            {
+                                return (
+                                    `<a data-bs-toggle="modal" data-bs-target="#add-employees-xy-wts" class="btn btn-primary me-1 data-submit" onClick="changeAddEmployeeBtn(${full.id})" >
+                                        Нэмэх
+                                    </a>`
+                                )
+                            }
+                        }
+                    }
+                ],
+                order: [[2, "desc"]],
+                lengthMenu: [
+                    [10, 25, 50, 100, -1],
+                    [10, 25, 50, 100, 'Бүгд'],
+                ],
+                dom:
+                    '<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+                    '<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+                    '<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+                    ">t" +
+                    '<"d-flex justify-content-between mx-2 row mb-1"' +
+                    '<"col-sm-12 col-md-6"i>' +
+                    '<"col-sm-12 col-md-6"p>' +
+                    ">",
+                oLanguage: {
+                    sProcessing: "Ачааллаж байна. ",
+                    sSearch: "Хайх: ",
+                    sEmptyTable: "Бичлэг байхгүй",
+                    sInfoEmpty: "Нийт 0 бичлэг",
+                    sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+                    sInfoFiltered: " - _MAX_ бичлэгээс",
+                    sLengthMenu: "_MENU_ бичлэг",
+                    oPaginate: {
+                        sFirst: "Эхэнд",
+                        sLast: "Төгсгөлд",
+                        sNext: "Дараах",
+                        sPrevious: "Өмнөх",
+                    },
+                },
+                // Buttons with Dropdown
+                buttons: [
+                    {
+                        text: 'Нэмэх',
+                        className: `btn btn-primary me-1 data-submit ${hideClassName}`,
+                        action: async function ()
+                        {
+                            /** Товчлуур дахар үеийн дарсан хүмүүсийг нэмнэ */
+                            $('#employee-table-wts-add-form', async function(e)
+                            {
+                                /** Loader ачааллана */
+                                employeeLoader.classList.add('loaderWew')
+                                employeeLoaderText.display = 'block'
+                                employeeDisplay.display = 'none'
+
+                                var form = this;
+                                let allChecked = []
+
+                                // Iterate over all checkboxes in the table
+                                dataTableAddEmployee.$('input[type="checkbox"]').each(function()
+                                {
+                                    if (this.checked)
+                                    {
+                                        allChecked.push(this.value)
+                                    }
+                                });
+                                let data = {
+                                    'checkedUsers': allChecked
+                                }
+                                const { success } = await fetchData(`/schedule/working-time-schedule-employee-add/${wtsEmplooyeChoosedId}/`, data, 'PUT')
+                                if (success)
+                                {
+                                    await dataTableAddEmployee.ajax.reload(loaderTurnOff)
+                                    await dataTableEmployee.ajax.reload(loaderTurnOff)
+                                }
+
+                            })
+                            /** SelectAll-ийг unchecked болгож байна! */
+                            var elRemove = $('#employee-table-remove-wts-select-all').get(0);
+                            elRemove.checked = false;
+                            var elAdd = $('#employee-table-wts-select-all').get(0);
+                            elAdd.checked = false;
+                        }
+                    },
+                    {
+                        extend: "collection",
+                        className: "btn btn-outline-secondary dropdown-toggle me-2",
+                        text:
+                            feather.icons["external-link"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Export",
+                        buttons: [
+                            {
+                                extend: "print",
+                                text:
+                                    feather.icons["printer"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    }) + "Print",
+                                className: "dropdown-item",
+                                exportOptions: { columns: [1, 2, 3, 4, 5] },
+                            },
+                            {
+                                extend: "csv",
+                                text:
+                                    feather.icons["file-text"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    }) + "Csv",
+                                className: "dropdown-item",
+                                exportOptions: { columns: [1, 2, 3, 4, 5] },
+                            },
+                            {
+                                extend: "excel",
+                                text:
+                                    feather.icons["file"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    }) + "Excel",
+                                className: "dropdown-item",
+                                exportOptions: { columns: [1, 2, 3, 4, 5] },
+                            },
+                            {
+                                extend: "pdf",
+                                text:
+                                    feather.icons["clipboard"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    }) + "Pdf",
+                                className: "dropdown-item",
+                                exportOptions: { columns: [1, 2, 3, 4, 5] },
+                            },
+                            {
+                                extend: "copy",
+                                text:
+                                    feather.icons["copy"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    }) + "Copy",
+                                className: "dropdown-item",
+                                exportOptions: { columns: [1, 2, 3, 4, 5] },
+                            },
+                        ],
+                    },
+                ],
+            });
+        searchFooter(dataTableAddEmployee)
+
+        // Бүгдийг идэвхжүүлэх үйлдэл
+        $('#employee-table-remove-wts-select-all').on('click', function()
+        {
+            /** Table-ийн бүх checkbox-уудыг бүгдийг нь идэвхжүүлж/идэвхжүүлэхгүй болгох */
+            var rows = dataTableAddEmployee.rows({ 'search': 'applied' }).nodes();
+            $('input[type="checkbox"]', rows).prop('checked', this.checked);
+        });
+
+        let employeeTableWtsAddForm = document.getElementById("employee-table-wts-add-form")
+
+        // Бүгдийг идэвхжүүлсэн байж байгаад аль нэгийг унтраавал checkbox FALSE болох тохиргоо
+        $('#employee-table-wts-add-form .add-employee-table-wts tbody').on('change', 'input[type="checkbox"]', function()
+        {
+            /** Гараараа бүгдийг нь check-лэсэн үед select-all товч selected болно */
+            if (employeeTableWtsAddForm.querySelectorAll('input[type="checkbox"]').length-1 == employeeTableWtsAddForm.querySelectorAll('input[type="checkbox"]:checked').length)
+            {
+                var el = $('#employee-table-remove-wts-select-all').get(0);
+                el.checked = true;
+            }
+
+            // If checkbox is not checked
+            if(!this.checked){
+                var el = $('#employee-table-remove-wts-select-all').get(0);
+                // If "Select all" control is checked and has 'indeterminate' property
+                if(el && el.checked && ('indeterminate' in el)){
+                    // as 'indeterminate'
+                    el.checked = false;
+                }
+            }
+        });
+    }
+
+    /** XY ажилчин сонгоход гарж ирэх input-ын script */
+    var datepicker = $('#date').pickadate({
+        format: 'yyyy-mm-dd',
+        monthsFull: [
+            '1-сар',
+            '2-сар',
+            '3-сар',
+            '4-сар',
+            '5-сар',
+            '6-сар',
+            '7-сар',
+            '8-сар',
+            '9-сар',
+            '10-сар',
+            '11-сар',
+            '12-сар'
+        ],
+        monthsShort: [
+            '1-сар',
+            '2-сар',
+            '3-сар',
+            '4-сар',
+            '5-сар',
+            '6-сар',
+            '7-сар',
+            '8-сар',
+            '9-сар',
+            '10-сар',
+            '11-сар',
+            '12-сар'
+        ],
+        weekdaysShort: ['Дав', 'Мяг', 'Лха', 'Пүр', 'Баа', 'Бям', 'Ням'],
+        today: "Өнөөдөр",
+        clear: 'Арилгах',
+        close: 'Хаах',
+        selectYears: true,
+        selectYears: 50,
+        min: new Date(),
+        max: new Date((new Date().getFullYear() + 1), 12, 31),
+        selectMonths: true,
+        container: '#outlet',
+        onSet: function(item) {
+            if ( 'select' in item ) setTimeout( timepicker.open, 0 )
+        }
+    }).pickadate('picker')
+
+    var timepicker = $('#time').pickatime({
+        formatLabel: 'HH:i',
+        format: 'HH:i',
+        clear: '',
+        container: '#outlet',
+        onRender: function() {
+            $('<button class="btn btn-primary data-submit" style="width: 100%; padding: 10px;">Буцах</button>').
+                on('click', function() {
+                    timepicker.close()
+                    datepicker.open()
+                }).prependTo( this.$root.find('.picker__box') )
+        },
+        onSet: function(item) {
+            if ( 'select' in item ) setTimeout( function() {
+                $datetime.
+                    off('focus').
+                    val( datepicker.get() + ' ' + timepicker.get() ).
+                    focus().
+                    on('focus', datepicker.open)
+            }, 0 )
+        }
+    }).pickatime('picker')
+
+    var $datetime = $('#xy_start_time').
+        on('focus', datepicker.open).
+        on('click', function(event) {
+            event.stopPropagation();
+            datepicker.open()
+        })
+
+    /** Validation */
+    var xyAddEmployeeForm = $('#add_employee_xy_form')
+    if (xyAddEmployeeForm.length)
+    {
+        validate = xyAddEmployeeForm.validate(
+        {
+            rules: {
+                'xy_start_time': {
+                    required: true
+                }
+            }
+        })
+    }
+
+    /** Сонгосон ажилчиний ID-г хадгална */
+    function changeAddEmployeeBtn(employeeId)
+    {
+        addEmployeeId = employeeId
+    }
+
+    /** Цагийг нь оруулаад хуваарийн төрөл дээр нэмэх хэсэг */
+    async function addEmployeeXYSubmit(event)
+    {
+        event.preventDefault();
+
+        /** Хэрвээ өөр modal дээр validation ажилж алдаа заагдсан байвал цэвэрлэнэ */
+        var xyAddEmployeeForm = $('#add_employee_xy_form')
+		xyAddEmployeeForm.validate().resetForm();
+		$('#add_employee_xy_form input').removeClass('error');
+
+        if(!xyAddEmployeeForm.valid())
+        {
+            return
+        }
+
+        const formData = new FormData(event.target)
+        const data = Object.fromEntries(formData)
+
+        let addData = {
+            'wtsEmplooyeChoosedId': wtsEmplooyeChoosedId,
+            ...data
+        }
+
+
+        addLoader($('#minusEmployeeTableLoader'))
+        addLoader($('#addEmployeeTableLoader'))
+
+        useLoader(fetchData(`/schedule/working-time-schedule-employee-xy-add/${addEmployeeId}/`, addData, 'PUT'), $('#add_employee_xy_form')).catch(err => err)
+            .then(
+                ({ success, data, errors }) =>
+                {
+                    if (success)
+                    {
+                        dataTableAddEmployee.ajax.reload(null, false)
+                        dataTableEmployee.ajax.reload(null, false)
+                        document.querySelector(".add-employee-by-xy-hide-modal").click()
+
+                    }
+                }
+            )
+    }
+
+
+    function clearFormDatas()
+    {
+
+        /** Хэрвээ өөр modal дээр validation ажилж алдаа заагдсан байвал цэвэрлэнэ */
+		var jqForm = $('#workingTimeSchedule')
+		jqForm.validate().resetForm();
+		$('#workingTimeSchedule input').removeClass('error');
+
+        document.getElementById("name").value = '';
+        document.getElementById("type").value = '';
+        // document.getElementById("vacation").checked = '';
+        // document.getElementById("holiday").checked = '';
+        document.getElementById("description").value = '';
+        // document.getElementById("start_time_penalty").value = '';
+        // document.getElementById("end_time_penalty").value = '';
+        document.getElementById("ajillah_time").value = 0;
+        document.getElementById("amrah_time").value = 0;
+        // document.getElementById("registration_start_time").value = '';
+        // document.getElementById("registration_end_time").value = '';
+        // document.getElementById("lunch_time").value = '';
+        document.getElementById("hotorch_boloh_limit").value = ''
+
+        document.getElementById("mon_time_schedule").value = '';
+        document.querySelector('#s2id_mon_time_schedule .select2-chosen').textContent = '-- Сонгох --';
+        document.getElementById("tue_time_schedule").value = '';
+        document.querySelector('#s2id_tue_time_schedule .select2-chosen').textContent = '-- Сонгох --';
+        document.getElementById("wed_time_schedule").value = '';
+        document.querySelector('#s2id_wed_time_schedule .select2-chosen').textContent = '-- Сонгох --';
+        document.getElementById("thu_time_schedule").value = '';
+        document.querySelector('#s2id_thu_time_schedule .select2-chosen').textContent = '-- Сонгох --';
+        document.getElementById("fri_time_schedule").value = '';
+        document.querySelector('#s2id_fri_time_schedule .select2-chosen').textContent = '-- Сонгох --';
+        document.getElementById("sat_time_schedule").value = '';
+        document.querySelector('#s2id_sat_time_schedule .select2-chosen').textContent = '-- Сонгох --';
+        document.getElementById("sun_time_schedule").value = '';
+        document.querySelector('#s2id_sun_time_schedule .select2-chosen').textContent = '-- Сонгох --';
+
+        document.getElementById("mon_work").checked = false;
+        document.getElementById("tue_work").checked = false;
+        document.getElementById("wed_work").checked = false;
+        document.getElementById("thu_work").checked = false;
+        document.getElementById("fri_work").checked = false;
+        document.getElementById("sat_work").checked = false;
+        document.getElementById("sun_work").checked = false;
+        document.getElementById("id").value = '';
+
+        /** Ажиллах цагийн хуваарийн төрөл сонгогдсон байвал тэрийг бас сонгогдсон болгоно */
+        typeClick()
+    }
+
+    // Устгах үйлдэл
+    async function deletewts(choosedId)
+    {
+        addLoader($('#wtsDatatableLoader'))
+        const { success } = await fetchData(`/schedule/working-time-schedule-ajax/${choosedId}/`, null, 'DELETE')
+        if (success)
+        {
+            dataTable.ajax.reload(null, false)
+        }
+    }
+
+    // Дэлгэрэнгүй дарах үеийн үйлдэл
+    // Утгаа баазаас ajax авчирж харуулна
+    async function getDetailFunction(pk)
+    {
+
+        let loaderText = document.getElementById('detail_loader_display').style
+		let modalDisplay = document.getElementById('detail_main_display').style
+
+		/** loader харуулж модалийг нууна */
+		loaderText.display = 'block'
+		modalDisplay.display = 'none'
+        contactLoader.classList.add('loaderWew')
+
+        const { data } = await fetchData(`/schedule/working-time-schedule-ajax/${pk}/`, null, 'GET')
+
+        if (data)
+        {
+
+            // var vac = document.getElementById("vacationDisplayDetail");
+            // var hol = document.getElementById("holidayDisplayDetail");
+            var xyForm = document.getElementById("xy_formDetail");
+            var daysForm = document.getElementById("days_formDetail");
+
+            document.getElementById("nameDetail").value = data.name;
+            document.getElementById("typeDetail").value = data.type.name;
+            // document.getElementById("vacationDetail").checked = data.vacation;
+            // document.getElementById("holidayDetail").checked = data.holiday;
+            document.getElementById("descriptionDetail").value = data.description;
+            // document.getElementById("start_time_penaltyDetail").value = data.start_time_penalty;
+            // document.getElementById("end_time_penaltyDetail").value = data.end_time_penalty;
+            document.getElementById("orgDetail").value = data.org.name;
+
+            // Ажиллах цагийн хуваарийн төрөлөөс шалтгаалж дэлгэцэнд харагдах тул IF statement ашигласан
+            if (data.type.code == 1)
+            {
+
+                const weekly_values = [
+                    {
+                        'check': 'mon_work',
+                        'checkDisplay': 'mon_workDetail',
+                        'datas': 'mon_time_schedule',
+                        'display': 'mon_display'
+                    },
+                    {
+                        'check': 'tue_work',
+                        'checkDisplay': 'tue_workDetail',
+                        'datas': 'tue_time_schedule',
+                        'display': 'tue_display'
+                    },
+                    {
+                        'check': 'wed_work',
+                        'checkDisplay': 'wed_workDetail',
+                        'datas': 'wed_time_schedule',
+                        'display': 'wed_display'
+                    },
+                    {
+                        'check': 'thu_work',
+                        'checkDisplay': 'thu_workDetail',
+                        'datas': 'thu_time_schedule',
+                        'display': 'thu_display'
+                    },
+                    {
+                        'check': 'fri_work',
+                        'checkDisplay': 'fri_workDetail',
+                        'datas': 'fri_time_schedule',
+                        'display': 'fri_display'
+                    },
+                    {
+                        'check': 'sat_work',
+                        'checkDisplay': 'sat_workDetail',
+                        'datas': 'sat_time_schedule',
+                        'display': 'sat_display'
+                    },
+                    {
+                        'check': 'sun_work',
+                        'checkDisplay': 'sun_workDetail',
+                        'datas': 'sun_time_schedule',
+                        'display': 'sun_display'
+                    },
+                ]
+
+                /** давталт ашиглаад утгуудаа онооно 1-7 хоногийн цагийн төрөл */
+                for(var i = 0, weekly_value; weekly_value = weekly_values[i++];)
+                {
+                    let check_value = weekly_value.check
+
+                    document.getElementById(weekly_value.checkDisplay).checked = data[check_value]
+
+                    if (!data[check_value])
+                    {
+                        document.getElementById(weekly_value.display).style.display = "none"
+                        continue
+                    }
+
+                    /** FORM input-үүдэд утгуудаа онооно */
+                    let qwerty = document.getElementById(weekly_value.display)
+
+                    for (let i = 0, element; element = qwerty.elements[i++];)
+                    {
+                        if (element.localName === "input" && (element.type === 'text' || element.type === 'number' ))
+                        {
+                            if (!data[weekly_value.datas])
+                            {
+                                continue
+                            }
+                            element.value = data[weekly_value.datas][element.id]
+                        }
+                        else if (element.localName === "input" && element.type === 'checkbox')
+                        {
+                            if (!data[weekly_value.datas] || !data[weekly_value.datas][element.id])
+                            {
+                                continue
+                            }
+                            element.checked = data[weekly_value.datas][element.id]
+                        }
+                    }
+                }
+
+                // vac.style.display = "none";
+                // hol.style.display = "block";
+                xyForm.style.display = "none";
+                daysForm.style.display = "flex";
+
+            }
+            else if (data.type.code == 2)
+            {
+                // vac.style.display = "block";
+                // hol.style.display = "block";
+                xyForm.style.display = "flex";
+                daysForm.style.display = "none";
+
+                document.getElementById("ajillah_timeDetail").value = data.ajillah_time;
+                document.getElementById("amrah_timeDetail").value = data.amrah_time;
+                // document.getElementById("registration_start_timeDetail").value = data.registration_start_time;
+                // document.getElementById("registration_end_timeDetail").value = data.registration_end_time;
+                // document.getElementById("lunch_timeDetail").value = data.lunch_time;
+                // document.getElementById("hotorch_boloh_limitDetail").value = data.hotorch_boloh_limit;
+            }
+        }
+
+        /** loader ийг арилгаж модалийг харуулна */
+		loaderText.display = 'none'
+		modalDisplay.display = 'flex'
+        contactLoader.classList.remove('loaderWew')
+    }
+
+</script>
+
+{% endblock js %}

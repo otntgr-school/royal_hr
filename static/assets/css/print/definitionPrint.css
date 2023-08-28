@@ -1,0 +1,12 @@
+
+@page {
+    size: A4 landscape;
+    margin: 0px 00px;
+    width: 50%;
+}
+
+body {
+    font-family: sans-serif;
+    font-size: 13px;
+    background-color: red;
+}

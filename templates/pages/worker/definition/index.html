@@ -1,0 +1,122 @@
+{% load static %}
+
+{% block vendorcss %}
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/forms/select/select2.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/pickadate/pickadate.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/jkanban/jkanban.min.css' %}">
+{% endblock vendorcss %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/form-validation.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-pickadate.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Inconsolata&amp;family=Roboto+Slab&amp;family=Slabo+27px&amp;family=Sofia&amp;family=Ubuntu+Mono&amp;display=swap">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/pages/app-kanban.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/schedule.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'assets/css/loader.css' %}" />
+
+
+<title>HR - Монголын үндэсний их сургууль</title>
+<link rel="shortcut icon" type="image/x-icon" href="{% static 'app-assets/images/logo/muis_vacation_logo.png' %}" />
+<link rel="stylesheet" href="{% static 'assets/css/print/definitionPrint.css' %}">
+
+<style>
+    html body {
+        height: auto !important;
+    }
+</style>
+
+{% endblock css %}
+
+{% block content %}
+
+<div style="display: flex;">
+    <div style="width: 50%; margin-top: 30px; font-family: 'Times New Roman', Times, serif;">
+        <img
+            src="{% static 'app-assets/images/logo/muis_vacation_logo.png' %}"
+            alt="muis_vacation_logo"
+            width="75px"
+            style="display: block; margin-left: auto; margin-right: auto;"
+        />
+
+        <p style="text-align: center; font-size: 18px; text-transform: uppercase; width: 260px; margin: auto; padding: 20px 0px;"><b>{{org.name|default:''}}</b></p>
+
+        <div style="font-size: 14px; width: 300px; text-align: center; margin: auto;">{{org.address|default:''}}</div>
+        <div style="font-size: 14px; text-align: center;">Утас: {{org.phone_number|default:''}} Факс: {{org.home_phone|default:''}}</div>
+        <div style="font-size: 14px; text-align: center;">E-mail: {{org.email|default:''}}</div>
+        <div style="text-align: center;">_________________<span style="font-family: 'Noto Serif JP', serif;">№</span>_________________</div>
+        <div style="text-align: center;">танай ___________-ны <span style="font-family: 'Noto Serif JP', serif;">№</span>______________</div>
+
+        <p style="text-transform: uppercase; text-align: center; font-size: 18px; font-weight: 600; padding: 30px 0px 20px 0px;" id="title"></p>
+        <div style="font-size: 16px; width: 90%; margin: auto; word-spacing: 3px; text-align: justify; text-justify: inter-word;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{employee.last_name|default:''}} овогтой {{employee.first_name|default:''}} /{{employee.register|default:''}}/ нь МҮИС-ийн бүрэлдэхүүн "{{employee.sub_org|default:''}}"-ийн {{employee.org_position|default:''}} албан тушаалд ажиллаж байгаа нь үнэн болохыг тодорхойлов.</div>
+        <div style="font-size: 15px; padding-top: 50px; display: flex; width: 80%; justify-content: space-between; margin: auto;">
+            <span>ХҮНИЙ НӨӨЦИЙН АЛБАНЫ ДАРГА</span>
+            <span>О.ЭНХЗУЛ</span>
+        </div>
+    </div>
+
+    <div style="width: 50%; margin-top: 30px; font-family: 'Times New Roman', Times, serif;">
+        <img
+            src="{% static 'app-assets/images/logo/muis_vacation_logo.png' %}"
+            alt="muis_vacation_logo"
+            width="75px"
+            style="display: block; margin-left: auto; margin-right: auto;"
+        />
+
+        <p style="text-align: center; font-size: 18px; text-transform: uppercase; width: 260px; margin: auto; padding: 20px 0px;"><b>{{org.name|default:''}}</b></p>
+
+        <div style="font-size: 14px; width: 300px; text-align: center; margin: auto;">{{org.address|default:''}}</div>
+        <div style="font-size: 14px; text-align: center;">Утас: {{org.phone_number|default:''}} Факс: {{org.home_phone|default:''}}</div>
+        <div style="font-size: 14px; text-align: center;">E-mail: {{org.email|default:''}}</div>
+        <div style="text-align: center;">_________________<span style="font-family: 'Noto Serif JP', serif;">№</span>_________________</div>
+        <div style="text-align: center;">танай ___________-ны <span style="font-family: 'Noto Serif JP', serif;">№</span>______________</div>
+
+        <p style="text-transform: uppercase; text-align: center; font-size: 18px; font-weight: 600; padding: 30px 0px 20px 0px;" id="title1"></p>
+        <div style="font-size: 16px; width: 90%; margin: auto; word-spacing: 3px; text-align: justify; text-justify: inter-word;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{employee.last_name|default:''}} овогтой {{employee.first_name|default:''}} /{{employee.register|default:''}}/ нь МҮИС-ийн бүрэлдэхүүн "{{employee.sub_org|default:''}}"-ийн {{employee.org_position|default:''}} албан тушаалд ажиллаж байгаа нь үнэн болохыг тодорхойлов.</div>
+        <div style="font-size: 15px; padding-top: 50px; display: flex; width: 80%; justify-content: space-between; margin: auto;">
+            <span>ХҮНИЙ НӨӨЦИЙН АЛБАНЫ ДАРГА</span>
+            <span>О.ЭНХЗУЛ</span>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+
+<script>
+
+    const params = new URLSearchParams(document.location.search);
+    const title = params.get("title");
+
+    if (title)
+    {
+        document.getElementById('title').innerText = title
+        document.getElementById('title1').innerText = title
+    }
+
+    /** Хуудас ачааллахад PRINT үйлдэл шууд хийгдэнэ */
+    window.onload = function()
+    {
+        window.print();
+    }
+
+    /** PRINT or CANCEL дарахад хуудасыг шууд хаана */
+    window.onafterprint = function()
+    {
+        window.close()
+    }
+</script>
+
+{% endblock js %}

@@ -1,0 +1,148 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+{% block content %}
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}">
+{% endblock css %}
+
+<div class="content-body">
+    <div class="card">
+        <div class="row p-2 pb-0">
+            <small class="col-auto">Хүснэгтийн баганууд:</small>
+            <a class="col-auto toggle-vis small" data-column="1">Хэнээс</a> -
+            <a class="col-auto toggle-vis small" data-column="2">Хэнд</a> -
+            <a class="col-auto toggle-vis small" data-column="3">Гарчиг</a> -
+            <a class="col-auto toggle-vis small disabled" data-column="4">Үндсэн хэсэг</a> -
+            <a class="col-auto toggle-vis small" data-column="5">Төрөл</a> -
+            <a class="col-auto toggle-vis small" data-column="6">Илгээсэн огноо</a> -
+            <a class="col-auto toggle-vis small" data-column="7">Шийдсэн огноо</a> -
+            <a class="col-auto toggle-vis small" data-column="8">Төлөв</a>
+            <a class="col-auto toggle-vis small disabled" data-column="9">Хэрхэн шийдсэн</a>
+            <a class="col-auto toggle-vis small disabled" data-column="10">Үйлдэл</a>
+        </div>
+        <div class="table-responsive">
+            <table class="table small-text-thead report-table" style="margin-top: 0px!important;">
+                <thead>
+                    <tr class="filter-container"></tr>
+                    <tr>
+                        <th style="width: 30px;"></th>
+                        <th style="width: 100px;">Хэнээс</th>
+                        <th style="width: 100px;">Хэнд</th>
+                        <th style="width: 200px;">Гарчиг</th>
+                        <th style="width: 200px;">Үндсэн хэсэг</th>
+                        <th style="width: 70px;">Төрөл</th>
+                        <th style="width: 100px;">Илгээсэн огноо</th>
+                        <th style="width: 100px;">Шийдсэн огноо</th>
+                        <th style="width: 100px;">Төлөв</th>
+                        <th style="width: 200px;">Хэрхэн шийдсэн</th>
+                        <th style="width: 50px;">Үйлдэл</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th></th>
+                        <th>Хэнээс</th>
+                        <th>Хэнд</th>
+                        <th>Гарчиг</th>
+                        <th>Үндсэн хэсэг</th>
+                        <th>Төрөл</th>
+                        <th>Төлөв</th>
+                        <th>Үүссэн</th>
+                        <th>Шийдсэн</th>
+                        <th>Хэрхэн шийдсэн</th>
+                        <th></th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+        <div class="modal fade text-start" id="filter-modal" tabindex="-1" aria-labelledby="myModalLabel20" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-md">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel20">Шүүлтүүр</h4>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row justify-content-start align-items-center">
+                            <label class="form-label col-12 col-md-5">Илгээсэн хугацаа:</label>
+                            <div class="col-12 col-md-7 d-flex  align-items-center">
+                                <div class="flatpickr-range ilgeeh-input d-flex">
+                                    <input
+                                        type="text"
+                                        class="form-control form-control-sm flatpickr-input"
+                                        placeholder="2000-01-20 - 2000-03-20"
+                                        data-input
+                                    />
+                                    <a class="input-button" title="арилгах" data-clear>
+                                        <i data-feather="x"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <label class="form-label col-12 col-md-5 mt-2">Шийдвэрлэсэн хугацаа:</label>
+                            <div class="col-12 col-md-7 d-flex align-items-center mt-2">
+                                <div class="flatpickr-range shiideh-input d-flex">
+                                    <input
+                                        type="text"
+                                        class="form-control form-control-sm flatpickr-range flatpickr-input "
+                                        placeholder="2000-01-20 - 2000-03-20"
+                                        data-input
+                                    />
+                                    <a class="input-button" title="арилгах" data-clear>
+                                        <i data-feather="x"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button
+                            type="button"
+                            class="btn btn-primary"
+                            data-bs-dismiss="modal"
+                            onclick="handleSearch(event)"
+                        >
+                            Хайх
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.buttons.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jszip.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/pdfmake.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/vfs_fonts.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.html5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.print.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/tables/table-datatables-advanced.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/tables/table-datatables-fixedColumns.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/pickers/form-pickers.js' %}"></script>
+<script>
+    const STATES = [{% for id, name in states %} {"id": "{{name}}", "name": "{{name}}"}, {%endfor%}]
+    const KINDS = [{% for kind in kinds %} {"id": "{{kind.title}}", "name": "{{kind.title}}"}, {%endfor%}]
+</script>
+
+<script src="{% static 'assets/js/pages/report/urgudul.js' %}"></script>
+
+{% endblock js %}

@@ -1,0 +1,61 @@
+
+<!--
+    URL: /schedule/time-register-report/
+    Нэр: Ажилчин сонгох
+    Төрөл: Modal
+    Дэлгэрэнгүй: Ажилчин сонгохыг дарахад
+-->
+
+<div class="modal fade" id="{{id}}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content row" >
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="mb-1">
+
+                <div class="modal-body row" id="detail_main_display">
+
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title">Ажилчдын жагсаалт</h6>
+                            </div>
+                            <div class="table-responsive" id="user_main_loader_display" >
+                                <div class="card-datatable table-responsive pt-0">
+                                    <div class="custom-cell" id="kpi-assessment-employee-table-loader">
+                                        <table id="kpi-assessment-employee-table" class="kpi-assessment-employee-table border-spc table text-center">
+                                            <thead class="table-light">
+                                                <tr class="filter-container"></tr>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Овог</th>
+                                                    <th>Нэр</th>
+                                                    <th>Регистр</th>
+                                                </tr>
+                                            </thead>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Овог</th>
+                                                    <th>Нэр</th>
+                                                    <th>Регистр</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">
+                    Болих
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

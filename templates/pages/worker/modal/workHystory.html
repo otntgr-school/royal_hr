@@ -1,0 +1,48 @@
+{% load static %}
+
+{% block content %}
+    <div class="modal fade" id="workerHistory" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-edit-user">
+            <div class="modal-content">
+                <div class="modal-header bg-transparent">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body pb-5 px-sm-5 pt-50">
+                    <div class="row">
+                        <h1 class="text-center mb-1">Ажлын түүх</h1>
+                        <hr>
+                        <div id="timeline" class="row card-border" style="display: none;">
+                            <!-- Дата орж ирнэ утаснаөс биш бол  -->
+                        </div>
+                        <div id="testSlider" class="row card-border" style="display: none; position:relative">
+                            <div class="card-body">
+                                <!-- Swiper -->
+                                <div class="swiper-hystory swiper-container" style="position: unset;">
+                                    <div class="swiper-wrapper" id="historySwiper">
+                                        <!-- Дата орж ирнэ утаснаөс бол -->
+                                    </div>
+                                    <!-- Add Pagination -->
+                                    <div class="swiper-pagination"></div>
+                                    <!-- Add Navigation -->
+                                    <div class="swiper-button-prev"></div>
+                                    <div class="swiper-button-next"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="haventWorkerHystory" style="display: flex; align-items: center; justify-content: center;" >
+                            <div>
+                                <div class="col-12 col-md-6" style="width:auto;display:flex; justify-content: center; align-items: center; height:80%">
+                                    <i data-feather='file' style="width:30%; height:80%;"></i>
+                                </div>
+                                <div class="avatar-icon font-medium-3" style="width:auto;display:flex; justify-content: center; align-items: center; height:20%">
+                                    Ажлын түүх байхгүй...
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock content %}

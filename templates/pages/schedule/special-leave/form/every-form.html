@@ -1,0 +1,48 @@
+
+<div class="modal modal-slide-in new-user-modal fade" id="modals-slide-in">
+    <div class="modal-dialog" >
+
+        <form class="add-new-timetable modal-content pt-0" method="post" id="specialLeaveEveryForm" onsubmit="EveryYearSubmit(event)">
+
+            {% csrf_token %}
+            <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+            >
+                ×
+            </button>
+            <div class="modal-header mb-1">
+                <h5 class="modal-title" >
+                    Жил болгоны амралтын өдөрүүд хадгалах
+                </h5>
+            </div>
+            <span id="loaderwtt-update" style="margin-top: -14px;"></span>
+
+            <div class="modal-body flex-grow-1 mt-2 text-center" id="update_loader_display" style="display: none;">
+                Уншиж байна...
+            </div>
+
+            <div class="modal-body flex-grow-1" id="update_main_display" style="display: block;">
+
+                <div class="mb-1 mt-2">
+                    <label class="form-label">Нэр *</label>
+                    <input type="hidden" name="id" id="id" value="">
+                    <input type="text" class="form-control" id="name" name="name" placeholder="Нэр" data-msg="Нэр талбарыг бөглөнө үү"/>
+                </div>
+
+                <div class="mb-1">
+                    <label class="form-label">Огноо *</label>
+                    <input type="text" class="form-control month-day" placeholder="сар өдөр" id="date" name="date" data-msg="Талбарыг бөглөнө үү" />
+                </div>
+
+                <div class="mt-1">
+                    <button type="submit" class="btn btn-primary me-1 data-submit">Хадгалах</button>
+                    <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Болих</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>

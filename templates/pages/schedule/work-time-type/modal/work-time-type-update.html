@@ -1,0 +1,90 @@
+
+<!--
+    URL: /schedule/work-time-type/
+    Нэр: Ажлын цагийн төрөл хуудас
+    Төрөл: Modal
+    Дэлгэрэнгүй: Засах дарахад гарж ирэх modal (update үйлдэл)
+-->
+
+<div class="modal fade" id="{{id}}" tabindex="-1" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered modal-sm">
+        <form id="timetable_update_form" class="timetable_update_form" onsubmit="updateData(event)">
+            <div class="modal-content" >
+                <div class="modal-body text-center" id="modalbody">
+                    <div class="text-center">
+                        <i class="fas fa-exclamation-circle fs-40"></i>
+                    </div>
+                    <div style="margin-top: 10px">
+                        Ажлын цагийн төрөлийн мэдээлэл шинэчлэх
+                    </div>
+                </div>
+                <div class="mb-1">
+                    <div class="modal-body text-center" id="loading-text" style="display: block;">
+                        Уншиж байна...
+                    </div>
+                    <div class="modal-body" id="timetable-update-modal" style="display: none;">
+
+                        <div class="mb-1">
+                            <label class="form-label">Нэр</label>
+                            <input type="text" class="form-control" id="name" name="name" data-msg="Ажлын цагийн төрлийн нэр талбарыг бөглөнө үү" />
+                        </div>
+                        <!-- <div class="mb-1">
+                            <div class="form-check form-check-inline mb-1" id="vacationDisplayDetail" >
+                                <input class="form-check-input" type="checkbox" id="uyn_khatan" name="uyn_khatan" value="False" {% if uyn_khatanDetail.value %}checked{% endif %} >
+                                <label class="form-check-label" for="vacation">Уян хатан хуваарь</label>
+                            </div>
+                        </div> -->
+
+                        <div class="mb-1">
+                            <label class="form-label">Эхлэх цаг</label>
+                            <input type="text" class="form-control time-mask" placeholder="цц:мм:сс" id="start_time" name="start_time" data-msg="Эхлэх цаг талбарыг бөглөнө үү" />
+                        </div>
+                        <div class="mb-1">
+                            <label class="form-label">Хоцорч болох лимит</label>
+                            <input type="text" class="form-control time-mask" placeholder="цц:мм:сс" id="hotorch_boloh_limit" name="hotorch_boloh_limit" data-msg="Хоцорч болох лимит талбарыг бөглөнө үү" />
+                        </div>
+                        <div class="mb-1">
+                            <label class="form-label">Дуусах цаг</label>
+                            <input type="text" class="form-control time-mask" placeholder="цц:мм:сс" id="end_time" name="end_time" value="00:00:00" data-msg="Дуусах цаг талбарыг бөглөнө үү" />
+                        </div>
+                        <div class="mb-1">
+                            <label class="form-label">Цайны цаг</label>
+                            <input type="text" class="form-control time-mask" placeholder="цц:мм:сс" id="lunch_time_start_time" name="lunch_time_start_time" data-msg="Цайны цаг эхлэх талбарыг бөглөнө үү" />
+                        </div>
+                        <!-- <div class="mb-1">
+                            <label class="form-label">Цайны цаг дуусах</label>
+                            <input type="text" class="form-control time-mask" placeholder="цц:мм:сс" id="lunch_time_end_time" name="lunch_time_end_time" data-msg="Цайны цаг дуусах талбарыг бөглөнө үү" />
+                        </div>
+                        <div class="mb-1 d-none">
+                            <label class="form-label">Ирсэн цаг бүртгэж эхлэх хугацаа</label>
+                            <input type="text" class="form-control time-mask" placeholder="цц:мм:сс" id="registration_start_time" name="registration_start_time" data-msg="Ирсэн цаг бүртгэж эхлэх хугацаа талбарыг бөглөнө үү" />
+                        </div>
+                        <div class="mb-1 d-none">
+                            <label class="form-label">Явсан цаг бүртгэж дуусах хугацаа</label>
+                            <input type="text" class="form-control time-mask" placeholder="цц:мм:сс" id="registration_end_time" name="registration_end_time" data-msg="Явсан цаг бүртгэж дуусах хугацаа талбарыг бөглөнө үү" />
+                        </div> -->
+
+                        <div class="mb-1">
+                            <label class="form-label">Ажиллах цаг</label>
+                            <input type="number" class="form-control" id="time_range" name="time_range" data-msg="Талбарыг бөглөнө үү" />
+                        </div>
+
+                    </div>
+                </div>
+                <span id="loaderwtt"></span>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button type="submit" class="btn btn-primary">Засах</button>
+                    <button type="reset" class="btn btn-outline-secondary" id="wttu_close_btn" data-bs-dismiss="modal" aria-label="Close">
+                        Болих
+                    </button>
+                </div>
+                {% if 'work-time-type-update' not in request.permissions %}
+                    <div class="inactive m-1">
+                        <p class="fs-18 text-secondary">Танд эрх байхгүй байна</p>
+                    </div>
+                {% endif %}
+            </div>
+        </form>
+    </div>
+</div>

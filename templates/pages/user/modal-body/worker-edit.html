@@ -1,0 +1,72 @@
+<form onsubmit="saveWorkerEdit(event)">
+    <div class="form-group">
+        <label class="form-label" for="position_select">Албан тушаал: </label>
+        <select
+            type="text"
+            id="position_select"
+            name="position"
+            class="select2 form-select"
+            data-msg="Ургийн овгоо оруулна уу"
+        >
+            <option value="">
+                -----------------
+            </option>
+            {% for position in choices.positions %}
+                <option
+                    value="{{position.id}}"
+                >
+                    {{position.name}}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+    {% if choices.pos in 'suborg, org' %}
+    <div class="form-group">
+        <label class="col-form-label" for="sub_org_select">Харьяалагдах алба нэгж</label>
+        <select
+            class="select2 form-select"
+            id="sub_org_select"
+            name="sub_org"
+            onchange="handleChangeSubSalbar(event)"
+        >
+            {% if choices.pos == 'org' %}
+                <option value="">
+                    --- {{request.employee.org.name}} ---
+                </option>
+            {% endif %}
+            {% for option in s_options %}
+                <option value="{{option.id}}-{{ forloop.counter0 }}">
+                    {{option.name}}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+    {% endif %}
+    {% if choices.pos in 'suborg, salbar, org' %}
+    <div class="form-group">
+        <label class="col-form-label" for="salbar_select">Тэнхим</label>
+        <select
+            class="form-select"
+            id="salbar_select"
+            name="salbar"
+        >
+        </select>
+    </div>
+    {% endif %}
+    <div class="form-group" id="commandInputs" >
+        <label class="form-label" for="fp-range">Тушаалын дугаар</label>
+        <input type="text" id="command_number" name="command_number" class="form-control " readonly="true"/>
+        <label class="form-label" for="fp-range">Тушаалын нэр</label>
+        <input type="text" id="command_name" name="command_name" class="form-control " readonly="true"/>
+    </div>
+    <a onclick="getCommandMoreInfo('edit')"  id="commandButton" class="text-primary fw-bold fs-12 mt-1 mb-2 d-block text-center">
+        <i data-feather='plus'></i> Тушаал сонгох
+    </a>
+    <label class="col-form-label error" for="commands_select" id ="command_empty">Тухайн ажилтантай холбоотой тушаал байхгүй байна.</label>
+    <button type="submit" class="btn btn-primary me-1 data-submit waves-effect waves-float waves-light">
+        Хадгалах
+    </button>
+    <button type="reset" class="btn btn-outline-secondary waves-effect" data-bs-dismiss="modal">
+        Болих
+    </button>
+</form>

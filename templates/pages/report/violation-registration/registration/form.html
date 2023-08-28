@@ -1,0 +1,43 @@
+<div class="modal modal-slide-in new-user-modal fade" id="modals-slide-in">
+    <div class="modal-dialog" >
+
+        <form class="add-new-timetable modal-content pt-0" id="formEvent" >
+
+            {% csrf_token %}
+            <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+            >
+                ×
+            </button>
+            <div class="modal-header mb-1">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    Зөрчил бүртгэх хуудас хадгалах
+                </h5>
+            </div>
+            <span id="loaderwtt-update" style="margin-top: -14px;"></span>
+
+            <div class="modal-body flex-grow-1 mt-2 text-center" id="update_loader_display" style="display: none;">
+                Уншиж байна...
+            </div>
+
+            <div class="modal-body flex-grow-1" id="update_main_display" style="display: block;">
+
+                <div class="mb-1 mt-2">
+                    <label class="form-label">Хавсралт: (Загвар файлыг бөглөөд илгээх)</label>
+                    <div id="dZUpload" class="dropzone">
+                        <div class="dz-default dz-message"></div>
+                    </div>
+                </div>
+
+                <div class="mt-1">
+                    <button type="submit" class="btn btn-primary me-1 data-submit">Хадгалах</button>
+                    <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Болих</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>

@@ -1,0 +1,688 @@
+
+<!--
+    URL: /schedule/create-vacation-type/
+    Нэр: Чөлөө авах хүсэлт үүсгэх байгууллага
+    Төрөл: Хуудас
+-->
+
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+{% block content %}
+
+{% load rest_framework %}
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/schedule.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-pickadate.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/pickadate/pickadate.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+<link rel="stylesheet" type="text/css" href="{% static 'assets/css/loader.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/extensions/jstree.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/extensions/ext-component-tree.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/extensions/dragula.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/extensions/ext-component-drag-drop.css' %}">
+
+{% endblock css %}
+
+<div class="content-body">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Чөлөөний төрөл</h4>
+                </div>
+                <div class="table-responsive" id="table-id">
+                    <div class="card-datatable table-responsive pt-0" id="vacation-type-table">
+                        <table class="time-list-table table text-center">
+                            <thead class="table-light">
+								<tr class="filter-container"></tr>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Нэр</th>
+                                    <th>Нэг өдрийн чөлөө</th>
+                                    <th>Олон өдрийн чөлөө</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+							<tfoot>
+								<tr>
+                                    <th>ID</th>
+                                    <th>Нэр</th>
+                                    <th>Нэг өдрийн чөлөө</th>
+                                    <th>Олон өдрийн чөлөө</th>
+                                    <th>Actions</th>
+                                </tr>
+							</tfoot>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Form -->
+                {% include "pages/schedule/create-vacation-type/form.html" %}
+
+				<!-- Modals -->
+                {% include "pages/main/delete-modal.html" with id="deleteVacationType" deletebtn="deletebtn" %}
+                {% include "pages/schedule/create-vacation-type/modal/add-reason.html" with id="addReason" %}
+
+				{% include "pages/main/warning-modal.html" %}
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.buttons.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jszip.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/pdfmake.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/vfs_fonts.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.html5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.print.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/cleave.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/addons/cleave-phone.us.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.date.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.time.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/legacy.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+
+<script src="{% static 'app-assets/js/scripts/pages/app-user-list.js' %}"></script>
+
+<script src="{% static 'app-assets/js/scripts/tables/table-datatables-advanced.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/pickers/form-pickers.js' %}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.0/select2.min.js"></script>
+
+<script src="{% static 'app-assets/vendors/js/forms/repeater/jquery.repeater.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/form-repeater.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/forms/select/select2.full.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/form-select2.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/extensions/jstree.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/extensions/dragula.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/extensions/ext-component-tree.js' %}"></script>
+
+<script>
+
+	let dragArea = $("#card-drag-area")
+
+	/** Tooltip ажиллуулж байна */
+    $(document).ready(function() {
+        $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+    });
+
+    //  header дээр input ийг clone хийж гаргах нь
+	cloneFooter('.time-list-table', [ 1 ])
+
+    // DATA-TABLE
+    const dataTable = $(".time-list-table")
+		.on('preXhr.dt', function ()
+		{
+			addLoader($('#vacation-type-table'))
+		})
+		.on( 'draw.dt', function () {
+			rmLoader($('#vacation-type-table'))
+        })
+		.DataTable({
+			processing: false,
+			dom: 'lBfrtip',
+			serverSide: true,
+			ajax: { url: `{% url 'create-vacation-type-json' %}` },
+			columns: [
+				// columns according to JSON
+				{ data: "id" },
+				{ data: "name" },
+				{ data: "one_day_vacation" },
+				{ data: "many_days_vacation" },
+				{ data: "" },
+			],
+			bFilter: true,
+			columnDefs: [
+				{
+					// Actions
+					targets: -1,
+					title: "Үйлдэл",
+					orderable: false,
+					render: function (data, type, full, meta)
+					{
+						let all_data = JSON.stringify(full)
+						return (
+							`<a
+								data-toggle="tooltip"
+								title="Зөвшөөрөх албан тушаалтан нэмэх"
+								data-bs-toggle="modal"
+								data-bs-target="{% if 'create-vacation-type-reason-read' in request.permissions %} #addReason {% else %} #warning-modal {% endif %}"
+								class="text-warning delete-record"
+								onclick="(changeVacationReason(${full.id}))"
+							>` +
+								feather.icons["plus"].toSvg(
+								{
+									class: "font-small-4",
+								}) +
+							`</a>` +
+							`<a
+								data-toggle="tooltip"
+								title="Засах"
+								onclick='cvtUpdate(
+									${all_data}
+								)'
+								class="text-primary delete-record ms-1"
+							>
+								${feather.icons["edit-3"].toSvg(
+								{
+									class: "font-small-4",
+								})}
+							</a>` +
+							`<a
+								data-toggle="tooltip"
+								title="Устгах"
+								data-bs-toggle="modal"
+								data-bs-target="{% if 'create-vacation-type-delete' in request.permissions %} #deleteVacationType {% else %} #warning-modal {% endif %}"
+								onclick=(changeChoosedId(function(){deletewts(${full.id})}))
+								class="text-primary-orange delete-record ms-1"
+							>
+								${feather.icons["trash-2"].toSvg(
+								{
+									class: "font-small-4",
+								})}
+							</a>`
+						);
+					},
+				},
+				{
+					targets: 0,
+					title: "#",
+					orderable: false,
+					render: function (data, type, full, meta) {
+						return (
+							meta.settings._iDisplayStart + meta.row + 1
+						);
+					},
+				},
+				{
+					targets: 2,
+					render: function (data, type, full, meta)
+					{
+						if(!full.one_day_vacation)
+						{
+							return (
+								`<div class="form-check form-check-inline">
+									<input class="form-check-input" type="checkbox" id="inlineCheckbox1" disabled/>
+								</div><p style="display: none;">Үгүй</p>`
+							);
+						}
+						return (
+							`<div class="form-check form-check-inline">
+								<input class="form-check-input" type="checkbox" id="inlineCheckbox1" checked disabled/>
+							</div><p style="display: none;">Тийм</p>`
+						);
+					},
+				},
+				{
+					targets: 3,
+					render: function (data, type, full, meta) {
+						if(!full.many_days_vacation)
+						{
+							return (
+								`
+								<div class="form-check form-check-inline">
+									<input class="form-check-input" type="checkbox" id="inlineCheckbox1" disabled/>
+								</div><p style="display: none;">Үгүй</p>
+								`
+							);
+						}
+						return (
+							`<div class="form-check form-check-inline">
+								<input class="form-check-input" type="checkbox" id="inlineCheckbox1" checked disabled/>
+							</div><p style="display: none;">Тийм</p>
+						`
+						);
+					},
+				},
+			],
+			initComplete: function()
+			{
+				rmLoader($('#table-id'))
+			},
+			order: [[2, "desc"]],
+			lengthMenu: [
+                [10, 25, 50, 100, -1],
+                [10, 25, 50, 100, 'Бүгд'],
+            ],
+			dom:
+				'<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+				'<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+				'<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+				">t" +
+				'<"d-flex justify-content-between mx-2 row mb-1"' +
+				'<"col-sm-12 col-md-6"i>' +
+				'<"col-sm-12 col-md-6"p>' +
+				">",
+			oLanguage: {
+				sProcessing: "Ачааллаж байна. ",
+				sSearch: "Хайх: ",
+				sEmptyTable: "Бичлэг байхгүй",
+				sInfoEmpty: "Нийт 0 бичлэг",
+				sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+				sInfoFiltered: " - _MAX_ бичлэгээс",
+				sLengthMenu: "_MENU_ бичлэг",
+				oPaginate: {
+					sFirst: "Эхэнд",
+					sLast: "Төгсгөлд",
+					sNext: "Дараах",
+					sPrevious: "Өмнөх",
+				},
+			},
+			// Buttons with Dropdown
+			buttons: [
+				{
+					extend: "collection",
+					className: "btn btn-outline-secondary dropdown-toggle me-2",
+					text:
+						feather.icons["external-link"].toSvg({
+							class: "font-small-4 me-50",
+						}) + "Export",
+					buttons: [
+						{
+							extend: "print",
+							text:
+								feather.icons["printer"].toSvg({
+									class: "font-small-4 me-50",
+								}) + "Print",
+							className: "dropdown-item",
+							exportOptions: { columns: [0, 1, 2, 3] },
+						},
+						{
+							extend: "csv",
+							text:
+								feather.icons["file-text"].toSvg({
+									class: "font-small-4 me-50",
+								}) + "Csv",
+							className: "dropdown-item",
+							exportOptions: { columns: [0, 1, 2, 3] },
+						},
+						{
+							extend: "excel",
+							text:
+								feather.icons["file"].toSvg({
+									class: "font-small-4 me-50",
+								}) + "Excel",
+							className: "dropdown-item",
+							exportOptions: { columns: [0, 1, 2, 3] },
+						},
+						{
+							extend: "pdf",
+							text:
+								feather.icons["clipboard"].toSvg({
+									class: "font-small-4 me-50",
+								}) + "Pdf",
+							className: "dropdown-item",
+							exportOptions: { columns: [0, 1, 2, 3] },
+						},
+						{
+							extend: "copy",
+							text:
+								feather.icons["copy"].toSvg({
+									class: "font-small-4 me-50",
+								}) + "Copy",
+							className: "dropdown-item",
+							exportOptions: { columns: [0, 1, 2, 3] },
+						},
+					],
+					init: function (api, node, config) {
+						$(node).removeClass("btn-secondary");
+						$(node).parent().removeClass("btn-group");
+						setTimeout(function () {
+							$(node)
+								.closest(".dt-buttons")
+								.removeClass("btn-group")
+								.addClass("d-inline-flex mt-50");
+						}, 50);
+					},
+				},
+				{
+					text: "Шинээр бүртгэх",
+					className: "add-new btn btn-primary ",
+					attr: {
+						"data-bs-toggle": "modal",
+						"data-bs-target": " {% if 'create-vacation-type-create-and-edit' in request.permissions %} #modals-slide-in {% else %} #warning-modal {% endif %} ",
+						"onClick": "clearFormDatas()"
+					},
+					init: function (api, node, config) {
+						$(node).removeClass("btn-secondary").addClass('click_btn')
+
+					},
+				},
+			],
+		});
+	searchFooter(dataTable)
+
+	/** Vacation ID */
+	let dataTableByReason
+	let choosedVacationType
+	cloneFooter(".add-reason-table", [1])
+
+	/** Банкын нэг айтем */
+    function batlahHumusinItem(data)
+    {
+        let html = `
+            <li class="list-group-item draggable" data-cid="${data.id}">
+                <div class="d-flex justify-content-between" style="display:flex; align-items: center; justify-content: center">
+					<div>
+                        <h5 style="text-align: center">
+                            ${data.name}
+                        </h5>
+                    </div>
+                    <div>
+                        <h5 style="text-align: center">
+                            ${data.org_position__name}
+                        </h5>
+                    </div>
+                    <a role="button" class="text-danger" onclick=(deleteReason(${data.id})) >
+                        ${feather.icons["trash-2"].toSvg({
+                            class: "font-small-4 ms-1",
+                        })}
+                    </a>
+                </div>
+            </li>
+        `
+        return html
+    }
+
+	function changeVacationReason(id)
+	{
+		/** Сонгогдсон ID */
+		choosedVacationType = id
+
+		useLoader(fetchData(`{% url 'create-vacation-reason-draggable' %}?vacation=${id}`, 'GET'), dragArea)
+			.then(
+				({ success, data, errors, error }) =>
+				{
+					dragArea.html("");
+					data.map(
+						(item, idx) =>
+						{
+							let htmlitem = batlahHumusinItem(item)
+							dragArea.append(htmlitem)
+						}
+					)
+					drake = dragula([document.getElementById('card-drag-area')], {
+						revertOnSpill: true
+					});
+					drake.on("drop", changingOrder)
+				}
+			)
+	}
+
+	/** зөөгдсөн дарааллыг зассан бас back дээрээ хадгалсан */
+    function changingOrder(el, target, source, sibling)
+    {
+        const fromId = $(el).data("cid")
+        const toId = $(sibling).data("cid")
+        const body = {
+            "to_id": toId,
+            "from_id": fromId
+        }
+        useLoader(fetchData("{% url 'time-schedule-register-order' %}", body, "PUT"), dragArea.parent()).catch(err => err)
+            .then(
+                ({ success, data, errors }) =>
+                {
+                    if (!success)
+                    {
+                        drake.cancel()
+                    }
+                }
+            )
+    }
+
+</script>
+
+<script>
+
+	/** Form домоос барих */
+    var jqForm = $('#createVacationTypeForm')
+
+    /** Шалгах утгууд (validation) */
+    if (jqForm.length) {
+
+        jQuery.validator.addMethod("noSpace", function(value, element)
+		{
+			return value.trim().length !== 0;
+		});
+
+		jQuery.validator.addMethod("atLeastone", function(value, element)
+		{
+			return $("#createVacationTypeForm input[type='checkbox']:checked").length > 0;
+		}, "Аль нэгийг сонгоно уу");
+
+        validate = jqForm.validate({
+            rules: {
+                'name': {
+                    required: true,
+                    noSpace: true
+                },
+                'times': {
+                    required: true
+                },
+				'many_days_vacation': {
+					atLeastone: true
+                }
+            }
+        });
+    }
+
+	/** Form домоос барих */
+	var jqFormVacation = $('#addRoleForm')
+
+	if (jqFormVacation.length) {
+		jQuery.validator.addMethod("noSpace", function(value, element)
+		{
+			return value.trim().length !== 0;
+		});
+
+		validateByVacation = jqFormVacation.validate({
+			rules: {
+				'name': {
+					required: true,
+					noSpace: true
+				},
+				'org_position': {
+					required: true,
+					noSpace: true
+				}
+			}
+		});
+	}
+
+	/** Засах товчлуур дарах үеийн moment */
+	/** Засах товчлуурыг дарахад гарж ирэх модалд утгуудыг оноож өгч байна */
+    async function cvtUpdate(data)
+    {
+
+        /** SideModal нээнэ */
+        document.querySelector(".click_btn").click()
+
+        /** Хэрвээ өөр modal дээр validation ажилж алдаа заагдсан байвал цэвэрлэнэ */
+		var jqForm = $('#createVacationTypeForm')
+		jqForm.validate().resetForm();
+		$('#createVacationTypeForm input').removeClass('error');
+
+		document.getElementById("name").value = data.name;
+		// document.getElementById("times").value = data.times;
+		document.getElementById("one_day_vacation").checked = data.one_day_vacation;
+		document.getElementById("many_days_vacation").checked = data.many_days_vacation;
+
+		document.getElementById("id").value = data.id;
+    }
+
+	async function addReasonForm(event)
+	{
+		// validation давж чадахгүй бол буцаагаад алдаа заана
+        if(!validateByVacation.checkForm())
+        {
+            return
+        }
+
+		/** Хуудас refresh хийлгэхгүй */
+		event.preventDefault()
+
+		/** Хэрэгтэй модалуудын утгуудыг л авна  */
+		const formData = new FormData(event.target)
+		const data = Object.fromEntries(formData)
+
+		delete data.DataTables_Table_1_length
+		data['vacation'] = choosedVacationType
+
+		/** Хүсэлтээ шидэж байна */
+		useLoader(fetchData(`/schedule/create-vacation-reason-ajax/`, data, 'POST'), $('#reason-id')).catch(err => err)
+			.then(
+				({ success, data, errors }) =>
+				{
+					if (success)
+					{
+						/** Амжилттай болбол Datatable refresh хийж modal-ийг хаана */
+						changeVacationReason(choosedVacationType)
+					}
+				}
+			)
+	}
+
+	/** Хадгалах товч дарахад үе (submit) */
+    async function cvtLogSubmit(event)
+	{
+		// validation давж чадахгүй бол буцаагаад алдаа заана
+        if(!validate.checkForm())
+        {
+            return
+        }
+
+		addLoader($('#createVacationTypeForm'))
+		/** Хэрвээ ID-тай байвал POST биш шинэчлэхгэж байгааг мэдээд утгуудаа авч хадгална */
+        if(document.getElementById('id').value)
+        {
+			/** Бүх утгаа хадгалах хувьсагч */
+		    let booleanDatas = ['one_day_vacation', 'many_days_vacation']
+
+			/** Хуудас refresh хийлгэхгүй */
+            event.preventDefault()
+
+            /** Хэрэгтэй модалуудын утгуудыг л авна  */
+            const formData = new FormData(event.target)
+            const data = Object.fromEntries(formData)
+
+			/** csrfmiddlewaretoken устгаж байна */
+            delete data.csrfmiddlewaretoken;
+
+			/** checkbox-ийн утгуудыг true гэдгийг буцаагаад false-ийг буцаахгүй байсан тул */
+            /** бүх checkbox утгуудыг хайгаад байхгүй байвал false утгатай хадгална */
+            for (let i=0; i<booleanDatas.length; i++)
+            {
+                if (!data[booleanDatas[i]])
+                {
+                    data[booleanDatas[i]] = 'False'
+                }
+            }
+
+			/** Хүсэлтээ шидэж байна */
+            useLoader(fetchData(`/schedule/create-vacation-type-ajax/${document.getElementById('id').value}/`, data, 'PUT'), $(event.target)).catch(err => err)
+				.then(
+					({ success, data, errors }) =>
+					{
+						/** Амжилттай болбол Datatable refresh хийж modal-ийг хаана */
+						if (success)
+						{
+							setTimeout(function()
+							{
+								document.querySelector(".btn-close").click()
+							},
+							300)
+							dataTable.ajax.reload()
+						}
+					}
+				)
+		}
+	}
+
+	/** Шинээр бүртгүүлэх дарахад бүх утга хоосон байна */
+	function clearFormDatas()
+    {
+		document.getElementById("name").value = '';
+		// document.getElementById("times").value = '';
+		document.getElementById("one_day_vacation").checked = false;
+		document.getElementById("many_days_vacation").checked = false;
+
+		document.getElementById("id").value = '';
+	}
+
+</script>
+
+<script>
+	// Устгах үйлдэл
+	async function deletewts(choosedId)
+    {
+        useLoader(fetchData(`/schedule/create-vacation-type-ajax/${choosedId}/`, null, 'DELETE'), $('#table-id')).catch(err => err)
+            .then(
+                ({ success, data, errors }) =>
+                {
+                    if (success)
+                    {
+                        dataTable.ajax.reload()
+                    }
+                }
+            )
+    }
+
+	async function deleteReason(choosedId)
+	{
+		useLoader(fetchData(`/schedule/create-vacation-reason-ajax/${choosedId}/`, null, 'DELETE'), $('#reason-id')).catch(err => err)
+			.then(
+				({ success, data, errors }) =>
+				{
+					if (success)
+					{
+						changeVacationReason(choosedVacationType)
+						/** Tooltip нуух */
+						$('.tooltip').hide()
+					}
+				}
+			)
+	}
+
+</script>
+
+{% endblock js %}

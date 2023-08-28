@@ -1,0 +1,1209 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+{% block content %}
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/vendors.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/file-uploaders/dropzone.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/form-file-uploader.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-pickadate.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/pickadate/pickadate.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/jkanban/jkanban.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/pages/app-kanban.css' %}">
+
+{% endblock css %}
+
+<div class="content-body">
+    <div class="row" id="table-hover-row">
+        <div class="col-12">
+            <ul class="nav nav-pills mb-1">
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link active" id="dotood-tomilolt-tab" data-bs-toggle="pill" data-bs-target="#dotood-tomilolt" type="button" role="tab" aria-controls="dotood-tomilolt" aria-selected="true">
+                        <span class="fw-bold fs-12">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                            Дотоодын томилолт
+                        </span>
+                    </a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link" id="gadaad-tomilolt-tab" data-bs-toggle="pill" data-bs-target="#gadaad-tomilolt" type="button" role="tab" aria-controls="gadaad-tomilolt" aria-selected="false">
+                        <span class="fw-bold fs-12">
+                            <i data-feather='clipboard'></i>
+                            Гадаадын томилолт
+                        </span>
+                    </a>
+                </li>
+            </ul>
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Томилолт</h4>
+                </div>
+                <div class="table-body">
+                    <div class="tab-content" id="pills-tabContent">
+                        <div class="tab-pane fade show active" id="dotood-tomilolt" role="tabpanel" aria-labelledby="dotood-tomilolt-tab">
+                            <div class="table-responsive card-datatable">
+                                <table class="table tomilolt-data-table ">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th>Томилолтын төрөл</th>
+                                            <th>Аймаг/хот</th>
+                                            <th>Сум/дүүрэг</th>
+                                            <th>Баг/хороо</th>
+                                            <th>Томилолтыг үүсгэсэн</th>
+                                            <th>Эхлэх огноо</th>
+                                            <th>Дуусах огноо</th>
+                                            <th>Өдөр</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="gadaad-tomilolt" role="tabpanel" aria-labelledby="gadaad-tomilolt-tab">
+                            <div class="table-responsive card-datatable">
+                                <table class="table tomilolt-data-table-gadaad ">
+                                    <thead class="table-light">
+                                        <tr>
+                                            <th></th>
+                                            <th></th>
+                                            <th>Томилолтын төрөл</th>
+                                            <th>Улс болон мэдээлэл</th>
+                                            <th>Томилолтыг үүсгэсэн</th>
+                                            <th>Эхлэх огноо</th>
+                                            <th>Дуусах огноо</th>
+                                            <th>Өдөр</th>
+                                            <th></th>
+                                        </tr>
+                                    </thead>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal modal-slide-in new-user-modal fade" id="modals-slide-in">
+                    <div class="modal-dialog custom-50">
+                        <form id="tomilolt-form" class="add-new-user modal-content pt-0">
+                            <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                            >
+                                ×
+                            </button>
+                            <div class="modal-header mb-1">
+                                <h5 class="modal-title" id="exampleModalLabel">
+                                    Томилолт
+                                </h5>
+                            </div>
+                            <div class="modal-body flex-grow-1">
+                                <div class="row">
+                                    <div class="mb-1">
+                                        <label class="form-label">Томилолтын төрөл</label>
+                                        <select id="for_tomilolt_id" name="for_tomilolt_id" class="select2 form-select" data-msg="Cонгоно уу">
+                                            {% for type in for_tomilolt %}
+                                                <option value="{{ type.id }}">
+                                                    {{ type.name }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="mb-1">
+                                        <label class="form-label">Ажилтан сонгох</label>
+                                        <select id="employees" name="employees" class="select2 form-select" multiple data-msg="Cонгоно уу">
+                                            {% for emplo in employees %}
+                                                <option value="{{ emplo.id }}">
+                                                    {{ emplo.user.info.last_name }} {{ emplo.user.info.first_name }}
+                                                </option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="mb-1 position-relative">
+                                        <label class="form-label">Эхлэх огноо</label>
+                                        <input type="date" id="start_date" name="start_date" class="form-control pickadate-months-year-00-30 flatpickr-input" placeholder="YYYY-MM-DD" data-msg="Хугацаа сонгоно уу" />
+                                    </div>
+                                    <div class="mb-1 position-relative">
+                                        <label class="form-label">Дуусах огноо</label>
+                                        <input type="date" id="end_date" name="end_date" class="form-control pickadate-months-year-00-30 flatpickr-input" placeholder="YYYY-MM-DD" data-msg="Хугацаа сонгоно уу" />
+                                    </div>
+                                    <div class="mb-1">
+                                        <label class="form-label">Хавсралт:</label>
+                                        <div id="dZUpload" class="dropzone">
+                                            <div class="dz-default dz-message"></div>
+                                        </div>
+                                    </div>
+                                    <div class="mb-1 d-none">
+                                        <label class="form-label">Гадаадруу томилолтоор явах улс болон бусад мэдээлэл:</label>
+                                        <textarea id="foreignCountry" name="foreignCountry" class="form-control" rows="3"></textarea>
+                                    </div>
+                                    <div class="mb-1 d-none">
+                                        <label class="form-label">Аймаг/хот</label>
+                                        <select onchange="if (this.value) unit1SelectHandler(this);" id="unit1_id" name="unit1_id" class="select2 form-select">
+                                        </select>
+                                    </div>
+                                    <div class="mb-1 d-none">
+                                        <label class="form-label">Сум/дүүрэг</label>
+                                        <select onchange="if (this.value) unit2SelectHandler(this);" id="unit2_id" name="unit2_id" class="select2 form-select">
+                                        </select>
+                                    </div>
+                                    <div class="mb-1 d-none">
+                                        <label class="form-label">Баг/хороо</label>
+                                        <select id="unit3_id" name="unit3_id" class="select2 form-select">
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <button type="button" onclick="tomiloltRegSubmit(event)" class="btn btn-primary me-1">Хадгалах</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% include 'tools/modal/attach-modal.html' %}
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+
+<script src="{% static 'app-assets/js/scripts/pages/app-user-list.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/file-uploaders/dropzone.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.buttons.min.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jszip.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/pdfmake.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/vfs_fonts.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.html5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.print.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/cleave.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/addons/cleave-phone.us.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/tables/table-datatables-fixedColumns.min.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.date.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.time.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/legacy.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+
+<script src="{% static 'app-assets/js/scripts/tables/table-datatables-advanced.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/pickers/form-pickers.js' %}"></script>
+
+<script>
+
+    const displayCreateBtnTomiloltGadaad = () =>
+    {
+        const hasPremission = "{% if 'tomilolt-create' in request.permissions %}yes{% endif %}"
+        if(hasPremission === 'yes')
+        {
+            return(
+                {
+                    text: "Шинээр бүртгэх",
+                    className: "add-new btn btn-primary",
+                    attr: {
+                        "id": "modalToggler",
+                        "data-bs-toggle": "modal",
+                        "data-bs-target": "#modals-slide-in",
+                        "onclick": "clearAllInputs('gadaad')",
+                        "style": "margin-top: 5px"
+                    },
+                    init: function (api, node, config) {
+                        $(node).removeClass("btn-secondary");
+                    },
+                }
+            )
+        }
+    }
+    let gadaadState = 'active'
+
+    var tomiloltTableGadaad
+    tomiloltTableGadaad = $(".tomilolt-data-table-gadaad").DataTable({
+        fixedColumns:   {
+            left: 0,
+            right: 1
+        },
+        processing: false,
+        dom: 'lBfrtip',
+        serverSide: true,
+        ajax: { url: `/worker/designationcrudPaginate/gadaad/active/` }, // JSON file to add data
+        columns: [
+            { data: null },
+            { data: null },
+            { data: "for_tomilolt" },
+            { data: "foreignCountry" },
+            { data: "created_by" },
+            { data: "start_date" },
+            { data: "end_date" },
+            { data: "days" },
+            { data: null },
+        ],
+        columnDefs: [
+            {
+                // For Responsive
+                className: "control",
+                orderable: false,
+                responsivePriority: 2,
+                targets: 0,
+                render: function (data, type, full, meta) {
+                    return "";
+                },
+            },
+            {
+				targets: 4,
+				render: function (data, type, full, meta) {
+					return (gadaadState === 'deleted' ? full.deleted_by : full.created_by);
+				},
+			},
+            {
+				targets: 5,
+				render: function (data, type, full, meta) {
+					return (`<span">${timeZoneToDateString(full.start_date, false)}</span>`);
+				},
+			},
+            {
+				targets: 6,
+				render: function (data, type, full, meta) {
+					return (`<span">${timeZoneToDateString(full.end_date, false)}</span>`);
+				},
+			},
+            {
+                // Actions
+                targets: -1,
+                title: "Үйлдэл",
+                orderable: false,
+                render: function (data, type, full, meta) {
+
+                    const now  = new Date().getTime()
+                    const endDate = new Date(full.end_date).getTime()
+                    const isDelete = full.deleted_by ? true : false
+
+                    if(now > endDate) return `
+                                <a
+                                    class="delete-record text-info"
+                                    onclick="getAttachmetsList('/worker/designation-attachments/', ${full.id})"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#attachment-modal"
+                                >
+                                    <span
+                                        data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Хавсралт татах"
+                                    >
+                                        ${feather.icons["download"].toSvg({
+                                            class: "font-small-4 me-50",
+                                        })}
+                                    </span>
+                                </a>
+                            `
+                    if(full.deleted_by) return `
+                                <a
+                                    class="delete-record text-info"
+                                    onclick="getAttachmetsList('/worker/designation-attachments/', ${full.id})"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#attachment-modal"
+                                >
+                                    <span
+                                        data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Хавсралт татах"
+                                    >
+                                        ${feather.icons["download"].toSvg({
+                                            class: "font-small-4 me-50",
+                                        })}
+                                    </span>
+                                </a>
+                            `
+
+                    return (
+                        `
+                        {% if 'tomilolt-update' in request.permissions %}
+                            <a
+								class="delete-record text-primary"
+								onclick="handleEditTomilolt(${full.id}, 'gadaad')"
+							>
+								<span
+									data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Томилолт засах"
+								>
+									${feather.icons["edit-3"].toSvg({
+										class: "font-small-4 me-50",
+									})}
+								</span>
+							</a>
+                        {% endif %}
+                        {% if 'tomilolt-delete' in request.permissions %}
+							<a onclick="handleDecline(${full.id})" class="delete-record text-primary-orange">
+                                <span
+									data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Томилолт цуцлах"
+								>
+                                    ${feather.icons["x"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    })}
+								</span>
+							</a>
+                        {% endif %}
+                                <a
+                                    class="delete-record text-info"
+                                    onclick="getAttachmetsList('/worker/designation-attachments/', ${full.id})"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#attachment-modal"
+                                >
+                                    <span
+                                        data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Хавсралт татах"
+                                    >
+                                        ${feather.icons["download"].toSvg({
+                                            class: "font-small-4 me-50",
+                                        })}
+                                    </span>
+                                </a>
+                        `
+                    );
+                },
+            },
+            {
+                targets: 1,
+                title: "#",
+                orderable: false,
+                render: function (data, type, full, meta) {
+                    return (
+                        meta.settings._iDisplayStart + meta.row + 1
+                    );
+                },
+            },
+        ],
+        order: [[3, "desc"]],
+        lengthMenu: [
+            [10, 25, 50, 100, -1],
+            [10, 25, 50, 100, 'Бүгд'],
+        ],
+        dom:
+            '<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+            '<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+            '<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+            ">t" +
+            '<"d-flex justify-content-between mx-2 row mb-1"' +
+            '<"col-sm-12 col-md-6"i>' +
+            '<"col-sm-12 col-md-6"p>' +
+            ">",
+        oLanguage: {
+            sProcessing: "Ачааллаж байна. ",
+            sSearch: "Хайх: ",
+            sEmptyTable: "Бичлэг байхгүй",
+            sInfoEmpty: "Нийт 0 бичлэг",
+            sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+            sInfoFiltered: " - _MAX_ бичлэгээс",
+            sLengthMenu: "_MENU_ бичлэг",
+            oPaginate: {
+                sFirst: "Эхэнд",
+                sLast: "Төгсгөлд",
+                sNext: "Дараах",
+                sPrevious: "Өмнөх",
+            },
+        },
+        // Buttons with Dropdown
+        buttons: [
+            {
+                extend: "collection",
+                className: "btn btn-outline-secondary dropdown-toggle me-2",
+                text:
+                    feather.icons["external-link"].toSvg({
+                        class: "font-small-4 me-50",
+                    }) + "Export",
+                buttons: [
+                    {
+                        extend: "print",
+                        text:
+                            feather.icons["printer"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Print",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7] },
+                    },
+                    {
+                        extend: "csv",
+                        text:
+                            feather.icons["file-text"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Csv",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7] },
+                    },
+                    {
+                        extend: "excel",
+                        text:
+                            feather.icons["file"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Excel",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7] },
+                    },
+                    {
+                        extend: "pdf",
+                        text:
+                            feather.icons["clipboard"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Pdf",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7] },
+                    },
+                    {
+                        extend: "copy",
+                        text:
+                            feather.icons["copy"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Copy",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7] },
+                    },
+                ],
+                init: function (api, node, config) {
+                    $(node).removeClass("btn-secondary");
+                    $(node).parent().removeClass("btn-group");
+                    setTimeout(function () {
+                        $(node)
+                            .removeClass("btn-group")
+                            .addClass("d-inline-flex mt-50");
+                    }, 50);
+                },
+            },
+            {
+				extend: "collection",
+				className: "btn btn-outline-secondary flaot-start px-1 me-2 dropdown-toggle custom-a-none",
+				text: 'Төлөв: Идэвхитэй',
+				config: {
+					left: 0,
+					right: 0
+				},
+                attr: {
+                    "id": "stateTogglerBtn",
+                    "style": "margin-top: 7px"
+                },
+				buttons: [
+					{
+						extend: "",
+						text: "Идэвхитэй",
+						className: "dropdown-item",
+						exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7] },
+                        action: function(e, dt, node, config) {
+                            dt.column( 4 ).header().innerHTML = 'Томилолтыг үүсгэсэн'
+                            const dropDownBtn = $('#stateTogglerBtn')
+                            dropDownBtn.trigger("click")
+                            gadaadState = 'active'
+                            dropDownBtn.html('Төлөв: Идэвхитэй')
+                            dt.ajax.url(`/worker/designationcrudPaginate/gadaad/active/`).load()
+						},
+					},
+					{
+						extend: "",
+						text: "Хүлээгдэж буй",
+						className: "dropdown-item",
+						exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7] },
+                        action: function(e, dt, node, config) {
+                            dt.column( 4 ).header().innerHTML = 'Томилолтыг үүсгэсэн'
+                            const dropDownBtn = $('#stateTogglerBtn')
+                            dropDownBtn.trigger("click")
+                            gadaadState = 'pending'
+                            dropDownBtn.html('Төлөв: Хүлээгдэж буй')
+                            dt.ajax.url(`/worker/designationcrudPaginate/gadaad/pending/`).load()
+						},
+					},
+                    {
+						extend: "",
+						text: "Дууссан",
+						className: "dropdown-item",
+						exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7] },
+                        action: function(e, dt, node, config) {
+                            dt.column( 4 ).header().innerHTML = 'Томилолтыг үүсгэсэн'
+                            const dropDownBtn = $('#stateTogglerBtn')
+                            dropDownBtn.trigger("click")
+                            gadaadState = 'end'
+                            dropDownBtn.html('Төлөв: Дууссан')
+                            dt.ajax.url(`/worker/designationcrudPaginate/gadaad/end/`).load()
+						},
+					},
+                    {
+						extend: "",
+						text: "Цуцлагдсан",
+						className: "dropdown-item",
+						exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7] },
+                        action: function(e, dt, node, config) {
+                            dt.column( 4 ).header().innerHTML = 'Томилолтыг цуцалсан'
+                            const dropDownBtn = $('#stateTogglerBtn')
+                            dropDownBtn.trigger("click")
+                            gadaadState = 'deleted'
+                            dropDownBtn.html('Төлөв: Цуцлагдсан')
+                            dt.ajax.url(`/worker/designationcrudPaginate/gadaad/deleted/`).load()
+						},
+					},
+				]
+			},
+            displayCreateBtnTomiloltGadaad()
+        ],
+    });
+</script>
+
+<script>
+    const displayCreateBtnTomilolt = () =>
+    {
+        const hasPremission = "{% if 'tomilolt-create' in request.permissions %}yes{% endif %}"
+        if(hasPremission === 'yes')
+        {
+            return(
+                {
+                        text: "Шинээр бүртгэх",
+                        className: "add-new btn btn-primary",
+                        attr: {
+                            "id": "modalToggler",
+                            "data-bs-toggle": "modal",
+                            "data-bs-target": "#modals-slide-in",
+                            "onclick": "clearAllInputs('dotood')",
+                            "style": "margin-top: 5px"
+                        },
+                }
+            )
+        }
+    }
+
+    var tomiloltTable
+
+    let dotoodState = 'active'
+
+    tomiloltTable = $(".tomilolt-data-table").DataTable({
+        // "fnInitComplete": function(oSettings, json) {
+        //     console.log(oSettings.aoColumns)
+        // },
+        fixedColumns:   {
+            left: 0,
+            right: 1
+        },
+        processing: false,
+        dom: 'lBfrtip',
+        serverSide: true,
+        ajax: { url: `/worker/designationcrudPaginate/dotood/active/` }, // JSON file to add data
+        columns: [
+            { data: null },
+            { data: null },
+            { data: "for_tomilolt" },
+            { data: "unit1" },
+            { data: "unit2" },
+            { data: "unit3" },
+            { data: "created_by" },
+            { data: "start_date" },
+            { data: "end_date" },
+            { data: "days" },
+            { data: null },
+        ],
+        columnDefs: [
+            {
+                // For Responsive
+                className: "control",
+                orderable: false,
+                responsivePriority: 2,
+                targets: 0,
+                render: function (data, type, full, meta) {
+                    return "";
+                },
+            },
+            {
+				targets: 6,
+				render: function (data, type, full, meta) {
+					return (dotoodState === 'deleted' ? full.deleted_by : full.created_by);
+				},
+			},
+            {
+				targets: 7,
+				render: function (data, type, full, meta) {
+					return (`<span">${timeZoneToDateString(full.start_date, false)}</span>`);
+				},
+			},
+            {
+				targets: 8,
+				render: function (data, type, full, meta) {
+					return (`<span">${timeZoneToDateString(full.end_date, false)}</span>`);
+				},
+			},
+            {
+                // Actions
+                targets: -1,
+                title: "Үйлдэл",
+                orderable: false,
+                render: function (data, type, full, meta) {
+
+                    const now  = new Date().getTime()
+                    const endDate = new Date(full.end_date).getTime()
+                    const isDelete = full.deleted_by ? true : false
+
+                    if(now > endDate) return `
+                                <a
+                                    class="delete-record text-info"
+                                    onclick="getAttachmetsList('/worker/designation-attachments/', ${full.id})"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#attachment-modal"
+                                >
+                                    <span
+                                        data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Хавсралт татах"
+                                    >
+                                        ${feather.icons["download"].toSvg({
+                                            class: "font-small-4 me-50",
+                                        })}
+                                    </span>
+                                </a>
+                            `
+                    if(full.deleted_by) return `
+                                <a
+                                    class="delete-record text-info"
+                                    onclick="getAttachmetsList('/worker/designation-attachments/', ${full.id})"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#attachment-modal"
+                                >
+                                    <span
+                                        data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Хавсралт татах"
+                                    >
+                                        ${feather.icons["download"].toSvg({
+                                            class: "font-small-4 me-50",
+                                        })}
+                                    </span>
+                                </a>
+                            `
+
+                    return (
+                        `
+                        {% if 'tomilolt-update' in request.permissions %}
+                            <a
+								class="delete-record text-primary"
+								onclick="handleEditTomilolt(${full.id}, 'dotood')"
+							>
+								<span
+									data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Томилолт засах"
+								>
+									${feather.icons["edit-3"].toSvg({
+										class: "font-small-4 me-50",
+									})}
+								</span>
+							</a>
+                        {% endif %}
+                        {% if 'tomilolt-delete' in request.permissions %}
+							<a onclick="handleDecline(${full.id})" class="delete-record text-primary-orange">
+                                <span
+									data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Томилолт цуцлах"
+								>
+                                    ${feather.icons["x"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    })}
+								</span>
+							</a>
+                        {% endif %}
+                            <a
+                                class="delete-record text-info"
+                                onclick="getAttachmetsList('/worker/designation-attachments/', ${full.id})"
+                                data-bs-toggle="modal"
+                                data-bs-target="#attachment-modal"
+                            >
+                                <span
+                                    data-bs-toggle="tooltip" data-bs-placement="left" data-bs-original-title="Хавсралт татах"
+                                >
+                                    ${feather.icons["download"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    })}
+                                </span>
+                            </a>
+                        `
+                    );
+                },
+            },
+            {
+                targets: 1,
+                title: "#",
+                orderable: false,
+                render: function (data, type, full, meta) {
+                    return (
+                        meta.settings._iDisplayStart + meta.row + 1
+                    );
+                },
+            },
+        ],
+        order: [[3, "desc"]],
+        lengthMenu: [
+            [10, 25, 50, 100, -1],
+            [10, 25, 50, 100, 'Бүгд'],
+        ],
+        dom:
+            '<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+            '<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+            '<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+            ">t" +
+            '<"d-flex justify-content-between mx-2 row mb-1"' +
+            '<"col-sm-12 col-md-6"i>' +
+            '<"col-sm-12 col-md-6"p>' +
+            ">",
+        oLanguage: {
+            sProcessing: "Ачааллаж байна. ",
+            sSearch: "Хайх: ",
+            sEmptyTable: "Бичлэг байхгүй",
+            sInfoEmpty: "Нийт 0 бичлэг",
+            sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+            sInfoFiltered: " - _MAX_ бичлэгээс",
+            sLengthMenu: "_MENU_ бичлэг",
+            oPaginate: {
+                sFirst: "Эхэнд",
+                sLast: "Төгсгөлд",
+                sNext: "Дараах",
+                sPrevious: "Өмнөх",
+            },
+        },
+        // Buttons with Dropdown
+        buttons: [
+            {
+                extend: "collection",
+                className: "btn btn-outline-secondary dropdown-toggle me-2",
+                text:
+                    feather.icons["external-link"].toSvg({
+                        class: "font-small-4 me-50",
+                    }) + "Export",
+                buttons: [
+                    {
+                        extend: "print",
+                        text:
+                            feather.icons["printer"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Print",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7, 8, 9] },
+                    },
+                    {
+                        extend: "csv",
+                        text:
+                            feather.icons["file-text"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Csv",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7, 8, 9] },
+                    },
+                    {
+                        extend: "excel",
+                        text:
+                            feather.icons["file"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Excel",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7, 8, 9] },
+                    },
+                    {
+                        extend: "pdf",
+                        text:
+                            feather.icons["clipboard"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Pdf",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7, 8, 9] },
+                    },
+                    {
+                        extend: "copy",
+                        text:
+                            feather.icons["copy"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Copy",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7, 8, 9] },
+                    },
+                ],
+                init: function (api, node, config) {
+                    $(node).removeClass("btn-secondary");
+                    $(node).parent().removeClass("btn-group");
+                    setTimeout(function () {
+                        $(node)
+                            .removeClass("btn-group")
+                            .addClass("d-inline-flex mt-50");
+                    }, 50);
+                },
+            },
+            {
+				extend: "collection",
+				className: "btn btn-outline-secondary flaot-start px-1 me-2 dropdown-toggle custom-a-none",
+				text: 'Төлөв: Идэвхитэй',
+				config: {
+					left: 0,
+					right: 0
+				},
+                attr: {
+                    "id": "stateTogglerBtnDotood",
+                    "style": "margin-top: 7px"
+                },
+				buttons: [
+					{
+						extend: "",
+						text: "Идэвхитэй",
+						className: "dropdown-item",
+						exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7, 8, 9] },
+                        action: function(e, dt, node, config) {
+                            dt.column( 6 ).header().innerHTML = 'Томилолтыг үүсгэсэн'
+                            const dropDownBtn = $('#stateTogglerBtnDotood')
+                            dropDownBtn.trigger("click")
+                            dotoodState = 'active'
+                            dropDownBtn.html('Төлөв: Идэвхитэй')
+							dt.ajax.url(`/worker/designationcrudPaginate/dotood/active/`).load()
+						},
+					},
+					{
+						extend: "",
+						text: "Хүлээгдэж буй",
+						className: "dropdown-item",
+						exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7, 8, 9] },
+                        action: function(e, dt, node, config) {
+                            dt.column( 6 ).header().innerHTML = 'Томилолтыг үүсгэсэн'
+                            const dropDownBtn = $('#stateTogglerBtnDotood')
+                            dropDownBtn.trigger("click")
+                            dotoodState = 'pending'
+                            dropDownBtn.html('Төлөв: Хүлээгдэж буй')
+							dt.ajax.url(`/worker/designationcrudPaginate/dotood/pending/`).load()
+						},
+					},
+                    {
+						extend: "",
+						text: "Дууссан",
+						className: "dropdown-item",
+						exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7, 8, 9] },
+                        action: function(e, dt, node, config) {
+                            dt.column( 6 ).header().innerHTML = 'Томилолтыг үүсгэсэн'
+                            const dropDownBtn = $('#stateTogglerBtnDotood')
+                            dropDownBtn.trigger("click")
+                            dotoodState = 'end'
+                            dropDownBtn.html('Төлөв: Дууссан')
+							dt.ajax.url(`/worker/designationcrudPaginate/dotood/end/`).load()
+						},
+					},
+                    {
+						extend: "",
+						text: "Цуцлагдсан",
+						className: "dropdown-item",
+						exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7, 8, 9] },
+                        action: function(e, dt, node, config) {
+                            dt.column( 6 ).header().innerHTML = 'Томилолтыг цуцалсан'
+                            const dropDownBtn = $('#stateTogglerBtnDotood')
+                            dropDownBtn.trigger("click")
+                            dotoodState = 'deleted'
+                            dropDownBtn.html('Төлөв: Цуцлагдсан')
+							dt.ajax.url(`/worker/designationcrudPaginate/dotood/deleted/`).load()
+						},
+					},
+				]
+			},
+            displayCreateBtnTomilolt()
+        ],
+    });
+</script>
+
+<script>
+    const tomiloltInputs = [
+        'start_date',
+        'end_date',
+        'for_tomilolt_id',
+        'unit1_id',
+        'unit2_id',
+        'unit3_id',
+        'foreignCountry',
+        'employees'
+    ]
+    var multipleFiles = $("#dZUpload")
+    var tomiloltForm = $('#tomilolt-form')
+    let isCreateTomilolt = 'create'
+    const foreignCountryTextArea = document.getElementById('foreignCountry')
+    const unit1Select = document.getElementById('unit1_id')
+    const unit2Select = document.getElementById('unit2_id')
+    const unit3Select = document.getElementById('unit3_id')
+    const start_date = document.getElementById('start_date')
+    const end_date = document.getElementById('end_date')
+    let isDotoorOrGadaad
+    var removeFiles = [] //  арилгасан файлууд зөвхөн засах үед
+
+    Dropzone.autoDiscover = false;
+    let dz = new Dropzone("#dZUpload", {
+        url: "/test",
+        clickable: true,
+        paramName: 'file', // The name that will be used to transfer the file
+        autoProcessQueue: false,
+        addRemoveLinks: true,
+        accept: function(file, done)
+        {
+            if (file.size > 1*1024*1024) {
+                this.removeFile(file);
+                alert('file too big');
+                return false;
+            }
+
+            $(".dz-progress").remove();
+            $(".dz-remove").html(
+                `<div><span class='fa fa-trash text-danger'></span></div>`
+            );
+            return file.previewElement.classList.add("dz-success");
+        },
+        removedfile: function(file) {
+            //  зөвхөн засаж байгаа үед хуучин байсан зургаас id ийг авна
+            file.id && removeFiles.push(file.id)
+
+            $(file.previewElement).remove();
+        }
+    });
+
+    let validateChiglelK
+    if (tomiloltForm.length) {
+        validateChiglelK = tomiloltForm.validate({
+            rules: {
+                "start_date": {
+                    required: true
+                },
+                "end_date": {
+                    required: true
+                },
+                "for_tomilolt_id": {
+                    required: true
+                },
+                "unit1_id": {
+                    required: true
+                },
+                "unit2_id": {
+                    required: true
+                },
+                "foreignCountry": {
+                    required: true
+                },
+                "employees": {
+                    required: true
+                },
+            }
+        })
+    }
+
+    // Бүх input хоослох
+    const clearAllInputs = (type) =>
+    {
+        isCreateTomilolt = 'create'
+        isDotoorOrGadaad = type
+        if(type === 'gadaad')
+        {
+            foreignCountryTextArea.parentElement.classList.remove('d-none')
+            unit1Select.parentElement.parentElement.parentElement.classList.add('d-none')
+            unit2Select.parentElement.parentElement.parentElement.classList.add('d-none')
+            unit3Select.parentElement.parentElement.parentElement.classList.add('d-none')
+        }
+        else
+        {
+            foreignCountryTextArea.parentElement.classList.add('d-none')
+            unit1Select.parentElement.parentElement.parentElement.classList.remove('d-none')
+            unit2Select.parentElement.parentElement.parentElement.classList.remove('d-none')
+            unit3Select.parentElement.parentElement.parentElement.classList.remove('d-none')
+        }
+        dz.files.map(
+            (_file, idx) =>
+            {
+                $(_file.previewElement).remove();
+                dz.emit("removefile", _file);
+            }
+        )
+
+        dz.files = []
+        $(".dz-default").show()
+        clearAllUnitSelects()
+        tomiloltInputs.map(
+            (input) =>
+            {
+                if(input === 'employees')
+                {
+                    $(`#${input}`).val([]).trigger('change');
+                    return
+                }
+                if(input === 'for_tomilolt_id')
+                {
+                    $(`#${input}`).val([]).trigger('change');
+                    return
+                }
+                if(input === 'start_date' || input === 'end_date')
+                {
+                    $(`#${input}`).pickadate('picker').set('select', null)
+                    return
+                }
+                document.getElementById(input).value = null
+            }
+        )
+    }
+
+    // Update товч дарах
+    const handleEditTomilolt = async (id, type, rsp) =>
+    {
+        clearAllInputs(type)
+
+        // юуг update хийхийг хадгалах gadaad or dotood
+        isCreateTomilolt = id
+        $("#modals-slide-in").modal('show')
+
+        // өөрчлөхөөр сонгосоны дата г авах
+        const { success, data } = rsp ? rsp : await fetchData(`/worker/designationcrud/${id}/`, null, 'GET')
+        if(success)
+        {
+            // авсан датагаа input д өгөх
+            tomiloltInputs.map(
+                (input) =>
+                {
+                    if(input === 'employees')
+                    {
+                        $(`#${input}`).val(data[input]).trigger('change');
+                        return
+                    }
+                    if(input === 'for_tomilolt_id')
+                    {
+                        $(`#${input}`).val(data['for_tomilolt']).trigger('change');
+                        return
+                    }
+                    if(input === 'start_date' || input === 'end_date')
+                    {
+                        $(`#${input}`).pickadate('picker').set('select', timeZoneToDateString(data[input]))
+                        return
+                    }
+                    document.getElementById(input).value = data[input]
+                }
+            )
+
+            $(".dz-default").show()
+            data.attachments.map(
+                (el, idx) =>
+                {
+                    var mockFile = { name: el.name, size: el.pure_size, type: el.mime_type, id: el.id, cfile: true };
+                    dz.files.push(mockFile)
+                    dz.emit("addedfile", mockFile);
+                    dz.emit("thumbnail", mockFile, el.url);
+                    dz.emit("success", mockFile);
+                    $(".dz-progress").remove();
+                    $(".dz-remove").html(
+                        `<div><span class='fa fa-trash text-danger'></span></div>`
+                    );
+                }
+            )
+
+            if (data.attachments.length)
+            {
+                $(".dz-default").remove()
+            }
+
+            if(!data.isForeign)
+            {
+                setDefaultValueUnitX({ unit1: data.unit1, unit2: data.unit2, unit3: data.unit3})
+            }
+        }
+    }
+
+    // Томилолт цуцлах
+    const handleDecline = async (id) =>
+    {
+        const body = {
+            isDelete: true,
+            deleted_at: "",
+            deleted_by: "",
+        }
+        const { success } = await fetchData(`/worker/designationcrud/${id}/`, body, 'PUT')
+        if(success)
+        {
+            tomiloltTable.ajax.reload(null, true)
+            tomiloltTableGadaad.ajax.reload(null, true)
+        }
+    }
+
+    // Form submit дарахад
+    const tomiloltRegSubmit = async (event) =>
+    {
+        if(!tomiloltForm.valid())
+        {
+            return
+        }
+        const formData = new FormData()
+        const body = {
+
+        }
+        formData.append('isForeign', isDotoorOrGadaad === 'gadaad' ? true : false)
+        tomiloltInputs.map(
+            (input) =>
+            {
+                const element = document.getElementById(input)
+                if(!element) return
+                if(input === 'employees')
+                {
+                    body[input] = ([ ...element.selectedOptions ]).map(
+                        (option) =>
+                        {
+                            formData.append(input, option.value)
+                        }
+                    )
+                    return
+                }
+                formData.append(input, element.value)
+            }
+        )
+
+        const attachemnts = dz.files.filter(el => !el.cfile)
+        for(var i = 0; i < attachemnts.length; i ++) {
+            const element = attachemnts[i];
+            formData.append("attachments", element, element.name)
+        }
+        formData.append("removed_attachments", JSON.stringify(removeFiles))
+
+        const isCreate = isCreateTomilolt === 'create'
+
+        const { data, success, info , error, errors } = await fetchData(`/worker/designationcrud/${isCreate ? "" : isCreateTomilolt + '/'}`, formData, isCreate ? 'POST' : 'PUT', "", false)
+        if(success)
+        {
+            isCreateTomilolt = 'create'
+            $("#modals-slide-in").modal('hide')
+            tomiloltTable.ajax.reload(null, true)
+            tomiloltTableGadaad.ajax.reload(null, true)
+            clearAllInputs()
+        }
+    }
+
+    /** url дээр id гэж байвал модал дээр дата харуулах */
+    async function checkParam()
+    {
+        const params = new URLSearchParams(window.location.search)
+        const showModalId = params.get("id")
+        if (showModalId)
+        {
+            const rsp = await fetchData(`/worker/designationcrud/${showModalId}/`)
+            if (rsp.success)
+            {
+                handleEditTomilolt(showModalId, rsp.data.isForeign ? 'gadaad' : "dotood", rsp)
+            }
+        }
+    }
+
+    /** Хэрэгтэй датануудыг дуудах нь */
+    async function getNeedDatas()
+    {
+        await getAllUnitsX()
+        await checkParam()
+    }
+
+    useLoader(getNeedDatas(), $('.content-body'))
+
+</script>
+{% endblock js %}

@@ -1,0 +1,73 @@
+<div class="modal fade" id="extrainformation-modal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-edit-user">
+        <div class="modal-content">
+            <div class="modal-header bg-transparent">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pb-5 px-sm-5 pt-50">
+                <div class="text-center mb-2">
+                    <h1 class="mb-1">Нэмэлт мэдээлэл</h1>
+                </div>
+                <div id="actionStatusEI"></div>
+                <form id="extraInfoK" class="row gy-1 pt-75" onsubmit="extraInfoSubmit(event)">
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">Төрсөн газар /аймаг, хот/:</label>
+                        <select class="form-select" id="unit1_id" name="unit1_id" value="{{ selected_userinfo_data.unit1_id }}" onchange="if (this.value) unit1Selected(this);" data-msg="Төрсөн /аймаг, хот/ газраа сонгоно уу">
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">Төрсөн газар /сум, дүүрэг/:</label>
+                        <select class="form-select" id="unit2_id" name="unit2_id" value="{{ selected_userinfo_data.unit2_id }}" data-msg="Төрсөн /сум, дүүрэг/ газраа сонгоно уу">
+                            <option selected>-------------</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">ЭМДД-ийн дугаар:</label>
+                        <input type="text" id="emdd_number" name="emdd_number" value="{{ selected_userinfo_data.emdd_number|default:'' }}" class="form-control" placeholder="" value="" data-msg="Эрүүл мэндийн даатгалын дугаар оруулна уу" />
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">НДД-ийн дугаар:</label>
+                        <input type="text" id="ndd_number" name="ndd_number" value="{{ selected_userinfo_data.ndd_number|default:'' }}" class="form-control" placeholder="" value="" data-msg="Нийгмийн даатгалын дугаар оруулна уу" />
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">Биеийн өндөр/см/:</label>
+                        <input type="number" id="body_height" name="body_height" value="{{ selected_userinfo_data.body_height }}" class="form-control" placeholder="" value="" data-msg="Биеийн өндөр оруулна уу" />
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">Биеийн жин/кг/:</label>
+                        <input type="number" id="body_weight" name="body_weight" value="{{ selected_userinfo_data.body_weight }}" class="form-control" placeholder="" value="" data-msg="Биеийн жин оруулна уу" />
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">Цусны бүлэг:</label>
+                        <select id="blood_type" name="blood_type" value="{{ selected_userinfo_data.blood_type }}" class="form-select" aria-label="Default select example" data-msg="Цусны бүлэг сонгоно уу">
+                            <option value="">Сонгох</option>
+                            <option value="1">O/I/</option>
+                            <option value="2">A/II/</option>
+                            <option value="3">B/III/</option>
+                            <option value="4">AB/IV/</option>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Тэтгэвэрт гарсан эсэх:</label>
+                        <input type="checkbox" name="is_pension" id="is_pension" class="form-check-input" {% if selected_userinfo_data.is_pension %}checked{% endif %} >
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Хөгжлийн бэрхшээлтэй эсэх:</label>
+                        <input type="checkbox" name="is_disabled" id="is_disabled" class="form-check-input" {% if selected_userinfo_data.is_disabled %}checked{% endif %} >
+                    </div>
+                    <div class="col-12">
+                        <label class="form-label">Багшлах эрхийн сургалтанд суусан эсэх:</label>
+                        <input type="checkbox" name="is_training_licence" id="is_training_licence" class="form-check-input" {% if selected_userinfo_data.is_training_licence %}checked{% endif %} >
+                    </div>
+                    <div class="col-12 text-center mt-2 pt-50">
+                        <button id="generalInfoSubmitEI" type="submit" class="btn btn-primary me-1">Засах</button>
+                        <button id="extra_info_modal_close_btn" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">
+                            Болих
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <span id="loaderWeew3"></span>
+        </div>
+    </div>
+</div>

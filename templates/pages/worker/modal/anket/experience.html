@@ -1,0 +1,51 @@
+<div class="card-border">
+    <div class="card-body crepeat experience">
+        <h4 class="card-title text-center">
+            5.1. Хөдөлмөр эрхлэлтийн байдал
+        </h4>
+        <hr>
+        <div class="table-responsive">
+            <table id="faqs" class="table table-hover table-bordered small-text-thead">
+                <thead>
+                    <tr>
+                        <th>Ажиллах байгууллага, газар, түүний хэлтэс, алба</th>
+                        <th>Албан тушаал</th>
+                        <th>Ажилд орсон он, сар</th>
+                        <th>Ажлаас гарсан он, сар</th>
+                        <th style="width: 80px;">Үйлдэл</th>
+                    </tr>
+                </thead>
+                <tbody data-repeater-list="experience">
+                    <tr data-repeater-item>
+                        <td><input type="text" class="form-control form-control-sm" placeholder="Ажиллах байгууллага, газар, түүний хэлтэс, алба" name="worked_place" /></td>
+                        <td>
+                            <input type="text" class="form-control form-control-sm d-none" placeholder="Сургуулийн нэр" name="id" id="id">
+                            <input type="text" class="form-control form-control-sm d-none" placeholder="Сургуулийн нэр" name="cid">
+                            <input type="text" class="form-control form-control-sm" placeholder="Албан тушаал" name="pos" />
+                        </td>
+                        <td>
+                            <input
+                                type="text"
+                                class="form-control form-control-sm cyear-and-month"
+                                placeholder="2000-01-20"
+                                name="joined_date"
+                            />
+                        </td>
+                        <td>
+                            <input
+                                type="text"
+                                class="form-control form-control-sm cyear-and-month"
+                                placeholder="2000-01-20"
+                                name="left_date"
+                            />
+                        </td>
+                        <td class="mt-10"><button class="btn btn-sm btn-danger" type="button" data-repeater-delete>Устгах</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <span data-repeater-create class="text-primary fw-bold fs-12 mt-1 mb-2 d-block text-center cursor-pointer">
+            <i data-feather='plus'></i> Шинээр нэмэх
+        </span>
+    </div>
+</div>

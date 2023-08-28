@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+
+{% block content %}
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/forms/select/select2.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/extensions/jstree.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/extensions/ext-component-tree.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+
+{% endblock css %}
+
+<div class="content-body">
+    <div class="row">
+        <div class="col-xl-4 col-lg-5 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Бүртгэгдсэн тэнхимүүд</h4>
+                    <label class="form-label" for="basicInput">(Салбар сургуулиа сонгоод тэнхимээ бүртгэнэ үү)</label>
+                </div>
+                <div class="card-body" style="overflow: auto;">
+                    <div id="salbar-menu"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-8 col-lg-7 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">
+                        {% if action == 'create' %}
+                            {% if name %} "{{name}}"-д тэнхим {% else %} Тэнхим {% endif %} бүртгэх
+                        {% else %}
+                            "{{name}}" тэнхимийг засах
+                        {% endif %}
+                    </h4>
+                </div>
+                <div class="card-body position-relative">
+                    {% if sub_org_id %}
+                        <form enctype="multipart/form-data" action="{% url 'salbar-0-register' sub_org_id action %}" id="salbar-form" method="POST">
+                    {% elif pk %}
+                        <form enctype="multipart/form-data" action="{% url 'salbar-register' pk action %}" id="salbar-form" method="POST">
+                    {% else %}
+                        <form enctype="multipart/form-data" action="{% url 'salbar-register' %}" id="salbar-form" method="POST">
+                    {% endif %}
+                        {% csrf_token %}
+                        <div class="col-12 mt-1">
+                            <label class="form-label">Нэр:</label>
+                            <input type="text" id="text" name="text" class="form-control" value="{{ serializer.data.text|default:"" }}" placeholder="Тэнхим"  data-msg="Байгууллагын нэр оруулна уу" />
+                        </div>
+                        <div class="col-12 mt-1">
+                            {% if serializer.sub_orgs %}
+                            {% with field=serializer.sub_orgs %}
+                                {% if 'sub_orgs' == field.name %}
+                                    {% if field.label %}
+                                        <label class="form-label">
+                                            {{ field.label }}
+                                        </label>
+                                    {% endif %}
+                                    <select class="select2 form-select" name="{{ field.name }}">
+                                        {% for select in field.iter_options %}
+                                            <option
+                                                value="{{ select.value }}"
+                                                {% if select.value == field.value %}selected{% endif %}
+                                                {% if select.disabled %}disabled{% endif %}
+                                            >
+                                                {{ select.display_text }}
+                                        </option>
+                                        {% endfor %}
+                                    </select>
+                                {% endif %}
+                            {% endwith %}
+                            {% endif %}
+                        </div>
+                        <div class="col-12 mt-1">
+                            <label class="form-label">Хаяг:</label>
+                            <input type="text" id="address" name="address" class="form-control" value="{{ serializer.data.address|default:"" }}" placeholder="Заавал биш... Улаанбаатар, БГД, ... " data-msg="Xаяг оруулна уу"/>
+                        </div>
+                        <div class="col-12 mt-1">
+                            <label class="form-label">Сошиал холбоос:</label>
+                            <input type="text" id="social" name="social" class="form-control" value="{{ serializer.data.social|default:"" }}" placeholder="Заавал биш... www.facebook.com/exapmle " data-msg="Сошиал холбоос оруулна уу"/>
+                        </div>
+                        <div class="col-12 mt-1">
+                            <label class="form-label">Веб:</label>
+                            <input type="text" id="web" name="web" class="form-control" value="{{ serializer.data.web|default:"" }}" placeholder="Заавал биш... www.exapmle.com " data-msg="Веб оруулна уу"/>
+                        </div>
+                        <div class="col-12 mt-1">
+                            <label class="form-label">Хөтөлбөрийн баг эсэх:</label>
+                            <input type="checkbox" class="form-check-input" name="is_hotolboriin_bag" id="is_hotolboriin_bag"
+                                {% if serializer.data.is_hotolboriin_bag %}
+                                    checked
+                                {% endif %}
+                            />
+                        </div>
+                        <div class="d-flex mt-2 custom-flex">
+                            <div class="me-2">
+                                <div class="orgLogoDiv">
+                                    <img id="viewSubOrgLogo" onerror="this.onerror=null; this.src='/media/400x245.jpg'" src="{{ serializer.data.logo }}" />
+                                </div>
+                            </div>
+                            <div class="w-100">
+                                <label class="form-label">Лого:</label>
+                                <input accept="image/*" type="file" id="logo" name="logo" class="form-control" src="{{ serializer.data.logo }}" value="{{ serializer.data.logo|default:"" }}" placeholder="" data-msg="Лого оруулна уу"/>
+                            </div>
+                        </div>
+                        <div class="col-xl-12 col-md-12 col-12 mt-2">
+                            {% if pk %}
+                                {% if 'salbar-update' in request.permissions or not 'salbar-update' in request.permissions and not 'salbar-delete' in request.permissions %}
+                                <button type="submit" id="salbar-btn" class="btn btn-primary">Засах</button>
+                                {% endif %}
+                                {% if 'salbar-delete' in request.permissions or not 'salbar-update' in request.permissions and not 'salbar-delete' in request.permissions %}
+                                <a href="{% url 'salbar-delete' pk %}" class="btn btn-danger">Устгах</a>
+                                {% endif %}
+                            {% else %}
+                                <button type="submit" id="salbar-btn" class="btn btn-primary">Бүртгэх</button>
+                            {% endif %}
+                        </div>
+                    </form>
+                    {% if sub_org_id and not 'salbar-create' in request.permissions %}
+                        <div class="inactive p-2">
+                            <p class="fs-18">Танд эрх байхгүй байна</p>
+                        </div>
+                    {% elif pk and not 'salbar-update' in request.permissions and pk and not 'salbar-delete' in request.permissions %}
+                        <div class="inactive p-2">
+                            <p class="fs-18">Танд эрх байхгүй байна</p>
+                        </div>
+                    {% elif not pk and not 'salbar-create' in request.permissions %}
+                        <div class="inactive p-2">
+                            <p class="fs-18">Танд эрх байхгүй байна</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+<!--prettier-ignore-->
+{% block js %}
+
+<script src="{% static 'app-assets/vendors/js/forms/select/select2.full.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/form-select2.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/extensions/jstree.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/extensions/ext-component-tree.js' %}"></script>
+<script type="text/javascript" src="{% static 'assets/js/salbar.js' %}"></script>
+<script>
+    const subOrgsFormInputs = [ "text", "address", "social", "web"]
+    const logoElemnet = document.getElementById("logo")
+    logoElemnet.onchange = function(event) {
+        const logoViewElement = document.getElementById("viewSubOrgLogo")
+        logoViewElement.src = window.URL.createObjectURL(event.target.files[0])
+    }
+    function toNew()
+    {
+        window.location.href = '/salbar/salbar-list/'
+    }
+</script>
+
+{% endblock js %}

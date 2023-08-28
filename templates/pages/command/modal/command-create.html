@@ -1,0 +1,125 @@
+<form class="add-new-user modal-content pt-0" onsubmit="saveCommand(event)" id="command-create">
+    <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="modal"
+        aria-label="Close"
+    >
+        ×
+    </button>
+    <div class="modal-header mb-1">
+        <h5 class="modal-title" id="command-create-modal-title">
+        </h5>
+        <span style="visibility: hidden;" id="command-create-modal-id"></span>
+    </div>
+    <div class="modal-body flex-grow-1">
+        <div class="mb-1">
+            <label class="form-label">Тушаалын хамрах хүрээ</label>
+            <div class="col-sm-8">
+                {% for id, name in units %}
+                    <div class="form-check" id="unit_div" onchange="handleChangeTypeCommand(event)" >
+                        <input class="form-check-input" type="radio" name="unit" value="{{id}}" id="{{id}}" data-error="#errNm1">
+                        <label class="form-check-label" for="{{id}}">
+                            {{name}}
+                        </label>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="errorTxt">
+                <span id="errNm1"></span>
+            </div>
+        </div>
+        <div class="mb-1 select2-primary {% if not request.employee.is_hr %}{% endif %}" id="employees-div">
+            <label for="employees" class="form-label">Ажилтан сонгох</label>
+            <div id="employeesDiv">
+                <select
+                class="select2 form-select w-100"
+                id="employees"
+                name="employees"
+                multiple
+                data-error="#errNm2"
+            >
+                {% for employee in employees %}
+                    <option value="{{employee.id}}">
+                        {{employee.user.info.full_name}}
+                    </option>
+                {% endfor %}
+            </select>
+            </div>
+            <div id="employees2Div">
+                <select
+                    class="select2 form-select w-100"
+                    id="employees2"
+                    name="employees2"
+                    multiple
+                >
+                </select>
+            </div>
+            <div class="errorTxt">
+                <span id="errNm2"></span>
+            </div>
+        </div>
+        <div class="mb-1 select2-primary">
+            <label for="commander" class="form-label">Тушаалыг баталсан</label>
+            <div id="commanderDiv">
+                <select
+                    class="select2 form-select w-100"
+                    id="commander"
+                    name="commander"
+                    data-error="#errNm3"
+                >
+                    {% for commander in commanders %}
+                        <option value="{{commander.id}}">
+                            {{commander.user.info.full_name}}
+                            ({{commander.org_position.name}})
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div id="commander2Div">
+                <select
+                    class="select2 form-select w-100"
+                    id="commander2"
+                    name="commander2"
+                >
+                </select>
+            </div>
+            <div class="errorTxt">
+                <span id="errNm3"></span>
+            </div>
+        </div>
+        <div class="mb-1">
+            <label class="form-label">Дугаар</label>
+            <input type="text" class="form-control" placeholder="" id="command_number" name="command_number">
+        </div>
+        <div class="mb-1">
+            <label class="form-label">Нэр</label>
+            <input type="text" class="form-control" placeholder="" id="name" name="name">
+        </div>
+        <div class="mb-1">
+            <label class="form-label">Тайлбар</label>
+            <textarea class="form-control" rows="3" id="description" name="description"></textarea>
+        </div>
+        <div class="mb-1">
+            <label class="form-label">Тушаалын огноо</label>
+            <input type="text" class="form-control flat-basic" placeholder="YYYY-MM-DD" id="date" name="date" />
+        </div>
+        <div class="mb-1" id="hawsralt">
+            <label class="form-label">Хавсралт:</label>
+            <div id="dZUpload" class="dropzone">
+            <div class="dz-default dz-message"></div>
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary me-1 data-submit" id="commandSubmitBtn">Хадгалах</button>
+        <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Болих</button>
+    </div>
+    {% if 'command-create' not in request.permissions %}
+            <div class="inactive m-1">
+                <p class="fs-18 text-secondary">Танд эрх байхгүй байна</p>
+            </div>
+    {% elif pk and 'command-update' not in request.permissions %}
+        <div class="inactive m-1">
+            <p class="fs-18 text-secondary">Танд эрх байхгүй байна</p>
+        </div>
+    {% endif %}
+</form>

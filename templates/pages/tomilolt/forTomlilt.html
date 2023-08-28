@@ -1,0 +1,214 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+
+{% block content %}
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/forms/select/select2.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/extensions/jstree.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/extensions/ext-component-tree.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+
+{% endblock css %}
+{% load rest_framework %}
+
+<div class="content-body">
+    <div class="row">
+        <div class="col-xl-4 col-lg-5 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Бүртгэгдсэн томилолт төрөл</h4>
+                </div>
+                <div class="card-body">
+                    <div id="positions-menu2"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-8 col-lg-7 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 id="tomilolt_type_header" class="card-title"></h4>
+                </div>
+                <div class="card-body">
+                    <div class="position-relative">
+                        <form onsubmit="fortomiloltSubmit(event)" id="ForTomilolt-form">
+                            <div class="col-xl-12 col-md-12 col-12 mt-2">
+                                <div class="col-12">
+                                    <label class="form-label">Томилолт ажлын нэр:</label>
+                                    <input type="text" id="name" name="name" class="form-control mb-1" placeholder="" value="" data-msg="Нэр талбарыг бөглөнө үү" />
+                                </div>
+                                {% if 'tomilolt-type-create' in request.permissions %}
+                                    <button type="submit" id="tomilolt-Type-btn" class="btn btn-primary">Үүсгэх</button>
+                                {% elif 'tomilolt-type-update' in request.permissions %}
+                                    <button type="submit" id="tomilolt-Type-btn" class="btn btn-primary">Үүсгэх</button>
+                                {% endif %}
+                                {% if 'tomilolt-type-delete' in request.permissions %}
+                                    <a onclick="deleteTomiloltType()" id="tomilolt-Type-delete" class="btn btn-danger d-none">Устгах</a>
+                                {% endif %}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+<!--prettier-ignore-->
+{% block js %}
+
+<script src="{% static 'app-assets/vendors/js/forms/select/select2.full.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/form-select2.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/extensions/jstree.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/extensions/ext-component-tree.js' %}"></script>
+<script>
+
+    let treeElement = $("#positions-menu2")
+
+    let tomiloltSubmitBtn = document.getElementById('tomilolt-Type-btn')
+    let tomiloltDeleteBtn = document.getElementById('tomilolt-Type-delete')
+    let nameInput = document.getElementById('name')
+    let formHeader = document.getElementById('tomilolt_type_header')
+    let isCreate = 'create'
+
+    // Input хоослох, Submit button text солих, устгах товчийг харуулах
+    const resetFunction = () =>
+    {
+        nameInput.value = ''
+        tomiloltSubmitBtn.textContent = 'Үүсгэх'
+        formHeader.textContent = 'Томилолтын төрөл үүсгэх'
+        tomiloltDeleteBtn.classList.add('d-none')
+        isCreate = 'create'
+    }
+
+    // JS TREE г шинэ датагаар refresh хийх
+    const refreshTree = (newData) =>
+    {
+        newData.push({
+            name: "Шинээр үүсгэx",
+            text: "Шинээр үүсгэx",
+            id: 'create',
+            type: 'new',
+            a_attr: {onclick: "resetFunction()"}
+        })
+        treeElement.jstree(true).settings.core.data = newData;
+        treeElement.jstree(true).refresh(false, true);
+    }
+
+    // JS TREE үүсгэх
+    const createTree = (data) =>
+    {
+        // Өмнөх active байсан утгыг хадгална
+        var prevActiveNode = null
+
+        // Active солигдохийг сонсох
+        treeElement.on("select_node.jstree", function (e, data){
+            // Одоо active байгаа element
+            const active = document.getElementById(data.node.id)
+
+            // Өмнөх active ийг хэвийн болгох
+            if(prevActiveNode)
+            {
+                prevActiveNode.style.backgroundColor = 'unset'
+                prevActiveNode.style.color = 'unset'
+            }
+            prevActiveNode = active.lastChild
+
+            // active ийг style тэй болгох
+            active.lastChild.style.backgroundColor = '#f15c2b'
+            active.lastChild.style.color = '#fff'
+            active.lastChild.style.borderRadius = '5px'
+
+            // Input - д утгыг өгөх, submit btn text солих устгах товч харуулах
+            if(data.selected[0] === 'create') return
+            if(!data.node) return
+            nameInput.value = data.node.text
+            tomiloltSubmitBtn.textContent = 'Засах'
+            tomiloltDeleteBtn.classList.remove('d-none')
+            formHeader.textContent = 'Томилолтын төрөл засах'
+            isCreate = data.selected[0]
+        });
+
+        isCreate = 'create'
+
+        data.push({
+            name: "Шинээр үүсгэx",
+            text: "Шинээр үүсгэx",
+            id: 'create',
+            type: 'new',
+            a_attr: {onclick: "resetFunction()"}
+        })
+
+        treeElement.jstree({
+            core: {
+                check_callback: true,
+                data: data
+            },
+            plugins: ['types', 'contextmenu'],
+            types: {
+                default: {
+                    icon: 'fas fa-briefcase text-primary-green'
+                },
+                new: {
+                    icon: 'fas fa-folder-plus text-primary-white'
+                },
+            },
+            redraw: true,
+        })
+    }
+
+    const deleteTomiloltType = async () =>
+    {
+        const { success, data } = await fetchData(`/worker/fortomiloltcrud/${isCreate === 'create' ? '' : isCreate + '/'}`, null, 'DELETE' )
+        if(success)
+        {
+            refreshTree(data)
+            resetFunction()
+        }
+    }
+
+    const fortomiloltSubmit = async (event) =>
+    {
+        event.preventDefault();
+        const body = {
+            name: nameInput.value
+        }
+
+        const { success, data, errors } = await fetchData(`/worker/fortomiloltcrud/${isCreate === 'create' ? '' : isCreate + '/'}`, body, `${isCreate === 'create' ? 'POST' : 'PUT'}`)
+        if(success)
+        {
+            refreshTree(data)
+            resetFunction()
+        }
+        if(errors)
+        {
+            // input ийг validate алдаа г харуулах
+            displayError(errors)
+        } else {
+            // input ийн харагдсан байгаа validate алдаануудыг устгах
+            deleteError(errors)
+        }
+    }
+
+
+    const getData = async () =>
+    {
+        const { success, data } = await fetchData('/worker/fortomiloltcrud/', null, 'GET')
+        if(success)
+        {
+            createTree(data)
+            resetFunction()
+        }
+    }
+    getData()
+
+</script>
+
+{% endblock js %}

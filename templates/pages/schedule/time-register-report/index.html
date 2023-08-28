@@ -1,0 +1,1236 @@
+
+<!--
+    URL: /schedule/time-register-report/
+    Нэр: Тайлангийн хуудас
+    Төрөл: Хуудас
+-->
+
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+{% block content %}
+
+{% load rest_framework %}
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/schedule.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/vendors.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-pickadate.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/pickadate/pickadate.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+<link rel="stylesheet" type="text/css" href="{% static 'assets/css/loader.css' %}" />
+
+{% endblock css %}
+
+
+<div class="content-body">
+    <div class="row" id="table-hover-row">
+        <div class="col-12">
+            <div>
+                <ul class="nav nav-pills mb-2">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" id="pills-statistic-tab" data-bs-toggle="pill" data-bs-target="#pills-statistic" type="button" role="tab" aria-controls="pills-statistic" aria-selected="true">
+                            <span class="fw-bold fs-11">
+                                <i data-feather='clipboard'></i>
+                                Статистик
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="pills-table-tab" data-bs-toggle="pill" data-bs-target="#pills-table" type="button" role="tab" aria-controls="pills-table" aria-selected="false">
+                            <span class="fw-bold fs-11">
+                                <i data-feather='check-square'></i>
+                                Хүснэгт
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="pills-vacation-tab" data-bs-toggle="pill" data-bs-target="#pills-vacation" type="button" role="tab" aria-controls="pills-vacation" aria-selected="false">
+                            <span class="fw-bold fs-11">
+                                <i data-feather='align-right'></i>
+                                Чөлөөний хүсэлтүүд
+                            </span>
+                        </a>
+                    </li>
+                    {% if 'time-register-report-employee-show' in request.permissions %}
+                    <li class="nav-item ms-1">
+                        <a
+                        class="btn btn-secondary waves-effect waves-float waves-light w-100"
+                        data-bs-toggle="modal"
+                        data-bs-target="#choose-employee"
+                    ><i style="margin-right: 5px;" data-feather='file-plus'></i>Ажилчин сонгох</a>
+                    </li>
+                    {% endif %}
+                    <li class="nav-item ms-1">
+                        <h6 class="card-border-version2" id="chosedDateId"></h6>
+                    </li>
+                    <li class="nav-item ms-1">
+                        <h6 class="card-border-version2" id="chosedEmployeeName"></h6>
+                    </li>
+                </ul>
+                <div class="tab-content" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="pills-statistic" role="tabpanel" aria-labelledby="pills-statistic-tab">
+                        <div class="content-body" id="mainId">
+                            <form id="trrForm" onsubmit="clickBtn(event)" >
+
+                                <div class="row">
+                                    <div class="col-12 col-sm-6 col-md-3 mb-1 position-relative">
+                                        <label class="form-label" for="start_day">Эхлэх он сар *</label>
+                                        <input type="text" id="start_day" name="start_day" class="form-control year-and-month" placeholder="2000-01" data-msg="Он сараа оруулна уу"/>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-3 mb-1 position-relative">
+                                        <label class="form-label" for="end_day">Дуусах он сар</label>
+                                        <input type="text" id="end_day" name="end_day" class="form-control year-and-month" placeholder="2000-01" data-msg="Он сараа оруулна уу"/>
+                                    </div>
+                                    <div class="col-12 col-sm-12 col-md-2">
+                                        <button class="btn btn-primary waves-effect waves-float waves-light mt-2 w-100"><i style="margin-right: 5px;" data-feather='search'></i>Хайх</button>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-2">
+                                        <a class="btn btn-secondary waves-effect waves-float waves-light mt-2 w-100" onclick="thisMonth()"><i style="margin-right: 5px;" data-feather='chevrons-down'></i>Энэ сар</a>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-2">
+                                        <a class="btn btn-secondary waves-effect waves-float waves-light mt-2 w-100" onclick="beforeMonth()"><i style="margin-right: 5px;" data-feather='chevrons-left'></i>Өмнөх сар</a>
+                                    </div>
+                                </div>
+
+                                <div id="seven_days_display" style="display: none;">
+                                    <div class="row match-height">
+                                        <div class="col-lg-12 col-12 mt-1">
+                                            <div class="card card-statistics">
+                                                <div class="card-header">
+                                                    <h4 class="card-title">Статистик</h4>
+                                                </div>
+                                                <div class="card-body statistics-body">
+                                                    <div class="row">
+                                                        <div class="col-md-4 col-sm-6 col-12 mb-2 mb-md-1">
+                                                            <div class="d-flex flex-row">
+                                                                <div class="avatar bg-light-primary me-2">
+                                                                    <div class="avatar-content">
+                                                                        <i data-feather="corner-up-right" class="avatar-icon"></i>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="my-auto">
+                                                                    <h4 class="fw-bolder mb-0" id="kindWorkingId"></h4>
+                                                                    <p class="card-text font-small-3 mb-0">Ажилласан</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 col-sm-6 col-12 mb-2 mb-md-1">
+                                                            <div class="d-flex flex-row">
+                                                                <div class="avatar bg-light-primary me-2">
+                                                                    <div class="avatar-content">
+                                                                        <i data-feather="corner-up-left" class="avatar-icon"></i>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="my-auto">
+                                                                    <h4 class="fw-bolder mb-0" id="kindTasId"></h4>
+                                                                    <p class="card-text font-small-3 mb-0">Тасалсан</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 col-sm-6 col-12 mb-2 mb-md-1">
+                                                            <div class="d-flex flex-row">
+                                                                <div class="avatar bg-light-primary me-2">
+                                                                    <div class="avatar-content">
+                                                                        <i data-feather="tag" class="avatar-icon"></i>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="my-auto">
+                                                                    <h4 class="fw-bolder mb-0" id="kindAjiltaiShaltgaanId"></h4>
+                                                                    <p class="card-text font-small-3 mb-0">Ажлын өдөр шалтгаантай</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 col-sm-6 col-12 mb-2 mb-md-1">
+                                                            <div class="d-flex flex-row">
+                                                                <div class="avatar bg-light-info me-2">
+                                                                    <div class="avatar-content">
+                                                                        <i data-feather="type" class="avatar-icon"></i>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="my-auto">
+                                                                    <h4 class="fw-bolder mb-0" id="kindAmraltId"></h4>
+                                                                    <p class="card-text font-small-3 mb-0">Амралт</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 col-sm-6 col-12 mb-2 mb-sm-0">
+                                                            <div class="d-flex flex-row">
+                                                                <div class="avatar bg-light-danger me-2">
+                                                                    <div class="avatar-content">
+                                                                        <i data-feather="slack" class="avatar-icon"></i>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="my-auto">
+                                                                    <h4 class="fw-bolder mb-0" id="kindAmraltShaltgaanId"></h4>
+                                                                    <p class="card-text font-small-3 mb-0">Амралтын өдөр шалтгаантай</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 col-sm-6 col-12">
+                                                            <div class="d-flex flex-row">
+                                                                <div class="avatar bg-light-success me-2">
+                                                                    <div class="avatar-content">
+                                                                        <i data-feather="target" class="avatar-icon"></i>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="my-auto">
+                                                                    <h4 class="fw-bolder mb-0" id="kindShaltgaanId"></h4>
+                                                                    <p class="card-text font-small-3 mb-0">Шалтгаан авсан</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <div>
+                                                        <h2 class="fw-bolder mb-0" id="workingDayId"></h2>
+                                                        <p class="card-text">Ажиллах хоног</p>
+                                                    </div>
+                                                    <div class="avatar bg-light-primary p-50 m-0">
+                                                        <div class="avatar-content">
+                                                            <i data-feather="trending-up" class="font-medium-5"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <div>
+                                                        <h2 class="fw-bolder mb-0" id="vacationDayId"></h2>
+                                                        <p class="card-text">Амрах хоног</p>
+                                                    </div>
+                                                    <div class="avatar bg-light-success p-50 m-0">
+                                                        <div class="avatar-content">
+                                                            <i data-feather="trending-down" class="font-medium-5"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4 col-md-4 col-sm-12 col-12">
+                                            <div class="card">
+                                                <div class="card-header">
+                                                    <!-- <div>
+                                                        <h2 class="fw-bolder mb-0" id="fineId"></h2>
+                                                        <p class="card-text">Торгууль</p>
+                                                    </div> -->
+                                                    <div>
+                                                        <h2 class="fw-bolder mb-0" id="hotsorsonId"></h2>
+                                                        <p class="card-text">Хоцорсон цаг</p>
+                                                    </div>
+                                                    <div class="avatar bg-light-danger p-50 m-0">
+                                                        <div class="avatar-content">
+                                                            <i data-feather="shuffle" class="font-medium-5"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="xy_days_display" style="display: none;">
+                                    <div class="row match-height">
+                                        <div class="col-lg-12 col-12 mt-1">
+                                            <div class="card card-statistics">
+                                                <div class="card-header">
+                                                    <h4 class="card-title">Статистик</h4>
+                                                </div>
+                                                <div class="card-body statistics-body">
+                                                    <div class="row">
+                                                        <div class="col-md-4 col-sm-6 col-12 mb-2 mb-md-1">
+                                                            <div class="d-flex flex-row">
+                                                                <div class="avatar bg-light-primary me-2">
+                                                                    <div class="avatar-content">
+                                                                        <i data-feather="corner-up-right" class="avatar-icon"></i>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="my-auto">
+                                                                    <h4 class="fw-bolder mb-0" id="workedTimeValueXyId"></h4>
+                                                                    <p class="card-text font-small-3 mb-0">Ажилласан цаг</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 col-sm-6 col-12 mb-2 mb-md-1">
+                                                            <div class="d-flex flex-row">
+                                                                <div class="avatar bg-light-primary me-2">
+                                                                    <div class="avatar-content">
+                                                                        <i data-feather="corner-up-left" class="avatar-icon"></i>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="my-auto">
+                                                                    <h4 class="fw-bolder mb-0" id="tasXyId"></h4>
+                                                                    <p class="card-text font-small-3 mb-0">Тасалсан</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 col-sm-6 col-12">
+                                                            <div class="d-flex flex-row">
+                                                                <div class="avatar bg-light-success me-2">
+                                                                    <div class="avatar-content">
+                                                                        <i data-feather="target" class="avatar-icon"></i>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="my-auto">
+                                                                    <h4 class="fw-bolder mb-0" id="shaltgaanCountXyId"></h4>
+                                                                    <p class="card-text font-small-3 mb-0">Шалтгаан авсан</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-4 col-sm-6 col-12">
+                                                            <div class="d-flex flex-row">
+                                                                <div class="avatar bg-light-danger me-2">
+                                                                    <div class="avatar-content ">
+                                                                        <i data-feather="shuffle" class="avatar-icon"></i>
+                                                                    </div>
+                                                                </div>
+                                                                <!-- <div class="my-auto">
+                                                                    <h4 class="fw-bolder mb-0" id="fineXyId"></h4>
+                                                                    <p class="card-text font-small-3 mb-0">Торгууль</p>
+                                                                </div> -->
+                                                                <div class="my-auto">
+                                                                    <h4 class="fw-bolder mb-0" id="hotsorsonXyId"></h4>
+                                                                    <p class="card-text font-small-3 mb-0">Хоцорсон цаг</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="pills-table" role="tabpanel" aria-labelledby="pills-table-tab">
+
+                        <div class="row" id="table-small">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-bordered" id="time-schedule-table">
+                                            <thead>
+                                                <tr class="filter-container"></tr>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Огноо</th>
+                                                    <th>Ирсэн цаг</th>
+                                                    <th>Цайны цаг</th>
+                                                    <th>Цайнаас ирсэн цаг</th>
+                                                    <th>Явсан цаг</th>
+                                                    <th>Ажилласан цаг</th>
+                                                    <th>Хоцорсон цаг</th>
+                                                    <th style="min-width: 650px;">Тайлбар</th>
+                                                </tr>
+                                            </thead>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Огноо</th>
+                                                    <th>Ирсэн цаг</th>
+                                                    <th>Цайны цаг</th>
+                                                    <th>Цайнаас ирсэн цаг</th>
+                                                    <th>Явсан цаг</th>
+                                                    <th>Ажилласан цаг</th>
+                                                    <th>Хоцорсон цаг</th>
+                                                    <th style="min-width: 650px;">Тайлбар</th>
+                                                </tr>
+                                            </tfoot>
+                                            <tbody style="font-size: 12px;"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="tab-pane fade" id="pills-vacation" role="tabpanel" aria-labelledby="pills-vacation-tab">
+
+                        <div class="row" id="table-small">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="table-responsive">
+                                        <table class="table table-sm table-bordered" id="shaltgaan-table">
+                                            <thead>
+                                                <tr class="filter-container"></tr>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Огноо</th>
+                                                    <th>Чөлөөний мэдээлэл</th>
+                                                    <th>Он сар</th>
+                                                    <th style="min-width: 650px;">Тайлбар</th>
+                                                    <th>Үйлдэл</th>
+                                                </tr>
+                                            </thead>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>#</th>
+                                                    <th>Огноо</th>
+                                                    <th>Чөлөөний мэдээлэл</th>
+                                                    <th>Он сар</th>
+                                                    <th style="min-width: 650px;">Тайлбар</th>
+                                                    <th>Үйлдэл</th>
+                                                </tr>
+                                            </tfoot>
+                                            <tbody style="font-size: 12px;"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Model -->
+{% include "pages/schedule/time-register-report/modal/choose-employee.html" with id="choose-employee" %}
+
+{% endblock content %}
+
+{% block js %}
+
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.buttons.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jszip.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/pdfmake.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/vfs_fonts.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.html5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.print.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/cleave.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/addons/cleave-phone.us.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.date.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.time.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/legacy.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+
+<script src="{% static 'app-assets/js/scripts/pages/app-user-list.js' %}"></script>
+
+<script src="{% static 'app-assets/js/scripts/tables/table-datatables-advanced.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/pickers/form-pickers.js' %}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.0/select2.min.js"></script>
+
+<script src="{% static 'app-assets/vendors/js/forms/repeater/jquery.repeater.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/form-repeater.js' %}"></script>
+
+<script>
+
+    /** Validation */
+    let jqForm = $('#trrForm')
+
+    /** Шалгах утгууд */
+    if (jqForm.length)
+    {
+        $(document).ready(function(){
+
+            /** enter болон space авзан үед алдаа заана */
+            jQuery.validator.addMethod("noSpace", function(value, element)
+            {
+                return value.trim().length !== 0;
+            });
+
+            /** Урт нь заавал 7 байх ёстой */
+            jQuery.validator.addMethod("yearMonthFormat", function(value, element)
+            {
+                return value.trim().length === 7;
+            });
+
+            validate = jqForm.validate(
+            {
+                rules: {
+                    'start_day': {
+                        required: true,
+                        noSpace: true,
+                        yearMonthFormat: true
+                    },
+                }
+            })
+        })
+    }
+
+
+</script>
+
+<script>
+
+    var dateObj = new Date();
+    /** 1 => 01 болгох Format */
+    const zeroFill = n => {
+        return ('0' + n).slice(-2);
+    }
+
+    var all_data = {}
+    var start_day_input = document.getElementById('start_day')
+    var end_day_input = document.getElementById('end_day')
+    var choserDateInput = document.getElementById('chosedDateId')
+    var chosedEmployeeNameInput = document.getElementById('chosedEmployeeName')
+
+    const params = new URLSearchParams(document.location.search);
+
+    /** Сонгогдсн ажилчны ID-г хадгалана */
+    var chosedEmployeesId = "{{employee_id}}"
+    var chosedEmployeesName = '{{employee_full_name}}'
+    var chosedEmployeeWorkingTimeScheduleType = "{{type}}"
+
+    chosedEmployeeNameInput.innerHTML = chosedEmployeesName
+
+    const sevenDaysCode = 1
+    const xyDaysCode = 2
+
+    let timeScheduleTable
+    let shaltgaandataTable
+
+    cloneFooter('#time-schedule-table', [ 1, 2, 3, 4, 5, 6 ])
+    cloneFooter(
+        "#shaltgaan-table",
+        [
+            1, 2, 3, 4, 5
+        ]
+    )
+
+    /** Тайлангуудын утгуудыг бүгдийг нь оноож өгсөн */
+    function statisticSetValue(datas)
+    {
+        /** Статистик-ийн утгууд өгнө */
+        const {
+            fine_count,
+
+            kind_working_count,
+            kind_tas_count,
+            kind_ajiltai_shaltgaan_count,
+            kind_amralt_count,
+            kind_amralt_shaltgaan_count,
+            kind_shaltgaan_count,
+
+            kind_working_day_count,
+            kind_vacation_day_count,
+            hotsorson_time_value,
+
+            worked_time_value
+        } = datas
+
+        if (chosedEmployeeWorkingTimeScheduleType == sevenDaysCode)
+        {
+            document.getElementById('seven_days_display').style.display = 'block'
+            document.getElementById('xy_days_display').style.display = 'none'
+
+            const elementIdAndValues = {
+                'kindWorkingId': kind_working_count,
+                'kindTasId': kind_tas_count,
+                'kindAjiltaiShaltgaanId': kind_ajiltai_shaltgaan_count,
+                'kindAmraltId': kind_amralt_count,
+                'kindAmraltShaltgaanId': kind_amralt_shaltgaan_count,
+                'kindShaltgaanId': kind_shaltgaan_count,
+                'workingDayId': kind_working_day_count,
+                'vacationDayId': kind_vacation_day_count,
+                // 'fineId': fine_count,
+                'hotsorsonId': hotsorson_time_value,
+            }
+
+            /** HTML утгуудад утгаа өгнө */
+            for (const key in elementIdAndValues)
+            {
+                document.getElementById(key).innerHTML = elementIdAndValues[key]
+            }
+        }
+        else if (chosedEmployeeWorkingTimeScheduleType == xyDaysCode)
+        {
+            document.getElementById('xy_days_display').style.display = 'block'
+            document.getElementById('seven_days_display').style.display = 'none'
+
+            const elementIdAndValues = {
+                'workedTimeValueXyId': worked_time_value,
+                // 'fineXyId': fine_count,
+                // 'workingCountXyId': kind_working_count,
+                'tasXyId': kind_tas_count,
+                'shaltgaanCountXyId': kind_shaltgaan_count,
+                'hotsorsonXyId': hotsorson_time_value,
+            }
+
+            /** HTML утгуудад утгаа өгнө */
+            for (const key in elementIdAndValues)
+            {
+                document.getElementById(key).innerHTML = elementIdAndValues[key]
+            }
+        }
+
+        const table_datas = datas.table_datas
+
+        /** TABLE-үүдийг барьж авна */
+        var table = document.querySelector("#time-schedule-table tbody");
+        var shaltgaanTable = document.querySelector("#shaltgaan-table tbody");
+        var numberByTable = 0
+        var numberByShaltgaanTable = 0
+
+        const uniqueIds = [];
+
+        if (timeScheduleTable)
+        {
+            timeScheduleTable.destroy()
+        }
+
+        if (shaltgaandataTable)
+        {
+            shaltgaandataTable.destroy()
+        }
+
+        /** Хуучин утгатай байсан бол цэвэрлэнэ */
+        $("#time-schedule-table tbody > tr").remove();
+        $("#shaltgaan-table tbody > tr").remove();
+
+        /** Хүснэгтийн мэдээллийг бөглөнө */
+        for (const table_data of table_datas)
+        {
+            var { date, employee, fine, for_shaltgaan, id, in_dt, kind, out_dt, worked_time, hotsorson_time, lunch_in_dt, lunch_out_dt } = table_data
+
+            fine = fine ? fine : 0
+            kind = for_shaltgaan ? (for_shaltgaan.status == 3 ? `${kind} (${for_shaltgaan.vacation_type})` : kind) : kind
+            in_dt = in_dt ? in_dt : '-'
+            out_dt = out_dt ? out_dt : '-'
+            worked_time = worked_time ? worked_time : '-'
+
+            numberByTable++
+
+            /** Мөр болон багана нэмнэ */
+            var row = table.insertRow();
+            var cellNumber = row.insertCell();
+            var cellDate = row.insertCell();
+            var cellIn_dt = row.insertCell();
+            var cellLunch_in_dt = row.insertCell();
+            var cellLunch_out_dt = row.insertCell();
+            var cellOut_dt = row.insertCell();
+            var cellWorked_time = row.insertCell();
+            var cellFine = row.insertCell();
+            var cellKind = row.insertCell();
+
+            /** Баганы утгуудыг онооно */
+            cellNumber.innerHTML = numberByTable;
+            cellDate.innerHTML = date;
+            cellIn_dt.innerHTML = in_dt;
+            cellLunch_in_dt.innerHTML = in_dt;
+            cellLunch_out_dt.innerHTML = in_dt;
+            cellOut_dt.innerHTML = out_dt;
+            cellWorked_time.innerHTML = worked_time;
+            cellFine.innerHTML = hotsorson_time;
+            cellKind.innerHTML = kind;
+
+            /** Хэрвээ шалтгаантай бол шалтгааны хүснэгтэд нэмж өгнө */
+            if (for_shaltgaan)
+            {
+
+                /** Давхцаж байгааг устгана */
+                const isDuplicate = uniqueIds.includes(for_shaltgaan.id)
+
+                if (!isDuplicate)
+                {
+                    var { start_day, end_day, start_time, end_time, created_at, vacation_type, description, status } = for_shaltgaan
+
+                    numberByShaltgaanTable++
+
+                    /** Мөр болон багана нэмнэ */
+                    var row = shaltgaanTable.insertRow();
+                    var shaltgaanCellNumber = row.insertCell();
+                    var shaltgaanCellDate = row.insertCell();
+                    var shaltgaanCellName = row.insertCell();
+                    var shaltgaanCellTime = row.insertCell();
+                    var shaltgaanCellDesc = row.insertCell();
+                    var shaltgaanCellStatus = row.insertCell();
+
+                    /** Огноог бодно */
+                    let dateValue = start_day
+                    if(end_day)
+                    {
+                        dateValue = dateValue.concat(' - ', end_day)
+                    }
+                    if(start_time)
+                    {
+                        dateValue = dateValue.concat('  ', start_time)
+                    }
+                    if(end_time)
+                    {
+                        dateValue = dateValue.concat(' - ', end_time)
+                    }
+
+                    /** Status-ыг хувиргана */
+                    let status_detail
+                    if (status === 2)
+                    {
+                        row.className = 'red-decline-border'
+                        status_detail = 'Татгалзсан'
+                    }
+                    else if (status === 3)
+                    {
+                        row.className = 'green-agree-border'
+                        status_detail = 'Зөвшөөрсөн'
+                    }
+                    else
+                    {
+                        row.className = 'gray-border'
+                        status_detail = 'Хүлээгдэж буй'
+                    }
+
+                    /** Баганы утгуудыг онооно */
+                    shaltgaanCellNumber.innerHTML = numberByShaltgaanTable;
+                    shaltgaanCellDate.innerHTML = created_at;
+                    shaltgaanCellName.innerHTML = vacation_type;
+                    shaltgaanCellTime.innerHTML = dateValue;
+                    shaltgaanCellDesc.innerHTML = description;
+                    shaltgaanCellStatus.innerHTML = status_detail;
+
+                    uniqueIds.push(for_shaltgaan.id);
+                }
+            }
+        }
+
+        timeScheduleTable = $("#time-schedule-table").DataTable({
+            dom: 'B',
+            ordering: false,
+            lengthMenu: [
+                [10, 25, 50, 100, -1],
+                [10, 25, 50, 100, 'Бүгд'],
+            ],
+            dom:
+                '<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+                '<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start">' +
+                '<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+                ">t" +
+                '<"d-flex justify-content-between mx-2 row mb-1"' +
+                ">",
+            language: {
+                "zeroRecords": "Мэдээлэл байхгүй байна.",
+                "infoEmpty": "Хайлт олдсонгүй."
+            },
+            pageLength: 1000,
+            columnDefs: [
+                {
+					targets: 4,
+					visible: false,
+				},
+            ],
+            buttons: [
+                {
+                    extend: "collection",
+                    className: "btn btn-outline-secondary dropdown-toggle me-2",
+                    text:
+                        feather.icons["external-link"].toSvg({
+                            class: "font-small-4 me-50",
+                        }) + "Таталт",
+                    buttons: [
+                        {
+                            extend: "print",
+                            text:
+                                feather.icons["printer"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Print",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6] },
+                        },
+                        {
+                            extend: "csv",
+                            text:
+                                feather.icons["file-text"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Csv",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6] },
+                        },
+                        {
+                            extend: "excel",
+                            text:
+                                feather.icons["file"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Excel",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6] },
+                        },
+                        {
+                            extend: "pdf",
+                            text:
+                                feather.icons["clipboard"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Pdf",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6] },
+                        },
+                        {
+                            extend: "copy",
+                            text:
+                                feather.icons["copy"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Copy",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6] },
+                        },
+                    ],
+                },
+            ],
+        })
+        searchFooter(timeScheduleTable)
+
+        shaltgaandataTable = $("#shaltgaan-table").DataTable({
+            dom: 'B',
+            ordering: false,
+            lengthMenu: [
+                [10, 25, 50, 100, -1],
+                [10, 25, 50, 100, 'Бүгд'],
+            ],
+            dom:
+                '<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+                '<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start">' +
+                '<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+                ">t" +
+                '<"d-flex justify-content-between mx-2 row mb-1"' +
+                ">",
+            language: {
+                "zeroRecords": "Мэдээлэл байхгүй байна.",
+                "infoEmpty": "Хайлт олдсонгүй."
+            },
+            pageLength: 1000,
+            buttons: [
+                {
+                    extend: "collection",
+                    className: "btn btn-outline-secondary dropdown-toggle me-2",
+                    text:
+                        feather.icons["external-link"].toSvg({
+                            class: "font-small-4 me-50",
+                        }) + "Таталт",
+                    buttons: [
+                        {
+                            extend: "print",
+                            text:
+                                feather.icons["printer"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Print",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [1, 2, 3, 4, 5] },
+                        },
+                        {
+                            extend: "csv",
+                            text:
+                                feather.icons["file-text"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Csv",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [1, 2, 3, 4, 5] },
+                        },
+                        {
+                            extend: "excel",
+                            text:
+                                feather.icons["file"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Excel",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [1, 2, 3, 4, 5] },
+                        },
+                        {
+                            extend: "pdf",
+                            text:
+                                feather.icons["clipboard"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Pdf",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [1, 2, 3, 4, 5] },
+                        },
+                        {
+                            extend: "copy",
+                            text:
+                                feather.icons["copy"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Copy",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [1, 2, 3, 4, 5] },
+                        },
+                    ],
+                },
+            ],
+        })
+        searchFooter(shaltgaandataTable)
+    }
+
+    function searchMonths(data)
+    {
+
+
+        var dateInputValue =
+            data.end_day == ''
+            ?
+            `${data.start_day.slice(0, 4)} оны ${data.start_day.slice(5, 7)} сар`
+            :
+            `${data.start_day.slice(0, 4)} оны ${data.start_day.slice(5, 7)} сар - ${data.end_day.slice(0, 4)} оны ${data.end_day.slice(5, 7)} сар`;
+
+        all_data = {
+            ...data,
+            'type': 'search',
+            'employee': chosedEmployeesId,
+            'timeScheduleType': chosedEmployeeWorkingTimeScheduleType
+        }
+
+        /** Хүсэлтээ шидэж байна */
+		useLoader(fetchData(`/schedule/time-register-report-ajax/`, all_data, 'POST'), $('#mainId')).catch(err => err)
+			.then(
+				({ success, data, errors }) =>
+				{
+					if (data)
+					{
+						statisticSetValue(data)
+                        choserDateInput.innerHTML = dateInputValue
+					}
+				}
+			)
+    }
+
+    function clickBtn(event)
+    {
+        event.preventDefault()
+
+        /** validation давж чадахгүй бол буцаагаад алдаа заана */
+        if(!validate.checkForm())
+        {
+            return
+        }
+
+        /** Хэрэгтэй модалуудын утгуудыг л авна  */
+		const formData = new FormData(event.target)
+		const data = Object.fromEntries(formData);
+
+        searchMonths(data)
+    }
+
+    function thisMonth()
+    {
+        all_data = {
+            'type': 'thisMonth',
+            'employee': chosedEmployeesId,
+            'timeScheduleType': chosedEmployeeWorkingTimeScheduleType
+        }
+
+        /** Хүсэлтээ шидэж байна */
+		useLoader(fetchData(`/schedule/time-register-report-ajax/`, all_data, 'POST'), $('#mainId')).catch(err => err)
+			.then(
+				({ success, data, errors }) =>
+				{
+					if (data)
+					{
+						statisticSetValue(data)
+                        let thisMonthDateValue = new Date(dateObj.getFullYear(), dateObj.getMonth())
+                        start_day_input.value = `${thisMonthDateValue.getFullYear()}-${zeroFill(thisMonthDateValue.getMonth() + 1)}`
+                        end_day_input.value = ''
+                        choserDateInput.innerHTML = `${thisMonthDateValue.getFullYear()} оны ${thisMonthDateValue.getMonth() + 1}-р сар`
+					}
+				}
+			)
+    }
+
+    function beforeMonth()
+    {
+        all_data = {
+            'type': 'beforeMonth',
+            'employee': chosedEmployeesId,
+            'timeScheduleType': chosedEmployeeWorkingTimeScheduleType
+        }
+
+        var beforeMonth = new Date(dateObj.getFullYear(), dateObj.getMonth())
+
+        /** Хүсэлтээ шидэж байна */
+		useLoader(fetchData(`/schedule/time-register-report-ajax/`, all_data, 'POST'), $('#mainId')).catch(err => err)
+			.then(
+				({ success, data, errors }) =>
+				{
+					if (data)
+					{
+						statisticSetValue(data)
+                        start_day_input.value = `${beforeMonth.getFullYear()}-${zeroFill(beforeMonth.getMonth())}`
+                        end_day_input.value = ''
+                        choserDateInput.innerHTML = `${beforeMonth.getFullYear()} оны ${beforeMonth.getMonth()}-р сар`
+					}
+				}
+			)
+    }
+
+    /** param-аас утга ирж байгаа бол */
+    if (params.get("start_date"))
+    {
+
+        if (params.get("end_date"))
+        {
+            var paramsData = { start_day: params.get("start_date"), end_day: params.get("end_date") }
+            start_day_input.value = params.get("start_date");
+            end_day_input.value = params.get("end_date");
+        }
+        else
+        {
+            var paramsData = { start_day: params.get("start_date"), end_day: "" }
+            start_day_input.value = params.get("start_date")
+        }
+
+        searchMonths(paramsData)
+    }
+    else
+    {
+        /** Анх ороход энэ сарынхийг ажиллуулна */
+        thisMonth()
+    }
+
+</script>
+
+<script>
+
+    /** Ажилчин нэмэх хэсэг */
+    cloneFooter(
+        "#time-register-report-employee-table",
+        [
+            1, 2, 3
+        ]
+    )
+    const reportChooseEmployee = $("#time-register-report-employee-table")
+        .on('preXhr.dt', function ()
+        {
+            addLoader($('#time-register-report-employee-table-loader'))
+        })
+        .on( 'draw.dt', function () {
+            rmLoader($('#time-register-report-employee-table-loader'))
+        })
+        .DataTable({
+            processing: false,
+            dom: 'lBfrtip',
+            serverSide: true,
+            ajax: { url: `{% url 'time-register-report-employee-json' %}` },
+            columns: [
+                // columns according to JSON
+                { data: "id" },
+                { data: "last_name" },
+                { data: "first_name" },
+                { data: "register" },
+            ],
+            bFilter: true,
+            initComplete: function()
+            {
+                // loaderTurnOff()
+            },
+            columnDefs: [
+                {
+                    targets: 0,
+                    title: "#",
+                    orderable:false,
+                    render: function (data, type, full, meta)
+                    {
+
+                        let employeeId = full.id
+
+                        if (full.id === parseInt(chosedEmployeesId))
+                        {
+                            meta.settings.aoData[meta.row].nTr.className = meta.settings.aoData[meta.row].nTr.className + ' datatable-row-bg '
+                        }
+                        else if (!full.type)
+                        {
+                            meta.settings.aoData[meta.row].nTr.className = meta.settings.aoData[meta.row].nTr.className + ' datatable-row-disabled '
+                        }
+                        else
+                        {
+                            meta.settings.aoData[meta.row].nTr.className = meta.settings.aoData[meta.row].nTr.className + ' datatable-row-hover '
+
+                            meta.settings.aoData[meta.row].nTr.onclick = function()
+                            {
+                                chosedEmployeesId = employeeId
+                                chosedEmployeeWorkingTimeScheduleType = full.type.type
+
+                                let chosed_employee_data = {
+                                    'type': 'thisMonth',
+                                    'employee': chosedEmployeesId,
+                                    'timeScheduleType': chosedEmployeeWorkingTimeScheduleType
+                                }
+
+                                chosedEmployeeNameInput.innerHTML = `${full.last_name[0]}.${full.first_name}`
+
+                                /** Хүсэлтээ шидэж байна */
+                                useLoader(fetchData(`/schedule/time-register-report-ajax/`, chosed_employee_data, 'POST'), $('#mainId')).catch(err => err)
+                                    .then(
+                                        ({ success, data, errors }) =>
+                                        {
+                                            if (data)
+                                            {
+                                                statisticSetValue(data)
+                                                start_day_input.value = ''
+                                                end_day_input.value = ''
+                                                let thisMonthValue = new Date(dateObj.getFullYear(), dateObj.getMonth() + 1)
+                                                choserDateInput.innerHTML = `${thisMonthValue.getFullYear()} оны ${thisMonthValue.getMonth()}-р сар`
+                                                setTimeout(function()
+                                                {
+                                                    document.querySelector(".btn-close").click()
+                                                },
+                                                300)
+                                            }
+                                        }
+                                    )
+                                reportChooseEmployee.ajax.reload(null, false)
+                            }
+                        }
+
+                        return (
+                            meta.settings._iDisplayStart + meta.row + 1
+                        )
+                    }
+                },
+                {
+                    targets: 1,
+                    title: "Овог",
+                    render: function (data, type, full, meta) {
+                        return data ? data : "-";
+                    },
+                },
+                {
+                    targets: 2,
+                    title: "Нэр",
+                    render: function (data, type, full, meta) {
+                        return data ? data : "-";
+                    },
+                },
+                {
+                    targets: 3,
+                    render: function (data, type, full, meta) {
+                        return data ? data : "-";
+                    },
+                },
+            ],
+            order: [[2, "desc"]],
+            lengthMenu: [
+                [10, 25, 50, 100, -1],
+                [10, 25, 50, 100, 'Бүгд'],
+            ],
+            dom:
+                '<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+                '<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+                '<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+                ">t" +
+                '<"d-flex justify-content-between mx-2 row mb-1"' +
+                '<"col-sm-12 col-md-6"i>' +
+                '<"col-sm-12 col-md-6"p>' +
+                ">",
+            oLanguage: {
+                sProcessing: "Ачааллаж байна. ",
+                sSearch: "Хайх: ",
+                sEmptyTable: "Бичлэг байхгүй",
+                sInfoEmpty: "Нийт 0 бичлэг",
+                sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+                sInfoFiltered: " - _MAX_ бичлэгээс",
+                sLengthMenu: "_MENU_ бичлэг",
+                oPaginate: {
+                    sFirst: "Эхэнд",
+                    sLast: "Төгсгөлд",
+                    sNext: "Дараах",
+                    sPrevious: "Өмнөх",
+                },
+            },
+            // Buttons with Dropdown
+            buttons: [
+                {
+                    extend: "collection",
+                    className: "btn btn-outline-secondary dropdown-toggle me-2",
+                    text:
+                        feather.icons["external-link"].toSvg({
+                            class: "font-small-4 me-50",
+                        }) + "Export",
+                    buttons: [
+                        {
+                            extend: "print",
+                            text:
+                                feather.icons["printer"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Print",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [1, 2, 3, 4, 5] },
+                        },
+                        {
+                            extend: "csv",
+                            text:
+                                feather.icons["file-text"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Csv",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [1, 2, 3, 4, 5] },
+                        },
+                        {
+                            extend: "excel",
+                            text:
+                                feather.icons["file"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Excel",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [1, 2, 3, 4, 5] },
+                        },
+                        {
+                            extend: "pdf",
+                            text:
+                                feather.icons["clipboard"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Pdf",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [1, 2, 3, 4, 5] },
+                        },
+                        {
+                            extend: "copy",
+                            text:
+                                feather.icons["copy"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Copy",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [1, 2, 3, 4, 5] },
+                        },
+                    ],
+                },
+            ],
+        });
+    searchFooter(reportChooseEmployee)
+
+</script>
+
+{% endblock js %}

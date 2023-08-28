@@ -1,0 +1,303 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimal-ui" />
+		<meta name="description" content="HR - Монголын үндэсний их сургууль" />
+		<meta name="keywords" content="admin template, Vuexy admin template, dashboard template, flat admin template, responsive admin template, web app"/>
+		<meta name="author" content="PIXINVENT" />
+		<title>HR - Монголын үндэсний их сургууль</title>
+        <link rel="apple-touch-icon" href="{% static 'app-assets/images/ico/apple-icon-120.png' %}" />
+        <link rel="shortcut icon" type="image/x-icon" href="{% static 'app-assets/images/logo/favicon.png' %}" />
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet" />
+
+        <link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/vendors.min.css' %}" />
+        <!-- END: Vendor CSS-->
+		<link
+			rel="stylesheet"
+			type="text/css"
+			href="{% static 'app-assets/vendors/css/extensions/toastr.min.css' %}"
+		/>
+        <link
+            rel="stylesheet"
+            type="text/css"
+            href="{% static '/app-assets/css/plugins/extensions/ext-component-toastr.css' %}"
+        />
+        <!-- BEGIN: Theme CSS-->
+        <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/bootstrap.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/bootstrap-extended.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/colors.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/themes/dark-layout.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/themes/bordered-layout.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/themes/semi-dark-layout.css' %}" />
+
+        <!-- BEGIN: Page CSS-->
+        <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/core/menu/menu-types/vertical-menu.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/form-validation.css' %}" />
+        <link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/pages/authentication.css' %}" />
+        <!-- END: Page CSS-->
+
+        <!-- BEGIN: Custom CSS-->
+        <link rel="stylesheet" type="text/css" href="{% static 'assets/css/style.css' %}" />
+        <!-- END: Custom CSS-->
+
+    </head>
+    <body class="vertical-layout vertical-menu-modern blank-page navbar-floating footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="blank-page">
+        <div class="app-content content ">
+            <div class="content-overlay"></div>
+            <div class="header-navbar-shadow"></div>
+            <div class="content-wrapper">
+                <div class="content-header row">
+                </div>
+                <div class="content-body">
+                    <div class="auth-wrapper auth-cover">
+                        <div class="auth-inner row m-0">
+                            <!-- Brand logo-->
+                            <a class="brand-logo d-flex align-items-center" href="{% url 'user-register' %}">
+                                <img style="width: 80px" src="{% static 'app-assets/images/logo/muis_vacation_logo.png' %}"/>
+                                <h2 style="color: #e35728 !important" class="brand-text text-primary ms-1 mb-0">Хүний нөөцийн систем</h2>
+                            </a>
+                            <!-- /Brand logo-->
+                            <!-- Left Text-->
+                            <div class="d-none d-lg-flex col-lg-8 align-items-center p-5">
+                                <div class="w-100 d-lg-flex align-items-center justify-content-center px-5"><img class="img-fluid" src="{% static 'app-assets/images/pages/login-v2.svg' %}" alt="Login V2" /></div>
+                            </div>
+                            <!-- /Left Text-->
+                            <!-- Register-->
+                            <div  id="registerSection" class="d-flex col-lg-4 align-items-center auth-bg px-2 p-lg-5">
+                                <div id="regiseterFormWrapper" class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-2 mx-auto">
+                                    <h2 class="card-title fw-bold mb-1">Бүртгүүлэх</h2>
+                                    <!-- <p class="card-text mb-2">Make your app management easy and fun!</p> -->
+                                    <form class="auth-register-form mt-2" id="normalRegisterForm">
+                                        <div class="mb-1">
+                                            <label class="form-label" for="last_name">Овог</label>
+                                            <input class="form-control" id="last_name" type="text" name="last_name" placeholder="Бат" aria-describedby="last_name" autofocus="" tabindex="1" />
+                                        </div>
+                                        <div class="mb-1">
+                                            <label class="form-label" for="first_name">Нэр</label>
+                                            <input class="form-control" id="first_name" type="text" name="first_name" placeholder="Болд" aria-describedby="first_name" autofocus="" tabindex="2" />
+                                        </div>
+                                        <div class="mb-1">
+                                            <label class="form-label" for="email">Цахим шуудан</label>
+                                            <input class="form-control" id="email" type="email" name="email" placeholder="bold@example.com" aria-describedby="email" tabindex="4" />
+                                        </div>
+                                        <div class="mb-1">
+                                            <label class="form-label" for="phone_number">Утасны дугаар</label>
+                                            <input class="form-control" id="phone_number" type="number" name="phone_number" placeholder="99887766" aria-describedby="phone_number" tabindex="5" />
+                                        </div>
+                                        <div class="mb-1">
+                                            <label class="form-label" for="password">Нууц үг</label>
+                                            <div class="input-group input-group-merge form-password-toggle">
+                                                <input class="form-control form-control-merge" id="password" type="password" name="password" placeholder="············" aria-describedby="password" tabindex="6" /><span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
+                                            </div>
+                                        </div>
+                                        <div class="col-12 mt-1">
+                                            <p class="fw-bolder">Анхааруулга:</p>
+                                            <ul class="ps-1 ms-25">
+                                                <li class="mb-50">Хамгийн багадаа 8 тэмдэгт</li>
+                                                <li class="mb-50">Дор хаяж нэг том үсэг</li>
+                                                <li>Дор хаяж нэг тоо эсвэл тэмдэгт</li>
+                                            </ul>
+                                        </div>
+                                        <div class="mb-1">
+                                            <label class="form-label" for="comfirmPassword">Нууц үг давтах</label>
+                                            <div class="input-group input-group-merge form-password-toggle">
+                                                <input class="form-control form-control-merge" id="comfirmPassword" type="password" name="comfirmPassword" placeholder="············" aria-describedby="comfirmPassword" tabindex="7" /><span class="input-group-text cursor-pointer"><i data-feather="eye"></i></span>
+                                            </div>
+                                        </div>
+                                        <div class="mb-1">
+                                            <div class="form-check">
+                                                <input class="form-check-input" name="register-privacy-policy" id="register-privacy-policy" type="checkbox" tabindex="8" />
+                                                <label class="form-check-label" for="register-privacy-policy">Та <a href="#">&nbsp;үйлчилгээний нөхцлийг</a> зөвшөөрч байна уу</label>
+                                            </div>
+                                        </div>
+                                        <button type="button" onclick="regiseterSubmit()" class="btn btn-primary w-100" tabindex="5">Бүртгүүлэх</button>
+                                    </form>
+                                    <p class="text-center mt-2"><span>Бүртгэлтэй бол</span><a href="{% url 'account-user-login' %}"><span>&nbsp;Нэвтрэх</span></a></p>
+                                    <!-- <div class="divider my-2">
+                                        <div class="divider-text">Эсвэл</div>
+                                    </div>
+                                    <div class="auth-footer-btn">
+                                        <button class="btn btn-outline-primary w-100">
+                                            ДАН-аар бүртгүүлэх
+                                        </button>
+                                    </div> -->
+                                </div>
+                            </div>
+                            <!-- /Register-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BEGIN: Vendor JS-->
+        <script src="{% static 'app-assets/vendors/js/vendors.min.js' %}"></script>
+        <!-- BEGIN Vendor JS-->
+
+        <!-- BEGIN: Page Vendor JS-->
+        <script src="{% static 'app-assets/vendors/js/forms/validation/jquery.validate.min.js' %}"></script>
+        <!-- END: Page Vendor JS-->
+
+        <!-- BEGIN: Theme JS-->
+        <script src="{% static 'app-assets/js/core/app-menu.js' %}"></script>
+        <script src="{% static 'app-assets/js/core/app.js' %}"></script>
+        <!-- END: Theme JS-->
+		<script src="{% static 'app-assets/vendors/js/extensions/toastr.min.js' %}"></script>
+
+        <!-- BEGIN: Page JS-->
+        <script src="{% static 'app-assets/js/scripts/pages/auth-login.js' %}"></script>
+        <!-- END: Page JS-->
+
+		<!-- BEGIN: Нэмэлтээр бичсэн js-->
+		<script src="{% static 'assets/js/scripts.js' %}"></script>
+		<!-- END: Нэмэлтээр бичсэн js-->
+
+		<script src="{% static 'assets/js/api.js' %}"></script>
+        <script>
+            const registerPrivacyPolicy = document.getElementById('register-privacy-policy')
+            const registerSection = $('#registerSection')
+            const regiseterformWrapper = $('#regiseterFormWrapper')
+            const verifyInfo = {}
+
+            const signUpInputs = [ "last_name", "first_name", "email", "phone_number", "password", "comfirmPassword" ]
+            const normalRegFrom = document.getElementById('normalRegisterForm')
+            const normalRegFromJq = $('#normalRegisterForm')
+
+            let validateregister
+
+            $.validator.addMethod(
+                "regex",
+                function(value, element, regexp) {
+                    var re = new RegExp(regexp);
+                    return this.optional(element) || re.test(value);
+                },
+                "Энэ талбарыг бөглөнө үү"
+            );
+
+            if (normalRegFromJq.length) {
+                validateregister = normalRegFromJq.validate({
+                    rules: {
+                        last_name: {
+                            required: true
+                        },
+                        first_name: {
+                            required: true
+                        },
+                        "email": {
+                            required: {
+                                depends:function(){
+                                    $(this).val($.trim($(this).val()));
+                                    return true;
+                                }
+                            },
+                            regex: EMAIL_REGEX,
+                        },
+                        phone_number: {
+                            required: true,
+                            minlength: 8,
+                            maxlength: 8,
+                        },
+                        "password": {
+                            required: true,
+                            minlength: 8,
+                            regex: /^.*(?=.*[a-z_а-я])(?=.*[A-Z_А-Я])(?=.*[!@#$%^&*_0-9]).*$/,
+                        },
+                        comfirmPassword: {
+                            equalTo : "#password"
+                        },
+                        "register-privacy-policy":{
+                            required: true
+                        }
+                    },
+                    messages: {
+                        first_name:{
+                            required: "Энэ талбарыг бөглөнө үү."
+                        },
+                        last_name:{
+                            required: "Энэ талбарыг бөглөнө үү."
+                        },
+                        'email': {
+                            required: 'Имэйл хаяг талбарыг бөглөнө үү.',
+                            regex: 'Зөв имэйл хаяг оруулна уу'
+                        },
+                        'phone_number': {
+                            required: 'Утасны дугаар талбарыг бөглөнө үү.',
+                            minlength: 'Зөв утасны дугаар оруулна уу',
+                            maxlength: 'Зөв утасны дугаар оруулна уу',
+                        },
+                        'password': {
+                            required: 'Шинэ нууц үг талбарыг бөглөнө үү.',
+                            minlength: 'Нууц үг хамгийн бага даа 8 тэмдэгтийн урттай байна.',
+                            regex: 'Нууц үг нь дор хаяж нэг том ,жижиг үсэг болон тоо эсвэл тусгай тэмдэгт(!@#$%^&*) агуулсан байх ёстой'
+                        },
+                        'comfirmPassword': {
+                            equalTo: 'Шинээр оруулж байгаа нууц үг ижил байх ёстой.'
+                        },
+                        "register-privacy-policy":{
+                            required: "Үйлчилгээний нөхцөлтэй танилцаж, зөвшөөрнө үү."
+                        }
+                    }
+                })
+            }
+
+            const resendMail = async () =>
+            {
+                const { success } = await useLoader(fetchData("/account/resend-verify-mail/", verifyInfo, 'POST'), registerSection)
+            }
+
+            const regiseterSubmit = async () =>
+            {
+
+                // if(!registerPrivacyPolicy.checked)
+                // {
+                //     registerPrivacyPolicy.parent.appendChild()
+                //     alert('Үйлчилгээний нөхцөлтэй танилцаж, зөвшөөрнө үү.')
+                //     return
+                // }
+                if(!normalRegFromJq.valid())
+                {
+                    return
+                }
+                const body = {}
+                signUpInputs.map(
+                    (input) =>
+                    {
+                        body[input] = document.getElementById(input).value
+                        verifyInfo[input] = document.getElementById(input).value
+                    }
+                )
+                const { success } = await useLoader(fetchData("/account/user-register/", body, "POST"), registerSection)
+                if(success)
+                {
+                    regiseterformWrapper.html(`
+                            <h2 class="card-title fw-bolder mb-1">Имэйлээ баталгаажуулна уу ✉️</h2>
+                            <p class="card-text mb-2">
+                                Бид таны имэйл хаяг руу холбоос илгээсэн.
+                                үргэлжлүүлэхийн тулд доторх холбоосыг дээр дарна уу.
+                            </p>
+
+                            <p class="text-center mt-2">
+                                <span>Имэйл хүлээж аваагүй юу? </span><a style="color: #E35728" onclick="resendMail()"><span>&nbsp;Дахин илгээх</span></a>
+                            </p>
+                    `)
+                }
+            }
+
+        </script>
+
+        <script>
+            $(window).on("load", function () {
+                if (feather) {
+                    feather.replace({
+                        width: 14,
+                        height: 14,
+                    });
+                }
+            });
+        </script>
+    </body>
+</html>

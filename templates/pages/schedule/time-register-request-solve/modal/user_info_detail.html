@@ -1,0 +1,97 @@
+
+<!--
+    URL: /schedule/time-register-request-solve/
+    Нэр: Хэрэглэгчийн богинохон хэмжээний мэдээллийг харуулна
+    Төрөл: Modal
+    Дэлгэрэнгүй: Нэр нь дээр нь дарахад гарж ирнэ
+-->
+
+<div class="modal fade" id="{{id}}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content row" >
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center" id="modalbody">
+                <div class="text-center">
+                    <i class="fas fa-exclamation-circle fs-40"></i>
+                </div>
+                <div style="margin-top: 10px">
+                    <h3><span id="realName"></span></h3>
+                </div>
+            </div>
+            <div class="mb-1">
+
+                <div class="modal-body row" id="detail_main_display">
+
+                    <div class="col-12 col-xl-4 col-xxl-3">
+                        <div>
+                            <i class="fal fa-torii-gate fs-20 ms-2 me-2 mb-1"></i>
+                            <span id="orgDetail"></span>
+                        </div>
+                        <div>
+                            <i class="fal fa-briefcase fs-20 ms-2 me-2 mb-1"></i>
+                            <span id="positionDetail"></span>
+                        </div>
+                        <div>
+                            <i class="fal fa-map-marker-alt fs-20 ms-2 me-2 mb-1"></i>
+                            <span id="addressDetail" style="margin-left: 6px;"></span>
+                        </div>
+                        <div>
+                            <i class="fal fa-phone fs-20 ms-2 me-2 mb-1"></i>
+                            <span id="phoneDetail"></span>
+                        </div>
+                        <div>
+                            <i class="fal fa-mailbox fs-20 ms-2 me-2 mb-1"></i>
+                            <span id="orgDetailHref"></span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-xl-8 col-xxl-9">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6 class="card-title">Хүсэлтүүдийн жагсаалт</h6>
+                            </div>
+                            <span id="loaderuid-employee"></span>
+                            <div class="modal-body row text-center" id="user_loader_display" style="display: block;">
+                                Уншиж байна...
+                            </div>
+                            <div class="table-responsive" id="user_main_loader_display" style="display: none;">
+                                <div class="card-datatable table-responsive pt-0">
+                                    <div class="custom-cell" id="time-request-user-table-loader">
+                                        <table id="time-request-user-table" class="time-request-user-table border-spc table text-center">
+                                            <thead class="table-light">
+                                                <tr class="filter-container"></tr>
+                                                <tr>
+                                                    <th>ID</th>
+                                                    <th>Огноо</th>
+                                                    <th>Чөлөөний мэдээлэл</th>
+                                                    <th>Он сар</th>
+                                                    <th>Тайлбар</th>
+                                                </tr>
+                                            </thead>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>Огноо</th>
+                                                    <th>Огноо</th>
+                                                    <th>Овог</th>
+                                                    <th>Нэр</th>
+                                                    <th>Тайлбар</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">
+                    Болих
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

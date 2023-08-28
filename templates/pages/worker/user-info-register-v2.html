@@ -1,0 +1,828 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load mytags %}
+
+{% block vendorcss %}
+<!-- BEGIN: Vendor CSS-->
+
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="{% static 'app-assets/vendors/css/forms/select/select2.min.css' %}"
+    />
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}"
+    />
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}"
+    />
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="{% static 'app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css' %}"
+    />
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="{% static 'app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css' %}"
+    />
+    <!-- END: Vendor CSS-->
+{% endblock vendorcss %}
+{% block css %}
+
+    <link
+        rel="stylesheet"
+        type="text/css"
+        href="{% static 'app-assets/css/plugins/forms/form-validation.css' %}"
+    />
+{% endblock css %}
+
+{% block content %}
+    <div class="content-body p-none employee-add">
+        {% jsonloads tree_data as s_options %}
+        {% jsonloads units as unit_options %}
+        {% get_ys_undes as ys_undes %}
+        <div class="col-lg-12">
+            <form id="worker-register-form" onsubmit="handleSubmit(event)">
+                <div class="row">
+                    <div class="col-lg-4 col-sm-12">
+                        <div class="form">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h4 class="card-title">Хэрэглэгчийн мэдээлэл</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        {% if pos in 'suborg, org' %}
+                                        <div class="col-12">
+                                            <div class="mb-2 row">
+                                                <div class="col-sm-3">
+                                                    <label class="col-form-label" for="suborg-select">Харьяалагдах алба нэгж</label>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <select class="select2 form-select" id="suborg-select" name="sub_org" onchange="handleChangeSubSalbar(event)">
+                                                        {% for option in s_options %}
+                                                            <option value="{{option.id}}-{{ forloop.counter0 }}">
+                                                                {{option.name}}
+                                                            </option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                        {% if pos in 'suborg, salbar, org' %}
+                                        <div class="col-12">
+                                            <div class="mb-2 row">
+                                                <div class="col-sm-3">
+                                                    <label class="col-form-label" for="salbar-select">Тэнхим</label>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <select class="form-select" id="salbar-select" name="salbar" onchange="handleChangeSubSalbar(event)">
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endif %}
+                                        <div class="col-12">
+                                            <div class="mb-2 row">
+                                                <div class="col-sm-3">
+                                                    <label class="col-form-label" for="org_position">Албан тушаал</label>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <select class="select2 form-select" id="org_position" name="org_position">
+                                                        <option value="">--- Сонгоно уу ---</option>
+                                                        {% for option in org_positions %}
+                                                            <option value="{{option.id}}">{{option.name}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="mb-2 row">
+                                                <div class="col-sm-3">
+                                                    <label class="col-form-label" for="register_code">Ажилтны код</label>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <input type="text" id="register_code" class="form-control" name="register_code" placeholder="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="mb-2 row">
+                                                <div class="col-sm-4">
+                                                    <label class="col-form-label" for="teacher_rank_type">Багшийн зэрэглэл</label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    {% for id, name in teacher_rank_type %}
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="teacher_rank_type" value="{{id}}" id="teacher_rank_type-{{id}}">
+                                                            <label class="form-check-label" for="teacher_rank_type-{{id}}">
+                                                                {{name}}
+                                                            </label>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="mb-2 row">
+                                                <div class="col-sm-4">
+                                                    <label class="col-form-label" for="education_level">Боловсролын түвшин</label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    {% for id, name in education_level %}
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="education_level" value="{{id}}" id="education_level-{{id}}">
+                                                            <label class="form-check-label" for="education_level-{{id}}">
+                                                                {{name}}
+                                                            </label>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="mb-2 row">
+                                                <div class="col-sm-4">
+                                                    <label class="col-form-label" for="degree_type">Эрдмийн зэрэг</label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    {% for id, name in degree_type %}
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="degree_type" value="{{id}}" id="degree_type-{{id}}">
+                                                            <label class="form-check-label" for="degree_type-{{id}}">
+                                                                {{name}}
+                                                            </label>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="mb-2 row">
+                                                <div class="col-sm-4">
+                                                    <label class="col-form-label" for="worker_type">Ажилтны гэрээний төрөл</label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    {% for id, name in worker_type %}
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="worker_type" value="{{id}}" id="worker_type-{{id}}" onclick="chooseWorkerType(`{{id}}`, `{{name}}`)" >
+                                                            <label class="form-check-label" for="worker_type-{{id}}">
+                                                                {{name}}
+                                                            </label>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12" style="display: none;" id="basic_salary_information_display" >
+                                            <div class="mb-2 row">
+                                                <div class="col-sm-3">
+                                                    <label class="col-form-label" for="basic_salary_information">Үндсэн цалингийн мэдээлэл</label>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <input type="number" id="basic_salary_information" class="form-control" name="basic_salary_information" placeholder="" value='0' >
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12" style="display: none;" id="work_for_hire_display" >
+                                            <div class="mb-2 row">
+                                                <div class="col-sm-12">
+                                                    <input class="form-check-input" type="checkbox" id="work_for_hire" name="work_for_hire" onchange="chooseWorkForHire(this)" >
+                                                    <label class="col-form-label ms-1" for="work_for_hire">Нэмэлт цалинтай эсэх</label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12" style="display: none;" id="hourly_wage_information_display" >
+                                            <div class="mb-2 row">
+                                                <div class="col-sm-3">
+                                                    <label class="col-form-label" for="hourly_wage_information">Нэг цагийн цалингийн мэдээлэл</label>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <input type="number" id="hourly_wage_information" class="form-control" name="hourly_wage_information" placeholder="" value='0' >
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-12" style="display: none;" id="hire_wage_information_display" >
+                                            <div class="mb-2 row">
+                                                <div class="col-sm-3">
+                                                    <label class="col-form-label" for="hire_wage_information">Нэмэлт цалингийн мэдээлэл</label>
+                                                </div>
+                                                <div class="col-sm-9">
+                                                    <input type="number" id="hire_wage_information" class="form-control" name="hire_wage_information" placeholder="" value='0' >
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-8 col-sm-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h4 class="card-title">Ажилтны үндсэн мэдээлэл</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <div class="col-12">
+                                            <div class="mb-2 row">
+                                                <div class="col-sm-4">
+                                                    <label class="col-form-label" for="urgiin_ovog">Ургийн овог</label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <input type="text" id="urgiin_ovog" class="form-control" name="urgiin_ovog" placeholder="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="mb-2 row">
+                                                <div class="col-sm-4">
+                                                    <label class="col-form-label" for="last_name">Эцэг/эхийн нэр</label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <input type="text" id="last_name" class="form-control" name="last_name" placeholder="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="mb-2 row">
+                                                <div class="col-sm-4">
+                                                    <label class="col-form-label" for="first_name">Нэр</label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <input type="text" id="first_name" class="form-control" name="first_name" placeholder="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="mb-2 row">
+                                                <div class="col-sm-4">
+                                                    <label class="col-form-label" for="register">Регистерийн дугаар</label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <input type="text" id="register" class="form-control" name="register" placeholder="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="mb-2 row">
+                                                <div class="col-sm-4">
+                                                    <label class="col-form-label" for="email">Имэйл хаяг</label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <input type="text" id="email" class="form-control" name="email" placeholder="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="mb-2 row">
+                                                <div class="col-sm-4">
+                                                    <label class="col-form-label" for="phone_number">Утасны дугаар</label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <input type="number" id="phone_number" class="form-control" name="phone_number" placeholder="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="mb-2 row">
+                                                <div class="col-sm-4">
+                                                    <label class="col-form-label" for="blood_type">Цусны бүлэг</label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    {% for id, name in blood_types %}
+                                                        <div class="form-check">
+                                                            <input class="form-check-input" type="radio" name="blood_type" value="{{id}}" id="blood-{{id}}">
+                                                            <label class="form-check-label" for="blood-{{id}}">
+                                                                {{name}}
+                                                            </label>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="col-12">
+                                            <div class="mb-2 row">
+                                                <div class="col-sm-4">
+                                                    <label class="col-form-label" for="emdd_number">ЭМДД-ийн дугаар</label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <input type="text" id="emdd_number" class="form-control" name="emdd_number" placeholder="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="mb-2 row">
+                                                <div class="col-sm-4">
+                                                    <label class="col-form-label" for="ndd_number">НДД-ийн дугаар</label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <input type="text" id="ndd_number" class="form-control" name="ndd_number" placeholder="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="mb-2 row">
+                                                <div class="col-sm-4">
+                                                    <label class="col-form-label" for="body_height">Биеийн өндөр</label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <input type="number" id="body_height" class="form-control" name="body_height" placeholder="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="mb-2 row">
+                                                <div class="col-sm-4">
+                                                    <label class="col-form-label" for="body_weight">Биеийн жин</label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <input type="number" id="body_weight" class="form-control" name="body_weight" placeholder="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="mb-2 row">
+                                                <div class="col-sm-4">
+                                                    <label class="col-form-label" for="ys_undes">Яс үндэс</label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <select class="select2 form-select" name="ys_undes" id="ys_undes">
+                                                        <option value="">--- Сонгоно уу ---</option>
+                                                        {% for option in ys_undes %}
+                                                            <option value="{{option}}">
+                                                                {{option}}
+                                                            </option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="mb-2 row">
+                                                <div class="col-sm-4">
+                                                    <label class="col-form-label" for="unit1">Төрсөн газар /аймаг,хот/</label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <select class="select2 form-select" id="unit1" name="unit1" onchange="handleChangeUnit(event)">
+                                                        <option value="">--- Сонгоно уу ---</option>
+                                                        {% for option in unit_options %}
+                                                            <option value="{{option.id}}-{{ forloop.counter0 }}">
+                                                                {{option.name}}
+                                                            </option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="mb-2 row">
+                                                <div class="col-sm-4">
+                                                    <label class="col-form-label" for="unit2">Төрсөн газар /сум, дүүрэг/</label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <select class="select2 form-select" id="unit2" name="unit2" onchange="handleChangeUnit(event)"></select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="mb-2 row">
+                                                <div class="col-sm-4">
+                                                    <label class="col-form-label" for="address">Оршин суугаа хаяг</label>
+                                                </div>
+                                                <div class="col-sm-8">
+                                                    <textarea id="address" class="form-control" name="address" placeholder=""></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="row">
+                                                <div class="col-md-6 col-12">
+                                                    <button type="reset" class="btn btn-outline-secondary">Хоослох</button>
+                                                </div>
+                                                <div class="col-md-6 col-12 mt-1 mt-md-0">
+                                                    <div class="d-flex">
+                                                        <button type="submit" class="btn btn-primary ms-md-auto ms-0">Бүртгэх</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="modal fade" id="save-modal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-sm modal-dialog-centered modal-edit-user">
+                    <div class="modal-content">
+                        <div class="modal-header bg-transparent">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-center">
+                            <div class="text-center">
+                                <i class="fas fa-exclamation-circle text-warning fs-40"></i>
+                            </div>
+                            <h6 class="mt-1 mb-1 fw-bolder">Анхааруулга<h6>
+                            Та шинэ ажилтныг бүртгэхдээ итгэлтэй байна уу?
+                        </div>
+                        <div class="modal-footer">
+                            <button
+                                class="btn btn-primary"
+                                type="button"
+                                onclick="handleSave(event)"
+                                data-bs-dismiss="modal"
+                            >
+                                <span>Тийм</span>
+                            </button>
+                            <button
+                                class="btn btn-outline-secondary"
+                                data-bs-dismiss="modal"
+                            >
+                                Үгүй
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock content %}
+
+{% block js %}
+
+<script>
+    const selectOptions = {{tree_data|safe}}
+    const unitOptions = {{units|safe}}
+    const defaultOption = new Option("--- Сонгоно уу ---", ``)
+    let workerForm = $("#worker-register-form")
+    let warningModal = $("#save-modal")
+
+    var basic_salary_information_display_doc = document.getElementById('basic_salary_information_display')
+    var work_for_hire_display_doc = document.getElementById('work_for_hire_display')
+    var hourly_wage_information_display_doc = document.getElementById('hourly_wage_information_display')
+    var hire_wage_information_display_doc = document.getElementById('hire_wage_information_display')
+    var work_for_hire_input_doc = document.getElementById('work_for_hire')
+
+    var choosedWorkerTypeID
+
+    /** select ийн утга солигдох үед дараачийн select ийн утгыг хайх нь */
+    function setOptions(id, index, elementId)
+    {
+        const options = selectOptions[index]['children']
+
+        $("#salbar-select").html(defaultOption)
+        // example: https://github.com/clivezhg/select2-to-tree/blob/master/example/example.html
+        $("#salbar-select").select2ToTree({
+                treeData: {
+                    dataArr: options,
+                    valFld: "id",
+                    labelFld: "name",
+                    incFld: 'children'
+                }
+            }
+        )
+    }
+
+    /** select ийн утга солигдох үед */
+    function handleChangeSubSalbar(event)
+    {
+
+        const selectId = event.target.id
+        const selectedValue = event.target.value
+
+        if (selectId === "suborg-select" && selectedValue)
+        {
+            const [id, index] = selectedValue.split("-")
+            const options = setOptions(id, index, '#salbar-select')
+        }
+    }
+
+    /** Тухайн select ийн анхны утгыг оноох нь */
+    function initialSelectValues()
+    {
+        const salbarId = "{{request.employee.salbar.id}}"
+        const subOrgId = "{{request.employee.sub_org.id}}"
+        const orgId = "{{request.employee.org.id}}"
+
+        if (salbarId)
+        {
+            // example: https://github.com/clivezhg/select2-to-tree/blob/master/example/example.html
+            $("#salbar-select").select2ToTree({
+                    treeData: {
+                        dataArr: selectOptions,
+                        valFld: "id",
+                        labelFld: "name",
+                        incFld: 'children'
+                    }
+                }
+            )
+        }
+        else if (subOrgId)
+        {
+            $("#suborg-select option").each(
+                (index, element) =>
+                {
+                    const [id, eindex] = element.value.split("-")
+                    if (subOrgId == id)
+                    {
+                        $("#suborg-select").val(`${id}-${eindex}`).change()
+                    }
+                }
+            )
+        }
+        else if (orgId)
+        {
+            $("#suborg-select").prepend(defaultOption)
+            $("#suborg-select").val("").change()
+        }
+    }
+    initialSelectValues()
+
+    /** засаг захиргааны нэгж солигдох үед */
+    function handleChangeUnit(event)
+    {
+        const selectId = event.target.id
+        const selectedValue = event.target.value
+
+        if (selectId === "unit1")
+        {
+            const [id, index] = selectedValue.split("-")
+            const unit2 = unitOptions[index]['unit2']
+            $("#unit2").html(defaultOption)
+            for (const unit2Index in unit2)
+            {
+                const item = unit2[unit2Index]
+                const option = new Option(item.name, item.id)
+                $("#unit2").append(option)
+            }
+        }
+
+    }
+
+    $.validator.addMethod(
+        "regex",
+        function(value, element, regexp) {
+            return this.optional(element) || regexp.test(value);
+        },
+        "Талбарын утгыг оруулна уу."
+    );
+
+    const validate = $('#worker-register-form').validate({
+        rules: {
+            'sub_org': {
+                required: false
+            },
+            'salbar': {
+                required: false
+            },
+            'phone_number': {
+                required: true,
+                maxlength: 8,
+                minlength: 6,
+            },
+            'org_position': {
+                required: true
+            },
+            // 'email': {
+            //     required: true,
+            //     email: true
+            // },
+            'cpassword': {
+                required: true,
+                minlength: 8
+            },
+            'urgiin_ovog': {
+                required: false
+            },
+            'last_name': {
+                required: true,
+            },
+            'worker_type': {
+                required: true,
+            },
+            'teacher_rank_type': {
+                required: true,
+            },
+            'education_level': {
+                required: true,
+            },
+            'degree_type': {
+                required: true,
+            },
+            'first_name': {
+                required: true,
+            },
+            'register': {
+                required: {
+                    depends:function(){
+                        $(this).val($.trim($(this).val()));
+                        return true;
+                    }
+                },
+                regex: /[a-яА-Я]{2}[0-9]{8}/,
+            },
+            'ys_undes': {
+                required: false,
+            },
+            'address': {
+                required: false,
+            },
+            'emdd_number': {
+                required: false,
+            },
+            'ndd_number': {
+                required: false,
+            },
+            'body_height': {
+                required: false,
+            },
+            'body_weight': {
+                required: false,
+            },
+            'unit1': {
+                required: false,
+            },
+            'unit2': {
+                required: false,
+            },
+            'register_code': {
+                required: true,
+            },
+            'basic_salary_information': {
+                required: true,
+                number: true,
+                min: 1,
+            },
+            'hourly_wage_information': {
+                required: true,
+                number: true,
+                min: 1,
+            },
+            'hire_wage_information': {
+                required: true,
+                number: true,
+                min: 1,
+            },
+        },
+        messages: {
+            'sub_org': {
+                required: false
+            },
+            'salbar': {
+                required: false
+            },
+            'org_position': {
+                required: 'Албан тушаал талбарыг сонгоно уу.'
+            },
+            // 'email': {
+            //     required: "И-мэйл талбарыг бөглөнө үү.",
+            //     email: "И-мэйл талбарыг бөглөнө үү."
+            // },
+            'cpassword': {
+                required: "Нууц үг талбарыг бөглөнө үү.",
+                minlength: 'Хамгийн багадаа 8 тэмдэгт орсон байх шаардлагатай'
+            },
+            'urgiin_ovog': {
+                required: 'Ургийн овог талбарыг бөглөнө үү.'
+            },
+            'last_name': {
+                required: 'Эцэг/эхийн нэр талбарыг бөглөнө үү.',
+            },
+            'first_name': {
+                required: 'Өөрийн нэр талбарыг бөглөнө үү.',
+            },
+            'register': {
+                required: 'Регистерийн дугаар талбарыг бөглөнө үү.',
+                regex: 'Регистерийн дугаарыг АА12345678 гэсэн форматын дагуу оруулна уу.'
+            },
+            'gender': {
+                required: "",
+            },
+            'ys_undes': {
+                required: 'Яс үндэс талбарыг бөглөнө үү.',
+            },
+            'address': {
+                required: 'Оршин суугаа хаяг талбарыг бөглөнө үү.',
+            },
+            'emdd_number': {
+                required: 'ЭМДД-ийн дугаар талбарыг бөглөнө үү.',
+            },
+            'ndd_number': {
+                required: 'НДД-ийн дугаар талбарыг бөглөнө үү.',
+            },
+            'body_height': {
+                required: 'Биеийн өндөр талбарыг бөглөнө үү.',
+            },
+            'body_weight': {
+                required: 'Биеийн жин талбарыг бөглөнө үү.',
+            },
+            'register_code': {
+                required: 'Ажилтны код талбарыг бөглөнө үү.',
+            },
+            'basic_salary_information': {
+                required: 'Үндсэн цалин талбарыг бөглөнө үү.',
+                number: 'Тоон утга оруулна уу.',
+                min: 'Тоон утга оруулна уу.'
+            },
+            'hourly_wage_information': {
+                required: 'Нэг цагийн цалин талбарыг бөглөнө үү.',
+                number: 'Тоон утга оруулна уу.',
+                min: 'Тоон утга оруулна уу.'
+            },
+            'hire_wage_information': {
+                required: 'Хөлсөөр ажиллах цалин талбарыг бөглөнө үү.',
+                number: 'Тоон утга оруулна уу.',
+                min: 'Тоон утга оруулна уу.'
+            },
+        }
+    });
+
+    async function saveWorker()
+    {
+        const formData = new FormData(workerForm[0])
+
+        const data = Object.fromEntries(formData)
+
+        const { success, errors } = await fetchData(`/worker/create/`, data, 'POST')
+        if (success) {
+            window.location.href = "{% url 'user-info-register-v2' %}"
+        }
+        return { success, errors }
+    }
+
+    async function handleSave()
+    {
+        const { success, errors } = await useLoader(
+            saveWorker(),
+            workerForm
+        )
+        if (!success)
+        {
+            displayError(errors)
+        }
+    }
+
+    async function handleSubmit(event)
+    {
+        event.preventDefault()
+        if(!validate.checkForm())
+        {
+            return
+        }
+
+        warningModal.modal("show")
+    }
+
+    function chooseWorkerType(id, name)
+    {
+        basic_salary_information_display_doc.style.display = 'none'
+        work_for_hire_display_doc.style.display = 'none'
+        hourly_wage_information_display_doc.style.display = 'none'
+        hire_wage_information_display_doc.style.display = 'none'
+        work_for_hire_input_doc.checked = false
+
+        choosedWorkerTypeID = id
+
+        if (id == 2)
+        {
+            basic_salary_information_display_doc.style.display = 'block'
+            work_for_hire_display_doc.style.display = 'block'
+        }
+        else if (id == 1)
+        {
+            work_for_hire_display_doc.style.display = 'block'
+            hourly_wage_information_display_doc.style.display = 'block'
+        }
+    }
+
+    function chooseWorkForHire(element)
+    {
+        hire_wage_information_display_doc.style.display = 'none'
+
+        if (element.checked)
+        {
+            if (choosedWorkerTypeID == 2)
+            {
+                hire_wage_information_display_doc.style.display = 'block'
+            }
+        }
+    }
+
+</script>
+
+{% endblock js %}

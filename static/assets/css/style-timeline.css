@@ -1,0 +1,62 @@
+#timeline {
+    overflow: hidden;
+    width: 100%;
+}
+
+#timeline div .date {
+    border-right: 1px rgba(179, 175, 175, 0.4) solid;
+    text-align: right;
+    position: relative;
+}
+
+#timeline div .date:before {
+    content: '';
+    width: 12px;
+    height: 12px;
+    background: #e5e5d1;
+    position: absolute;
+    left: 98.5%;
+    top: 37px;
+    border-radius: 100%;
+    cursor: pointer
+}
+
+#timeline div.active .date::before {
+    content: '';
+    width: 20px;
+    height: 20px;
+    background: #0078FF;
+    position: absolute;
+    left: 97.5%;
+    top: 40px;
+    border-radius: 100%
+}
+
+#timeline div .date h2 {
+    margin: 31px 14px 0;
+    font-size: 22px;
+    font-weight: 300;
+    cursor: pointer
+}
+
+#timeline div.active .date h2 {
+    font-size: 30px;
+    color: #0078FF;
+}
+
+#timeline div .text p {
+    margin: 20px 25px 0;
+    width: 90%;
+    display: none
+}
+
+#timeline div .text p:first-child {
+    margin: 42px 25px 0;
+    width: 90%;
+    display: none
+}
+
+
+#timeline div.active .text p {
+    display: inherit
+}

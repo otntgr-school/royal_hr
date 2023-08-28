@@ -1,0 +1,224 @@
+{% load static %}
+<div class="modal modal-slide-in new-slup-modal fade" id="circle-page-modal">
+    <div class="modal-dialog custom-80">
+        <form class="routing-slip modal-content pt-0">
+            <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+            >
+                ×
+            </button>
+            <div class="modal-header mb-1">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    Ажилтан чөлөөлөх
+                </h5>
+            </div>
+            <div class="modal-body flex-grow-1">
+                <!-- Modern Horizontal Wizard -->
+                <section class="modern-horizontal-wizard">
+                    <div class="bs-stepper">
+                        <div class="bs-stepper-header">
+                            <div class="step" data-target="#account-details-modern" role="tab" id="account-details-modern-trigger">
+                                <button type="button" class="step-trigger d-flex align-items-center">
+                                    <span class="bs-stepper-box">
+                                        <i data-feather='life-buoy' class="font-medium-3"></i>
+                                    </span>
+                                    <span class="bs-stepper-label">
+                                        <span class="bs-stepper-title">Тойрох хуудас</span>
+                                        <span class="bs-stepper-subtitle">Үүсгэх/засах</span>
+                                    </span>
+                                </button>
+                            </div>
+                            <div class="line">
+                                <i data-feather="chevron-right" class="font-medium-2"></i>
+                            </div>
+                            <div class="step" data-target="#personal-info-modern" role="tab" id="personal-info-modern-trigger">
+                                <button type="button" class="step-trigger">
+                                    <span class="bs-stepper-box">
+                                        <i data-feather='flag' class="font-medium-3"></i>
+                                    </span>
+                                    <span class="bs-stepper-label">
+                                        <span class="bs-stepper-title">Тойрох хуудас баталгаажуулалт</span>
+                                        <span class="bs-stepper-subtitle">Ажилтныг ажлын байрнаас чөлөөлөх</span>
+                                    </span>
+                                </button>
+                            </div>
+                            <div class="line">
+                                <i data-feather="chevron-right" class="font-medium-2"></i>
+                            </div>
+                        </div>
+                        <div class="bs-stepper-content">
+                            <!-- step1 -->
+                            <div id="account-details-modern" class="content" role="tabpanel" aria-labelledby="account-details-modern-trigger">
+                                <div class="content-header">
+                                    <h5 class="mb-0 text-center">Тойрох хуудас үүсэх/засах</h5>
+                                    <small class="text-muted">Тойрох хуудас дээр зөвшөөрөл олгох хүмүүсийг сонгоно уу.</small>
+                                </div>
+                                <div class="positions mb-2">
+                                    <div data-repeater-list="positions">
+                                        <div data-repeater-item>
+                                            <div class="row d-flex align-items-start">
+                                                    <div class="col-12">
+                                                        № - <span class="qst-index">1</span>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="mb-1">
+                                                            <label class="form-label" for="org_position">Албан тушаал</label>
+                                                            <select class="form-select org_position" name="org_position" id="org_position" onchange="handlePosition(event)">
+                                                                <option value="">--------</option>
+                                                                {% for position in choices.positions_director %}
+                                                                    <option value="{{position.id}}">
+                                                                        {{position.name}}
+                                                                    </option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-6">
+                                                        <div class="mb-1">
+                                                            <label for="employee" class="form-label">Хариуцах албан тушаалтны нэр</label>
+                                                            <select
+                                                                class="form-select w-100"
+                                                                name="employee"
+                                                                id="employee"
+                                                                data-error="#errNm3"
+                                                            >
+                                                            </select>
+                                                            <div class="errorTxt">
+                                                                <span id="errNm3"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-12">
+                                                        <div class="mb-1 d-flex">
+                                                            <button class="ms-auto btn btn-outline-danger text-nowrap px-1 slip-delete" data-repeater-delete type="button">
+                                                                <i data-feather="x" class="me-25"></i>
+                                                                <span>Устгах</span>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+
+                                                <!-- PREVIEW -->
+                                                <div class="col-md-6 q-preview">
+                                                </div>
+
+                                            </div>
+                                            <hr />
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <button class="btn btn-icon btn-primary" type="button" data-repeater-create>
+                                                <i data-feather="plus" class="me-25"></i>
+                                                <span>Албан тушаалтан нэмэх</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <button class="btn btn-outline-secondary btn-prev" disabled>
+                                        <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
+                                        <span class="align-middle d-sm-inline-block d-none">Өмнөх</span>
+                                    </button>
+                                    <button type="button" class="survey-kind-next btn btn-primary btn-next">
+                                        <span class="align-middle d-sm-inline-block d-none">Дараах</span>
+                                        <i data-feather="arrow-right" class="align-middle ms-sm-25 ms-0"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <!-- step2 -->
+                            <div id="personal-info-modern" class="content" role="tabpanel" aria-labelledby="personal-info-modern-trigger">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="d-flex justify-content-between">
+                                            <button type="button" class="btn btn-primary btn-prev" onclick="cancelSlup(event)">Цуцлах</button>
+                                        </div>
+                                        <div class="table-responsive">
+                                            <h3 class="text-center mt-1 mb-2">Тойрох хуудас</h3>
+                                            <div class="d-flex justify-content-between px-2">
+                                                <span id="title_date"></span>
+                                                <span id="title_org"></span>
+                                                <span id="title_position"></span>
+                                                <span id="title_name"></span>
+                                            </div>
+                                            <div class="table-responsive text-center" id="toiroh_huudas_id">
+                                                <div class="card-datatable table-responsive pt-0 text-center">
+                                                    <table class="slup-info-table table text-center">
+                                                        <thead class="table-light text-center">
+                                                            <tr class="text-center">
+                                                                <th class="text-center"></th>
+                                                                <th class="text-center"></th>
+                                                                <th class="text-center">АЛБАН ТУШААЛ</th>
+                                                                <th class="text-center">НЭР</th>
+                                                                <th class="text-center">ТӨЛӨВ</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group" id="fire_commandInputs">
+                                            <label class="form-label" for="fp-range">Тушаалын дугаар</label>
+                                            <input type="text" id="fire_command_number" name="fire_command_number" class="form-control " readonly="true"/>
+                                            <label class="form-label" for="fp-range">Тушаалын нэр</label>
+                                            <input type="text" id="fire_command_name" name="fire_command_name" class="form-control " readonly="true"/>
+                                        </div>
+                                        <div id="fireBtn">
+                                            <a onclick="getCommandMoreInfo('slip')"  id="fire_commandButton" class="text-primary fw-bold fs-12 mt-1 mb-2 d-block text-center">
+                                                <i data-feather='plus'></i> Тушаал сонгох
+                                            </a>
+                                        </div>
+                                        <div class="card-body">
+                                            <span id="title_created_by"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-between">
+                                    <button type="button" class="btn btn-primary btn-prev">
+                                        <i data-feather="arrow-left" class="align-middle me-sm-25 me-0"></i>
+                                        <span class="align-middle d-sm-inline-block d-none">Засах</span>
+                                    </button>
+                                    <button type="button" class="btn btn-success btn-submit" id="slipBtn" onclick="slipSubmit(event)">Баталгаажуулах</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- /Modern Horizontal Wizard -->
+            </div>
+        </form>
+    </div>
+</div>
+<div class="modal fade" id="xSmall" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content row" >
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center" id="modalbody">
+                <div class="text-center">
+                    <i class="fas fa-exclamation-circle fs-40"></i>
+                </div>
+                <div style="margin-top: 10px">
+                    Тайлбар
+                </div>
+            </div>
+            <div class="mb-1">
+                <div class="modal-body row" id="detail_main_display">
+                    <div class="mb-1 col-12">
+                        <textarea class="form-control" rows="6" id="slip-description" name="descriptionDetail" readonly="readonly"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">
+                    Болих
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

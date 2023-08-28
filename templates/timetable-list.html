@@ -1,0 +1,371 @@
+{% extends './base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+
+{% block vendorcss %}
+<!-- BEGIN: Vendor CSS-->
+
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="{% static 'app-assets/vendors/css/forms/select/select2.min.css' %}"
+/>
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}"
+/>
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}"
+/>
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="{% static 'app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css' %}"
+/>
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="{% static 'app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css' %}"
+/>
+<!-- END: Vendor CSS-->
+{% endblock vendorcss %} {% block css %}
+
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="{% static 'app-assets/css/plugins/forms/form-validation.css' %}"
+/>
+{% endblock css %} {% block content %}
+<div class="content-body">
+	<!-- users list start -->
+	<section class="app-user-list">
+		<!-- list and filter start -->
+		<div class="card">
+			<div class="card-body border-bottom">
+				<h4 class="card-title">Ажлын цагийн төрөл</h4>
+				<div class="row">
+					<div class="col-md-4 user_role"></div>
+					<div class="col-md-4 user_plan"></div>
+					<div class="col-md-4 user_status"></div>
+				</div>
+			</div>
+			<div class="card-datatable table-responsive pt-0">
+				<table class="time-list-table table">
+					<thead class="table-light">
+						<tr>
+							<th></th>
+							<th></th>
+							<th>Нэр</th>
+							<th>Эхлэх цаг</th>
+							<th>Дуусах цаг</th>
+							<th>Нийт ажиллах хугацаа</th>
+							<th>Цайны цаг</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+				</table>
+			</div>
+			<!-- Modal to add new user starts-->
+			<div
+				class="modal modal-slide-in new-timetable-modal fade"
+				id="modals-slide-in"
+			>
+				<div class="modal-dialog">
+					<form class="add-new-timetable modal-content pt-0">
+						<button
+							type="button"
+							class="btn-close"
+							data-bs-dismiss="modal"
+							aria-label="Close"
+						>
+							×
+						</button>
+						<div class="modal-header mb-1">
+							<h5 class="modal-title" id="exampleModalLabel">
+								Ажлын цагийн төрөл нэмэх
+							</h5>
+						</div>
+						<div class="modal-body flex-grow-1">
+							<div class="mb-1">
+								<label
+									class="form-label"
+									for="basic-icon-default-fullname"
+									>Нэр</label
+								>
+								<input
+									type="text"
+									class="form-control dt-full-name"
+									id="basic-icon-default-fullname"
+									placeholder="Нэр"
+									name="user-fullname"
+								/>
+							</div>
+							<div class="mb-1">
+								<label
+									class="form-label"
+									for="basic-icon-default-uname"
+									>Эхлэх цаг</label
+								>
+								<input
+									type="text"
+									id="basic-icon-default-uname"
+									class="form-control dt-uname"
+									placeholder="Эхлэх цаг"
+									name="user-name"
+								/>
+							</div>
+							<div class="mb-1">
+								<label
+									class="form-label"
+									for="basic-icon-default-uname"
+									>Дуусах цаг</label
+								>
+								<input
+									type="text"
+									id="basic-icon-default-uname"
+									class="form-control dt-uname"
+									placeholder="Дуусах цаг"
+									name="user-name"
+								/>
+							</div>
+							<div class="mb-1">
+								<label
+									class="form-label"
+									for="basic-icon-default-email"
+									>Нийт ажиллах хугацаа</label
+								>
+								<input
+									type="text"
+									id="basic-icon-default-email"
+									class="form-control dt-email"
+									placeholder="Нийт ажиллах хугацаа"
+									name="user-email"
+								/>
+							</div>
+							<div class="mb-1">
+								<label
+									class="form-label"
+									for="basic-icon-default-contact"
+									>Цайны цаг</label
+								>
+								<input
+									type="text"
+									id="basic-icon-default-contact"
+									class="form-control dt-contact"
+									placeholder="Цайны цаг"
+									name="user-contact"
+								/>
+							</div>
+
+							<button
+								type="submit"
+								class="btn btn-primary me-1 data-submit"
+							>
+								Хадгалах
+							</button>
+							<button
+								type="reset"
+								class="btn btn-outline-secondary"
+								data-bs-dismiss="modal"
+							>
+								Болих
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+			<!-- Modal to add new user Ends-->
+		</div>
+		<!-- list and filter end -->
+	</section>
+	<!-- users list ends -->
+</div>
+
+{% endblock content %}
+<!--prettier-ignore-->
+{% block js %}
+<!-- BEGIN: Page Vendor JS-->
+<!-- BEGIN: Page Vendor JS-->
+<script src="{% static 'app-assets/vendors/js/forms/select/select2.full.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.buttons.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jszip.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/pdfmake.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/vfs_fonts.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.html5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.print.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/cleave.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/addons/cleave-phone.us.js' %}"></script>
+<!-- END: Page Vendor JS-->
+
+<!-- BEGIN: Page JS-->
+<script>
+	var newUserSidebar = $(".new-timetable-modal");
+	var newUserForm = $(".add-new-timetable");
+
+	$(".time-list-table").DataTable({
+		ajax: "{% static 'app-assets/data/timetable-list.json' %}", // JSON file to add data
+		columns: [
+			// columns according to JSON
+			{ data: "" },
+			{ data: "id" },
+			{ data: "name" },
+			{ data: "start_time" },
+			{ data: "end_time" },
+			{ data: "length_time" },
+			{ data: "lunch_time" },
+			{ data: "" },
+		],
+		columnDefs: [
+			{
+				// For Responsive
+				className: "control",
+				orderable: false,
+				responsivePriority: 2,
+				targets: 0,
+				render: function (data, type, full, meta) {
+					return "";
+				},
+			},
+			{
+				// Actions
+				targets: -1,
+				title: "Үйлдэл",
+				orderable: false,
+				render: function (data, type, full, meta) {
+					return (
+						'<a href="javascript:;" class="text-primary delete-record">' +
+						feather.icons["edit-3"].toSvg({
+							class: "font-small-4 me-50",
+						}) +
+						"</a>" +
+						'<a href="javascript:;" class="text-primary-orange delete-record">' +
+						feather.icons["trash-2"].toSvg({
+							class: "font-small-4 me-50",
+						}) +
+						"Устгах</a>"
+					);
+				},
+			},
+		],
+		order: [[1, "desc"]],
+		lengthMenu: [
+			[10, 25, 50, 100, -1],
+			[10, 25, 50, 100, 'Бүгд'],
+		],
+		dom:
+			'<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+			'<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+			'<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1"f>B>>' +
+			">t" +
+			'<"d-flex justify-content-between mx-2 row mb-1"' +
+			'<"col-sm-12 col-md-6"i>' +
+			'<"col-sm-12 col-md-6"p>' +
+			">",
+		oLanguage: {
+			sProcessing: "Ачааллаж байна. ",
+			sSearch: "Хайх: ",
+			sEmptyTable: "Бичлэг байхгүй",
+			sInfoEmpty: "Нийт 0 бичлэг",
+			sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+			sInfoFiltered: " - _MAX_ бичлэгээс",
+			sLengthMenu: "_MENU_ бичлэг",
+			oPaginate: {
+				sFirst: "Эхэнд",
+				sLast: "Төгсгөлд",
+				sNext: "Дараах",
+				sPrevious: "Өмнөх",
+			},
+		},
+		// Buttons with Dropdown
+		buttons: [
+			{
+				extend: "collection",
+				className: "btn btn-outline-secondary dropdown-toggle me-2",
+				text:
+					feather.icons["external-link"].toSvg({
+						class: "font-small-4 me-50",
+					}) + "Export",
+				buttons: [
+					{
+						extend: "print",
+						text:
+							feather.icons["printer"].toSvg({
+								class: "font-small-4 me-50",
+							}) + "Print",
+						className: "dropdown-item",
+						exportOptions: { columns: [1, 2, 3, 4, 5] },
+					},
+					{
+						extend: "csv",
+						text:
+							feather.icons["file-text"].toSvg({
+								class: "font-small-4 me-50",
+							}) + "Csv",
+						className: "dropdown-item",
+						exportOptions: { columns: [1, 2, 3, 4, 5] },
+					},
+					{
+						extend: "excel",
+						text:
+							feather.icons["file"].toSvg({
+								class: "font-small-4 me-50",
+							}) + "Excel",
+						className: "dropdown-item",
+						exportOptions: { columns: [1, 2, 3, 4, 5] },
+					},
+					{
+						extend: "pdf",
+						text:
+							feather.icons["clipboard"].toSvg({
+								class: "font-small-4 me-50",
+							}) + "Pdf",
+						className: "dropdown-item",
+						exportOptions: { columns: [1, 2, 3, 4, 5] },
+					},
+					{
+						extend: "copy",
+						text:
+							feather.icons["copy"].toSvg({
+								class: "font-small-4 me-50",
+							}) + "Copy",
+						className: "dropdown-item",
+						exportOptions: { columns: [1, 2, 3, 4, 5] },
+					},
+				],
+				init: function (api, node, config) {
+					$(node).removeClass("btn-secondary");
+					$(node).parent().removeClass("btn-group");
+					setTimeout(function () {
+						$(node)
+							.closest(".dt-buttons")
+							.removeClass("btn-group")
+							.addClass("d-inline-flex mt-50");
+					}, 50);
+				},
+			},
+			{
+				text: "Шинээр бүртгэх",
+				className: "add-new btn btn-primary",
+				attr: {
+					"data-bs-toggle": "modal",
+					"data-bs-target": "#modals-slide-in",
+				},
+				init: function (api, node, config) {
+					$(node).removeClass("btn-secondary");
+				},
+			},
+		],
+	});
+</script>
+<!-- END: Page JS-->
+
+{% endblock js %}

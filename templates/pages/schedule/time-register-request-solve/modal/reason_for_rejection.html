@@ -1,0 +1,42 @@
+
+<!--
+    URL: /schedule/time-register-request-solve/
+    Нэр: Татгалзах шалтгаан оруулах modal
+    Төрөл: Modal
+    Дэлгэрэнгүй: Татгалзах шалтгаан
+-->
+
+<div class="modal fade" id="{{id}}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content row" >
+            <form method="post" onsubmit="declineRequest(event)" id="reason-for-rejection-loader">
+                <div class="modal-header">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center" id="modalbody">
+                    <div class="text-center">
+                        <i class="fas fa-times fs-40"></i>
+                    </div>
+                    <div style="margin-top: 10px">
+                        Татгалзах шалтгаан
+                    </div>
+                </div>
+                <div class="mb-1">
+
+                    <div class="modal-body row">
+
+                        <div class="mb-1 col-12">
+                            <textarea class="form-control" rows="6" id="reason_for_rejection" name="reason_for_rejection" placeholder="Татгалзах шалтгаан"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer d-flex justify-content-center">
+                    <button class="btn btn-primary waves-effect waves-float waves-light">Оруулах</button>
+                    <button type="reset" id="rfr_close_btn" class="btn btn-outline-secondary ms-2" data-bs-dismiss="modal" aria-label="Close">
+                        Болих
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

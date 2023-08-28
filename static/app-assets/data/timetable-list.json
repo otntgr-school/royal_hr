@@ -1,0 +1,13 @@
+{
+	"data": [
+		{
+			"responsive_id": "",
+			"id": 1,
+			"name": "09:00-18:00",
+			"start_time": "09:00",
+			"end_time": "18:00",
+			"length_time": "8",
+			"lunch_time": "13:00-14:00"
+		}
+	]
+}

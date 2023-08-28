@@ -1,0 +1,103 @@
+
+<div class="modal fade" id="rankLevelDegreeModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-edit-user">
+        <div class="modal-content">
+            <div class="modal-header bg-transparent">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pb-5 px-sm-5 pt-50">
+                <div class="row">
+                    <h1 class="text-center mb-1">Боловсролын ерөнхий мэдээлэл</h1>
+                    <hr>
+                    <div class="col-12 mb-2">
+                        <div class="card-border">
+
+                            <form id="userSalaryForm" class="row gy-1" onsubmit="EditRankLevelDegreeModalFormSubmit(event)">
+                                <div class="col-12">
+                                    <div class="mb-2 row">
+                                        <div class="col-sm-4">
+                                            <label class="col-form-label" for="teacher_rank_type">Ажилтны гэрээний төрөл</label>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            {% for id, name in teacher_rank_type %}
+                                                <div class="form-check">
+                                                    <input
+                                                        class="form-check-input"
+                                                        type="radio"
+                                                        name="teacher_rank_type"
+                                                        value="{{id}}"
+                                                        id="teacher_rank_type-{{id}}"
+                                                    >
+                                                    <label class="form-check-label" for="teacher_rank_type-{{id}}">
+                                                        {{name}}
+                                                    </label>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="mb-2 row">
+                                        <div class="col-sm-4">
+                                            <label class="col-form-label" for="education_level">Ажилтны гэрээний төрөл</label>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            {% for id, name in education_level %}
+                                                <div class="form-check">
+                                                    <input
+                                                        class="form-check-input"
+                                                        type="radio"
+                                                        name="education_level"
+                                                        value="{{id}}"
+                                                        id="education_level-{{id}}"
+                                                    >
+                                                    <label class="form-check-label" for="education_level-{{id}}">
+                                                        {{name}}
+                                                    </label>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12">
+                                    <div class="mb-2 row">
+                                        <div class="col-sm-4">
+                                            <label class="col-form-label" for="degree_type">Ажилтны гэрээний төрөл</label>
+                                        </div>
+                                        <div class="col-sm-8">
+                                            {% for id, name in degree_type %}
+                                                <div class="form-check">
+                                                    <input
+                                                        class="form-check-input"
+                                                        type="radio"
+                                                        name="degree_type"
+                                                        value="{{id}}"
+                                                        id="degree_type-{{id}}"
+                                                    >
+                                                    <label class="form-check-label" for="degree_type-{{id}}">
+                                                        {{name}}
+                                                    </label>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 text-center mt-2 pt-50">
+                                    <button id='submitbtn' type="submit" class="btn btn-primary me-1">Засах</button>
+                                    <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">
+                                        Болих
+                                    </button>
+                                </div>
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

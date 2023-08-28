@@ -1,0 +1,606 @@
+{% extends './base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+
+{% load rest_framework %}
+
+{% block vendorcss %}
+<!-- BEGIN: Vendor CSS-->
+
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="{% static 'app-assets/vendors/css/forms/select/select2.min.css' %}"
+/>
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}"
+/>
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}"
+/>
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="{% static 'app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css' %}"
+/>
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="{% static 'app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css' %}"
+/>
+<!-- END: Vendor CSS-->
+{% endblock vendorcss %} {% block css %}
+
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="{% static 'app-assets/css/plugins/forms/form-validation.css' %}"
+/>
+{% endblock css %} {% block content %}
+<div class="content-body">
+	<!-- users list start -->
+	<section class="app-user-list">
+		<!-- list and filter start -->
+		<div class="card">
+			<div class="card-body border-bottom">
+				<h4 class="card-title d-inline">Ажлын цагийн төрөл</h4>
+
+				<div class="row">
+					<div class="col-md-4 user_role"></div>
+					<div class="col-md-4 user_plan"></div>
+					<div class="col-md-4 user_status"></div>
+				</div>
+			</div>
+			<div class="card-datatable table-responsive pt-0">
+				<table class="time-list-table table text-center">
+					<thead class="table-light">
+						<tr class="filter-container"></tr>
+						<tr>
+							<!-- <th></th> -->
+							<th>ID</th>
+							<th>Нэр</th>
+							<th>Уян хатан</th>
+							<th>Ажлын цаг</th>
+							<!-- <th>Дуусах цаг</th> -->
+							<th>Ажиллах цаг</th>
+							<!-- <th>Цайны цаг эхлэх</th>
+							<th>Цайны цаг дуусах</th> -->
+							<th>Цайны цаг</th>
+							<th>Бүртгэж эхлэх</th>
+							<th>Бүртгэж дуусах</th>
+							<th>Actions</th>
+						</tr>
+					</thead>
+					<tfoot class="table-light">
+						<tr>
+							<!-- <th></th> -->
+							<th>ID</th>
+							<th>Нэр</th>
+							<th>Уян хатан</th>
+							<th>Ажлын цаг</th>
+							<!-- <th>Дуусах цаг</th> -->
+							<th>Ажиллах цаг</th>
+							<!-- <th>Цайны цаг эхлэх</th>
+							<th>Цайны цаг дуусах</th> -->
+							<th>Цайны цаг</th>
+							<th>Бүртгэж эхлэх</th>
+							<th>Бүртгэж дуусах</th>
+							<th>Actions</th>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+			<!-- Modal to add new user starts-->
+			<div
+				class="modal modal-slide-in new-timetable-modal fade"
+				id="modals-slide-in"
+			>
+				<div class="modal-dialog">
+
+						<form id="timetable_form" class="add-new-timetable modal-content pt-0" action="{% url 'work-time-type' %}" method="post">
+
+                        <button
+							type="button"
+							class="btn-close"
+							data-bs-dismiss="modal"
+							aria-label="Close"
+						>
+							×
+						</button>
+						<div class="modal-header mb-1">
+							<h5 class="modal-title" id="exampleModalLabel">
+								Ажлын цагийн төрөл нэмэх
+							</h5>
+						</div>
+                        <div class="modal-body flex-grow-1">
+                            {% csrf_token %}
+                            {% render_form serializer %}
+                        </div>
+                        <div class="col-xl-12 col-md-12 col-12 ms-2">
+
+							<button type="submit" class="btn btn-primary">Бүртгэх</button>
+
+							<button
+								type="reset"
+								class="btn btn-outline-secondary ms-1"
+								data-bs-dismiss="modal"
+							>
+								Болих
+							</button>
+                        </div>
+
+                    </form>
+				</div>
+			</div>
+			<!-- Modal to add new user Ends-->
+		</div>
+		<!-- list and filter end -->
+	</section>
+	<!-- users list ends -->
+	{% include "pages/schedule/delete.html" with id="userReward" deletebtn="deletebtn" %}
+	{% include "pages/schedule/work-time-type-update.html" with id="work-time-type-update" %}
+</div>
+
+{% endblock content %}
+<!--prettier-ignore-->
+{% block js %}
+<!-- BEGIN: Page Vendor JS-->
+<!-- BEGIN: Page Vendor JS-->
+<script src="{% static 'app-assets/vendors/js/forms/select/select2.full.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.buttons.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jszip.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/pdfmake.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/vfs_fonts.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.html5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.print.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/cleave.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/addons/cleave-phone.us.js' %}"></script>
+<!-- END: Page Vendor JS-->
+
+<!-- BEGIN: Page JS-->
+<script>
+
+	$(document).ready(function() {
+        $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+    });
+
+	/**  Header дээр input ийг clone хийж гаргах нь */
+	cloneFooter('.time-list-table', [ 1 ])
+
+	/** DATATABLE */
+	const dataTable = $(".time-list-table").DataTable({
+		processing: false,
+		dom: 'lBfrtip',
+		serverSide: true,
+		ajax: { url: "/schedule/work-time-type-json" },
+		columns: [
+			// columns according to JSON
+			// { data: "" },
+			{ data: "id" },
+			{ data: "name" },
+			{ data: "uyn_khatan" },
+			{ data: "start_time" },
+			// { data: "end_time" },
+			{ data: "time_range" },
+			{ data: "lunch_time_start_time" },
+			// { data: "lunch_time_end_time" },
+			{ data: "registration_start_time" },
+			{ data: "registration_end_time" },
+			{ data: "" },
+		],
+		bFilter: true,
+		columnDefs: [
+			{
+				// Actions
+				targets: -1,
+				title: "Үйлдэл",
+				orderable: false,
+				render: function (data, type, full, meta)
+				{
+
+					var url = `{% url 'work-time-type' %}`
+					return (
+						`<a data-toggle="tooltip" title="Засах" data-bs-toggle="modal" data-bs-target="#work-time-type-update" onclick=(get_detail_function(${full.id})) class="text-primary delete-record">` +
+						feather.icons["edit-3"].toSvg(
+						{
+							class: "font-small-4 me-50",
+						}) +
+						"</a>" +
+						`<a data-toggle="tooltip" title="Устгах" data-bs-toggle="modal" data-bs-target="#userReward" onclick=(changeChoosedId(function(){delete_function(${full.id})})) class="text-primary-orange delete-record mt-1">` +
+						feather.icons["trash-2"].toSvg(
+						{
+							class: "font-small-4 me-50",
+						}) +
+						"</a>"
+					);
+				},
+			},
+			{
+				targets: 0,
+				title: "#",
+				orderable: false,
+				render: function (data, type, full, meta) {
+					return (
+						meta.settings._iDisplayStart + meta.row + 1
+					);
+				},
+			},
+			{
+				targets: 2,
+				orderable: false,
+				render: function (data, type, full, meta) {
+					if(!full.uyn_khatan)
+					{
+						return (
+							`<input class="form-check-input" type="checkbox" id="inlineCheckbox1" disabled/>`
+						);
+					}
+					return (
+						`<input class="form-check-input" type="checkbox" id="inlineCheckbox1" checked disabled/>`
+					);
+				},
+			},
+			{
+				targets: 5,
+				orderable: true,
+				render: function (data, type, full, meta) {
+					return (
+						full.lunch_time_start_time + ` - ` + full.lunch_time_end_time
+					);
+				},
+			},
+			{
+				targets: 3,
+				orderable: true,
+				render: function (data, type, full, meta) {
+					return (
+						full.start_time + ` - ` + full.end_time
+					);
+				},
+			},
+		],
+		order: [[1, "desc"]],
+		lengthMenu: [
+			[10, 25, 50, 100, -1],
+			[10, 25, 50, 100, 'Бүгд'],
+		],
+		dom:
+			'<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+			'<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+			'<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+			">t" +
+			'<"d-flex justify-content-between mx-2 row mb-1"' +
+			'<"col-sm-12 col-md-6"i>' +
+			'<"col-sm-12 col-md-6"p>' +
+			">",
+		oLanguage: {
+			sProcessing: "Ачааллаж байна. ",
+			sSearch: "Хайх: ",
+			sEmptyTable: "Бичлэг байхгүй",
+			sInfoEmpty: "Нийт 0 бичлэг",
+			sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+			sInfoFiltered: " - _MAX_ бичлэгээс",
+			sLengthMenu: "_MENU_ бичлэг",
+			oPaginate: {
+				sFirst: "Эхэнд",
+				sLast: "Төгсгөлд",
+				sNext: "Дараах",
+				sPrevious: "Өмнөх",
+			},
+		},
+		// Buttons with Dropdown
+		buttons: [
+			{
+				extend: "collection",
+				className: "btn btn-outline-secondary dropdown-toggle me-2",
+				text:
+					feather.icons["external-link"].toSvg({
+						class: "font-small-4 me-50",
+					}) + "Export",
+				buttons: [
+					{
+						extend: "print",
+						text:
+							feather.icons["printer"].toSvg({
+								class: "font-small-4 me-50",
+							}) + "Print",
+						className: "dropdown-item",
+						exportOptions: { columns: [1, 2, 3, 4, 5] },
+					},
+					{
+						extend: "csv",
+						text:
+							feather.icons["file-text"].toSvg({
+								class: "font-small-4 me-50",
+							}) + "Csv",
+						className: "dropdown-item",
+						exportOptions: { columns: [1, 2, 3, 4, 5] },
+					},
+					{
+						extend: "excel",
+						text:
+							feather.icons["file"].toSvg({
+								class: "font-small-4 me-50",
+							}) + "Excel",
+						className: "dropdown-item",
+						exportOptions: { columns: [1, 2, 3, 4, 5] },
+					},
+					{
+						extend: "pdf",
+						text:
+							feather.icons["clipboard"].toSvg({
+								class: "font-small-4 me-50",
+							}) + "Pdf",
+						className: "dropdown-item",
+						exportOptions: { columns: [1, 2, 3, 4, 5] },
+					},
+					{
+						extend: "copy",
+						text:
+							feather.icons["copy"].toSvg({
+								class: "font-small-4 me-50",
+							}) + "Copy",
+						className: "dropdown-item",
+						exportOptions: { columns: [1, 2, 3, 4, 5] },
+					},
+				],
+				init: function (api, node, config) {
+					$(node).removeClass("btn-secondary");
+					$(node).parent().removeClass("btn-group");
+					setTimeout(function () {
+						$(node)
+							.closest(".dt-buttons")
+							.removeClass("btn-group")
+							.addClass("d-inline-flex mt-50");
+					}, 50);
+				},
+			},
+			{
+				text: "Шинээр бүртгэх",
+				className: "add-new btn btn-primary",
+				attr: {
+					"data-bs-toggle": "modal",
+					"data-bs-target": "#modals-slide-in",
+				},
+				init: function (api, node, config) {
+					$(node).removeClass("btn-secondary").addClass('click_btn')
+
+				},
+			},
+		],
+	});
+
+	/** Устгах үйлдэл */
+    async function delete_function(choosedId)
+    {
+        const { success } = await fetchData(`/schedule/work-time-type-ajax/${choosedId}/`, null, 'DELETE')
+
+        if (success)
+        {
+            dataTable.ajax.reload(null, false)
+        }
+    }
+
+	/** Бүртгүүлэх үеийн FORM-VALIDATION */
+	$(document).ready(function ()
+	{
+		$('#timetable_form').validate(
+		{
+			rules: {
+				'name': {
+					required: true
+				},
+				'start_time': {
+					required: false
+				},
+				'end_time': {
+					required: true
+				},
+				'lunch_time_start_time': {
+					required: true
+				},
+				'lunch_time_end_time': {
+					required: true
+				},
+				'registration_start_time': {
+					required: true
+				},
+				'registration_end_time': {
+					required: true
+				},
+				'time_range': {
+					required: true
+				},
+			},
+			messages: {
+				'name': {
+                    required: 'Ажлын цагийн төрлийн нэр талбарыг бөглөнө үү'
+                },
+				'start_time': {
+					required: 'Эхлэх цаг талбарыг бөглөнө үү'
+				},
+				'end_time': {
+					required: 'Дуусах цаг талбарыг бөглөнө үү'
+				},
+				'lunch_time_start_time': {
+					required: 'Цайны цаг эхлэх талбарыг бөглөнө үү'
+				},
+				'lunch_time_end_time': {
+					required: 'Цайны цаг дуусах талбарыг бөглөнө үү'
+				},
+				'registration_start_time': {
+					required: 'Ирсэн цаг бүртгэж эхлэх хугацаа талбарыг бөглөнө үү'
+				},
+				'registration_end_time': {
+					required: 'Явсан цаг бүртгэж дуусах хугацаа талбарыг бөглөнө үү'
+				},
+				'time_range': {
+					required: 'Ажиллах цаг талбарыг бөглөнө үү'
+				},
+			}
+		})
+	})
+
+	$(function () {
+		$("#kakaka").popover({
+			title: 'Enter Mobile Number',
+			content: "Please enter 10 digit mobile number prefixed by country code eg +911234567890",
+			trigger:'hover'
+		});
+	});
+
+</script>
+
+<script>
+
+	/** Datatable-ээс cонгогдсон утгын ID хадгална */
+	let wttuChoosedId
+
+	/** Modal гарж ирэх үед утгаа татаж оноож өгнө */
+	async function get_detail_function(pk)
+	{
+
+		/** Хэрвээ өөр modal дээр validation ажилж алдаа заагдсан байвал цэвэрлэнэ */
+		let error_messages = document.querySelectorAll('label.error')
+		if (error_messages.length)
+		{
+			for (var k = 0, error_message; error_message = error_messages[k++];)
+			{
+				/** Алдааны мэссэжийг устгаж байна */
+				error_message.remove()
+			}
+		}
+
+		let error_messages_input = document.querySelectorAll('input.error')
+		if (error_messages_input.length)
+		{
+			for (var k = 0, error_message; error_message = error_messages_input[k++];)
+			{
+				/** Улаан болсон хүрээний өнгийг буцааж хэвэнд нь оруулж байна */
+				error_message.style = "border-color: #404656 !important;"
+			}
+		}
+
+		/** cонгогдсон утгын ID оноож байна */
+		wttuChoosedId = pk
+
+		/** Аjax-аар хүсэлтээ шиднэ */
+		const { data } = await fetchData(`/schedule/work-time-type-ajax/${pk}/`, null, 'GET')
+
+		/** FORM input-үүдэд утгуудаа онооно */
+		let qwerty = document.getElementsByClassName('timetable_update_form')[0]
+
+		for (var i = 0, element; element = qwerty.elements[i++];)
+		{
+			if (element.localName === "input" && (element.type === 'text' || element.type === 'number' ))
+			{
+				if (!data[element.id])
+				{
+					continue
+				}
+				element.value = data[element.id]
+			} else if (element.localName === "input" && element.type === 'checkbox')
+			{
+				if (!data[element.id])
+				{
+					continue
+				}
+				element.checked = data[element.id]
+			}
+		}
+	}
+
+	/** Form домоос барих */
+    var jqForm = $('#timetable_update_form')
+
+    /** Шалгах утгууд (validation) */
+    if (jqForm.length) {
+        validate = jqForm.validate({
+            rules: {
+				'name': {
+					required: true
+				},
+				'start_time': {
+					required: false
+				},
+				'end_time': {
+					required: true
+				},
+				'lunch_time_start_time': {
+					required: true
+				},
+				'lunch_time_end_time': {
+					required: true
+				},
+				'registration_start_time': {
+					required: true
+				},
+				'registration_end_time': {
+					required: true
+				},
+				'time_range': {
+					required: true
+				},
+            }
+        });
+    }
+
+	/** Шинэчлэх үйлдэл */
+	const update_data = async (event) =>
+	{
+		/** validation давж чадахгүй бол буцаагаад алдаа заана */
+        if(!validate.checkForm())
+        {
+            return
+        }
+
+		/** Бүх утгаа хадгалах хувьсагч */
+		let all_data = {}
+
+		/** Хуудас refresh хийлгэхгүй */
+		event.preventDefault()
+
+		let qwerty = document.getElementsByClassName('timetable_update_form')[0]
+
+		/** Утгуудаа хадгалж байна */
+		for (var i = 0, element; element = qwerty.elements[i++];)
+		{
+			if (element.localName === "input" && element.type !== "checkbox")
+			{
+				all_data[element.id] = element.value
+			}
+			if (element.type === 'checkbox')
+			{
+				all_data[element.id] = element.checked
+			}
+		}
+
+		/** Хүсэлтээ шидэж байна */
+		const { success } = await fetchData(`/schedule/work-time-type-ajax/${wttuChoosedId}/`, all_data, 'PUT')
+
+		/** Амжилттай болбол Datatable refresh хийж modal-ийг хаана */
+		if (success)
+        {
+            dataTable.ajax.reload(null, false)
+
+			setTimeout(function()
+			{
+				document.querySelector("#wttu_close_btn").click()
+			},
+			300)
+        }
+	}
+</script>
+<!-- END: Page JS-->
+
+{% endblock js %}

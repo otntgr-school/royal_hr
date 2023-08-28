@@ -1,0 +1,60 @@
+
+<!--
+    URL: /schedule/time-register-request-solve/
+    Нэр: Цагийн хуваарийн хүсэлтийн тайлбар харуулах
+    Төрөл: Modal
+    Дэлгэрэнгүй: Дэлгэрэнгүй дарахад гарж ирэх modal
+-->
+
+<div class="modal fade" id="{{id}}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content row" >
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center" id="modalbody">
+                <div class="text-center">
+                    <i class="fas fa-exclamation-circle fs-40"></i>
+                </div>
+                <div style="margin-top: 10px">
+                    Дэлгэрэнгүй мэдээлэл
+                </div>
+            </div>
+            <div class="mb-1">
+
+                <div class="modal-body row" id="detail_main_display">
+
+                    <p><i class="fal fa-user me-1"></i><span id="title_reason_agreed_detail"></span></span></p>
+                    <p><i class="fal fa-calendar-day me-1"></i>Огноо: <span class="ms-1" id="reason_date_detail"></span></p>
+                    <p><i class="fal fa-calendar-week me-1"></i>Он сар: <span class="ms-1" id="reason_request_date_detail"></span></p>
+                    <p><i class="fal fa-info me-1"></i>Тайлбар: <span class="ms-1" id="description_detail"></span></p>
+
+                    <hr>
+                    <h5>Дүйцүүлэлтэнд хариу илгээсэн бүртгэл</h5>
+                    <div class="table-responsive">
+                        <div class="card-datatable table-responsive pt-0">
+                            <table class="table" id="detail_table">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Албан тушаал</th>
+                                        <th>Шийдвэр</th>
+                                        <th>Тайбар</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">
+                    Болих
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

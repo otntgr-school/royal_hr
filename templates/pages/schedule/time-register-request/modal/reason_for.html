@@ -1,0 +1,40 @@
+
+<!--
+    URL: /schedule/time-register-request/
+    Нэр: Хэн хэзээ шалтгаан 3ийг харуулах modal
+    Төрөл: Modal
+    Дэлгэрэнгүй: Дэлгэрэнгүй дарахад гарж ирэх modal
+-->
+
+<div class="modal fade" id="{{id}}" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content row" >
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center" id="modalbody">
+                <div class="text-center">
+                    <i class="fas fa-exclamation-circle fs-40"></i>
+                </div>
+                <div style="margin-top: 10px">
+                    Дэлгэрэнгүй мэдээлэл
+                </div>
+            </div>
+            <div class="mb-1">
+
+                <div class="modal-body row" id="detail_main_display">
+
+                    <p><i class="fal fa-user me-1"></i><span id="title_reason_agreed"></span>: <span class="ms-1" id="reason_agreed"></span></p>
+                    <p><i class="fal fa-calendar-day me-1"></i>Огноо: <span class="ms-1" id="reason_date"></span></p>
+                    <p id="reason_reason" style="display: none;"><i class="fal fa-info me-1"></i>Шалтгаан: <span class="ms-1" id="reason_text"></span></p>
+
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">
+                    Болих
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

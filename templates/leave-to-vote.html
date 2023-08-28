@@ -1,0 +1,110 @@
+{% extends './base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+{% block content %}
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/forms/select/select2.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+
+{% endblock css %}
+
+<div class="content-body">
+    <div class="row">
+        <div class="col-xl-7 col-lg-8 col-12">
+            <div class="card">
+                <div class="card-datatable">
+                    <table class="dt-column-search table table-responsive table-hover">
+                        <thead>
+                            <tr>
+                                <th>Эцэг/эхийн нэр</th>
+                                <th>Өөрийн нэр</th>
+                                <th>Байгууллага</th>
+                                <th>Албан нэгж</th>
+                            </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-5 col-lg-5 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Чөлөөний санал өгөх</h4>
+                </div>
+                <div class="card-body">
+                    <label class="form-label" for="disabledInput">Сонгогдсон хүн</label>
+                    <input type="text" class="form-control" id="readonlyInput" readonly="readonly" value="Д. Адьяасүрэн">
+                    <div class="card-border mt-1">
+                        <ul class="nav nav-pills" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="home-tab" data-bs-toggle="tab" href="#home" aria-controls="home" role="tab" aria-selected="true">Шууд удирдлага</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#profile" aria-controls="profile" role="tab" aria-selected="false">Захирал</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="about-tab" data-bs-toggle="tab" href="#about" aria-controls="about" role="tab" aria-selected="false">Хүний нөөц</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="home" aria-labelledby="home-tab" role="tabpanel">
+                                <div class="demo-inline-spacing">
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1" checked />
+                                        <label class="form-check-label" for="inlineRadio1">Байгууллагын бүтцийн дагуу</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2" />
+                                        <label class="form-check-label" for="inlineRadio2">Зөвхөн сонгосон хэрэглэгч /бүтцийн бус/</label>
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <label class="form-label mt-1" for="disabledInput">Санал оруулах хэрэглэгч</label>
+                                    <select class="select2 form-select" id="select2-basic">
+                                        <option>Сонгох</option>
+                                        <option value="AK">У. Лхагвадулам </option>
+                                        <option value="HI">А. Ондоо</option>
+                                    </select>
+                                </div>
+                                <button class="btn btn-primary waves-effect waves-float waves-light">Оруулах</button>
+                            </div>
+                            <div class="tab-pane" id="profile" aria-labelledby="profile-tab" role="tabpanel">
+                                <p>
+                                   ...
+                                </p>
+                            </div>
+                            <div class="tab-pane" id="about" aria-labelledby="about-tab" role="tabpanel">
+                                <p>
+                                    ...
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+
+{% block js %}
+
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/forms/select/select2.full.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/form-select2.js' %}"></script>
+
+<script src="{% static 'app-assets/js/scripts/tables/table-datatables-advanced.js' %}"></script>
+
+{% endblock js %}

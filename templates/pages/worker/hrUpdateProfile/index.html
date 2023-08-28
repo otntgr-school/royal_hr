@@ -1,0 +1,2950 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+{% block content %}
+
+{% block css %}
+
+<link
+    rel="stylesheet"
+    type="text/css"
+    href="{% static 'app-assets/css/plugins/forms/form-validation.css' %}"
+/>
+
+<link
+    rel="stylesheet"
+    type="text/css"
+    href="{% static 'app-assets/vendors/css/forms/select/select2.min.css' %}"
+/>
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/extensions/swiper.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/extensions/ext-component-swiper.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/vendors.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'assets/css/loader.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/pickadate/pickadate.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'assets/css/style-timeline.css' %}"/>
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-pickadate.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/file-uploaders/dropzone.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/form-file-uploader.min.css' %}">
+
+{% endblock css %}
+
+<div class="content-body">
+    <section class="app-user-view-connections">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row d-flex align-items-center">
+                            <div class="col-xl-6 col-lg-6">
+                                <div class="row d-flex align-items-center">
+                                    <div class="col-xl-5">
+                                        <div class="user-avatar-section">
+                                            <div class="d-flex align-items-center flex-column">
+                                                <div class="profileImageContainer" onclick="handleClickProfile()">
+                                                    <img
+                                                        id="profileImageView"
+                                                        onerror="this.onerror=null; this.src='/media/260x260.jpg'"
+                                                        class="img-fluid rounded mt-3 mb-2"
+                                                        src="{% if selected_user_data.real_photo %}/media/{{ selected_user_data.real_photo }}{% else %}/media/260x260.jpg{% endif %}"
+                                                        alt="User avatar"
+                                                    >
+                                                    <div class="profileEdit">
+                                                        <i class="fas fa-edit"></i>
+                                                    </div>
+                                                    <input id="profileImageInput" class="d-none" type="file" accept="image/*" onchange="handleChangeProfile(event)" />
+                                                </div>
+                                                <div class="user-info text-center">
+                                                    <h4>{{ selected_userinfo_data.last_name|default:"Хоосон" }} {{ selected_userinfo_data.first_name }}</h4>
+                                                    <span class="badge bg-light-secondary">{{ selected_user_data.employee.org_position.name|default:"Хоосон" }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xl-7">
+                                        <div class="info-container">
+                                            <ul class="list-unstyled">
+                                                {% if selected_user_data.employee %}
+                                                <li class="mb-75">
+                                                    <span class="fw-bolder me-25">Ажилтны ID:</span>
+                                                    <!-- <span>{{ selected_user_data.employee.id|default:"Хоосон" }}</span> -->
+                                                    <span>{{ selected_user_data.employee.register_code|default:"Хоосон" }}</span>
+                                                </li>
+                                                {% endif %}
+                                                <li class="mb-75">
+                                                    <span class="fw-bolder me-25">Байгууллага:</span>
+                                                    <span>{{ selected_user_data.employee.org.name|default:"Хоосон" }}</span>
+                                                </li>
+                                                {% if selected_user_data.employee %}
+                                                    {% if selected_user_data.employee.sub_org %}
+                                                    <li class="mb-75">
+                                                        <span class="fw-bolder me-25">Салбар сургууль:</span>
+                                                        <span>{{ selected_user_data.employee.sub_org.name|default:"Хоосон" }}</span>
+                                                    </li>
+                                                    {% endif %}
+                                                    {% if selected_user_data.employee.salbar %}
+                                                    <li class="mb-75">
+                                                        <span class="fw-bolder me-25">Тэнхим:</span>
+                                                        <span>{{ selected_user_data.employee.salbar.name|default:"Хоосон" }}</span>
+                                                    </li>
+                                                    {% endif %}
+                                                {% endif %}
+                                                <li class="mb-75">
+                                                    <span class="fw-bolder me-25">Мэргэжил:</span>
+                                                    <span class="">
+                                                        {% for edu in selected_user_data.usereducation.usereducationinfo_set.all|dictsort:"end_date" %}
+                                                            {{edu.mergejil}}{% if not forloop.last%},{%endif%}
+                                                        {% empty %}
+                                                            Хоосон
+                                                        {% endfor %}
+                                                    </span>
+                                                </li>
+                                                <li class="mb-75">
+                                                    <span class="fw-bolder me-25">Албан тушаал:</span>
+                                                    <span>{{ selected_user_data.employee.org_position.name|default:"Хоосон" }}</span>
+                                                </li>
+                                                <li class="mb-75">
+                                                    <span class="fw-bolder me-25">Ажилтны төлөв:</span>
+                                                    <span>{{ selected_user_data.employee.get_worker_type_display|default:"Хоосон" }}</span>
+                                                </li>
+
+                                                {% if selected_user_data.employee.worker_type == 2 %}
+                                                    <li class="mb-75">
+                                                        <span class="fw-bolder me-25">Үндсэн цалингийн мэдээлэл:</span>
+                                                        <span>{{ selected_user_data.employee.basic_salary_information|default:"Хоосон" }}</span>
+                                                    </li>
+                                                    <li class="mb-75">
+                                                        <span class="fw-bolder me-25">Нэмэлт цалинтай эсэх:</span>
+                                                        <span>{% if selected_user_data.employee.work_for_hire %}Тийм{% else %}Үгүй{% endif %}</span>
+                                                    </li>
+                                                    {% if selected_user_data.employee.work_for_hire %}
+                                                        <li class="mb-75">
+                                                            <span class="fw-bolder me-25">Нэмэлт цалингийн мэдээлэл:</span>
+                                                            <span>{{ selected_user_data.employee.hire_wage_information|default:"Хоосон" }}</span>
+                                                        </li>
+                                                    {% endif %}
+                                                {% elif selected_user_data.employee.worker_type == 1 %}
+                                                    <li class="mb-75">
+                                                        <span class="fw-bolder me-25">Нэг цагийн цалингийн мэдээлэл:</span>
+                                                        <span>{{ selected_user_data.employee.hourly_wage_information|default:"Хоосон" }}</span>
+                                                    </li>
+                                                {% endif %}
+                                                <li class="mb-75">
+                                                    <span class="fw-bolder me-25">Төлөв:</span>
+                                                    <span class="badge bg-light-{%if empolee.get_state_display == 'Ажиллаж байгаа' %}success{%else%}danger{%endif%}">
+                                                        {{ empolee.get_state_display|default:"Хэрэглэгч" }}
+                                                    </span>
+                                                </li>
+                                                <li class="mb-75">
+                                                    <span class="fw-bolder me-25">Багшийн зэрэглэл:</span>
+                                                    <span>{{ selected_user_data.employee.get_teacher_rank_type_display|default:"Хоосон" }}</span>
+                                                </li>
+                                                <li class="mb-75">
+                                                    <span class="fw-bolder me-25">Боловсролын түвшин:</span>
+                                                    <span>{{ selected_user_data.employee.get_education_level_display|default:"Хоосон" }}</span>
+                                                </li>
+                                                <li class="mb-75">
+                                                    <span class="fw-bolder me-25">Эрдмийн зэрэг:</span>
+                                                    <span>{{ selected_user_data.employee.get_degree_type_display|default:"Хоосон" }}</span>
+                                                </li>
+                                                <div class="progress-wrapper mt-1">
+                                                    <div id="example-caption-4">Мэдээллийн төлөв… {{p_percent}}%</div>
+                                                    <div class="progress progress-bar-primary">
+                                                        <div
+                                                            class="progress-bar"
+                                                            role="progressbar"
+                                                            aria-valuenow="{{p_percent}}"
+                                                            aria-valuemin="0"
+                                                            aria-valuemax="100"
+                                                            style="width: {{p_percent}}%!important"
+                                                            aria-describedby="example-caption-4"
+                                                        ></div>
+                                                    </div>
+                                                </div>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-xl-3 col-lg-3">
+                                <!-- Анкет -->
+                                <div class="d-flex justify-content-between align-items-center mb-75">
+                                    <div class="d-flex align-items-center">
+                                        <i style="color: #005c8d" data-feather='file-text'></i>
+                                        <div class="ms-1">
+                                            <h6 class="transaction-title mb-0">Анкет</h6>
+                                        </div>
+                                    </div>
+                                    <div data-bs-toggle="modal" data-bs-target="#anketModalGG" onclick="handleClickAnket()" class="cursor-pointer">
+                                        <i data-feather='more-vertical'></i>
+                                    </div>
+                                    {% include 'pages/worker/hrUpdateProfile/modal/anketModalGG.html' %}
+                                </div>
+                                <!-- Шагнал, урамшуулал -->
+                                <div class="d-flex justify-content-between align-items-center mb-75">
+                                    <div class="d-flex align-items-center">
+                                        <i class="text-success" data-feather='star'></i>
+                                        <div class="ms-1">
+                                            <h6 class="transaction-title mb-0">Шагнал, урамшуулал</h6>
+                                        </div>
+                                    </div>
+                                    <div data-bs-toggle="modal" data-bs-target="#userReward" class="cursor-pointer">
+                                        <i data-feather='more-vertical'></i>
+                                    </div>
+                                    {% include 'pages/worker/modal/worker-user-reward.html' %}
+                                </div>
+                                <!-- Урлаг, спортын авъяас -->
+                                <div class="d-flex justify-content-between align-items-center mb-75">
+                                    <div class="d-flex align-items-center">
+                                        <i class="text-success" data-feather='dribbble'></i>
+                                        <div class="ms-1">
+                                            <h6 class="transaction-title mb-0">Урлаг, спортын авъяас</h6>
+                                        </div>
+                                    </div>
+                                    <div data-bs-toggle="modal" data-bs-target="#userTalent" class="cursor-pointer">
+                                        <i data-feather='more-vertical'></i>
+                                    </div>
+                                    {% include 'pages/worker/modal/worker-user-talent.html' %}
+                                </div>
+                                <!-- Ажлын түүх -->
+                                <div class="d-flex justify-content-between align-items-center mb-75">
+                                    <div class="d-flex align-items-center">
+                                        <i class="text-primary-orange" data-feather='file-text'></i>
+                                        <div class="ms-1">
+                                            <h6 class="transaction-title mb-0">Ажлын түүх</h6>
+                                        </div>
+                                    </div>
+                                    <div data-bs-toggle="modal" data-bs-target="#workerHistoryOther" onclick="getHistory()" class="cursor-pointer">
+                                        <i data-feather='more-vertical'></i>
+                                    </div>
+                                    {% include 'pages/worker/hrUpdateProfile/modal/workHistory.html' %}
+                                </div>
+                                {% if not join_req %}
+                                    <!-- Цагийн хуваарь -->
+                                    <div class="d-flex justify-content-between align-items-center mb-75">
+                                        <div class="d-flex align-items-center">
+                                            <i class="text-info" data-feather='calendar'></i>
+                                            <div class="ms-1">
+                                                <h6 class="transaction-title mb-0">Цагийн хуваарь</h6>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <a style="color: unset" href="{% url 'time-register-report' %}{{empolee.id}}" target="_blank">
+                                                <i data-feather='more-vertical'></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <!-- Ээлжийн амралт, чөлөө -->
+                                    <div class="d-flex justify-content-between align-items-center mb-75">
+                                        <div class="d-flex align-items-center">
+                                            <i class="text-primary" data-feather='heart'></i>
+                                            <div class="ms-1">
+                                                <h6 class="transaction-title mb-0">Ээлжийн амралт, чөлөө</h6>
+                                            </div>
+                                        </div>
+                                        <div class="cursor-pointer" data-bs-toggle="modal" data-bs-target="#amraltModal">
+                                            <i data-feather='more-vertical'></i>
+                                        </div>
+                                        {% include 'pages/worker/hrUpdateProfile/modal/amralt-modal.html' %}
+                                    </div>
+                                    <!-- Сахилга, шийтгэл -->
+                                    <div class="d-flex justify-content-between align-items-center mb-75">
+                                        <div class="d-flex align-items-center">
+                                            <i class="text-danger" data-feather='alert-circle'></i>
+                                            <div class="ms-1">
+                                                <h6 class="transaction-title mb-0">Сахилга, шийтгэл</h6>
+                                            </div>
+                                        </div>
+                                        <div class="cursor-pointer" data-bs-toggle="modal" data-bs-target="#sahilgaModal">
+                                            <i data-feather='more-vertical'></i>
+                                        </div>
+                                        {% include 'pages/worker/modal/sahilga-modal.html' %}
+                                    </div>
+                                    <!-- Санал, хүсэлт -->
+                                    <div class="d-flex justify-content-between align-items-center mb-75">
+                                        <div class="d-flex align-items-center">
+                                            <i class="text-warning" data-feather='file-text'></i>
+                                            <div class="ms-1">
+                                                <h6 class="transaction-title mb-0">Санал, хүсэлт</h6>
+                                            </div>
+                                        </div>
+                                        <div class="cursor-pointer" data-bs-toggle="modal" data-bs-target="#sanalModal">
+                                            <i data-feather='more-vertical'></i>
+                                        </div>
+                                        {% include 'pages/worker/hrUpdateProfile/modal/sanal-modal.html' %}
+                                    </div>
+                                    {% endif %}
+                                <!-- Эрүүл мэнд/ -->
+                                <div class="d-flex justify-content-between align-items-center mb-75">
+                                    <div class="d-flex align-items-center">
+                                        <i class="text-success" data-feather='activity'></i>
+                                        <div class="ms-1">
+                                            <h6 class="transaction-title mb-0">Эрүүл мэнд</h6>
+                                        </div>
+                                    </div>
+                                    <a style="color: unset" href="{% url 'medical' %}{{ selected_userinfo_data.user.id }}" target="_blank">
+                                        <i data-feather='more-vertical'></i>
+                                    </a>
+                                </div>
+
+                                <!-- Цалингийн мэдээлэл/ -->
+                                <div class="d-flex justify-content-between align-items-center mb-75">
+                                    <div class="d-flex align-items-center">
+                                        <i class="text-info" data-feather='percent'></i>
+                                        <div class="ms-1">
+                                            <h6 class="transaction-title mb-0">Цалингийн мэдээлэл</h6>
+                                        </div>
+                                    </div>
+                                    <div data-bs-toggle="modal" data-bs-target="#userSalaryModal" class="cursor-pointer" >
+                                        <i data-feather='more-vertical'></i>
+                                    </div>
+                                </div>
+                                {% include 'pages/worker/hrUpdateProfile/modal/edit-salary-modal.html' %}
+
+                                <!-- Зэрэглэл, түвшин, зэрэг -->
+                                <div class="d-flex justify-content-between align-items-center mb-75">
+                                    <div class="d-flex align-items-center">
+                                        <i class="text-primary-orange" data-feather='award'></i>
+                                        <div class="ms-1">
+                                            <h6 class="transaction-title mb-0">Зэрэглэл, түвшин, зэрэг</h6>
+                                        </div>
+                                    </div>
+                                    <div data-bs-toggle="modal" data-bs-target="#rankLevelDegreeModal" class="cursor-pointer" >
+                                        <i data-feather='more-vertical'></i>
+                                    </div>
+                                </div>
+                                {% include 'pages/worker/hrUpdateProfile/modal/edit-rank-level-degree.html' %}
+                            </div>
+
+                            {% include './modal/khodolmoriin-geree.html' %}
+
+                            <div class="col-xl-3 col-lg-3">
+                                <div class="card-border" style="overflow: auto; height: 300px;">
+                                    <div class="">
+                                        <h1 class="card-title">Хөдөлмөрийн гэрээ</h1>
+                                        <button class="btn btn-primary btn-sm edit-address mt-1" type="button" data-bs-toggle="modal" data-bs-target="#khodolmoriinGeree">
+                                            <i data-feather="plus"></i>
+                                            Нэмэх
+                                        </button>
+                                    </div>
+
+                                    {% for geree in khodolmoriin_geree %}
+                                        <div class="d-flex mt-2">
+                                            <div class="d-flex justify-content-between flex-grow-1">
+                                            <div class="me-1">
+                                                <p class="fw-bolder mb-0">{{ geree.name }}</p>
+                                            </div>
+                                            <div class="mt-50 mt-sm-0">
+                                                <button class="btn btn-icon btn-outline-secondary waves-effect" onclick='handleDownloadAttach({{ geree.attachments.id }})'>
+                                                    <i data-feather='download'></i>
+                                                </button>
+                                                <button class="btn btn-icon btn-outline-danger waves-effect" onclick='deleteGeree({{ geree.id }})'>
+                                                    <i data-feather='trash-2'></i>
+                                                </button>
+                                            </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 order-0">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Ерөнхий мэдээлэл</h4>
+                        {% if not join_req %}
+                        <button class="btn btn-primary btn-sm edit-address" type="button" data-bs-toggle="modal" data-bs-target="#generalInfo">
+                            <i data-feather="{{ selected_userinfo_data.register|yesno:'edit,plus' }}"></i>
+                            {{ selected_userinfo_data.register|yesno:'Засах,нэмэх' }}
+                        </button>
+                        {% endif %}
+                    </div>
+                    {% include './modal/general-info.html' %}
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xl-12 col-12">
+                                <dl class="row mb-0">
+                                    <dt class="col-sm-5 fw-bolder mb-1">Ургийн овог:</dt>
+                                    <dd name="urgiin_ovog" class="col-sm-7 mb-1">{{ selected_userinfo_data.urgiin_ovog|default:"Хоосон" }}</dd>
+                                    <hr />
+
+                                    <dt class="col-sm-5 fw-bolder mb-1">Эцэг/Эх-ийн нэр:</dt>
+                                    <dd name="last_name" class="col-sm-7 mb-1">{{ selected_userinfo_data.last_name|default:"Хоосон" }}</dd>
+                                    <hr />
+
+                                    <dt class="col-sm-5 fw-bolder mb-1">Өөрийн нэр:</dt>
+                                    <dd name="first_name" class="col-sm-7 mb-1">{{ selected_userinfo_data.first_name|default:"Хоосон" }}</dd>
+                                    <hr />
+
+                                    <dt class="col-sm-5 fw-bolder mb-1">Регистрийн дугаар:</dt>
+                                    <dd name="register" class="col-sm-7 mb-1">{{ selected_userinfo_data.register|default:"Хоосон" }}</dd>
+                                    <hr />
+
+                                    <dt class="col-sm-5 fw-bolder mb-1">Төрсөн огноо:</dt>
+                                    <dd name="birthday" class="col-sm-7 mb-1">{{ selected_userinfo_data.birthday|date:"SHORT_DATE_FORMAT"|default:"Хоосон" }}</dd>
+                                    <hr />
+
+                                    <dt class="col-sm-5 fw-bolder mb-1">Хүйс:</dt>
+                                    <dd name="gender" class="col-sm-7 mb-1">{{ selected_userinfo_data.get_gender_display|default:"Хоосон" }}</dd>
+                                    <hr />
+
+                                    <dt class="col-sm-5 fw-bolder mb-1">Яс үндэс:</dt>
+                                    <dd name="ys_undes" class="col-sm-7 mb-1">{{ selected_userinfo_data.ys_undes|default:"Хоосон" }}</dd>
+                                    <hr />
+
+                                    <dt class="col-sm-5 fw-bolder mb-1">Оршин суугаа хаяг:</dt>
+                                    <dd name="address" class="col-sm-7 mb-1">{{ selected_userinfo_data.address|default:"Хоосон" }}</dd>
+                                    <hr />
+
+                                    <dt class="col-sm-5 fw-bolder mb-1">Сууцний төрөл:</dt>
+                                    <dd name="ys_undes" class="col-sm-7 mb-1">{{ selected_userinfo_data.get_suutsnii_torol_display|default:"Хоосон" }}</dd>
+                                    <hr />
+
+                                    <dt class="col-sm-5 fw-bolder mb-1">Нийт ажилласан жил:</dt>
+                                    <dd name="ys_undes" class="col-sm-7 mb-1">{{ selected_userinfo_data.experience_year|default:"Хоосон" }}</dd>
+                                    <hr />
+
+                                    <dt class="col-sm-5 fw-bolder mb-1">МҮИС-д ажилласан жил:</dt>
+                                    <dd name="ys_undes" class="col-sm-7 mb-1">{{ selected_userinfo_data.experience_mnun_year|default:"Хоосон" }}</dd>
+
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Холбоо барих мэдээлэл</h4>
+                        {% if not join_req %}
+                            <button class="btn btn-primary btn-sm edit-address" type="button" data-bs-toggle="modal" data-bs-target="#contanctInfoUserModal">
+                                <i data-feather="{{ selected_userinfo_data.register|yesno:'edit,plus' }}"></i>
+                                {{ selected_userinfo_data.register|yesno:'Засах,нэмэх' }}
+                            </button>
+                        {% endif %}
+                    </div>
+                    {% include './modal/contact-info-modal.html' %}
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xl-12 col-12">
+                                <dl class="row mb-0">
+                                    <dt class="col-sm-5 fw-bolder mb-1">И-мэйл хаяг:</dt>
+                                    <dd class="col-sm-7 mb-1">{{ selected_user_data.email|default:"Хоосон" }}</dd>
+                                    <hr />
+
+                                    <dt class="col-sm-5 fw-bolder mb-1">Гар утас:</dt>
+                                    <dd class="col-sm-7 mb-1">{{ selected_user_data.phone_number|default:"Хоосон" }}</dd>
+                                    <hr />
+
+                                    <dt class="col-sm-5 fw-bolder mb-1">Гэрийн утас:</dt>
+                                    <dd class="col-sm-7 mb-1">{{ selected_user_data.home_phone|default:"Хоосон" }}</dd>
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-6 col-lg-6 order-1">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Нэмэлт мэдээлэл</h4>
+                        {% if not join_req %}
+                        <button class="btn btn-primary btn-sm edit-address" type="button" data-bs-toggle="modal" data-bs-target="#extrainformation-modal">
+                            <i data-feather="{{ selected_userinfo_data.register|yesno:'edit,plus' }}"></i>
+                            {{ selected_userinfo_data.register|yesno:'Засах,нэмэх' }}
+                        </button>
+                        {% endif %}
+                    </div>
+                    {% include './modal/extra-information-modal.html' %}
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-xl-12 col-12">
+                                <dl class="row mb-0">
+                                    <dt class="col-sm-5 fw-bolder mb-1">Төрсөн газар /аймаг, хот/:</dt>
+                                    <dd class="col-sm-7 mb-1">{{ selected_userinfo_data.unit1.name|default:"Хоосон" }}</dd>
+                                    <hr />
+
+                                    <dt class="col-sm-5 fw-bolder mb-1">Төрсөн газар /сум, дүүрэг/:</dt>
+                                    <dd class="col-sm-7 mb-1">{{ selected_userinfo_data.unit2.name|default:"Хоосон" }}</dd>
+                                    <hr />
+
+                                    <dt class="col-sm-5 fw-bolder mb-1">ЭМДД-ийн дугаар:</dt>
+                                    <dd class="col-sm-7 mb-1">{{ selected_userinfo_data.emdd_number|default:"Хоосон" }}</dd>
+                                    <hr />
+
+                                    <dt class="col-sm-5 fw-bolder mb-1">НДД-ийн дугаар:</dt>
+                                    <dd class="col-sm-7 mb-1">{{ selected_userinfo_data.ndd_number|default:"Хоосон" }}</dd>
+                                    <hr />
+
+                                    <dt class="col-sm-5 fw-bolder mb-1">Биеийн өндөр/см/:</dt>
+                                    <dd class="col-sm-7 mb-1">{{ selected_userinfo_data.body_height|default:"Хоосон" }}</dd>
+                                    <hr />
+
+                                    <dt class="col-sm-5 fw-bolder mb-1">Биеийн жин/кг/:</dt>
+                                    <dd class="col-sm-7 mb-1">{{ selected_userinfo_data.body_weight|default:"Хоосон" }}</dd>
+                                    <hr />
+
+                                    <dt class="col-sm-5 fw-bolder mb-1">Цусны бүлэг:</dt>
+                                    <dd class="col-sm-7 mb-1">{{ selected_userinfo_data.get_blood_type_display|default:"Хоосон" }}</dd>
+                                    <hr />
+
+                                    <dt class="col-sm-5 fw-bolder mb-1">Тэтгэвэрт гарсан эсэх:</dt>
+                                    <dd class="col-sm-7 mb-1">
+                                        {% if selected_userinfo_data.is_pension %}
+                                            Тийм
+                                        {% else %}
+                                            Үгүй
+                                        {% endif %}
+                                    </dd>
+                                    <hr />
+
+                                    <dt class="col-sm-5 fw-bolder mb-1">Хөгжлийн бэрхшээлтэй эсэх:</dt>
+                                    <dd class="col-sm-7 mb-1">
+                                        {% if selected_userinfo_data.is_disabled %}
+                                            Тийм
+                                        {% else %}
+                                            Үгүй
+                                        {% endif %}
+                                    </dd>
+                                    <hr />
+
+                                    <dt class="col-sm-5 fw-bolder mb-1">Багшлах эрхийн сургалтанд суусан эсэх:</dt>
+                                    <dd class="col-sm-7 mb-1">
+                                        {% if selected_userinfo_data.is_training_licence %}
+                                            Тийм
+                                        {% else %}
+                                            Үгүй
+                                        {% endif %}
+                                    </dd>
+
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% if not join_req %}
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Дансны мэдээлэл</h4>
+                        <button class="btn btn-primary btn-sm edit-address" type="button" data-bs-toggle="modal" data-bs-target="#employeeAddBankAccountModal" id="employeeAddBankAccountButton" >
+                            <i data-feather='plus'></i>
+                            нэмэх
+                        </button>
+                    </div>
+                    {% include './modal/add-bank-account.html' %}
+                    {% include './modal/edit-bank-account.html' %}
+                    <div class="card-body" id="bank-account-list"></div>
+                    <div class="card-body" id="haventBankAccount">
+                        <div class="row">
+                            <div class="col-xl-12 col-12">
+                                <div id="bankAccountDiv" class="added-cards"> </div>
+                                <div style="display: flex; align-items: center; justify-content: center;" >
+                                    <div>
+                                        <div class="col-12 col-md-6" style="width:auto;display:flex; justify-content: center; align-items: center; height:80%">
+                                            <i data-feather='file' style="width:30%; height:80%;"></i>
+                                        </div>
+                                        <div class="avatar-icon font-medium-3" style="width:auto;display:flex; justify-content: center; align-items: center; height:20%; margin-top: 10px; margin-bottom: 10px;">
+                                            Бүртгэлтэй дансны мэдээлэл байхгүй байна.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+            <!--/ User Content -->
+        </div>
+    </section>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+<!-- <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script> -->
+<script src="{% static 'app-assets/vendors/js/file-uploaders/dropzone.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/select/select2.full.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/cleave.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/addons/cleave-phone.us.js' %}"></script>
+<script src="{% static 'assets/js/print.min.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.checkboxes.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.buttons.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jszip.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/pdfmake.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/vfs_fonts.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.html5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.print.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.date.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.time.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/legacy.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+
+<script src="{% static 'app-assets/js/scripts/tables/table-datatables-basic.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/pickers/form-pickers.js' %}"></script>
+<script src="{% static '/app-assets/vendors/js/extensions/swiper.min.js' %}"></script>
+<script src="{% static 'assets/js/time-line/index.js' %}"></script>
+<script src="{% static 'assets/js/time-line/import-data.js' %}"></script>
+<script src="{% static 'assets/js/bankAccountInfo.js' %}"></script>
+
+<script>
+
+    $(".user-sanal-table").DataTable({
+        processing: false,
+        dom: 'lBfrtip',
+        serverSide: true,
+        ajax: { url: '/account/user-sanal-hvselt/{{ selected_user_data.id }}/' }, // JSON file to add data
+        columns: [
+            { data: "" },
+            { data: "" },
+            { data: "kind" },
+            { data: "title" },
+            { data: "main_content" },
+            { data: "state" },
+            { data: "decided_content" },
+            { data: "decided_at" },
+        ],
+        columnDefs: [
+            {
+                // For Responsive
+                className: "control",
+                orderable: false,
+                responsivePriority: 2,
+                targets: 0,
+                render: function (data, type, full, meta) {
+                    return "";
+                },
+            },
+            {
+                targets: 7,
+                    orderable: false,
+                render: function (data, type, full, meta) {
+                    return timeZoneToDateString(full.decided_at)
+                },
+            },
+            {
+                targets: 1,
+                title: "#",
+                orderable: false,
+                render: function (data, type, full, meta) {
+                    return (
+                        meta.settings._iDisplayStart + meta.row + 1
+                    );
+                },
+            },
+        ],
+        order: [[3, "desc"]],
+        lengthMenu: [
+            [10, 25, 50, 100, -1],
+            [10, 25, 50, 100, 'Бүгд'],
+        ],
+        dom:
+            '<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+            '<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+            '<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+            ">t" +
+            '<"d-flex justify-content-between mx-2 row mb-1"' +
+            '<"col-sm-12 col-md-6"i>' +
+            '<"col-sm-12 col-md-6"p>' +
+            ">",
+        oLanguage: {
+            sProcessing: "Ачааллаж байна. ",
+            sSearch: "Хайх: ",
+            sEmptyTable: "Бичлэг байхгүй",
+            sInfoEmpty: "Нийт 0 бичлэг",
+            sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+            sInfoFiltered: " - _MAX_ бичлэгээс",
+            sLengthMenu: "_MENU_ бичлэг",
+            oPaginate: {
+                sFirst: "Эхэнд",
+                sLast: "Төгсгөлд",
+                sNext: "Дараах",
+                sPrevious: "Өмнөх",
+            },
+        },
+        // Buttons with Dropdown
+        buttons: [
+            {
+                extend: "collection",
+                className: "btn btn-outline-secondary dropdown-toggle me-2",
+                text:
+                    feather.icons["external-link"].toSvg({
+                        class: "font-small-4 me-50",
+                    }) + "Export",
+                buttons: [
+                    {
+                        extend: "print",
+                        text:
+                            feather.icons["printer"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Print",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5] },
+                    },
+                    {
+                        extend: "csv",
+                        text:
+                            feather.icons["file-text"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Csv",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5] },
+                    },
+                    {
+                        extend: "excel",
+                        text:
+                            feather.icons["file"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Excel",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5] },
+                    },
+                    {
+                        extend: "pdf",
+                        text:
+                            feather.icons["clipboard"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Pdf",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5] },
+                    },
+                    {
+                        extend: "copy",
+                        text:
+                            feather.icons["copy"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Copy",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5] },
+                    },
+                ],
+                init: function (api, node, config) {
+                    $(node).removeClass("btn-secondary");
+                    $(node).parent().removeClass("btn-group");
+                    setTimeout(function () {
+                        $(node)
+                            .closest(".dt-buttons")
+                            .removeClass("btn-group")
+                            .addClass("d-inline-flex mt-50");
+                    }, 50);
+                },
+            },
+        ],
+    });
+
+</script>
+<script>
+    $(".sahilga-table").DataTable({
+        processing: false,
+        dom: 'lBfrtip',
+        serverSide: true,
+        ajax: { url: '/sahilga/sahilga-one/?userId={{ selected_user_data.id }}' }, // JSON file to add data
+        columns: [
+            // columns according to JSON
+            { data: "" },
+            { data: "" },
+            { data: "description" },
+            { data: "during_month" },
+            { data: "percent" },
+            { data: "start_date" },
+            { data: "end_date" },
+            { data: "state" },
+        ],
+        columnDefs: [
+            {
+                // For Responsive
+                className: "control",
+                orderable: false,
+                responsivePriority: 2,
+                targets: 0,
+                render: function (data, type, full, meta) {
+                    return "";
+                },
+            },
+            {
+                targets: 1,
+                title: "#",
+                orderable: false,
+                render: function (data, type, full, meta) {
+                    return (
+                        meta.settings._iDisplayStart + meta.row + 1
+                    );
+                },
+            },
+        ],
+        order: [[3, "desc"]],
+        lengthMenu: [
+            [10, 25, 50, 100, -1],
+            [10, 25, 50, 100, 'Бүгд'],
+        ],
+        dom:
+            '<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+            '<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+            '<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+            ">t" +
+            '<"d-flex justify-content-between mx-2 row mb-1"' +
+            '<"col-sm-12 col-md-6"i>' +
+            '<"col-sm-12 col-md-6"p>' +
+            ">",
+        oLanguage: {
+            sProcessing: "Ачааллаж байна. ",
+            sSearch: "Хайх: ",
+            sEmptyTable: "Бичлэг байхгүй",
+            sInfoEmpty: "Нийт 0 бичлэг",
+            sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+            sInfoFiltered: " - _MAX_ бичлэгээс",
+            sLengthMenu: "_MENU_ бичлэг",
+            oPaginate: {
+                sFirst: "Эхэнд",
+                sLast: "Төгсгөлд",
+                sNext: "Дараах",
+                sPrevious: "Өмнөх",
+            },
+        },
+        // Buttons with Dropdown
+        buttons: [
+            {
+                extend: "collection",
+                className: "btn btn-outline-secondary dropdown-toggle me-2",
+                text:
+                    feather.icons["external-link"].toSvg({
+                        class: "font-small-4 me-50",
+                    }) + "Export",
+                buttons: [
+                    {
+                        extend: "print",
+                        text:
+                            feather.icons["printer"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Print",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5] },
+                    },
+                    {
+                        extend: "csv",
+                        text:
+                            feather.icons["file-text"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Csv",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5] },
+                    },
+                    {
+                        extend: "excel",
+                        text:
+                            feather.icons["file"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Excel",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5] },
+                    },
+                    {
+                        extend: "pdf",
+                        text:
+                            feather.icons["clipboard"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Pdf",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5] },
+                    },
+                    {
+                        extend: "copy",
+                        text:
+                            feather.icons["copy"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Copy",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5] },
+                    },
+                ],
+                init: function (api, node, config) {
+                    $(node).removeClass("btn-secondary");
+                    $(node).parent().removeClass("btn-group");
+                    setTimeout(function () {
+                        $(node)
+                            .closest(".dt-buttons")
+                            .removeClass("btn-group")
+                            .addClass("d-inline-flex mt-50");
+                    }, 50);
+                },
+            },
+        ],
+    });
+
+</script>
+<script>
+    $(".my-amralt-table").DataTable({
+        processing: false,
+        dom: 'lBfrtip',
+        serverSide: true,
+        ajax: { url: '/account/my-choloo/{{ selected_user_data.id }}/' }, // JSON file to add data
+        columns: [
+            // columns according to JSON
+            { data: "" },
+            { data: "" },
+            { data: "description" },
+            { data: "start_day" },
+            { data: "end_day" },
+            { data: "start_time" },
+            { data: "end_time" },
+            { data: "during_the_day" },
+            { data: "during_the_hours" },
+            { data: "status" },
+            { data: "reason_for_rejection" },
+        ],
+        columnDefs: [
+            {
+                // For Responsive
+                className: "control",
+                orderable: false,
+                responsivePriority: 2,
+                targets: 0,
+                render: function (data, type, full, meta) {
+                    return "";
+                },
+            },
+            {
+                targets: 3,
+                orderable: false,
+                render: function (data, type, full, meta) {
+                    if(!full.start_day) return ""
+                    return full.start_day;
+                },
+            },
+            {
+                targets: 4,
+                orderable: false,
+                render: function (data, type, full, meta) {
+                    if(!full.end_day) return ""
+                    return full.end_day;
+                },
+            },
+            {
+                targets: 5,
+                orderable: false,
+                render: function (data, type, full, meta) {
+                    if(!full.start_time) return '00:00'
+                    return full.start_time;
+                },
+            },
+            {
+                targets: 6,
+                orderable: false,
+                render: function (data, type, full, meta) {
+                    if(!full.end_time) return '00:00'
+                    return full.end_time;
+                },
+            },
+            {
+                targets: 7,
+                orderable: false,
+                render: function (data, type, full, meta) {
+                    if(!full.during_the_day) return "Үгүй"
+                    return "Тийм"
+                },
+            },
+            {
+                targets: 8,
+                orderable: false,
+                render: function (data, type, full, meta) {
+                    if(!full.during_the_hours) return "Үгүй"
+                    return "Тийм"
+                },
+            },
+            {
+                targets: 9,
+                orderable: false,
+                render: function (data, type, full, meta) {
+                    const status = {
+                        1: 'Хүлээгдэж буй',
+                        2: 'Татгалзсан',
+                        3: 'Зөвшөөрсөн',
+                    }
+                    return status[full.status]
+                },
+            },
+            {
+                targets: 10,
+                orderable: false,
+                render: function (data, type, full, meta) {
+                    if(!full.reason_for_rejection) return ""
+                    return full.reason_for_rejection
+                },
+            },
+            {
+                targets: 1,
+                title: "#",
+                orderable: false,
+                render: function (data, type, full, meta) {
+                    return (
+                        meta.settings._iDisplayStart + meta.row + 1
+                    );
+                },
+            },
+        ],
+        order: [[3, "desc"]],
+        lengthMenu: [
+            [10, 25, 50, 100, -1],
+            [10, 25, 50, 100, 'Бүгд'],
+        ],
+        dom:
+            '<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+            '<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+            '<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+            ">t" +
+            '<"d-flex justify-content-between mx-2 row mb-1"' +
+            '<"col-sm-12 col-md-6"i>' +
+            '<"col-sm-12 col-md-6"p>' +
+            ">",
+        oLanguage: {
+            sProcessing: "Ачааллаж байна. ",
+            sSearch: "Хайх: ",
+            sEmptyTable: "Бичлэг байхгүй",
+            sInfoEmpty: "Нийт 0 бичлэг",
+            sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+            sInfoFiltered: " - _MAX_ бичлэгээс",
+            sLengthMenu: "_MENU_ бичлэг",
+            oPaginate: {
+                sFirst: "Эхэнд",
+                sLast: "Төгсгөлд",
+                sNext: "Дараах",
+                sPrevious: "Өмнөх",
+            },
+        },
+        // Buttons with Dropdown
+        buttons: [
+            {
+                extend: "collection",
+                className: "btn btn-outline-secondary dropdown-toggle me-2",
+                text:
+                    feather.icons["external-link"].toSvg({
+                        class: "font-small-4 me-50",
+                    }) + "Export",
+                buttons: [
+                    {
+                        extend: "print",
+                        text:
+                            feather.icons["printer"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Print",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5] },
+                    },
+                    {
+                        extend: "csv",
+                        text:
+                            feather.icons["file-text"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Csv",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5] },
+                    },
+                    {
+                        extend: "excel",
+                        text:
+                            feather.icons["file"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Excel",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5] },
+                    },
+                    {
+                        extend: "pdf",
+                        text:
+                            feather.icons["clipboard"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Pdf",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5] },
+                    },
+                    {
+                        extend: "copy",
+                        text:
+                            feather.icons["copy"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Copy",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5] },
+                    },
+                ],
+                init: function (api, node, config) {
+                    $(node).removeClass("btn-secondary");
+                    $(node).parent().removeClass("btn-group");
+                    setTimeout(function () {
+                        $(node)
+                            .closest(".dt-buttons")
+                            .removeClass("btn-group")
+                            .addClass("d-inline-flex mt-50");
+                    }, 50);
+                },
+            },
+        ],
+    });
+</script>
+
+<script>
+
+    const anketModalGG = $("#anketModalGG")
+    const numbers = document.getElementById("numbers")
+
+    // TABLES
+    // TABLES
+    // TABLES
+    const family = document.getElementById("family")
+    const family2 = document.getElementById("family2")
+
+    const education1 = document.getElementById("education1")
+    const education2 = document.getElementById("education2")
+
+    const mergeshil1 = document.getElementById("mergeshil1")
+    const mergeshil2 = document.getElementById("mergeshil2")
+    const mergeshil3 = document.getElementById("mergeshil3")
+    const languages = document.getElementById("languages")
+    const experience = document.getElementById("experience")
+    const pcChadwar = document.getElementById("pc-chadwar")
+
+    const huwi_hvnii= document.getElementById("huwi_hvnii")
+    var isWorked = false
+
+    const simpleText = [
+        "register",
+        "ndd_number",
+        "emdd_number",
+        "last_name",
+        "first_name",
+        "gender",
+        "birthday",
+        "unit1",
+        "unit2",
+        "ys_undes",
+        "niigmiin_garal",
+        "unit1",
+        "unit2",
+        "address",
+        "email",
+        "phone_number",
+        "bachelor_sedew",
+        "dr_sedew",
+    ]
+
+    const params = new Proxy(new URLSearchParams(window.location.search), {
+        get: (searchParams, prop) => searchParams.get(prop),
+    });
+    let token = params.token;
+
+    const displaySimpleText = (object) =>
+    {
+        const unit1 = document.getElementsByName("__unit1")[0]
+        const unit2 = document.getElementsByName("__unit2")[0]
+
+        for(const key in object)
+        {
+            if(document.getElementById("__" + key))
+            {
+                document.getElementById("__" + key).textContent = object[key]
+            }
+            if(key === 'unit1')
+            {
+                unit1.textContent = object[key]
+            }
+            if(key === 'unit2')
+            {
+                unit2.textContent = object[key]
+            }
+        }
+    }
+
+    const displayFamilyTable = (data) =>
+    {
+        family.innerHTML = data.map(
+            (memeber) =>
+            {
+                return `
+                    <tr>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.is_who}</td>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.full_name}</td>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.birthday}</td>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.birthplace}</td>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.job}</td>
+                    </tr>
+                `
+            }
+        ).join("")
+    }
+
+    const displayFamily2Table = (data) =>
+    {
+        family2.innerHTML = data.map(
+            (memeber) =>
+            {
+                return `
+                    <tr>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.is_who}</td>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.full_name}</td>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.birthday}</td>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.birthplace}</td>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.job}</td>
+                    </tr>
+                `
+            }
+        ).join("")
+    }
+
+    const displayEducation1Table = data =>
+    {
+        education1.innerHTML = data.map(
+            (memeber) =>
+            {
+                return `
+                    <tr>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.school}</td>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.start_date}</td>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.end_date}</td>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.ezemshsen_bolowsrol}</td>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.mergejil}</td>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.diplom_number}</td>
+                    </tr>
+                `
+            }
+        ).join("")
+    }
+
+    const displayEducation2Table = data =>
+    {
+        education2.innerHTML = data.map(
+            (memeber) =>
+            {
+                return `
+                    <tr>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.level}</td>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.school}</td>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.end_date}</td>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.diplom_number}</td>
+                    </tr>
+                `
+            }
+        ).join("")
+    }
+
+    const displayMergeshil1Table = data =>
+    {
+        mergeshil1.innerHTML = data.map(
+            (memeber) =>
+            {
+                return `
+                    <tr>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.where}</td>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.start_date} - ${memeber.end_date}</td>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.learned_days}</td>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.profession}</td>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.end_date}</td>
+                    </tr>
+                `
+            }
+        ).join("")
+    }
+
+    const displayMergeshil2Table = data =>
+    {
+        mergeshil2.innerHTML = data.map(
+            (memeber) =>
+            {
+                return `
+                    <tr>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.alban_tushaal}</td>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.zereg}</td>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.zarlig}</td>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.license_number}</td>
+                    </tr>
+                `
+            }
+        ).join("")
+    }
+
+    const displayMergeshil3Table = data =>
+    {
+        mergeshil3.innerHTML = data.map(
+            (memeber) =>
+            {
+                return `
+                    <tr>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.tsol}</td>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.tsol_olgoson_org}</td>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.give_date}</td>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.license_number}</td>
+                    </tr>
+                `
+            }
+        ).join("")
+    }
+
+    const displayHuwiUrChadwarTable = (array, extraArray=[]) =>
+    {
+        const allTables = array.map(
+            (data) =>
+            {
+                return `
+
+                        <tr>
+                            <td style="border: 1px solid #595957; text-align: center; font-weight: 600 "  colspan="2">${data?.name ?? ""}</td>
+                            <td style="border: 1px solid #595957; text-align: center; font-weight: 600 " >Түвшин</td>
+                        </tr>
+                        ${
+                            data.skills.map(
+                                (skill) =>
+                                {
+                                    return`
+                                        <tr>
+                                            <td style="border: 1px solid #595957; text-align: center;"  rowspan="${skill.defs.length}">${skill?.name ?? ""}</td>
+                                            <td style="border: 1px solid #595957; text-align: center;" >${skill.defs[0]?.name ?? ""}</td>
+                                            <td style="border: 1px solid #595957; text-align: center;" id="${skill.defs[0].id + '_def'}" ></td>
+                                        </tr>
+                                        ${
+                                            skill.defs.map(
+                                                (def, index) =>
+                                                {
+                                                    if(index === 0) return
+                                                    return`
+                                                        <tr>
+                                                            <td style="border: 1px solid #595957; text-align: center;" >${def?.name ?? ""}</td>
+                                                            <td style="border: 1px solid #595957; text-align: center;" id="${def.id + '_def'}" ></td>
+                                                        </tr>
+                                                    `
+                                                }
+                                            ).join("")
+                                        }
+                                    `
+                                }
+                            ).join("")
+                        }
+                `
+            }
+        )
+        allTables.push(
+            `
+                <tr>
+                    <td style="border: 1px solid #595957; text-align: center; font-weight: 600 "  colspan="2">Дээр дурдсанаас бусад ур чадвар</td>
+                    <td style="border: 1px solid #595957; text-align: center; font-weight: 600 " >Түвшин</td>
+                </tr>
+                <tr>
+                    <td style="border: 1px solid #595957; text-align: center;"  rowspan="${extraArray.length}"></td>
+                    <td style="border: 1px solid #595957; text-align: center;" >${extraArray[0]?.name ?? ""}</td>
+                    <td style="border: 1px solid #595957; text-align: center;" >${extraArray[0]?.level ?? ""}</td>
+                </tr>
+                ${
+                    extraArray.map(
+                        (extra, index) =>
+                        {
+                            if(index === 0) return
+                            return `
+                            <tr>
+                                <td style="border: 1px solid #595957; text-align: center;" >${extra?.name ?? ""}</td>
+                                <td style="border: 1px solid #595957; text-align: center;" >${extra?.level ?? ""}</td>
+                            </tr>
+                            `
+                        }
+                    ).join("")
+                }
+            `
+        )
+        huwi_hvnii.innerHTML = allTables.join("")
+    }
+
+    const displayCell = (number) =>
+    {
+        const cellss = {
+            1: `<td style="border: 1px solid #595957; text-align: center;">+</td><td style="border: 1px solid #595957; text-align: center;"></td><td style="border: 1px solid #595957; text-align: center;"></td>`,
+            2: `<td style="border: 1px solid #595957; text-align: center;"></td><td style="border: 1px solid #595957; text-align: center;">+</td><td style="border: 1px solid #595957; text-align: center;"></td>`,
+            3: `<td style="border: 1px solid #595957; text-align: center;"></td><td style="border: 1px solid #595957; text-align: center;"></td><td style="border: 1px solid #595957; text-align: center;">+</td>`,
+        }
+        return cellss[number]
+    }
+
+    const displayLangTable = (data) =>
+    {
+        languages.innerHTML = data.map(
+            (memeber) =>
+            {
+                return `
+                    <tr>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.langage}</td>
+                        ${displayCell(memeber.listen)}
+                        ${displayCell(memeber.talk)}
+                        ${displayCell(memeber.read)}
+                        ${displayCell(memeber.write)}
+                    </tr>
+                `
+            }
+        ).join("")
+    }
+
+    const displayUrChadwarValue = (data) =>
+    {
+        data.map(
+            (element) =>
+            {
+                document.getElementById(element.skill_def + "_def").textContent = element.level
+            }
+        )
+    }
+
+    const displayPcChadwarTable = data =>
+    {
+        pcChadwar.innerHTML = data.map(
+            (memeber) =>
+            {
+                return `
+                    <tr>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.name}</td>
+                        ${displayCell(memeber.level)}
+                    </tr>
+                `
+            }
+        ).join("")
+    }
+
+    const displayOfficeToolsTable = data =>
+    {
+        for(const value in data)
+        {
+            const names = [...document.getElementsByName(value)]
+            if(names.length !==0 )
+            {
+                names.map(
+                    (name) =>
+                    {
+                        if(name.cellIndex === data[value])
+                        {
+                            name.textContent = '+'
+                        }
+                    }
+                )
+            }
+        }
+    }
+
+    const displayExperienceTable = (data) =>
+    {
+        experience.innerHTML = data.map(
+            (memeber) =>
+            {
+                return `
+                    <tr>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.worked_place}</td>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.pos}</td>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.joined_date}</td>
+                        <td style="border: 1px solid #595957; text-align: center;">${memeber.left_date}</td>
+                    </tr>
+                `
+            }
+        ).join("")
+    }
+
+    const handleClickAnket = async () =>
+    {
+        const { success: success2, data: skilss } = await fetchData(`/worker/static/skills/`, null, 'GET')
+        const { success, data: { return_data, user, userInfo } } = await useLoader(fetchData(`/account/user-anket/hr/?${token ? 'token=' + token : 'userId={{ selected_user_data.id }}'}`, null, 'GET'), anketModalGG)
+
+        if(success && success2)
+        {
+            const { repeater, skills } = return_data
+            displaySimpleText(user)
+            displaySimpleText(userInfo)
+            displaySimpleText(return_data)
+            numbers.innerHTML = repeater.numbers.map(
+                (number) =>
+                {
+                    return `
+                        <li>
+                            Нэр: ${number.full_name} Утас: ${number.number}
+                        </li>
+                    `
+                }
+            ).join("")
+            displayFamilyTable(repeater.family)
+            displayFamily2Table(repeater.family2)
+            displayEducation1Table(repeater.education1)
+            displayEducation2Table(repeater.education2)
+            displayMergeshil1Table(repeater.mergeshil1)
+            displayMergeshil2Table(repeater.mergeshil2)
+            displayMergeshil3Table(repeater.mergeshil3)
+            displayHuwiUrChadwarTable(skilss, repeater['extra-skills'])
+            displayUrChadwarValue(skills)
+            displayLangTable(repeater.languages)
+            displayPcChadwarTable(repeater['pc-chadwar'])
+            const officeTools = {}
+            for(const value in return_data)
+            {
+                if(typeof return_data[value] === 'number')
+                {
+                    officeTools[value] =  return_data[value]
+                }
+            }
+            displayOfficeToolsTable(officeTools)
+            displayExperienceTable(repeater.experience)
+        }
+    }
+</script>
+
+<!-- User Profile зураг -->
+<script>
+
+    const profileImageInput = document.getElementById('profileImageInput')
+    const profileImageView = document.getElementById('profileImageView')
+    const join_req = "{% if not join_req %}true{% endif %}"
+
+    const handleClickProfile = () =>
+    {
+        if(join_req !== 'true') return
+        profileImageInput.click()
+    }
+
+    const handleChangeProfile = async (event) =>
+    {
+        profileImageView.src = URL.createObjectURL(event.target.files[0])
+        const formData = new FormData()
+        formData.append('real_photo', event.target.files[0])
+        const { success } = await fetchData('/account/user-profile-image/{{selected_user_data.id }}/', formData, "PUT", "", false)
+    }
+</script>
+
+<!-- User Talent -->
+<script>
+    var tableTalent
+    tableTalent = $(".user-talent-table").DataTable({
+        processing: false,
+        dom: 'lBfrtip',
+        serverSide: true,
+        ajax: { url: '/account/user-talent-pagination/{{ selected_user_data.id }}/' }, // JSON file to add data
+        columns: [
+            // columns according to JSON
+            { data: "" },
+            { data: "" },
+            { data: "type" },
+            { data: "studied_date" },
+            { data: "rank" },
+            { data: "" },
+        ],
+        columnDefs: [
+            {
+                // For Responsive
+                className: "control",
+                orderable: false,
+                responsivePriority: 2,
+                targets: 0,
+                render: function (data, type, full, meta) {
+                    return "";
+                },
+            },
+            {
+                // Actions
+                targets: -1,
+                title: "Үйлдэл",
+                orderable: false,
+                render: function (data, type, full, meta) {
+                    return (
+                        `<span onclick=(handleOnUpdateTalent(${full.id})) class="text-primary delete-record me-1 cursor-pointer">
+                            ${
+                                feather.icons["edit-3"].toSvg({
+                                    class: "font-small-4",
+                                })
+                            }
+                        </span>
+                        <span onclick=(handleOnDeleteTalent(${full.id})) class="text-primary-orange delete-record cursor-pointer">
+                            ${
+                                feather.icons["trash-2"].toSvg({
+                                    class: "font-small-4",
+                                })
+                            }
+                        </span>
+                        `
+                    );
+                },
+            },
+            {
+                targets: 1,
+                title: "#",
+                orderable: false,
+                render: function (data, type, full, meta) {
+                    return (
+                        meta.settings._iDisplayStart + meta.row + 1
+                    );
+                },
+            },
+        ],
+        order: [[3, "desc"]],
+        lengthMenu: [
+            [10, 25, 50, 100, -1],
+            [10, 25, 50, 100, 'Бүгд'],
+        ],
+        dom:
+            '<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+            '<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+            '<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+            ">t" +
+            '<"d-flex justify-content-between mx-2 row mb-1"' +
+            '<"col-sm-12 col-md-6"i>' +
+            '<"col-sm-12 col-md-6"p>' +
+            ">",
+        oLanguage: {
+            sProcessing: "Ачааллаж байна. ",
+            sSearch: "Хайх: ",
+            sEmptyTable: "Бичлэг байхгүй",
+            sInfoEmpty: "Нийт 0 бичлэг",
+            sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+            sInfoFiltered: " - _MAX_ бичлэгээс",
+            sLengthMenu: "_MENU_ бичлэг",
+            oPaginate: {
+                sFirst: "Эхэнд",
+                sLast: "Төгсгөлд",
+                sNext: "Дараах",
+                sPrevious: "Өмнөх",
+            },
+        },
+        // Buttons with Dropdown
+        buttons: [
+            {
+                extend: "collection",
+                className: "btn btn-outline-secondary dropdown-toggle me-2",
+                text:
+                    feather.icons["external-link"].toSvg({
+                        class: "font-small-4 me-50",
+                    }) + "Export",
+                buttons: [
+                    {
+                        extend: "print",
+                        text:
+                            feather.icons["printer"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Print",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5] },
+                    },
+                    {
+                        extend: "csv",
+                        text:
+                            feather.icons["file-text"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Csv",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5] },
+                    },
+                    {
+                        extend: "excel",
+                        text:
+                            feather.icons["file"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Excel",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5] },
+                    },
+                    {
+                        extend: "pdf",
+                        text:
+                            feather.icons["clipboard"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Pdf",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5] },
+                    },
+                    {
+                        extend: "copy",
+                        text:
+                            feather.icons["copy"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Copy",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5] },
+                    },
+                ],
+                init: function (api, node, config) {
+                    $(node).removeClass("btn-secondary");
+                    $(node).parent().removeClass("btn-group");
+                    setTimeout(function () {
+                        $(node)
+                            .closest(".dt-buttons")
+                            .removeClass("btn-group")
+                            .addClass("d-inline-flex mt-50");
+                    }, 50);
+                },
+            },
+            {
+                text: "Шинээр бүртгэх",
+                className: "add-new btn btn-primary",
+                attr: {
+                    "data-bs-toggle": "modal",
+                    "data-bs-target": "#modals-slide-in",
+                    "id": "addNewBtnTalent"
+                },
+                init: function (api, node, config) {
+                    node[0].onclick = function(){
+                        setInitForm(formInputs, resetUserTalentText)
+                    }
+                },
+            },
+        ],
+    });
+
+    const resetUserTalentText = () =>
+    {
+        updateidTalent = ''
+        let formTitle = document.getElementById('formTitleTalent')
+        formTitle.textContent = 'Үүсгэх'
+        actionTextTalent = 'create'
+    }
+
+    const formInputsTalent = ['type', 'studied_date', 'rank']
+
+    // засах эсвэл үүсгэх юу хийх гэж байгааг хадгалах
+    let actionTextTalent = 'create'
+
+    // засах гэж байгаа row ийн id
+    let updateidTalent = ''
+
+    // Form домоос барих
+    var jqFormTalent = $('#userTalentForm')
+
+    let validateTalent
+
+    if (jqFormTalent.length) {
+        validateTalent = jqFormTalent.validate({
+            rules: {
+                'reward_name': {
+                    required: true
+                },
+                'company_name': {
+                    required: true,
+                },
+                'got_date': {
+                    required: true,
+                },
+                'explanation': {
+                    required: false,
+                },
+            }
+        });
+    }
+
+    // Оруулах товч дарахад or submit
+    async function handleTalentForm(event) {
+
+        if(!validateTalent.checkForm())
+        {
+            return
+        }
+        event.preventDefault();
+
+        const body = {}
+
+        formInputsTalent.map(
+            (input) =>
+            {
+                const domElement = document.getElementById(input)
+                const elemetValue = domElement.value
+                body[input] = elemetValue
+            }
+        )
+
+        if(actionTextTalent === 'create')
+        {
+            const { success, errors } = await fetchData('/account/user-talent/{{ selected_user_data.id }}/', body, 'POST')
+            if(errors)
+            {
+                // input ийг validate алдаа г харуулах
+                displayError(errors)
+            } else {
+                // input ийн харагдсан байгаа validate алдаануудыг устгах
+                deleteError(errors)
+            }
+            // амжилтатй үүсвэл id ирээд form цэвэрлэх
+            if(success)
+            {
+
+                setInitForm(formInputsTalent, resetUserTalentText)
+                tableTalent.ajax.reload(null, true)
+            }
+        } else {
+            const { success } = await fetchData(`/account/user-talent/${updateidTalent}/`, body, 'PUT')
+            // амжилтатй засвал id ирээд form цэвэрлэх
+            if(success)
+            {
+                setInitForm(formInputsTalent, resetUserTalentText)
+                tableTalent.ajax.reload(null, true)
+            }
+        }
+    }
+
+    // table -аас устгах
+    const handleOnDeleteTalent = async (id) =>
+    {
+        const { success } = await fetchData(`/account/user-talent/${id}/`, null, 'DELETE').catch(err => err)
+        if(success)
+        {
+            // хүснэгт дата шинэчлэх
+            setInitForm(formInputsTalent, resetUserTalentText)
+            tableTalent.ajax.reload(null, false)
+        }
+    }
+
+    // table дээрээс засах товч дарахад
+    const handleOnUpdateTalent = async (id) =>
+    {
+        updateidTalent = id
+        let formTitle = document.getElementById('formTitleTalent')
+        formTitle.textContent = 'Засах'
+        actionTextTalent = 'update'
+        const { success, data } = await fetchData(`/account/user-talent/${id}/`, null, 'GET').catch(err => err)
+        if(success)
+        {
+            for (const element in data) {
+                if(element === 'id') continue
+                if(!document.getElementById(element)) return
+                document.getElementById(element).value = data[element]
+            }
+        }
+    }
+</script>
+
+
+<!-- Шагнал урамшуулал -->
+<script>
+    var table
+    let rewardWarModal = $("#reward-warning")
+    table = $(".user-reward-table").DataTable({
+        processing: false,
+        dom: 'lBfrtip',
+        serverSide: true,
+        ajax: { url: '/account/user-reward-pagination/{{ selected_user_data.id }}/' }, // JSON file to add data
+        columns: [
+            // columns according to JSON
+            { data: "" },
+            { data: "" },
+            { data: "name" },
+            { data: "what_year" },
+            { data: "desc" },
+            { data: "" },
+        ],
+        columnDefs: [
+            {
+                // For Responsive
+                className: "control",
+                orderable: false,
+                responsivePriority: 2,
+                targets: 0,
+                render: function (data, type, full, meta) {
+                    return "";
+                },
+            },
+            {
+                // Actions
+                targets: -1,
+                title: "Үйлдэл",
+                orderable: false,
+                render: function (data, type, full, meta) {
+                    return (
+                        `<span onclick=(handleOnUpdate(${full.id})) class="text-primary delete-record me-1 cursor-pointer">
+                            ${
+                                feather.icons["edit-3"].toSvg({
+                                    class: "font-small-4",
+                                })
+                            }
+                        </span>
+                        <span onclick=(handleOnDelete(${full.id})) class="text-primary-orange delete-record cursor-pointer">
+                            ${
+                                feather.icons["trash-2"].toSvg({
+                                    class: "font-small-4",
+                                })
+                            }
+                        </span>
+                        `
+                    );
+                },
+            },
+            {
+                targets: 1,
+                title: "#",
+                orderable: false,
+                render: function (data, type, full, meta) {
+                    return (
+                        meta.settings._iDisplayStart + meta.row + 1
+                    );
+                },
+            },
+        ],
+        order: [[3, "desc"]],
+        lengthMenu: [
+            [10, 25, 50, 100, -1],
+            [10, 25, 50, 100, 'Бүгд'],
+        ],
+        dom:
+            '<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+            '<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+            '<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+            ">t" +
+            '<"d-flex justify-content-between mx-2 row mb-1"' +
+            '<"col-sm-12 col-md-6"i>' +
+            '<"col-sm-12 col-md-6"p>' +
+            ">",
+        oLanguage: {
+            sProcessing: "Ачааллаж байна. ",
+            sSearch: "Хайх: ",
+            sEmptyTable: "Бичлэг байхгүй",
+            sInfoEmpty: "Нийт 0 бичлэг",
+            sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+            sInfoFiltered: " - _MAX_ бичлэгээс",
+            sLengthMenu: "_MENU_ бичлэг",
+            oPaginate: {
+                sFirst: "Эхэнд",
+                sLast: "Төгсгөлд",
+                sNext: "Дараах",
+                sPrevious: "Өмнөх",
+            },
+        },
+        // Buttons with Dropdown
+        buttons: [
+            {
+                extend: "collection",
+                className: "btn btn-outline-secondary dropdown-toggle me-2",
+                text:
+                    feather.icons["external-link"].toSvg({
+                        class: "font-small-4 me-50",
+                    }) + "Export",
+                buttons: [
+                    {
+                        extend: "print",
+                        text:
+                            feather.icons["printer"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Print",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5] },
+                    },
+                    {
+                        extend: "csv",
+                        text:
+                            feather.icons["file-text"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Csv",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5] },
+                    },
+                    {
+                        extend: "excel",
+                        text:
+                            feather.icons["file"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Excel",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5] },
+                    },
+                    {
+                        extend: "pdf",
+                        text:
+                            feather.icons["clipboard"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Pdf",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5] },
+                    },
+                    {
+                        extend: "copy",
+                        text:
+                            feather.icons["copy"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Copy",
+                        className: "dropdown-item",
+                        exportOptions: { columns: [1, 2, 3, 4, 5] },
+                    },
+                ],
+                init: function (api, node, config) {
+                    $(node).removeClass("btn-secondary");
+                    $(node).parent().removeClass("btn-group");
+                    setTimeout(function () {
+                        $(node)
+                            .closest(".dt-buttons")
+                            .removeClass("btn-group")
+                            .addClass("d-inline-flex mt-50");
+                    }, 50);
+                },
+            },
+            {
+                text: "Шинээр бүртгэх",
+                className: "add-new btn btn-primary ",
+                attr: {
+                    "id": "addNewBtn"
+                },
+                init: function (api, node, config) {
+                    node[0].onclick = function(){
+                        setInitForm(formInputs, resetUserRewardText)
+                    }
+                },
+            },
+        ],
+    });
+
+    if(join_req !== 'true')
+    {
+        document.getElementById("addNewBtn").classList.add("d-none")
+        document.getElementById("addNewBtnTalent").classList.add("d-none")
+    }
+
+    const resetUserRewardText = () =>
+    {
+        updateid = ''
+        let formTitle = document.getElementById('formTitle')
+        formTitle.textContent = 'Үүсгэх'
+        actionText = 'create'
+    }
+
+    function clearThis(target) {
+        target.value = "";
+    }
+
+    const formInputs = ['static_shagnal', 'what_year', 'desc']
+    function setInitForm(inputs=[], callback){
+        inputs.map(
+            (input) =>
+            {
+                clearThis(document.getElementById(input))
+                if (input === 'static_shagnal')
+                {
+                    $("#static_shagnal").change()
+                }
+            }
+        )
+        callback && callback()
+    }
+
+    // засах эсвэл үүсгэх юу хийх гэж байгааг хадгалах
+    let actionText = 'create'
+
+    // засах гэж байгаа row ийн id
+    let updateid = ''
+
+    // Form домоос барих
+    var jqForm = $('#userRewardForm')
+
+    let validate
+
+    if (jqForm.length) {
+        validate = jqForm.validate({
+            rules: {
+                'shagnal': {
+                    required: true
+                },
+                'what_year': {
+                    required: true,
+                },
+                'desc': {
+                    required: false,
+                },
+            }
+        });
+    }
+
+    // Оруулах товч дарахад or submit
+    async function logSubmit(event) {
+
+        event.preventDefault();
+        if(!validate.checkForm())
+        {
+            return
+        }
+
+        var data = new FormData(event.target);
+        const body = Object.fromEntries(data)
+
+        if(actionText === 'create')
+        {
+            const { success, errors } = await fetchData('/account/user-reward/hr/{{ selected_user_data.id }}/', body, 'POST')
+            if(errors)
+            {
+                // input ийг validate алдаа г харуулах
+                displayError(errors)
+            } else {
+                // input ийн харагдсан байгаа validate алдаануудыг устгах
+                deleteError(errors)
+            }
+            // амжилтатй үүсвэл id ирээд form цэвэрлэх
+            if(success)
+            {
+                setInitForm(formInputs, resetUserRewardText)
+                table.ajax.reload(null, true)
+            }
+        } else {
+            const { success } = await fetchData(`/account/user-reward/${updateid}/`, body, 'PUT')
+            // амжилтатй засвал id ирээд form цэвэрлэх
+            if(success)
+            {
+                setInitForm(formInputs, resetUserRewardText)
+                table.ajax.reload(null, true)
+            }
+        }
+    }
+
+    async function removeReward()
+    {
+        const id = rewardWarModal.attr("data-cid")
+        const { success } = await fetchData(`/account/user-reward/${id}`, null, 'DELETE').catch(err => err)
+        if(success)
+        {
+            // хүснэгт дата шинэчлэх
+            setInitForm(formInputs, resetUserRewardText)
+            table.ajax.reload(null, false)
+        }
+    }
+
+    // table -аас устгах
+    const handleOnDelete = (id) =>
+    {
+        rewardWarModal.modal("show")
+        rewardWarModal.attr("data-cid", id)
+    }
+
+    // table дээрээс засах товч дарахад
+    const handleOnUpdate = async (id) =>
+    {
+        updateid = id
+        let formTitle = document.getElementById('formTitle')
+        formTitle.textContent = 'Засах'
+        actionText = 'update'
+        const { success, data } = await fetchData(`/account/user-reward/${id}`, null, 'GET').catch(err => err)
+        if(success)
+        {
+            for (const element in data) {
+                if(element === 'id') continue
+                let val = data[element]
+                if (element === 'what_year')
+                {
+                    val = timeZoneToDateString(val, false)
+                }
+                document.getElementById(element).value = val
+                if (element === 'static_shagnal')
+                {
+                    $(`#${element}`).change()
+                }
+            }
+        }
+    }
+
+</script>
+
+<!-- Холбоо барих мэдээлэл -->
+<script>
+    var action_statuses = {
+        PENDING: 1,
+        APPROVED: 2,
+        DECLINED: 3,
+    }
+
+    var contactInfoJqFrom = $('#contactInfoK')
+    const contactLoader = document.getElementById('loaderWeew2')
+
+    let validateContactInfoK
+
+    $.validator.addMethod(
+        "regex",
+        function(value, element, regexp) {
+            var re = new RegExp(regexp);
+            return this.optional(element) || re.test(value);
+        },
+        "Энэ талбарыг бөглөнө үү"
+    );
+
+    if (contactInfoJqFrom.length) {
+        validateContactInfoK = contactInfoJqFrom.validate({
+            rules: {
+                "phone_number": {
+                    required: true,
+                    minlength: 8,
+                    maxlength: 8,
+                },
+                // "email": {
+                //     required: {
+                //         depends:function(){
+                //             $(this).val($.trim($(this).val()));
+                //             return true;
+                //         }
+                //     },
+                //     regex: EMAIL_REGEX,
+                // },
+                "home_phone": {
+                    required: false
+                },
+            },
+            messages: {
+                'email': {
+                    required: 'Имэйл хаяг талбарыг бөглөнө үү.',
+                    regex: 'Зөв имэйл хаяг оруулна уу'
+                },
+                'phone_number': {
+                    required: 'Утасны дугаар талбарыг бөглөнө үү.',
+                    minlength: 'Зөв утасны дугаар оруулна уу',
+                    maxlength: 'Зөв утасны дугаар оруулна уу',
+                },
+            }
+        });
+    }
+    const contactInfoInputs = ['phone_number','email', 'home_phone']
+    const contactInfoSubmit = async (event) =>
+    {
+        event.preventDefault()
+        if(!validateContactInfoK.checkForm())
+        {
+            return
+        }
+        const generalBody = {}
+        const generalInfoSubmit = document.getElementById('contactInfoSubmitBtn')
+
+        contactInfoInputs.map(
+            (input) =>
+            {
+                const domElement = document.getElementById(input)
+                let elemetValue = domElement.value
+                if (input === 'home_phone' && !elemetValue)
+                {
+                    elemetValue = null
+                }
+                generalBody[input] = elemetValue
+            }
+        )
+
+        generalBody.action_status_type = ACTION_TYPE_GENERAL
+        // хүсэлт илгээгүй бол шинээр үүсгэх POST else put
+        generalInfoSubmit.disabled = true
+        contactLoader.classList.add('loaderWew')
+        const { success, errors } = await fetchData(`/account/user-contact-info/hr/{{ selected_user_data.id }}/`, generalBody, 'PUT').catch(err => err)
+            .finally(() => { generalInfoSubmit.disabled = false; contactLoader.classList.remove('loaderWew') })
+        if(errors)
+        {
+            // input ийг validate алдаа г харуулах
+            displayError(errors)
+        } else {
+            // input ийн харагдсан байгаа validate алдаануудыг устгах
+            deleteError(errors)
+        }
+        // амжилтатй үүсвэл id ирээд form цэвэрлэх
+        if(success)
+        {
+            window.location.href = '/account/worker/{{ empolee.id }}'
+            generalInfoSubmit.disabled = true
+            document.querySelector('#contact_info_modal_close_btn').click()
+            setTimeout(() => {
+                generalInfoSubmit.disabled = false
+            }, 100);
+        }
+    }
+</script>
+
+<!-- Нэмэлт мэдээлэл -->
+<script>
+    var ACTION_TYPE_EXTRA = 2
+    // Form домоос барих
+    var extraInfoJqFrom = $('#extraInfoK')
+    const extraLoader = document.getElementById('loaderWeew3')
+
+    let validateExtroInfoK
+
+    const extraInfoInputs = [ "unit1_id", "unit2_id", "emdd_number", "ndd_number", "body_height", "body_weight", "blood_type" ]
+    const extraInfoCheckboxed = [ "is_pension", "is_disabled", "is_training_licence" ]
+
+    if (extraInfoJqFrom.length) {
+        validateExtroInfoK = extraInfoJqFrom.validate({
+            rules: {
+                "unit1_id": {
+                    required: true
+                },
+                "unit2_id": {
+                    required: true
+                },
+                "emdd_number": {
+                    required: false
+                },
+                "ndd_number": {
+                    required: false
+                },
+                "body_height": {
+                    required: false
+                },
+                "body_weight": {
+                    required: false
+                },
+                "blood_type": {
+                    required: false
+                },
+            }
+        })
+    }
+    const extraInfoSubmit = async (event) =>
+    {
+        event.preventDefault()
+        if(!validateExtroInfoK.checkForm())
+        {
+            return
+        }
+
+        const generalBody = {}
+        const generalInfoSubmit = document.getElementById('generalInfoSubmitEI')
+
+        extraInfoInputs.map(
+            (input) =>
+            {
+                const domElement = document.getElementById(input)
+                const elemetValue = domElement.value
+                generalBody[input] = elemetValue
+            }
+        )
+        extraInfoCheckboxed.map(
+            (input) =>
+            {
+                const domElement = document.getElementById(input)
+                const elemetValue = domElement.checked
+                generalBody[input] = elemetValue
+            }
+        )
+
+        if('{{ selected_userinfo_data.register }}' && '{{ selected_userinfo_data.birthday }}' )
+        {
+            generalBody.register = '{{ selected_userinfo_data.register }}'
+            generalBody.birthday = '{{ selected_userinfo_data.birthday }}'
+        }
+        else
+        {
+            toastr['error']('', 'Та эхлээд үндсэн мэдээллээ баталгаажуулах ёстой', {
+                timeOut: 2500,
+                closeButton: true,
+                hideDuration: 200,
+                progressBar: true,
+                newestOnTop: true
+            })
+            return
+        }
+
+        generalInfoSubmit.disabled = true
+        extraLoader.classList.add('loaderWew')
+        const { success, errors } = await fetchData('/account/user-extra-info/hr/{{selected_user_data.id }}/', generalBody, 'PUT').catch(err => err)
+            .finally(() => { generalInfoSubmit.disabled = false; extraLoader.classList.remove('loaderWew') })
+        if(errors)
+        {
+            // input ийг validate алдаа г харуулах
+            displayError(errors)
+        } else {
+            // input ийн харагдсан байгаа validate алдаануудыг устгах
+            deleteError(errors)
+        }
+        // амжилтатй үүсвэл id ирээд form цэвэрлэх
+        if(success)
+        {
+            window.location.href = '/account/worker/{{ empolee.id }}'
+            generalInfoSubmit.disabled = true
+            document.querySelector('#extra_info_modal_close_btn').click()
+            setTimeout(() => {
+                generalInfoSubmit.disabled = false
+            }, 100);
+        }
+    }
+
+    let allUnits = []
+
+    $(function() {
+        $("#blood_type").val('{{ selected_userinfo_data.blood_type }}');
+    });
+
+
+    const unit1Selected = async (event) =>
+    {
+        const unit2Element = document.getElementById('unit2_id')
+        if(event.value === 'null')
+        {
+            unit2Element.innerHTML = null
+            const defaultOp = document.createElement("option");
+            defaultOp.text = '-------------';
+            defaultOp.value = null;
+            unit2Element.add(defaultOp);
+            return
+        }
+        const units2 = allUnits.find((unit1) => unit1.id.toString() === event.value.toString()).unit2
+        unit2Element.innerHTML = null
+        units2.map(
+            (unit2) =>
+            {
+                var option = document.createElement("option");
+                option.text = unit2.name;
+                option.value = unit2.id;
+                unit2Element.add(option);
+            }
+        )
+    }
+
+    const getAllUnits = async () =>
+    {
+        extraLoader.classList.add('loaderWew')
+        const { success, data } = await fetchData('/account/user-extra-info-units/', null, 'GET')
+                    .finally(() => { generalInfoSubmit.disabled = false; extraLoader.classList.remove('loaderWew') })
+        if(success)
+        {
+            const unit1Element = document.getElementById('unit1_id')
+            const unit2Element = document.getElementById('unit2_id')
+            allUnits = data
+            const defaultOp = document.createElement("option");
+            defaultOp.text = '-------------';
+            defaultOp.value = null;
+            unit1Element.add(defaultOp);
+            data.map(
+                (unit1) =>
+                {
+                    var option = document.createElement("option");
+                    option.text = unit1.name;
+                    option.value = unit1.id;
+                    unit1Element.add(option);
+                }
+            )
+        }
+    }
+
+    const renderValueSelect = async () =>
+    {
+        $("#unit1_id").val('{{ selected_userinfo_data.unit1.id }}');
+        unit1Selected({ value: '{{ selected_userinfo_data.unit1.id }}' })
+        $("#unit2_id").val('{{ selected_userinfo_data.unit2.id }}');
+
+    }
+
+    (async () =>
+    {
+        await getAllUnits()
+        await renderValueSelect()
+    })()
+
+</script>
+
+<!-- Үндсэн мэдээлэл -->
+<script>
+    var action_statuses = {
+        PENDING: 1,
+        APPROVED: 2,
+        DECLINED: 3,
+    }
+    var ACTION_TYPE_GENERAL = 1
+    var ACTION_TYPE_ALL = 3
+    // Form домоос барих
+    var generalJqFrom = $('#generelInfoK')
+
+    const generalLoader = document.getElementById('loaderWeew')
+
+    let validateGeneralInfoK
+
+    $.validator.addMethod(
+        "regex",
+        function(value, element, regexp) {
+            var re = new RegExp(regexp);
+            return this.optional(element) || re.test(value);
+        },
+        "Please check your input."
+    );
+
+    if (generalJqFrom.length) {
+        validateGeneralInfoK = generalJqFrom.validate({
+            rules: {
+                "urgiin_ovog": {
+                    required: true
+                },
+                "last_name": {
+                    required: true
+                },
+                "first_name": {
+                    required: true
+                },
+                "gender": {
+                    required: true
+                },
+                "ys_undes": {
+                    required: false
+                },
+                "address": {
+                    required: false
+                },
+                "register": {
+                    required: {
+                        depends:function(){
+                            $(this).val($.trim($(this).val()));
+                            return true;
+                        }
+                    },
+                    regex: REGISTER_NUMBER_REGEX,
+                },
+            },
+            messages: {
+                'register': {
+                    required: 'Регистерийн дугаар талбарыг бөглөнө үү.',
+                    regex: 'Регистерийн дугаарыг АА12345678 гэсэн форматын дагуу оруулна уу.'
+                },
+            }
+        });
+    }
+
+    $(function() {
+        $("#gender").val('{{ selected_userinfo_data.gender }}');
+        $("#ys_undes").val('{{ selected_userinfo_data.ys_undes }}');
+        $("#address").val('{{ selected_userinfo_data.address }}');
+    });
+
+    const generalInputs = ['urgiin_ovog','last_name', 'first_name', 'gender', 'ys_undes', 'address', 'register', 'suutsnii_torol', 'experience_year', 'experience_mnun_year']
+
+    const generalSubmit = async (event) =>
+    {
+        event.preventDefault()
+        if(!validateGeneralInfoK.checkForm())
+        {
+            return
+        }
+        const generalBody = {}
+        const generalInfoSubmit = document.getElementById('generalInfoSubmit')
+
+        generalInputs.map(
+            (input) =>
+            {
+                const domElement = document.getElementById(input)
+                if (domElement)
+                {
+                    const elemetValue = domElement.value
+                    generalBody[input] = elemetValue
+                }
+            }
+        )
+
+        generalBody.action_status_type = ACTION_TYPE_GENERAL
+        generalBody.hasGeneralInfo = '{{ selected_userinfo_data.register }}'.length === 10
+
+        generalInfoSubmit.disabled = true
+        generalLoader.classList.add('loaderWew')
+        const { success, errors } = await fetchData('/account/user-general-info/hr/{{ selected_user_data.id }}/', generalBody, 'PUT').catch(err => err)
+            .finally(() => { generalInfoSubmit.disabled = false; generalLoader.classList.remove('loaderWew') })
+        if(errors)
+        {
+            // input ийг validate алдаа г харуулах
+            displayError(errors)
+        } else {
+            // input ийн харагдсан байгаа validate алдаануудыг устгах
+            deleteError(errors)
+        }
+        // амжилтатй үүсвэл id ирээд form цэвэрлэх
+        if(success)
+        {
+            window.location.href = '/account/worker/{{ empolee.id }}'
+            generalInfoSubmit.disabled = true
+            document.querySelector('#general_info_modal_close_btn').click()
+            setTimeout(() => {
+                generalInfoSubmit.disabled = false
+            }, 100);
+        }
+    }
+</script>
+
+<!-- Дансны мэдээлэл -->
+<script>
+    var bankAccountInfoJqFrom = $('#employeeBankAccountInfoForm')
+    const bankLoader = document.getElementById('loaderWeew8')
+
+    let validateBankAccountInfo
+
+    if (bankAccountInfoJqFrom.length) {
+        validateBankAccountInfo = bankAccountInfoJqFrom.validate({
+            rules: {
+                "bankInfoSelect": {
+                    required: true,
+                },
+                "number": {
+                    required: true
+                },
+            },
+            messages: {
+                'bankInfoSelect': {
+                    required: 'Банк талбарыг бөглөнө үү.',
+                },
+                'number': {
+                    required: 'Дансны дугаар талбарыг бөглөнө үү.',
+                },
+            }
+        });
+    }
+    const bankAccountInputs = ['bankInfoSelect','number']
+    const bankAccountInfoSubmit = async (event) =>
+    {
+        event.preventDefault()
+        if(!validateBankAccountInfo.checkForm())
+        {
+            return
+        }
+        const generalBody = {}
+        const generalInfoSubmit = document.getElementById('bankAccountInfoSubmitBtn')
+
+        bankAccountInputs.map(
+            (input) =>
+            {
+                const domElement = document.getElementById(input)
+                let elemetValue = domElement.value
+                generalBody[input] = elemetValue
+            }
+        )
+
+        generalInfoSubmit.disabled = true
+        contactLoader.classList.add('loaderWew')
+
+        const { success, errors } = await fetchData(`/bank/bank-account-info-create/{{ selected_user_data.id }}/`, generalBody, 'POST').catch(err => err)
+            .finally(() => { generalInfoSubmit.disabled = false; contactLoader.classList.remove('loaderWew') })
+        if(errors)
+        {
+            // input ийг validate алдаа г харуулах
+            displayError(errors)
+        } else {
+            // input ийн харагдсан байгаа validate алдаануудыг устгах
+            deleteError(errors)
+        }
+        // амжилтатй үүсвэл id ирээд form цэвэрлэх
+        if(success)
+        {
+            window.location.href = '/account/worker/{{ empolee.id }}'
+            generalInfoSubmit.disabled = true
+            document.querySelector('#bank_acc_info_modal_close_btn').click()
+            setTimeout(() => {
+                generalInfoSubmit.disabled = false
+            }, 100);
+        }
+    }
+</script>
+
+<script>
+    // Ажлын түүх баазаас авах хүсэлт
+    async function getHistory()
+    {
+        if(!isWorked)
+        {
+            const { success, data } = await useLoader(
+                fetchData(`/worker/employee-migrations/{{ selected_user_data.id }}/`, null, "GET"),
+                $("#workerHistory .modal-body")
+            )
+            if(success && data.employee_data.length>0)
+            {
+                getMigrationsList(data)
+            }
+            isWorked = true
+        }
+    }
+    // Дансны мэдээлэл баазаас авах хүсэлт
+    getDatas("{{ selected_user_data.id }}")
+</script>
+
+<script>
+
+    let dz = new Dropzone("#dZUpload", {
+        url: "/test",
+        clickable: true,
+        paramName: 'file', // The name that will be used to transfer the file
+        autoProcessQueue: false,
+        addRemoveLinks: true,
+        accept: function(file, done)
+        {
+            if (file.size > 1*1024*1024) {
+                this.removeFile(file);
+                alert('file too big');
+                return false;
+            }
+
+            $(".dz-progress").remove();
+            $(".dz-remove").html(
+                `<div><span class='fa fa-trash text-danger'></span></div>`
+            );
+            return file.previewElement.classList.add("dz-success");
+        },
+        removedfile: function(file) {
+            //  зөвхөн засаж байгаа үед хуучин байсан зургаас id ийг авна
+            file.id && removeFiles.push(file.id)
+
+            $(file.previewElement).remove();
+        }
+    });
+
+    var khodolmorGereeFrom = $('#khodolmoriinGereeForm')
+    let validateKHodolmorGeree
+
+    if (khodolmorGereeFrom.length) {
+        validateKHodolmorGeree = khodolmorGereeFrom.validate({
+            rules: {
+                "name": {
+                    required: true,
+                },
+            },
+            messages: {
+                'bankInfoSelect': {
+                    required: 'Талбарыг бөглөнө үү.',
+                },
+            }
+        });
+    }
+
+    /** Гэрээ нэмэх хэсэг */
+    const khodolmoriinGereeSubmit = async (event) =>
+    {
+        event.preventDefault();
+        if(!validateKHodolmorGeree.checkForm())
+        {
+            return
+        }
+        const formdataGeree = new FormData(event.target)
+
+        let attachments = dz.files.filter(el => !el.cfile)
+
+        if (attachments.length > 1)
+        {
+            document.getElementsByClassName('geree-error')[0].style.border = 'red solid 2px'
+            document.getElementById('geree-error-text').innerHTML = 'Та 1 файл оруулна уу.'
+            return
+        }
+        else if (attachments.length == 0)
+        {
+            document.getElementsByClassName('geree-error')[0].style.border = 'red solid 2px'
+            document.getElementById('geree-error-text').innerHTML = 'Талбарыг бөглөнө үү.'
+            return
+        }
+
+        document.getElementsByClassName('geree-error')[0].style.border = ''
+        document.getElementById('geree-error-text').innerHTML = ''
+
+
+        const element = attachments[0];
+        formdataGeree.append("attachments", element, element.name)
+
+        formdataGeree.append('for_employee', '{{ request.employee.id }}')
+        formdataGeree.append('employee', '{{ selected_user_data.employee.id }}')
+
+        const { success } = await fetchData(`/worker/khodolmoriin-geree-ajax/`, formdataGeree, 'POST', '', false)
+        if (success)
+        {
+            location.reload(true)
+        }
+
+    }
+
+    /** Гэрээ устгах */
+    const deleteGeree = async (id) =>
+    {
+        const { success } = await fetchData(`/worker/khodolmoriin-geree-ajax/${id}/`, null, 'delete')
+        if (success)
+        {
+            location.reload(true)
+        }
+    }
+
+    var basic_salary_information_display_doc = document.getElementById('basic_salary_information_display')
+    var work_for_hire_display_doc = document.getElementById('work_for_hire_display')
+    var hourly_wage_information_display_doc = document.getElementById('hourly_wage_information_display')
+    var hire_wage_information_display_doc = document.getElementById('hire_wage_information_display')
+    var work_for_hire_input_doc = document.getElementById('work_for_hire')
+
+    var choosedWorkerTypeID
+    var userSalaryModal = $('#userSalaryModal')
+    var rankLevelDegreeModal = $('#rankLevelDegreeModal')
+
+    function chooseWorkerType(id, name)
+    {
+        basic_salary_information_display_doc.style.display = 'none'
+        work_for_hire_display_doc.style.display = 'none'
+        hourly_wage_information_display_doc.style.display = 'none'
+        hire_wage_information_display_doc.style.display = 'none'
+        work_for_hire_input_doc.checked = false
+
+        choosedWorkerTypeID = id
+
+        if (id == 2)
+        {
+            basic_salary_information_display_doc.style.display = 'block'
+            work_for_hire_display_doc.style.display = 'block'
+        }
+        else if (id == 1)
+        {
+            work_for_hire_display_doc.style.display = 'block'
+            hourly_wage_information_display_doc.style.display = 'block'
+        }
+    }
+
+    let editedWorkerType = null
+
+    $("#userSalaryModal").on('show.bs.modal', function()
+    {
+        basic_salary_information_display_doc.style.display = 'none'
+        work_for_hire_display_doc.style.display = 'none'
+        hourly_wage_information_display_doc.style.display = 'none'
+        hire_wage_information_display_doc.style.display = 'none'
+        work_for_hire_input_doc.checked = false
+
+        let worker_type = '{{ selected_user_data.employee.worker_type }}'
+        choosedWorkerTypeID = parseInt(worker_type)
+
+        if (editedWorkerType)
+        {
+            worker_type = editedWorkerType
+        }
+
+        document.getElementById(`worker_type-${worker_type}`).checked = true
+
+        if (parseInt(worker_type) == 2)
+        {
+            basic_salary_information_display_doc.style.display = 'block'
+            work_for_hire_display_doc.style.display = 'block'
+
+            if ('{{ selected_user_data.employee.work_for_hire }}' == 'True')
+            {
+                work_for_hire_input_doc.checked = true
+                hire_wage_information_display_doc.style.display = 'block'
+            }
+        }
+        else if (parseInt(worker_type) == 1)
+        {
+            work_for_hire_display_doc.style.display = 'block'
+            hourly_wage_information_display_doc.style.display = 'block'
+        }
+    });
+
+    $("#rankLevelDegreeModal").on('show.bs.modal', function()
+    {
+        let teacher_rank_type = '{{ selected_user_data.employee.teacher_rank_type }}'
+        let education_level = '{{ selected_user_data.employee.education_level }}'
+        let degree_type = '{{ selected_user_data.employee.degree_type }}'
+
+        if (teacher_rank_type && teacher_rank_type != 'None')
+        {
+            document.getElementById(`teacher_rank_type-${teacher_rank_type}`).checked = true
+        }
+
+        if (education_level && education_level != 'None')
+        {
+            document.getElementById(`education_level-${education_level}`).checked = true
+        }
+
+        if (degree_type && degree_type != 'None')
+        {
+            document.getElementById(`degree_type-${degree_type}`).checked = true
+        }
+    });
+
+
+    function chooseWorkForHire(element)
+    {
+        hire_wage_information_display_doc.style.display = 'none'
+
+        if (element.checked)
+        {
+            if (choosedWorkerTypeID == 2)
+            {
+                hire_wage_information_display_doc.style.display = 'block'
+            }
+        }
+    }
+
+    const validateSalaryForm = $('#userSalaryForm').validate({
+        rules: {
+            'basic_salary_information': {
+                required: true,
+                number: true,
+                min: 1,
+            },
+            'hourly_wage_information': {
+                required: true,
+                number: true,
+                min: 1,
+            },
+            'hire_wage_information': {
+                required: true,
+                number: true,
+                min: 1,
+            },
+        },
+        messages: {
+            'basic_salary_information': {
+                required: 'Үндсэн цалин талбарыг бөглөнө үү.',
+                number: 'Тоон утга оруулна уу.',
+                min: 'Тоон утга оруулна уу.'
+            },
+            'hourly_wage_information': {
+                required: 'Нэг цагийн цалин талбарыг бөглөнө үү.',
+                number: 'Тоон утга оруулна уу.',
+                min: 'Тоон утга оруулна уу.'
+            },
+            'hire_wage_information': {
+                required: 'Хөлсөөр ажиллах цалин талбарыг бөглөнө үү.',
+                number: 'Тоон утга оруулна уу.',
+                min: 'Тоон утга оруулна уу.'
+            },
+        }
+    });
+
+    async function EditSalaryFormSubmit(event)
+    {
+        event.preventDefault();
+
+        if(!validateSalaryForm.checkForm())
+        {
+            return
+        }
+
+        let data = new FormData(event.target);
+        let body = Object.fromEntries(data)
+
+        userSalaryModal.modal("hide")
+
+        const { success, errors } = await fetchData('/account/employee-salary-edit/{{ selected_user_data.employee.id }}/', body, 'POST')
+        if(success)
+        {
+            userSalaryModal.modal("hide")
+            window.location.reload();
+            editedWorkerType = body.worker_type
+        }
+    }
+
+    async function EditRankLevelDegreeModalFormSubmit(event)
+    {
+        event.preventDefault();
+
+        let data = new FormData(event.target);
+        let body = Object.fromEntries(data)
+
+        rankLevelDegreeModal.modal("hide")
+
+        const { success, errors } = await fetchData('/account/rank-level-degree-edit/{{ selected_user_data.employee.id }}/', body, 'POST')
+        if(success)
+        {
+            rankLevelDegreeModal.modal("hide")
+            window.location.reload();
+        }
+    }
+
+</script>
+
+{% endblock js %}

@@ -1,0 +1,419 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+
+{% block content %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/extensions/swiper.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/forms/select/select2.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/extensions/jstree.min.css' %}" />
+<link rel="stylesheet" type="text/css"href="{% static 'app-assets/css/plugins/extensions/ext-component-tree.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/extensions/dragula.min.css' %}">
+<link rel="stylesheet" type="text/css"href="{% static 'app-assets/css/components.css' %}" />
+<link rel="stylesheet" type="text/css"href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/extensions/ext-component-drag-drop.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/extensions/ext-component-swiper.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css' %}" />
+
+{% endblock css %}
+
+<div class="content-body">
+    <section class="h-100">
+        <h4 class="card-title">Шагнал авсан ажилчид</h4>
+        {% comment %} <div class="card"> {% endcomment %}
+            {% comment %} <div class="card-header">
+                <h4 class="card-title">
+                    Шагнал авсан ажилчид
+                </h4>
+            </div> {% endcomment %}
+            <div class="swiper-multiple swiper-container">
+                <div class="swiper-wrapper">
+                    {% for shagnal in shagnals %}
+                        <div class="swiper-slide">
+                            <div class="card" style="height: 560px;">
+                                <div class="card-header">
+                                    {{shagnal.name}}
+                                </div>
+                                <a
+                                    class="text-primary fw-bold fs-12 mt-1 mb-2 d-block text-center"
+                                    onclick="handleOpenModal(event, { 'name': '{{shagnal.name}}', 'kind': {{shagnal.kind}}, 'shagnal_id': '{{shagnal.id}}' })"
+                                >
+                                    <i data-feather='plus'></i> Ажилтан нэмэх
+                                </a>
+                                <div class="card-body pt-0" style="overflow-y: scroll">
+                                    <ul class="list-group list-group-flush years-list">
+                                        {% for year_obj in shagnal.years %}
+                                            <li class="list-group-item">
+                                                <b>{{year_obj.year.year.year}} - {{year_obj.year.count}}ш</b>
+                                                <ul class="list-group">
+                                                    {% for employee in year_obj.employees %}
+                                                        <li class="list-group-item">
+                                                            - {{employee.user_detail.last_name}}. {{employee.user_detail.first_name}}
+                                                            <p>{{employee.desc}}</p>
+                                                        </li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <!-- Add Arrows -->
+                <div class="swiper-button-next"></div>
+                <div class="swiper-button-prev"></div>
+                <!-- Add Pagination -->
+                <div class="swiper-pagination"></div>
+            </div>
+            <div class="demo-inline-spacing justify-content-center">
+                <button class="btn btn-outline-primary go-first-slide font-small-3"><i data-feather='chevrons-left'></i> Эхний хуудсыг үзэх</button>
+                <button class="btn btn-outline-primary go-last-slide font-small-3">Сүүлийн хуудсыг үзэх <i data-feather='chevrons-right'></i></button>
+            </div>
+        {% comment %} </div> {% endcomment %}
+        <!-- Modal-->
+        <div class="modal modal-slide-in modal-set-shagnal fade" id="modal-set-shagnal">
+            <div class="modal-dialog">
+                <form class="set-shagnal-form modal-content pt-0" onsubmit="handleSubmit(event)">
+                    <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                    >
+                        ×
+                    </button>
+                    <div class="modal-header flex-column mb-1 align-items-start">
+                        <h5 class="modal-title">
+                            Ажилтан нэмэх
+                        </h5>
+                    </div>
+                    <div class="modal-body flex-grow-1">
+                        <small class="">
+                            <i data-feather='alert-triangle'></i> Зөвхөн нэг ажилчинд оноож өгнө.
+                            <p></p>
+                            <i data-feather='alert-triangle'></i> Регистрийн дугаар болон нэрээр хайх боломжтой.
+                            <p></p>
+                        </small>
+                        <div class="mb-1">
+                            <label
+                                class="form-label"
+                                for="employee"
+                            >
+                                Ажилтан хайх
+                            </label>
+                            <div class="input-group">
+                                <input type="text" id="employee" name="employee" class="form-control" placeholder="Регист, нэрээр хайх" aria-label="Регист, нэрээр хайх" aria-describedby="s-employee" />
+                            </div>
+                            <ul class="list-group employees-filter" style="max-height: 325px; overflow: auto;">
+
+                            </ul>
+                        </div>
+                        <div class="mb-1">
+                            <label
+                                class="form-label"
+                                for="what_year"
+                            >
+                                Хэзээ авсан
+                            </label>
+                            <input
+                                type="text"
+                                class="form-control"
+                                id="what_year"
+                                placeholder="Хэзээ авсан"
+                                name="what_year"
+                            />
+                        </div>
+                        <div class="mb-1">
+                            <label
+                                class="form-label"
+                                for="desc"
+                            >
+                                Тайлбар
+                            </label>
+                            <textarea
+                                type="text"
+                                id="desc"
+                                class="form-control"
+                                placeholder="Тайлбар"
+                                name="desc"
+                            ></textarea>
+                        </div>
+                        <button
+                            class="btn btn-primary me-1 data-submit"
+                        >
+                            Хадгалах
+                        </button>
+                        <button
+                            type="reset"
+                            class="btn btn-outline-secondary"
+                            data-bs-dismiss="modal"
+                        >
+                            Болих
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+    <div class="modal fade" id="warning-alert" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-edit-user">
+            <div class="modal-content">
+                <div class="modal-header bg-transparent">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="text-center">
+                        <i class="fas fa-exclamation-circle text-warning fs-40"></i>
+                    </div>
+                    <h6 class="mt-1 mb-1 fw-bolder">Анхааруулга<h6>
+                    Танд эрх байхгүй байна
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+
+<script src="{% static 'app-assets/vendors/js/forms/select/select2.full.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/form-select2.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/extensions/swiper.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/extensions/moment.min.js' %}"></script>
+<script src="{% static 'assets/js/throttle.js' %}"></script>
+
+<script>
+
+    const employeeIn = document.getElementById("employee")
+    let modal = $(".modal-set-shagnal")
+    let dateInput = $("input[name='what_year']")
+    let employeeInput = $("input[id='employee']")
+    let descInput = $("input[name='desc']")
+    let modalTitle = $(".modal-title")
+    let fEmployeeCon = $(".employees-filter")
+    let form = $(".set-shagnal-form")
+    let selectedShagnal = {}
+    let employeeId = null
+    let goFirstBtn = $(".go-first-slide")
+    let goLastBtn = $(".go-last-slide")
+    let selectedShagnalEl = null
+    let warningModal = $("#warning-alert")
+
+    // multiple
+    var swiper = new Swiper('.swiper-multiple', {
+        slidesPerView: 2,
+        spaceBetween: 30,
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true
+        },
+        navigation: {
+            nextEl: '.swiper-button-next',
+            prevEl: '.swiper-button-prev'
+        }
+    });
+
+    var start = dateInput.flatpickr({
+        enableTime: true,
+        altFormat: 'Y-m-dTH:i:S',
+        inline: true,
+        onReady: function (selectedDates, dateStr, instance) {
+            if (instance.isMobile) {
+                $(instance.mobileInput).attr('step', null);
+            }
+        }
+    });
+
+    /** формын датануудыг хоослох нь */
+    function resetFormData()
+    {
+        fEmployeeCon.html("")
+        employeeInput.val("")
+        dateInput.val("")
+        descInput.val("")
+        start.setDate(null)
+        selectedShagnal = {}
+        employeeId = null
+        deleteError()
+    }
+
+    /** modal нээх үед утгуудыг оноох */
+    function handleOpenModal(event, shagnal)
+    {
+        if (!"{% if 'shagnal-set-create' in request.permissions %}1{%endif%}")
+        {
+            warningModal.modal("show")
+            return
+        }
+
+        modal.modal("show")
+        modalTitle.text(shagnal.name)
+        resetFormData()
+        selectedShagnal = shagnal
+        selectedShagnalEl = $(event.target).parents(".swiper-slide")
+    }
+
+    /** Ажилчидаас хайсан үр дүнг харуулах */
+    function displayEmployeeFilterd(employees)
+    {
+        fEmployeeCon.html("")
+        employees
+            .map(
+                (employee, idx) =>
+                {
+                    let html = `
+                        <li class="list-group-item list-group-item-action" role="button" onclick="handleEmployee(event, ${employee.id})">
+                            <div class="avatar avatar-border">
+                                <img
+                                    src="${employee.real_photo ? employee.real_photo : "/media/53x53.jpg"}"
+                                    alt="avatar"
+                                    height="42"
+                                    width="42"
+									onerror="this.onerror=null; this.src='/media/53x53.jpg'"
+                                >
+                            </div>
+                            ${employee.last_name}. ${employee.first_name}
+                        </li>
+                    `
+                    fEmployeeCon.append(html)
+                }
+            )
+    }
+
+    /** Жагсаалтанд байгаа active el ийг арилгах нь */
+    function removeActiveList(activeClassName)
+    {
+        fEmployeeCon.children()
+            .each(
+                (index, el) =>
+                {
+                    let $el = $(el)
+                    $el.removeClass(activeClassName)
+                }
+            )
+    }
+
+    /** Хайлтын үр дүнгээс ажилтан сонгох нь */
+    function handleEmployee(event, aEmployeeId)
+    {
+        let activeClassName = 'active'
+        let liEL = $(event.target).closest('li')
+
+        removeActiveList(activeClassName)
+        liEL.addClass(activeClassName)
+
+        employeeId = aEmployeeId
+    }
+
+    /** Шагнал оноох ажилтныг регистрээр нь хайж олох нь */
+    function filterEmployee()
+    {
+        const register = employeeInput.val()
+        if(register)
+        {
+            useLoader(fetchData("{% url 'find-worker' %}" + `?register=${register}&exactly=0`), employeeInput.parent()).catch(err => err)
+            .then(
+                ({ success, data, error }) =>
+                {
+                    if (success)
+                    {
+                        displayEmployeeFilterd(data)
+                    }
+                }
+            )
+        }
+        else
+        {
+            fEmployeeCon.html("")
+        }
+    }
+
+    // Thrittle ашиглан Шагнал оноох ажилтныг регистрээр нь хайж олох нь
+    throttle("#employee", filterEmployee)
+
+    /** ажилтны жагсаалтыг гаргах */
+    function getEmployeeList(year_obj)
+    {
+        let html = ""
+        year_obj.employees
+            .map(
+                (employee, idx) =>
+                {
+                    html += `
+                    <li class="list-group-item">
+                        - ${employee.user_detail.last_name}. ${employee.user_detail.first_name}
+                        <p>${employee.desc}</p>
+                    </li>
+                    `
+                }
+            )
+        return html
+    }
+
+    /** Тухайн шагналын картыг шинэчлэх */
+    function updateEmployeesShangal(data)
+    {
+        let ul = selectedShagnalEl.find(".years-list")
+        ul.html("")
+        //  Жил тэгээд тэр доторх ажилчидын жагсаалтыг дахиж бичих
+
+        data.years
+            .map(
+                (year_obj, idx) =>
+                {
+                    let html = `<li class="list-group-item">
+                        <b>${moment(year_obj.year.year).format('YYYY')} - ${year_obj.year.count}ш</b>
+                        <ul class="list-group">
+                            ${getEmployeeList(year_obj)}
+                        </ul>
+                    </li>`
+                    ul.append(html)
+                }
+            )
+    }
+
+    /** Ажилчинд шагнал оноож өгөх нь */
+    function handleSubmit(event)
+    {
+        event.preventDefault()
+        const formData = new FormData(event.target)
+        const body = Object.fromEntries(formData)
+        const newBody = Object.assign(body, selectedShagnal)
+        newBody['employee'] = employeeId
+        useLoader(fetchData("{% url 'shagnal-set-employee' %}", newBody, 'POST'), $(event.target)).catch(err => err)
+            .then(
+                ({ success, data, errors }) =>
+                {
+                    if (success)
+                    {
+                        modal.modal("hide")
+                        updateEmployeesShangal(data)
+                    }
+                    else {
+                        displayError(errors)
+                    }
+                }
+            )
+    }
+
+    goFirstBtn.on("click", function(e)
+    {
+        e.preventDefault();
+        swiper.slideTo(0, 0);
+    })
+
+    goLastBtn.on("click", function(e)
+    {
+        e.preventDefault();
+        swiper.slideTo("{{shagnals|length}}", 0);
+    })
+
+</script>
+{% endblock js %}

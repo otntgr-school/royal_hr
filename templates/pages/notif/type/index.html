@@ -1,0 +1,120 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+
+{% load rest_framework %}
+
+{% block content %}
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/forms/select/select2.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/extensions/jstree.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/extensions/ext-component-tree.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+
+{% endblock css %}
+
+<div class="content-body">
+    <div class="row">
+        <div class="col-xl-4 col-lg-5 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Мэдэгдлийн төрөл</h4>
+                </div>
+                <div class="card-body">
+                    <div id="notif-type-kinds"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-8 col-lg-7 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">
+                        Төрөл
+                        {% if pk %}
+                            засах
+                        {% else %}
+                            бүртгэх
+                        {% endif %}
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="position-relative">
+                        {% if pk %}
+                            <form class="form-inline" action="{% url 'notif-type' pk %}" method="post">
+                        {% else %}
+                            <form class="form-inline" action="{% url 'notif-type' %}" method="post">
+                        {% endif %}
+                            {% csrf_token %}
+                            {% render_form serializer %}
+                            <div class="col-xl-12 col-md-12 col-12 mt-2">
+                                {% if pk %}
+                                    <button type="submit" id="salbar-btn" class="btn btn-primary">Засах</button>
+                                    <a href="{% url 'notif-type-delete' pk %}" class="btn btn-danger">Устгах</a>
+                                {% else %}
+                                    <button type="submit" id="salbar-btn" class="btn btn-primary">Бүртгэх</button>
+                                {% endif %}
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+
+<script src="{% static 'app-assets/vendors/js/forms/select/select2.full.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/form-select2.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/extensions/jstree.min.js' %}"></script>
+
+<script>
+    let rsp = []
+    let submenu = $('#notif-type-kinds')
+    submenu.jstree(
+    {
+        "core" : {
+            'data' : {
+                'url' : "{% url 'notif-type-list' %}",
+                "success": function(data) {
+                    rsp = data
+                }
+            }
+        },
+        plugins: ['types', 'contextmenu', 'state'],
+        types: {
+            default: {
+                icon: 'fa fa-circle'
+            },
+        }
+    })
+    .on(
+        "activate_node.jstree",
+        function(e, data)
+        {
+            window.location.href = data.node.a_attr.href;
+        }
+    )
+    //  back аас дата ирсэний дараа датаг давтаж жагсаалтны өмнөх circle дээр өнгийг нь оноож харуулах нь
+    .bind("loaded.jstree", function (event, data) {
+        const parent = $(event.target).find("ul")
+        rsp
+            .filter(el => el?.color)
+            .map(
+                (el, idx) =>
+                {
+                    const li = parent.find(`#${el.id}`)
+                    const i = li.find(".fa-circle")
+                    i.css("color", el.color)
+                }
+            )
+    })
+</script>
+
+{% endblock js %}

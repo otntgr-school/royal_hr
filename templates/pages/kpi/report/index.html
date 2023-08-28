@@ -1,0 +1,471 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+{% block content %}
+
+{% load rest_framework %}
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/schedule.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/vendors.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-pickadate.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/pickadate/pickadate.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+<link rel="stylesheet" type="text/css" href="{% static 'assets/css/loader.css' %}" />
+
+{% endblock css %}
+
+<div class="content-body">
+    <div class="row">
+        <div class="col-12">
+            <div>
+                <form id="trrForm" onsubmit="clickBtn(event)" >
+                    <div class="row ms-1">
+                        <div class="col-12 col-sm-6 col-md-3 mb-1 position-relative">
+                            <label class="form-label" for="date">Он</label>
+                            <input type="text" id="date" name="date" class="form-control only-year" placeholder="2000" data-msg="Он оруулна уу"/>
+                        </div>
+                        <div class="col-12 col-sm-12 col-md-2">
+                            <button class="btn btn-primary waves-effect waves-float waves-light mt-2 w-100"><i style="margin-right: 5px;" data-feather='search'></i>Хайх</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Үнэлгээ</h4>
+                    <h6 class="card-border-version2" id="chosedDateId">2022 оны 11-р сар</h6>
+                </div>
+                <div class="table-responsive" id="table-id">
+                    <div class="card-datatable table-responsive pt-0" id="vacation-type-table">
+                        <table class="kpi-report-table table text-center small-text-thead" id="kpi-report-table">
+                            <thead class="table-light">
+								<tr class="filter-container"></tr>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Эцэг/Эх</th>
+                                    <th>Нэр</th>
+                                    <th>Байгууллага</th>
+                                    <th>Салбар сургууль</th>
+                                    <th>Тэнхим</th>
+                                    <th>Албан тушаал</th>
+                                    <th>M1</th>
+                                    <th>M2</th>
+                                    <th>M3</th>
+                                    <th>Q1</th>
+                                    <th>M4</th>
+                                    <th>M5</th>
+                                    <th>M6</th>
+                                    <th>Q2</th>
+                                    <th>H1</th>
+                                    <th>M7</th>
+                                    <th>M8</th>
+                                    <th>M9</th>
+                                    <th>Q3</th>
+                                    <th>M10</th>
+                                    <th>M11</th>
+                                    <th>M12</th>
+                                    <th>Q4</th>
+                                    <th>H2</th>
+                                    <th>Y</th>
+                                </tr>
+                            </thead>
+							<tfoot>
+								<tr>
+                                    <th>ID</th>
+                                    <th>Эцэг/Эх</th>
+                                    <th>Нэр</th>
+                                    <th>Байгууллага</th>
+                                    <th>Салбар сургууль</th>
+                                    <th>Тэнхим</th>
+                                    <th>Албан тушаал</th>
+                                    <th>M1</th>
+                                    <th>M2</th>
+                                    <th>M3</th>
+                                    <th>Q1</th>
+                                    <th>M4</th>
+                                    <th>M5</th>
+                                    <th>M6</th>
+                                    <th>Q2</th>
+                                    <th>H1</th>
+                                    <th>M7</th>
+                                    <th>M8</th>
+                                    <th>M9</th>
+                                    <th>Q3</th>
+                                    <th>M10</th>
+                                    <th>M11</th>
+                                    <th>M12</th>
+                                    <th>Q4</th>
+                                    <th>H2</th>
+                                    <th>Y</th>
+                                </tr>
+							</tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
+
+{% block js %}
+
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.buttons.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jszip.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/pdfmake.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/vfs_fonts.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.html5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.print.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/cleave.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/addons/cleave-phone.us.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.date.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.time.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/legacy.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+
+<script src="{% static 'app-assets/js/scripts/pages/app-user-list.js' %}"></script>
+
+<script src="{% static 'app-assets/js/scripts/tables/table-datatables-advanced.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/pickers/form-pickers.js' %}"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/3.5.0/select2.min.js"></script>
+
+<script src="{% static 'app-assets/vendors/js/forms/repeater/jquery.repeater.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/form-repeater.js' %}"></script>
+
+<script>
+
+    var mainDatatableData = { date: null }
+
+    var dateObj = new Date();
+
+    /** 1 => 01 болгох Format */
+    const zeroFill = n =>
+    {
+        return ('0' + n).slice(-2);
+    }
+
+    var choserDateInput = document.getElementById('chosedDateId')
+
+    function thisMonth()
+    {
+        let thisMonthDateValue = new Date(dateObj.getFullYear(), dateObj.getMonth())
+        choserDateInput.innerHTML = `${thisMonthDateValue.getFullYear()} он`
+
+        mainDatatableData.date = `${thisMonthDateValue.getFullYear()}`
+
+    }
+    thisMonth()
+
+    /** Ажилчин нэмэх хэсэг */
+    cloneFooter(
+        "#kpi-report-table",
+        [
+            1, 2, 3, 4, 5, 6
+        ]
+    )
+
+    const reportKpiDatatable = $("#kpi-report-table")
+        // .on('preXhr.dt', function ()
+        // {
+        //     addLoader($('#kpi-report-table-loader'))
+        // })
+        // .on( 'draw.dt', function () {
+        //     rmLoader($('#kpi-report-table-loader'))
+        // })
+        .DataTable({
+            processing: true,
+            dom: 'lBfrtip',
+            serverSide: true,
+            ajax: { url: `{% url 'kpi-report-json' %}?date=${mainDatatableData.date}` },
+            columns: [
+                { data: "id" },
+                { data: "last_name" },
+                { data: "first_name" },
+                { data: "org_name" },
+                { data: "sub_org_name" },
+                { data: "salbar_name" },
+                { data: "org_position_name" },
+                { data: null },
+                { data: null },
+                { data: null },
+                { data: null },
+                { data: null },
+                { data: null },
+                { data: null },
+                { data: null },
+                { data: null },
+                { data: null },
+                { data: null },
+                { data: null },
+                { data: null },
+                { data: null },
+                { data: null },
+                { data: null },
+                { data: null },
+                { data: null },
+                { data: null },
+            ],
+            bFilter: true,
+            initComplete: function()
+            {
+                // loaderTurnOff()
+            },
+            columnDefs: [
+                {
+					targets: 0,
+					title: "#",
+					orderable: false,
+					render: function (data, type, full, meta) {
+						return (
+							meta.settings._iDisplayStart + meta.row + 1
+						);
+					},
+				},
+                {
+                    targets: 7,
+                    orderable: false,
+                    render: function (data, type, full, meta) { return full.statistic.m1 }
+                },
+                {
+                    targets: 8,
+                    orderable: false,
+                    render: function (data, type, full, meta) { return full.statistic.m2 }
+                },
+                {
+                    targets: 9,
+                    orderable: false,
+                    render: function (data, type, full, meta) { return full.statistic.m3 }
+                },
+                {
+                    targets: 10,
+                    orderable: false,
+                    render: function (data, type, full, meta) { return full.statistic.q1 }
+                },
+                {
+                    targets: 11,
+                    orderable: false,
+                    render: function (data, type, full, meta) { return full.statistic.m4 }
+                },
+                {
+                    targets: 12,
+                    orderable: false,
+                    render: function (data, type, full, meta) { return full.statistic.m5 }
+                },
+                {
+                    targets: 13,
+                    orderable: false,
+                    render: function (data, type, full, meta) { return full.statistic.m6 }
+                },
+                {
+                    targets: 14,
+                    orderable: false,
+                    render: function (data, type, full, meta) { return full.statistic.q2 }
+                },
+                {
+                    targets: 15,
+                    orderable: false,
+                    render: function (data, type, full, meta) { return full.statistic.h1 }
+                },
+                {
+                    targets: 16,
+                    orderable: false,
+                    render: function (data, type, full, meta) { return full.statistic.m7 }
+                },
+                {
+                    targets: 17,
+                    orderable: false,
+                    render: function (data, type, full, meta) { return full.statistic.m8 }
+                },
+                {
+                    targets: 18,
+                    orderable: false,
+                    render: function (data, type, full, meta) { return full.statistic.m9 }
+                },
+                {
+                    targets: 19,
+                    orderable: false,
+                    render: function (data, type, full, meta) { return full.statistic.q3 }
+                },
+                {
+                    targets: 20,
+                    orderable: false,
+                    render: function (data, type, full, meta) { return full.statistic.m10 }
+                },
+                {
+                    targets: 21,
+                    orderable: false,
+                    render: function (data, type, full, meta) { return full.statistic.m11 }
+                },
+                {
+                    targets: 22,
+                    orderable: false,
+                    render: function (data, type, full, meta) { return full.statistic.m12 }
+                },
+                {
+                    targets: 23,
+                    orderable: false,
+                    render: function (data, type, full, meta) { return full.statistic.q4 }
+                },
+                {
+                    targets: 24,
+                    orderable: false,
+                    render: function (data, type, full, meta) { return full.statistic.h2 }
+                },
+                {
+                    targets: 25,
+                    orderable: false,
+                    render: function (data, type, full, meta) { return full.statistic.y }
+                },
+            ],
+            order: [[2, "desc"]],
+            lengthMenu: [
+                [10, 25, 50, 100, -1],
+                [10, 25, 50, 100, 'Бүгд'],
+            ],
+            dom:
+                '<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+                '<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+                '<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+                ">t" +
+                '<"d-flex justify-content-between mx-2 row mb-1"' +
+                '<"col-sm-12 col-md-6"i>' +
+                '<"col-sm-12 col-md-6"p>' +
+                ">",
+            oLanguage: {
+                sProcessing: "Ачааллаж байна. ",
+                sSearch: "Хайх: ",
+                sEmptyTable: "Бичлэг байхгүй",
+                sInfoEmpty: "Нийт 0 бичлэг",
+                sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+                sInfoFiltered: " - _MAX_ бичлэгээс",
+                sLengthMenu: "_MENU_ бичлэг",
+                oPaginate: {
+                    sFirst: "Эхэнд",
+                    sLast: "Төгсгөлд",
+                    sNext: "Дараах",
+                    sPrevious: "Өмнөх",
+                },
+            },
+            // Buttons with Dropdown
+            buttons: [
+                {
+                    extend: "collection",
+                    className: "btn btn-outline-secondary dropdown-toggle me-2",
+                    text:
+                        feather.icons["external-link"].toSvg({
+                            class: "font-small-4 me-50",
+                        }) + "Export",
+                    buttons: [
+                        {
+                            extend: "print",
+                            text:
+                                feather.icons["printer"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Print",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,16,17,18,19,20,21,22,23,24,25] },
+                        },
+                        {
+                            extend: "csv",
+                            text:
+                                feather.icons["file-text"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Csv",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,16,17,18,19,20,21,22,23,24,25] },
+                        },
+                        {
+                            extend: "excel",
+                            text:
+                                feather.icons["file"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Excel",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,16,17,18,19,20,21,22,23,24,25] },
+                        },
+                        {
+                            extend: "pdf",
+                            text:
+                                feather.icons["clipboard"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Pdf",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,16,17,18,19,20,21,22,23,24,25] },
+                        },
+                        {
+                            extend: "copy",
+                            text:
+                                feather.icons["copy"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Copy",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,16,17,18,19,20,21,22,23,24,25] },
+                        },
+                    ],
+                },
+            ],
+        });
+    searchFooter(reportKpiDatatable)
+
+</script>
+
+<script>
+
+    function clickBtn(event)
+    {
+        event.preventDefault()
+
+        /** Хэрэгтэй модалуудын утгуудыг л авна  */
+		const formData = new FormData(event.target)
+		const data = Object.fromEntries(formData);
+
+        let thisMonthDateValue = new Date(dateObj.getFullYear(), dateObj.getMonth() + 1)
+
+        reportKpiDatatable.ajax.url(`{% url 'kpi-report-json' %}?date=${data.date}`).load()
+
+        choserDateInput.innerHTML = `${data.date.substring(0, 4)} он`
+    }
+
+
+</script>
+
+{% endblock js %}

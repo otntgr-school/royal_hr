@@ -1,0 +1,452 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+{% block content %}
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/forms/select/select2.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/pickadate/pickadate.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}" >
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-pickadate.css' %}" />
+
+
+{% endblock css %}
+
+<div class="content-body">
+    <div class="row">
+        <div class="col-12">
+            <div class="card" id="loader-div">
+                <div class="card-header">
+                    <h4 class="card-title">Ээлжийн амралт (<span id="chosed-year"></span>)</h4>
+                </div>
+                <div class="card-body">
+
+                    <form class="row" onsubmit="logSubmit(event)" id="choose-year-form" >
+                        <div class="col-6">
+                            <label class="form-label">Жил *</label>
+                            <input type="text" class="form-control only-year" id="choose_year" name="choose_year" placeholder="****" data-msg="Талбарыг бөглөнө үү"/>
+                        </div>
+                        <div class="col-6 mt-2">
+                            <button type="submit" class="btn btn-primary me-1">Хайх</button>
+                        </div>
+                    </form>
+
+                    {% if not check_request %}
+                    <form class="mt-2 row" action="{% url 'year-vacation' %}" method="post" onsubmit="addYearVacation(event)" id="choose-start-date-form" >
+                        {% csrf_token %}
+                        <div class="col-12">
+                            <span id="this-year-span"></span> онд чөлөөний хүсэлт илгээх
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-1 position-relative">
+                                <label class="form-label" for="start_day">Эхлэх өдөр</label>
+                                <input type="text" style="cursor: pointer;" class="form-control pickadate-months-year-00-30" placeholder="YYYY-MM-DD" id="start_date" name="start_date" data-msg="Эхлэх өдөр талбарыг бөглөнө үү" />
+                            </div>
+                        </div>
+                        <div class="col-6 mt-2">
+                            <button type="submit" class="btn btn-primary me-1">Илгээх</button>
+                        </div>
+                    </form>
+                    {% endif %}
+
+                    <div class="table-responsive mt-2">
+                        <div class="card-datatable table-responsive pt-0">
+                            <table class="vacation-employee-table table text-center">
+                                <thead class="table-light">
+                                    <tr class="filter-container"></tr>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Эхлэх хугацаа</th>
+                                        <th>Амрах өдөрийн тоо</th>
+                                        <th>Төлөв</th>
+                                        <th>Үйлдэл</th>
+                                    </tr>
+                                </thead>
+                                <tfoot class="table-light">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Эхлэх хугацаа</th>
+                                        <th>Амрах өдөрийн тоо</th>
+                                        <th>Төлөв</th>
+                                        <th>Үйлдэл</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+    {% include "pages/schedule/year-vacation/modal/cancel.html" with id="cancelModal" %}
+
+{% endblock content %}
+
+{% block js %}
+
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.buttons.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jszip.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/pdfmake.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/vfs_fonts.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.html5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.print.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/forms/select/select2.full.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/form-select2.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/extensions/jstree.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/extensions/ext-component-tree.js' %}"></script>
+
+<script src="{% static 'app-assets/js/scripts/components/components-tooltips.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.date.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.time.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/legacy.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+
+<script src="{% static 'app-assets/js/scripts/forms/pickers/form-pickers.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/forms/repeater/jquery.repeater.min.js' %}"></script>
+
+<script>
+
+    var yearSpan = document.getElementById('chosed-year')
+    var yearValue = document.getElementById('choose_year')
+    var jqForm = $('#choose-year-form')
+    var jqStartDateForm = $('#choose-start-date-form')
+    var dataTable
+    var cancelRequestId
+
+    /** Tooltip ажиллуулж байна */
+    $(document).ready(function() {
+        $("body").tooltip({ selector: '[data-toggle=tooltip]' });
+    });
+
+    function thisYear()
+    {
+        yearValue.value = new Date().getFullYear()
+        if (document.getElementById('this-year-span'))
+        {
+            document.getElementById('this-year-span').innerText = new Date().getFullYear()
+        }
+        reloadDatatable()
+    }
+    thisYear()
+
+    if (jqForm.length)
+    {
+        jQuery.validator.addMethod("noSpace", function(value, element)
+		{
+			return value.trim().length !== 0;
+		});
+
+        jQuery.validator.addMethod("zeroNumber", function(value, element)
+		{
+			return value != 0;
+		});
+
+        validate = jqForm.validate({
+            rules: {
+                'choose_year': {
+                    required: true,
+                    zeroNumber: true,
+                },
+            }
+        });
+    }
+
+    if (jqStartDateForm.length)
+    {
+        jQuery.validator.addMethod("noSpace", function(value, element)
+		{
+			return value.trim().length !== 0;
+		});
+
+        jQuery.validator.addMethod("zeroNumber", function(value, element)
+		{
+			return value != 0;
+		});
+
+        startDateValidate = jqStartDateForm.validate({
+            rules: {
+                'start_date': {
+                    required: true,
+                    zeroNumber: true,
+                },
+            }
+        });
+    }
+
+    async function logSubmit(event)
+    {
+        // validation давж чадахгүй бол буцаагаад алдаа заана
+        if(!jqForm.valid())
+        {
+            return
+        }
+
+        event.preventDefault()
+
+        reloadDatatable()
+    }
+
+    async function addYearVacation(event)
+    {
+        // validation давж чадахгүй бол буцаагаад алдаа заана
+        if(!jqStartDateForm.valid())
+        {
+            return
+        }
+    }
+
+    //  header дээр input ийг clone хийж гаргах нь
+    cloneFooter('.vacation-employee-table', [ 1 ])
+
+    async function reloadDatatable()
+    {
+        yearSpan.innerText = yearValue.value
+
+        if (dataTable)
+		{
+			dataTable.destroy()
+		}
+
+        dataTable = await $(".vacation-employee-table")
+        .on('preXhr.dt', function ()
+        {
+            addLoader($('#loader-div'))
+        })
+        .on( 'draw.dt', function () {
+            rmLoader($('#loader-div'))
+        })
+        .DataTable({
+            processing: false,
+            dom: 'lBfrtip',
+            serverSide: true,
+            ajax: {
+                url: `{% url 'year-vacation-json' %}`,
+                method: 'GET',
+                data: { 'year': yearValue.value }
+            },
+            columns: [
+                // columns according to JSON
+                { data: "id" },
+                { data: "start_date" },
+                { data: "days" },
+                { data: "state" },
+                { data: "" },
+            ],
+            bFilter: true,
+            columnDefs: [
+                {
+                    // Actions
+                    targets: -1,
+                    title: "Үйлдэл",
+                    orderable: false,
+                    render: function (data, type, full, meta)
+                    {
+                        if (full.state == 1)
+                        {
+                            return "</a>" +
+							`<a
+								data-toggle="tooltip"
+								title="Цуцлах"
+								data-bs-toggle="modal"
+								data-bs-target="#cancelModal"
+								onclick="clickCancel(${full.id})"
+								class="text-primary-orange delete-record mt-1"
+							>
+							${feather.icons["trash-2"].toSvg(
+							{
+								class: "font-small-4 me-50",
+							})}
+							</a>`
+                        }
+
+                        return ''
+                    },
+                },
+                {
+                    targets: 0,
+                    title: "#",
+                    orderable: false,
+                    render: function (data, type, full, meta) {
+                        return (
+                            meta.settings._iDisplayStart + meta.row + 1
+                        );
+                    },
+                },
+                {
+                    targets: 2,
+                    render: function (data, type, full, meta) {
+                        return data
+                    },
+                },
+                {
+                    targets: 3,
+                    render: function (data, type, full, meta)
+                    {
+                        let value = ''
+                        switch (data)
+                        {
+                            case 1:
+                                value = 'Хүсэлт илгээгдсэн'
+                                break;
+
+                            case 2:
+                                value = 'Татгалзсан'
+                                break;
+
+                            case 3:
+                                value = 'Зөвшөөрсөн'
+                                break;
+
+                            case 4:
+                                value = 'Цуцалсан'
+                                break;
+
+                            default:
+                                break;
+                        }
+                        return value
+                    },
+                },
+            ],
+            order: [[0, "desc"]],
+            lengthMenu: [
+                [10, 25, 50, 100, -1],
+                [10, 25, 50, 100, 'Бүгд'],
+            ],
+            dom:
+                '<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+                '<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+                '<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+                ">t" +
+                '<"d-flex justify-content-between mx-2 row mb-1"' +
+                '<"col-sm-12 col-md-6"i>' +
+                '<"col-sm-12 col-md-6"p>' +
+                ">",
+            oLanguage: {
+                sProcessing: "Ачааллаж байна. ",
+                sSearch: "Хайх: ",
+                sEmptyTable: "Бичлэг байхгүй",
+                sInfoEmpty: "Нийт 0 бичлэг",
+                sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+                sInfoFiltered: " - _MAX_ бичлэгээс",
+                sLengthMenu: "_MENU_ бичлэг",
+                oPaginate: {
+                    sFirst: "Эхэнд",
+                    sLast: "Төгсгөлд",
+                    sNext: "Дараах",
+                    sPrevious: "Өмнөх",
+                },
+            },
+            // Buttons with Dropdown
+            buttons: [
+                {
+                    extend: "collection",
+                    className: "btn btn-outline-secondary dropdown-toggle me-2",
+                    text:
+                        feather.icons["external-link"].toSvg({
+                            class: "font-small-4 me-50",
+                        }) + "Export",
+                    buttons: [
+                        {
+                            extend: "print",
+                            text:
+                                feather.icons["printer"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Print",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [0, 1, 2, 3] },
+                        },
+                        {
+                            extend: "csv",
+                            text:
+                                feather.icons["file-text"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Csv",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [0, 1, 2, 3] },
+                        },
+                        {
+                            extend: "excel",
+                            text:
+                                feather.icons["file"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Excel",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [0, 1, 2, 3] },
+                        },
+                        {
+                            extend: "pdf",
+                            text:
+                                feather.icons["clipboard"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Pdf",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [0, 1, 2, 3] },
+                        },
+                        {
+                            extend: "copy",
+                            text:
+                                feather.icons["copy"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Copy",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [0, 1, 2, 3] },
+                        },
+                    ],
+                    init: function (api, node, config) {
+                        $(node).removeClass("btn-secondary");
+                        $(node).parent().removeClass("btn-group");
+                        setTimeout(function () {
+                            $(node)
+                                .closest(".dt-buttons")
+                                .removeClass("btn-group")
+                                .addClass("d-inline-flex mt-50");
+                        }, 50);
+                    },
+                },
+            ],
+        });
+        searchFooter(dataTable)
+    }
+
+    function clickCancel(id)
+    {
+        document.getElementById('cancel_input').value = id
+    }
+
+</script>
+
+{% endblock js %}

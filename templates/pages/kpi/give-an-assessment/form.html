@@ -1,0 +1,56 @@
+
+{% load rest_framework %}
+
+<div class="modal modal-slide-in new-user-modal fade" id="modals-slide-in">
+    <div class="modal-dialog" >
+
+        <form
+            class="add-new-timetable modal-content pt-0"
+            id="createKpiRegister"
+            onsubmit="kpiAssessmentSubmit(event)"
+        >
+
+            {% csrf_token %}
+            <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+            >
+                ×
+            </button>
+            <div class="modal-header mb-1">
+                <h5 class="modal-title" id="exampleModalLabel">
+                    Үнэлэх
+                </h5>
+            </div>
+            <span id="loaderwtt-update" style="margin-top: -14px;"></span>
+
+            <div class="modal-body flex-grow-1 mt-2 text-center" id="update_loader_display" style="display: none;">
+                Уншиж байна...
+            </div>
+
+            <input type="hidden" class="form-control" id="employee" name="employee" value="{{ employee_id }}" />
+            <input type="hidden" name="id" id="id" value="">
+
+            <div class="modal-body flex-grow-1" style="display: block;">
+
+                <div class="mb-1">
+                    <label class="form-label">Оноо *</label>
+                    <input type="number" class="form-control" placeholder="Оноо" id="onoo" name="onoo" data-msg="Талбарыг бөглөнө үү" />
+                </div>
+
+                <div class="mb-1">
+                    <label class="form-label" for="tailbar">Тайлбар</label>
+                    <textarea class="form-control" rows="6" id="tailbar" name="tailbar" data-msg="Тайлбар талбарыг бөглөнө үү" ></textarea>
+                </div>
+
+                <div class="mt-1">
+                    <button type="submit" class="btn btn-primary me-1 data-submit">Хадгалах</button>
+                    <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Болих</button>
+                </div>
+            </div>
+
+        </form>
+    </div>
+</div>

@@ -1,0 +1,113 @@
+<div class="text-center mb-2">
+    <h1 class="mb-1">Тойрох хуудас</h1>
+</div>
+<div id="contactInfoStatus"></div>
+<div class="col-12">
+    <div class="card">
+            <form class="row gy-1 pt-75" onsubmit="contactInfoSubmit(event)">
+                <div class="table-responsive">
+                    <div class="d-flex justify-content-between px-2">
+                        <span id="title_date"></span>
+                        <span id="title_org"></span>
+                        <span id="title_position"></span>
+                        <span id="title_name"></span>
+                    </div>
+                    <div class="table-responsive">
+                        <div class="card-datatable table-responsive pt-0">
+                            <table class="slup-info-table table text-center">
+                                <thead class="table-light">
+                                    <tr class="filter-container"></tr>
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th>АЛБАН ТУШААЛ</th>
+                                        <th>НЭР</th>
+                                        <th>ТӨЛӨВ</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                </tbody>
+                                <tfoot class="table-light">
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th>АЛБАН ТУШААЛ</th>
+                                        <th>НЭР</th>
+                                        <th>ТӨЛӨВ</th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="modal fade" id="xSmall" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-lg">
+                    <div class="modal-content row" >
+                        <div class="modal-header">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-center" id="modalbody">
+                            <div class="text-center">
+                                <i class="fas fa-exclamation-circle fs-40"></i>
+                            </div>
+                            <div style="margin-top: 10px">
+                                Тайлбар
+                            </div>
+                        </div>
+                        <div class="mb-1">
+                            <div class="modal-body row" id="detail_main_display">
+                                <div class="mb-1 col-12">
+                                    <textarea class="form-control" rows="6" id="slip-description" name="descriptionDetail" readonly="readonly"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer d-flex justify-content-center">
+                            <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">
+                                Болих
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <form method="post" onsubmit="submitDicline(event)">
+                <div class="modal fade" id="tailbar-oruulah" tabindex="-1" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content row" >
+                            <div class="modal-header">
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body text-center" id="modalbody">
+                                <div class="text-center">
+                                    <i class="fas fa-exclamation-circle fs-40"></i>
+                                </div>
+                                <div style="margin-top: 10px">
+                                    Тайлбар
+                                </div>
+                            </div>
+                            <div class="mb-1">
+                                <div class="modal-body row" id="detail_main_display">
+                                    <div class="mb-1 col-12">
+                                        <textarea class="form-control" rows="6" id="diclineDescription" name="diclineDescription"></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer d-flex justify-content-center">
+                                <button type="submit" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">
+                                    Хадгалах
+                                </button>
+                                <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">
+                                    Болих
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="card-body">
+                <span id="title_created_by"></span>
+            </div>
+        </div>
+    </div>

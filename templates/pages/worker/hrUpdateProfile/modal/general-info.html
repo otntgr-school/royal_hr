@@ -1,0 +1,106 @@
+<div class="modal fade" id="generalInfo" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered modal-edit-user">
+        <div class="modal-content">
+            <div class="modal-header bg-transparent">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body pb-5 px-sm-5 pt-50">
+                <div class="text-center mb-2">
+                    <h1 class="mb-1">Үндсэн мэдээлэл</h1>
+                </div>
+                <div id="actionStatus"></div>
+                <form id="generelInfoK" class="row gy-1 pt-75" onsubmit="generalSubmit(event)">
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">Ургийн овог:</label>
+                        <input type="text" id="urgiin_ovog" name="urgiin_ovog" class="form-control" placeholder="" value="{{ selected_userinfo_data.urgiin_ovog }}" data-msg="Ургийн овгоо оруулна уу" />
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">Регистрийн дугаар:</label>
+                        <input type="text" id="register" name="register" class="form-control" placeholder="" value="{{ selected_userinfo_data.register }}" />
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">Эцэг/Эх-ийн нэр:</label>
+                        <input type="text" id="last_name" name="last_name" class="form-control" placeholder="" value="{{ selected_userinfo_data.last_name }}" data-msg="Эцэг/Эх-ийн нэр оруулна уу" />
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">Өөрийн нэр:</label>
+                        <input type="text" id="first_name" name="first_name" class="form-control" placeholder="" value="{{ selected_userinfo_data.first_name }}" data-msg="Нэрээ оруулна уу" />
+                    </div>
+                    <!-- <div class="col-12 col-md-6">
+                        <label class="form-label">Төрсөн огноо:</label>
+                        <input type="text" id="birthday" name="birthday" class="form-control flatpickr-basic" placeholder="YYYY-MM-DD" data-msg="Хугацаа сонгоно уу">
+                    </div> -->
+                    {% if selected_userinfo_data.register %}
+                        <div class="col-12 col-md-6">
+                            <label class="form-label">Хүйс:</label>
+                            <select id="gender" name="gender" value="{{ selected_userinfo_data.gender }}" class="form-select" aria-label="Default select example" data-msg="Хүйс сонгоно уу">
+                                {% for id, name in genders %}
+                                    <option value="{{id}}">
+                                        {{name}}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    {% endif %}
+                    <div class="col-12 col-md-{% if selected_userinfo_data.register %}6{%else%}12{%endif%}">
+                        <label class="form-label">Яс үндэс:</label>
+                        <select class="form-select" value="{{ selected_userinfo_data.ys_undes }}" id="ys_undes" name="ys_undes" data-msg="Яс үндэс сонгоно уу">
+                            <option value="">Сонгоно уу</option>
+                            <option value="Халх">Халх</option>
+                            <option value="Баяд">Баяд</option>
+                            <option value="Буриад">Буриад</option>
+                            <option value="Барга">Барга</option>
+                            <option value="Дарьганга">Дарьганга</option>
+                            <option value="Дархад">Дархад</option>
+                            <option value="Дөрвөд">Дөрвөд</option>
+                            <option value="Мянгад">Мянгад</option>
+                            <option value="Захчин">Захчин</option>
+                            <option value="Өөлд">Өөлд</option>
+                            <option value="Торгууд">Торгууд</option>
+                            <option value="Үзэмчин">Үзэмчин</option>
+                            <option value="Хамниган">Хамниган</option>
+                            <option value="Харчин">Харчин</option>
+                            <option value="Хотгойд">Хотгойд</option>
+                            <option value="Цахар">Цахар</option>
+                            <option value="Казак">Казак</option>
+                            <option value="Урианхай">Урианхай</option>
+                            <option value="Хотон">Хотон</option>
+                            <option value="Сартуул">Сартуул</option>
+                            <option value="Элжигэн">Элжигэн</option>
+                            <option value="Бусад">Бусад</option>
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-12">
+                        <label class="form-label">Оршин суугаа хаяг:</label>
+                        <textarea class="form-control" id="address" value="{{ selected_userinfo_data.address }}" name="address" data-msg="Оршин суугаа хаяг оруулна уу" rows="3"></textarea>
+                    </div>
+                    <div class="col-12 col-md-{% if request.user.info.register %}6{%else%}12{%endif%}">
+                        <label class="form-label">Сууцний төрөл:</label>
+                        <select class="form-select" id="suutsnii_torol" name="suutsnii_torol" value="{{ selected_userinfo_data.suutsnii_torol }}" data-msg="Сууцний төрөлөө сонгоно уу">
+                            {% for id, name in suuts_choices %}
+                                <option value="{{id}}">
+                                    {{name}}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">Нийт ажилласан жил:</label>
+                        <input type="text" id="experience_year" name="experience_year" class="form-control" placeholder="" value="{{ selected_userinfo_data.experience_year }}" data-msg="Нийт ажилласан жил бөглөнө үү" />
+                    </div>
+                    <div class="col-12 col-md-6">
+                        <label class="form-label">МҮИС-д ажилласан жил:</label>
+                        <input type="text" id="experience_mnun_year" name="experience_mnun_year" class="form-control" placeholder="" value="{{ selected_userinfo_data.experience_mnun_year }}" data-msg="МҮИС-д ажилласан жил бөглөнө үү" />
+                    </div>
+                    <div class="col-12 text-center mt-2 pt-50">
+                        <button id="generalInfoSubmit" type="submit" class="btn btn-primary me-1">Засах</button>
+                        <button id="general_info_modal_close_btn" type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">
+                            Болих
+                        </button>
+                    </div>
+                </form>
+            </div>
+            <span id="loaderWeew"></span>
+        </div>
+    </div>
+</div>

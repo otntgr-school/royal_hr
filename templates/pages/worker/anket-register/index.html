@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+{% block content %}
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/vendors.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-pickadate.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/file-uploaders/dropzone.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/pickadate/pickadate.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/jkanban/jkanban.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/pages/app-kanban.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/form-file-uploader.min.css' %}">
+
+{% endblock css %}
+
+<div class="content-body">
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header py-1">
+                    <h6 class="m-0">Загвар файл (Анкет багш - монгол)</h6>
+                    <a
+                        class="text-dark fw-bold"
+                        href="{% static 'file/anket-bagsh.docx' %}"
+                        download="Анкет"
+                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Татах"
+                    >
+                        Анкет.docx
+                        <i class="text-primary font-small-6" data-feather="arrow-down"></i>
+                    </a>
+                </div>
+                <div class="card-header py-1">
+                    <h6 class="m-0">Загвар файл (Анкет ажилтан - монгол)</h6>
+                    <a
+                        class="text-dark fw-bold"
+                        href="{% static 'file/anket-ajiltan.docx' %}"
+                        download="Анкет"
+                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Татах"
+                    >
+                        Анкет.docx
+                        <i class="text-primary font-small-6" data-feather="arrow-down"></i>
+                    </a>
+                </div>
+                <div class="card-header py-1">
+                    <h6 class="m-0">Template file (Teacher anket - english)</h6>
+                    <a
+                        class="text-dark fw-bold"
+                        href="{% static 'file/job-application.docx' %}"
+                        download="Employment application"
+                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Download"
+                    >
+                        Employment application.docx
+                        <i class="text-primary font-small-6" data-feather="arrow-down"></i>
+                    </a>
+                </div>
+                <div class="card-header py-1">
+                    <h6 class="m-0">Template file (Employee anket - english)</h6>
+                    <a
+                        class="text-dark fw-bold"
+                        href="{% static 'file/employment-application-for-staff.docx' %}"
+                        download="Employment application"
+                        data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Download"
+                    >
+                        Employment application.docx
+                        <i class="text-primary font-small-6" data-feather="arrow-down"></i>
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="fw-bold">
+                        {% if data.file %}
+
+                        <a
+                            class="text-dark fw-bold"
+                            href="{{data.file}}"
+                            download="{{data.file}}"
+                            data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Download"
+                        >
+                            Миний илгээсэн анкет: <span class="badge bg-success">{{data.file_name}} <i class="font-small-6" data-feather="arrow-down"></i></span>
+                        </a>
+
+                        {% else %}
+
+                        Миний илгээсэн анкет: <span class="badge bg-danger">Илгээгүй</span>
+
+                        {% endif %}
+
+                    </div>
+                    <div class="mb-1 mt-2">
+                        <label class="form-label">Хавсралт: (Загвар файлыг бөглөөд илгээх)</label>
+                        <div id="dZUpload" class="dropzone">
+                            <div class="dz-default dz-message"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+
+<script src="{% static 'app-assets/vendors/js/file-uploaders/dropzone.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.buttons.min.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jszip.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/pdfmake.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/vfs_fonts.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.html5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.print.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/cleave.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/addons/cleave-phone.us.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.date.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.time.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/legacy.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+
+<script src="{% static 'app-assets/js/scripts/tables/table-datatables-advanced.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/pickers/form-pickers.js' %}"></script>
+
+<script>
+
+    let dz = new Dropzone("#dZUpload", {
+        url: "/test",
+        clickable: true,
+        paramName: 'file',
+        autoProcessQueue: false,
+        addRemoveLinks: true,
+        accept: async function(file, done)
+        {
+            const formData = new FormData()
+            formData.append('file', file, file.name)
+
+            const { success, errors } = await fetchData(`/worker/anket-register-action/`, formData, 'POST', '', false)
+
+            this.removeFile(file);
+            window.location.reload();
+            return false;
+        }
+    });
+
+</script>
+
+{% endblock js %}

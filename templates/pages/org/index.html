@@ -1,0 +1,480 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+
+{% load rest_framework %}
+
+{% block content %}
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/forms/select/select2.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/extensions/jstree.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/extensions/ext-component-tree.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+
+{% endblock css %}
+
+<div class="content-body">
+    <div class="row">
+        <div class="col-xl-4 col-lg-5 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">Байгууллагууд</h4>
+                </div>
+                <div class="card-body overflow-auto">
+                    <div id="jstree-orgs2-menu"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-xl-8 col-lg-7 col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">
+                        {% if pk %}
+                            Байгууллага засах
+                        {% else %}
+                            Байгууллага бүртгэх
+                        {% endif %}
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <ul class="nav nav-pills mb-2">
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link active" id="pills-statistic-tab" data-bs-toggle="pill" data-bs-target="#pills-statistic" type="button" role="tab" aria-controls="pills-statistic" aria-selected="true">
+                                <span class="fw-bold fs-11">
+                                    <i data-feather='clipboard'></i>
+                                    Ерөнхий мэдээлэл
+                                </span>
+                            </a>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <a class="nav-link" id="pills-table-tab" data-bs-toggle="pill" data-bs-target="#pills-table" type="button" role="tab" aria-controls="pills-table" aria-selected="false">
+                                <span class="fw-bold fs-11">
+                                    <i data-feather='check-square'></i>
+                                    Системд хэрэглэгдэх цахим шуудан
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="pills-tabContent">
+
+                        <div class="tab-pane fade show active" id="pills-statistic" role="tabpanel" aria-labelledby="pills-statistic-tab">
+                            {% if pk %}
+                                <form enctype="multipart/form-data" class="form-inline" action="{% url 'org-register' pk %}" method="post" novalidate>
+                            {% else %}
+                                <form enctype="multipart/form-data" class="form-inline" action="{% url 'org-register' %}" method="post" novalidate>
+                            {% endif %}
+                                {% csrf_token %}
+                                    <div class="col-12 mt-1">
+                                        <label class="form-label">Нэр:</label>
+                                        <input type="text" id="text" name="text" class="form-control" value="{{ serializer.data.text|default:"" }}" placeholder="Байгууллага"  data-msg="Байгууллагын нэр оруулна уу" />
+                                    </div>
+                                    <div class="col-12 mt-1">
+                                        <label class="form-label">Нэр (Англи):</label>
+                                        <input type="text" id="name_eng" name="name_eng" class="form-control" value="{{ serializer.data.name_eng|default:"" }}" placeholder="Байгууллага"  data-msg="Байгууллагын англи нэр оруулна уу" />
+                                    </div>
+                                    <div class="col-12 mt-1">
+                                        <label class="form-label">Байгууллагын регистр:</label>
+                                        <input type="text" id="register" name="register" class="form-control" value="{{ serializer.data.register|default:"" }}" placeholder="Байгууллагын регистр"  data-msg="Байгууллагын регистр оруулна уу" />
+                                    </div>
+                                    <div class="col-12 mt-1">
+                                        <label class="form-label">Хаяг:</label>
+                                        <input type="text" id="address" name="address" class="form-control" value="{{ serializer.data.address|default:"" }}" placeholder="Заавал биш... Улаанбаатар, БГД, ... " data-msg="Xаяг оруулна уу"/>
+                                    </div>
+                                    <div class="col-12 mt-1">
+                                        <label class="form-label">Сошиал холбоос:</label>
+                                        <input type="text" id="social" name="social" class="form-control" value="{{ serializer.data.social|default:"" }}" placeholder="Заавал биш... www.facebook.com/exapmle " data-msg="Сошиал холбоос оруулна уу"/>
+                                    </div>
+                                    <div class="col-12 mt-1">
+                                        <label class="form-label">Веб:</label>
+                                        <input type="text" id="web" name="web" class="form-control" value="{{ serializer.data.web|default:"" }}" placeholder="Заавал биш... www.exapmle.com " data-msg="Веб оруулна уу"/>
+                                    </div>
+                                    <div class="col-12 mt-1">
+                                        <label class="form-label">И-мэйл хаяг:</label>
+                                        <input type="text" id="email" name="email" class="form-control" value="{{ serializer.data.email|default:"" }}" placeholder="test@gmail.com"  data-msg="И-мэйл хаяг оруулна уу" />
+                                    </div>
+                                    <div class="col-12 mt-1">
+                                        <label class="form-label">Гар утас:</label>
+                                        <input type="number" id="phone_number" name="phone_number" value="{{ serializer.data.phone_number|default:"" }}" class="form-control" placeholder="00000000" data-msg="И-мэйл хаяг оруулна уу"/>
+                                    </div>
+                                    <div class="col-12 mt-1">
+                                        <label class="form-label">Факс:</label>
+                                        <input type="text" id="home_phone" name="home_phone" class="form-control" value="{{ serializer.data.home_phone|default:"" }}" placeholder="00000000 " data-msg="Веб оруулна уу"/>
+                                    </div>
+
+                                    <div class="col-12 mt-1">
+                                        <label class="form-label" for="property_type">Өмчийн хэлбэр</label>
+                                        <select value="{{ serializer.data.property_type }}" class="form-select" type="text" id="property_type" name="property_type" >
+                                            <option value="">-- сонгох --</option>
+                                            {% for property_type_item in property_type %}
+                                                <option
+                                                    value="{{ property_type_item.id }}"
+                                                    {% if serializer.data.property_type == property_type_item.id %} selected {% endif %}
+                                                >{{ property_type_item.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                    <div class="col-12 mt-1">
+                                        <label class="form-label" for="educational_institution_category">Сургалтын байгууллагын ангилал</label>
+                                        <select  class="form-select" type="text" id="educational_institution_category" name="educational_institution_category" >
+                                            <option value="">-- сонгох --</option>
+                                            {% for educational_institution_category_item in educational_institution_category %}
+                                                <option
+                                                    value="{{ educational_institution_category_item.id }}"
+                                                    {% if serializer.data.educational_institution_category == educational_institution_category_item.id %} selected {% endif %}
+                                                >{{ educational_institution_category_item.name }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+
+                                    <div class="d-flex mt-2 custom-flex">
+                                        <div class="me-2">
+                                            <div class="orgLogoDiv">
+                                                <img id="viewSubOrgLogo" onerror="this.onerror=null; this.src='/media/400x245.jpg'" src="{{ serializer.data.logo }}" />
+                                            </div>
+                                        </div>
+                                        <div class="w-100">
+                                            <label class="form-label">Лого:</label>
+                                            <input accept="image/*" type="file" id="logo" name="logo" class="form-control" src="{{ serializer.data.logo }}" value="{{ serializer.data.logo|default:"" }}" placeholder="ad" data-msg="Лого оруулна уу"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 mt-1">
+                                        <label class="form-label">Тодорхойлолт баталгаажуулагчийн албан тушаал:</label>
+                                        <input type="text" id="todorkhoilolt_rank" name="todorkhoilolt_rank" class="form-control" value="{{ serializer.data.todorkhoilolt_rank|default:"" }}" placeholder="Дэд захирал..."  data-msg="Байгууллагын англи нэр оруулна уу" />
+                                    </div>
+                                    <div class="col-12 mt-1">
+                                        <label class="form-label">Тодорхойлолт баталгаажуулагчийн нэр:</label>
+                                        <input type="text" id="todorkhoilolt_approved" name="todorkhoilolt_approved" class="form-control" value="{{ serializer.data.todorkhoilolt_approved|default:"" }}" placeholder="Болд..."  data-msg="Байгууллагын англи нэр оруулна уу" />
+                                    </div>
+
+                                    <div class="d-flex mt-2 custom-flex">
+                                        <div class="me-2">
+                                            <div class="orgLogoDiv">
+                                                <img id="viewSubOrgSignature" onerror="this.onerror=null; this.src='/media/400x245.jpg'" src="{{ serializer.data.todorkhoilolt_signature }}" />
+                                            </div>
+                                        </div>
+                                        <div class="w-100">
+                                            <label class="form-label">Гарын үсэг (тодорхойлолт):</label>
+                                            <input accept="image/*" type="file" id="todorkhoilolt_signature" name="todorkhoilolt_signature" class="form-control" src="{{ serializer.data.todorkhoilolt_signature }}" value="{{ serializer.data.todorkhoilolt_signature|default:"" }}" placeholder="ad" data-msg="Лого оруулна уу"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="d-flex mt-2 custom-flex">
+                                        <div class="me-2">
+                                            <div class="orgLogoDiv">
+                                                <img id="viewSubOrgTamga" onerror="this.onerror=null; this.src='/media/400x245.jpg'" src="{{ serializer.data.todorkhoilolt_tamga }}" />
+                                            </div>
+                                        </div>
+                                        <div class="w-100">
+                                            <label class="form-label">Тамга (тодорхойлолт):</label>
+                                            <input accept="image/*" type="file" id="todorkhoilolt_tamga" name="todorkhoilolt_tamga" class="form-control" src="{{ serializer.data.todorkhoilolt_tamga }}" value="{{ serializer.data.todorkhoilolt_tamga|default:"" }}" placeholder="ad" data-msg="Лого оруулна уу"/>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-12 mt-1">
+                                        <label class="form-label">Гарын үсэг захиралын нэр:</label>
+                                        <input aria-describedby="helptext" type="text" id="sign_zahiral" name="sign_zahiral" class="form-control" value="{{ serializer.data.sign_zahiral|default:"" }}" placeholder="Б. Болд"  data-msg="Гарын үсэг захиралын нэр оруулна уу" />
+                                        <div id="helptext" class="form-text">Санхүүгийн тайлан дээр гарын үсэг зурах захиралын нэр.</div>
+                                    </div>
+
+                                {% if not pk %}
+                                <h4 class="card-title mt-2 mb-1"> Байгууллагын анхны хэрэглэгчийн мэдээлэл </h4>
+                                {% render_form user_serializer %}
+                                {% endif %}
+                                <div class="col-xl-12 col-md-12 col-12 mt-2">
+                                    {% if pk %}
+                                        {% if 'org-update' in request.permissions or not 'org-update' in request.permissions and not 'org-delete' in request.permissions %}
+                                        <button type="submit" id="salbar-btn" class="btn btn-primary">Засах</button>
+                                        {% if request.user.is_superuser%}
+                                            <!-- <a href="{% url 'org-superuser' pk %}" class="btn btn-success">Бүртгүүлэх</a> -->
+                                            <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#userRegister">
+                                                Ажилтан бүртгэх
+                                            </button>
+                                        {% endif %}
+                                        {% endif %}
+                                        <!-- Байгууллага утсгах үйлдэл хэрэггүй гэж үзсэн болохоор comment-олсон! -->
+                                        <!-- {% if 'org-delete' in request.permissions or not 'org-update' in request.permissions and not 'org-delete' in request.permissions %}
+                                        <a href="{% url 'org-delete' pk %}" class="btn btn-danger">Устгах</a>
+                                        {% endif %} -->
+                                    {% else %}
+                                        <button type="submit" id="salbar-btn" class="btn btn-primary">Бүртгэх</button>
+                                    {% endif %}
+                                </div>
+                            </form>
+                            {% include './modal/user-register.html' %}
+                            {% if sub_org_id and not 'org-create' in request.permissions %}
+                                <div class="inactive p-2">
+                                    <p class="fs-18">Танд эрх байхгүй байна</p>
+                                </div>
+                            {% elif pk and not 'org-update' in request.permissions and pk and not 'org-delete' in request.permissions %}
+                                <div class="inactive p-2">
+                                    <p class="fs-18">Танд эрх байхгүй байна</p>
+                                </div>
+                            {% elif not pk and not 'org-create' in request.permissions %}
+                                <div class="inactive p-2">
+                                    <p class="fs-18">Танд эрх байхгүй байна</p>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="tab-pane fade" id="pills-table" role="tabpanel" aria-labelledby="pills-table-tab">
+                            {% if pk %}
+                                <form enctype="multipart/form-data" class="form-inline" action="{% url 'org-system-email' pk %}" method="post" novalidate>
+                            {% else %}
+                                <form enctype="multipart/form-data" class="form-inline" action="{% url 'org-system-email' %}" method="post" novalidate>
+                            {% endif %}
+                                {% csrf_token %}
+                                    <div class="col-12 mt-1">
+                                        <label class="form-label">EMAIL USE TLS:</label>
+                                        <input type="checkbox" class="form-check-input" name="email_use_tls" id="email_use_tls"
+                                            {% if serializer.data.email_use_tls %}
+                                                checked
+                                            {% endif %}
+                                        />
+                                    </div>
+                                    <div class="col-12 mt-1">
+                                        <label class="form-label">EMAIL HOST NAME:</label>
+                                        <input type="text" id="email_host_name" name="email_host_name" class="form-control" value="{{ serializer.data.email_host_name|default:"" }}" placeholder="EMAIL HOST NAME"  data-msg="EMAIL HOST NAME оруулна уу" />
+                                    </div>
+                                    <div class="col-12 mt-1">
+                                        <label class="form-label">EMAIL HOST:</label>
+                                        <input type="text" id="email_host" name="email_host" class="form-control" value="{{ serializer.data.email_host|default:"" }}" placeholder="EMAIL HOST"  data-msg="EMAIL HOST оруулна уу" />
+                                    </div>
+                                    <div class="col-12 mt-1">
+                                        <label class="form-label">EMAIL PORT:</label>
+                                        <input type="text" id="email_port" name="email_port" class="form-control" value="{{ serializer.data.email_port|default:"" }}" placeholder="EMAIL PORT" data-msg="EMAIL PORT оруулна уу"/>
+                                    </div>
+                                    <div class="col-12 mt-1">
+                                        <label class="form-label">Системийн и-мэйл:</label>
+                                        <input type="text" id="email_host_user" name="email_host_user" class="form-control" value="{{ serializer.data.email_host_user|default:"" }}" placeholder="Системийн и-мэйл" data-msg="Системийн и-мэйл оруулна уу"/>
+                                    </div>
+                                    <div class="col-12 mt-1">
+                                        <label class="form-label">EMAIL PASSWORD:</label>
+                                        <input type="text" id="email_password" name="email_password" class="form-control" value="{{ serializer.data.email_password|default:"" }}" placeholder="EMAIL PASSWORD " data-msg="EMAIL PASSWORD оруулна уу"/>
+                                    </div>
+
+                                <div class="col-xl-12 col-md-12 col-12 mt-2">
+                                    {% if pk %}
+                                        {% if 'org-update' in request.permissions or not 'org-update' in request.permissions and not 'org-delete' in request.permissions %}
+                                        <button type="submit" id="salbar-btn" class="btn btn-primary">Засах</button>
+                                        {% if request.user.is_superuser%}
+                                            <!-- <a href="{% url 'org-superuser' pk %}" class="btn btn-success">Бүртгүүлэх</a> -->
+                                            <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#userRegister">
+                                                Ажилтан бүртгэх
+                                            </button>
+                                        {% endif %}
+                                        {% endif %}
+                                        <!-- Байгууллага утсгах үйлдэл хэрэггүй гэж үзсэн болохоор comment-олсон! -->
+                                        <!-- {% if 'org-delete' in request.permissions or not 'org-update' in request.permissions and not 'org-delete' in request.permissions %}
+                                        <a href="{% url 'org-delete' pk %}" class="btn btn-danger">Устгах</a>
+                                        {% endif %} -->
+                                    {% else %}
+                                        <button type="submit" id="salbar-btn" class="btn btn-primary">Бүртгэх</button>
+                                    {% endif %}
+                                </div>
+                            </form>
+                            {% include './modal/user-register.html' %}
+                            {% if sub_org_id and not 'org-create' in request.permissions %}
+                                <div class="inactive p-2">
+                                    <p class="fs-18">Танд эрх байхгүй байна</p>
+                                </div>
+                            {% elif pk and not 'org-update' in request.permissions and pk and not 'org-delete' in request.permissions %}
+                                <div class="inactive p-2">
+                                    <p class="fs-18">Танд эрх байхгүй байна</p>
+                                </div>
+                            {% elif not pk and not 'org-create' in request.permissions %}
+                                <div class="inactive p-2">
+                                    <p class="fs-18">Танд эрх байхгүй байна</p>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+
+{% block js %}
+
+<script src="{% static 'app-assets/vendors/js/forms/select/select2.full.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/form-select2.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/extensions/jstree.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/extensions/ext-component-tree.js' %}"></script>
+
+<script>
+    const subOrgsFormInputs = [ "text", "address", "social", "web"]
+
+    const logoElemnet = document.getElementById("logo")
+    const todorkhoiloltSignatureElemnet = document.getElementById("todorkhoilolt_signature")
+    const todorkhoiloltTamgaElemnet = document.getElementById("todorkhoilolt_tamga")
+
+    logoElemnet.onchange = function(event) {
+        const logoViewElement = document.getElementById("viewSubOrgLogo")
+        logoViewElement.src = window.URL.createObjectURL(event.target.files[0])
+    }
+
+    todorkhoiloltSignatureElemnet.onchange = function(event) {
+        const signatureViewElement = document.getElementById("viewSubOrgSignature")
+        signatureViewElement.src = window.URL.createObjectURL(event.target.files[0])
+    }
+
+    todorkhoiloltTamgaElemnet.onchange = function(event) {
+        const tamgaViewElement = document.getElementById("viewSubOrgTamga")
+        tamgaViewElement.src = window.URL.createObjectURL(event.target.files[0])
+    }
+
+    let wtf1 = []
+    let orgmenu = $('#jstree-orgs2-menu')
+    orgmenu.jstree(
+    {
+        "core" : {
+            'data' : {
+                'url' : '/org/json/'
+            }
+        },
+        plugins: ['types', 'contextmenu', 'state'],
+        types: {
+            default: {
+                icon: 'fad fa-sitemap text-primary-green'
+            },
+            sub: {
+                icon: 'fas fa-landmark text-primary'
+            },
+            sub1: {
+                icon: 'far fa-circle text-success'
+            },
+            sub2: {
+                icon: "far fa-circle text-success"
+            },
+            sub3: {
+                icon: 'far fa-circle text-success'
+            }
+        }
+    }).on("activate_node.jstree", function(e,data){
+        window.location.href = data.node.a_attr.href;
+    })
+
+</script>
+
+<script>
+    var contactInfoJqFrom = $('#contactInfoK')
+    const contactLoader = document.getElementById('loaderWeew2')
+
+    let validateContactInfoK
+
+    $.validator.addMethod(
+        "regex",
+        function(value, element, regexp) {
+            var re = new RegExp(regexp);
+            return this.optional(element) || re.test(value);
+        },
+        "Энэ талбарыг бөглөнө үү"
+    );
+
+    if (contactInfoJqFrom.length) {
+        validateContactInfoK = contactInfoJqFrom.validate({
+            rules: {
+                "phone_number": {
+                    required: true,
+                    minlength: 8,
+                    maxlength: 8,
+                },
+                "email": {
+                    required: {
+                        depends:function(){
+                            $(this).val($.trim($(this).val()));
+                            return true;
+                        }
+                    },
+                    regex: /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
+                },
+            },
+            messages: {
+                'email': {
+                    required: 'Имэйл хаяг талбарыг бөглөнө үү.',
+                    regex: 'Зөв имэйл хаяг оруулна уу'
+                },
+                'phone_number': {
+                    required: 'Утасны дугаар талбарыг бөглөнө үү.',
+                    minlength: 'Зөв утасны дугаар оруулна уу',
+                    maxlength: 'Зөв утасны дугаар оруулна уу',
+                },
+            }
+        });
+    }
+
+    function clearThis(target) {
+            target.value = "";
+        }
+
+    function setInitForm(inputs=[], callback){
+        inputs.map(
+            (input) =>
+            {
+                clearThis(document.getElementById(input))
+            }
+        )
+        callback && callback()
+    }
+
+    const contactInfoInputs = ['phone_number','email']
+    const contactInfoSubmit = async (event, pk) =>
+    {
+        event.preventDefault()
+        if(!validateContactInfoK.checkForm())
+        {
+            return
+        }
+        const generalBody = {}
+        const generalInfoSubmit = document.getElementById('contactInfoSubmitBtn')
+
+        contactInfoInputs.map(
+            (input) =>
+            {
+                const domElement = document.getElementById(input)
+                let elemetValue = domElement.value
+                if (input === "home_phone" && !elemetValue)
+                {
+                    elemetValue = null
+                }
+                generalBody[input] = elemetValue
+            }
+        )
+
+        // хүсэлт илгээгүй бол шинээр үүсгэх POST else put
+        generalInfoSubmit.disabled = true
+        contactLoader.classList.add('loaderWew')
+        const { success, errors } = await fetchData(`/org/org-register/${pk}/org-user-register/`, generalBody, 'POST').catch(err => err)
+            .finally(() => { generalInfoSubmit.disabled = false; contactLoader.classList.remove('loaderWew') })
+        if(errors)
+        {
+            // input ийг validate алдаа г харуулах
+            displayError(errors)
+        } else {
+            // input ийн харагдсан байгаа validate алдаануудыг устгах
+            deleteError(errors)
+        }
+        // амжилтатй үүсвэл id ирээд form цэвэрлэх
+        if(success)
+        {
+            setInitForm(contactInfoInputs)
+            generalInfoSubmit.disabled = true
+            document.querySelector('#contact_info_modal_close_btn').click()
+            setTimeout(() => {
+                generalInfoSubmit.disabled = false
+            }, 100);
+        }
+    }
+
+</script>
+
+{% endblock js %}

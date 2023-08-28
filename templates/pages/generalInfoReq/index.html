@@ -1,0 +1,1260 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/vendors.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/pickadate/pickadate.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-pickadate.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+
+{% endblock css %}
+<!--prettier-ignore-->
+{% block content %}
+<!-- fixed column -->
+<div class="content-body">
+    <section class="app-user-view-connections">
+        <div class="row">
+            <div class="col">
+                <ul class="nav nav-pills mb-1">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" id="requests-general-info-tab" data-bs-toggle="pill" data-bs-target="#requests-general-info" type="button" role="tab" aria-controls="requests-general-info" aria-selected="true">
+                            <span class="fw-bold fs-12">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                                Үндсэн мэдээлэл засах хүсэлт
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="requests-extra-info-tab" data-bs-toggle="pill" data-bs-target="#requests-extra-info" type="button" role="tab" aria-controls="requests-extra-info" aria-selected="false">
+                            <span class="fw-bold fs-12">
+                                <i data-feather='clipboard'></i>
+                                Нэмэлт мэдээлэл засах хүсэлт
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="requests-contact-info-tab" data-bs-toggle="pill" data-bs-target="#requests-contact-info" type="button" role="tab" aria-controls="requests-contact-info" aria-selected="false">
+                            <span class="fw-bold fs-12">
+                                <i data-feather='clipboard'></i>
+                                Холбоо барих мэдээлэл засах хүсэлт
+                            </span>
+                        </a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="requests-bank-info-tab" data-bs-toggle="pill" data-bs-target="#requests-bank-info" type="button" role="tab" aria-controls="requests-bank-info" aria-selected="false">
+                            <span class="fw-bold fs-12">
+                                <i data-feather='clipboard'></i>
+                                Дансны мэдээлэл засах хүсэлт
+                            </span>
+                        </a>
+                    </li>
+                </ul>
+                <div class="card">
+                    <div class="table-body">
+                        <div class="tab-content" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="requests-general-info" role="tabpanel" aria-labelledby="requests-general-info-tab">
+                                <div class="table-responsive card-datatable">
+                                    <table class="table user-general-info-requests ">
+                                        <thead class="table-light">
+                                            <tr class="filter-container"></tr>
+                                            <tr>
+                                                <th></th>
+                                                <th></th>
+                                                <th>Хүсэлт гаргагч</th>
+                                                <th>Ургийн овог</th>
+                                                <th>Эцэг/Эх-ийн нэр</th>
+                                                <th>Өөрийн нэр</th>
+                                                <th>Регистрийн дугаар</th>
+                                                <th>Төрсөн огноо</th>
+                                                <th>Хүйс</th>
+                                                <th>Яс үндэс</th>
+                                                <th>Оршин суугаа хаяг</th>
+                                                <th>Сууцний төрөл</th>
+                                                <th>Нийт ажилласан жил</th>
+                                                <th>МҮИС-д ажилласан жил</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot class="table-light">
+                                            <tr>
+                                                <th></th>
+                                                <th></th>
+                                                <th>Хүсэлт гаргагч</th>
+                                                <th>Ургийн овог</th>
+                                                <th>Эцэг/Эх-ийн нэр</th>
+                                                <th>Өөрийн нэр</th>
+                                                <th>Регистрийн дугаар</th>
+                                                <th>Төрсөн огноо</th>
+                                                <th>Хүйс</th>
+                                                <th>Яс үндэс</th>
+                                                <th>Оршин суугаа хаяг</th>
+                                                <th>Сууцний төрөл</th>
+                                                <th>Нийт ажилласан жил</th>
+                                                <th>МҮИС-д ажилласан жил</th>
+                                                <th></th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="requests-extra-info" role="tabpanel" aria-labelledby="requests-extra-info-tab">
+                                <div class="table-responsive card-datatable">
+                                    <table class="table user-extra-info-requests">
+                                        <thead class="table-light">
+                                            <tr class="filter-container"></tr>
+                                            <tr>
+                                                <th></th>
+                                                <th></th>
+                                                <th>Хүсэлт гаргагч</th>
+                                                <th>Төрсөн газар /аймаг, хот/</th>
+                                                <th>Төрсөн газар /сум, дүүрэг/</th>
+                                                <th>ЭМДД-ийн дугаар</th>
+                                                <th>НДД-ийн дугаар</th>
+                                                <th>Биеийн өндөр/см/</th>
+                                                <th>Биеийн жин/кг/</th>
+                                                <th>Цусны бүлэг</th>
+                                                <th>Тэтгэвэрт гарсан эсэх</th>
+                                                <th>Хөгжлийн бэрхшээлтэй эсэх</th>
+                                                <th>Багшлах эрхийн сургалтанд суусан эсэх</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot class="table-light">
+                                            <tr>
+                                                <th></th>
+                                                <th></th>
+                                                <th>Хүсэлт гаргагч</th>
+                                                <th>Төрсөн газар /аймаг, хот/</th>
+                                                <th>Төрсөн газар /сум, дүүрэг/</th>
+                                                <th>ЭМДД-ийн дугаар</th>
+                                                <th>НДД-ийн дугаар</th>
+                                                <th>Биеийн өндөр/см/</th>
+                                                <th>Биеийн жин/кг/</th>
+                                                <th>Цусны бүлэг</th>
+                                                <th>Тэтгэвэрт гарсан эсэх</th>
+                                                <th>Хөгжлийн бэрхшээлтэй эсэх</th>
+                                                <th>Багшлах эрхийн сургалтанд суусан эсэх</th>
+                                                <th></th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="requests-contact-info" role="tabpanel" aria-labelledby="requests-contact-info-tab">
+                                <div class="table-responsive card-datatable">
+                                    <table class="table user-contact-info-requests ">
+                                        <thead class="table-light">
+                                            <tr class="filter-container"></tr>
+                                            <tr>
+                                                <th></th>
+                                                <th></th>
+                                                <th>Хүсэлт гаргагч</th>
+                                                <th>И-мэйл хаяг</th>
+                                                <th>Гар утас</th>
+                                                <th>Гэрийн утас</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot class="table-light">
+                                            <tr>
+                                                <th></th>
+                                                <th></th>
+                                                <th>Хүсэлт гаргагч</th>
+                                                <th>И-мэйл хаяг</th>
+                                                <th>Гар утас</th>
+                                                <th>Гэрийн утас</th>
+                                                <th></th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="requests-bank-info" role="tabpanel" aria-labelledby="requests-bank-info-tab">
+                                <div class="table-responsive card-datatable">
+                                    <table class="table bank-account-info-requests">
+                                        <thead class="table-light">
+                                            <tr class="filter-container"></tr>
+                                            <tr>
+                                                <th></th>
+                                                <th></th>
+                                                <th>Хүсэлт гаргагч</th>
+                                                <th>Банк</th>
+                                                <th>Дансны дугаар</th>
+                                                <th>Хүсэлтийн төрөл</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tfoot class="table-light">
+                                            <tr>
+                                                <th></th>
+                                                <th></th>
+                                                <th>Хүсэлт гаргагч</th>
+                                                <th>Банк</th>
+                                                <th>Дансны дугаар</th>
+                                                <th>Хүсэлтийн төрөл</th>
+                                                <th></th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+{% endblock content %}
+{% block js %}
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.checkboxes.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.buttons.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/jszip.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/pdfmake.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/vfs_fonts.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.print.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js' %}"></script>
+
+    <script src="{% static 'app-assets/js/scripts/components/components-tooltips.js' %}"></script>
+
+    <script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.date.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.time.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/pickers/pickadate/legacy.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+
+    <script src="{% static 'app-assets/js/scripts/tables/table-datatables-basic.js' %}"></script>
+    <script src="{% static 'app-assets/js/scripts/tables/table-datatables-fixedColumns.min.js' %}"></script>
+
+    <script src="{% static 'app-assets/js/scripts/forms/pickers/form-pickers.js' %}"></script>
+    <script>
+        /* ------------------------Үндсэн мэдээллийг харуулах болон үйлдэл хийх хэсгийг код------------------------ */
+        /* ------------------------Үндсэн мэдээллийг харуулах болон үйлдэл хийх хэсгийг код------------------------ */
+        /* ------------------------Үндсэн мэдээллийг харуулах болон үйлдэл хийх хэсгийг код------------------------ */
+        /* ------------------------Үндсэн мэдээллийг харуулах болон үйлдэл хийх хэсгийг код------------------------ */
+        /* ------------------------Үндсэн мэдээллийг харуулах болон үйлдэл хийх хэсгийг код------------------------ */
+        var action_statuses = {
+            PENDING: 1,
+            APPROVED: 2,
+            DECLINED: 3,
+        }
+        var bank_statuses = {
+            DELETE: 1,
+            UPDATE: 2,
+            APPROVED: 3,
+            DECLINED: 4,
+            CREATE: 5,
+        }
+
+        var generalInfoTable
+
+            generalInfoTable = $(".user-general-info-requests").DataTable({
+                fixedColumns:   {
+                    left: 0,
+                    right: 1
+                },
+                processing: false,
+                dom: 'lBfrtip',
+                serverSide: true,
+                ajax: { url: '/account/user-general-info-pagination/' }, // JSON file to add data
+                columns: [
+                    // columns according to JSON
+                    { data: null },
+                    { data: null },
+                    { data: "requester" },
+                    { data: "urgiin_ovog" },
+                    { data: "last_name" },
+                    { data: "first_name" },
+                    { data: "register" },
+                    { data: "birthday" },
+                    { data: "gender" },
+                    { data: "ys_undes" },
+                    { data: "address" },
+                    { data: "suutsnii_torol_name" },
+                    { data: "experience_year" },
+                    { data: "experience_mnun_year" },
+                    { data: null },
+                ],
+                columnDefs: [
+                    {
+                        // For Responsive
+                        className: "control",
+                        orderable: false,
+                        responsivePriority: 2,
+                        targets: 0,
+                        render: function (data, type, full, meta) {
+                            return "";
+                        },
+                    },
+                    {
+                        // Actions
+                        targets: -1,
+                        title: "Үйлдэл",
+                        orderable: false,
+                        render: function (data, type, full, meta) {
+                            const body = {
+                                action_status: full.action_status,
+                                address: full.address,
+                                birthday: full.birthday,
+                                first_name: full.first_name,
+                                gender: full.gender_name,
+                                id: full.id,
+                                last_name: full.last_name,
+                                register: full.register,
+                                user: full.user,
+                                user_id: full.user_id,
+                                ys_undes: full.ys_undes,
+                                urgiin_ovog: full.urgiin_ovog,
+                                suutsnii_torol: full.suutsnii_torol,
+                                experience_year: full.experience_year,
+                                experience_mnun_year: full.experience_mnun_year,
+                            }
+                            return (
+                                `
+                                {% if 'userinfo-request-action' in request.permissions %}
+                                    <span
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        data-bs-original-title="Баталгаажуулах"
+                                        onclick="approveOrDeclnie(
+                                            '${full.action_status}',
+                                            '${full.address}',
+                                            '${full.birthday}',
+                                            '${full.first_name}',
+                                            '${full.gender_name}',
+                                            '${full.id}',
+                                            '${full.last_name}',
+                                            '${full.register}',
+                                            '${full.user}',
+                                            '${full.user_id}',
+                                            '${full.ys_undes}',
+                                            '${full.urgiin_ovog}',
+                                            '${full.suutsnii_torol}',
+                                            '${full.experience_year}',
+                                            '${full.experience_mnun_year}',
+                                            ${action_statuses.APPROVED}
+                                        )"
+                                        class="cursor-pointer delete-record text-primary me-1 approve_gei">
+                                        <i class="fas fa-check"></i>
+                                    </span>
+                                    <span
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        data-bs-original-title="Цуцлах"
+                                        onclick="approveOrDeclnie(
+                                            '${full.action_status}',
+                                            '${full.address}',
+                                            '${full.birthday}',
+                                            '${full.first_name}',
+                                            '${full.gender_name}',
+                                            '${full.id}',
+                                            '${full.last_name}',
+                                            '${full.register}',
+                                            '${full.user}',
+                                            '${full.user_id}',
+                                            '${full.ys_undes}',
+                                            '${full.urgiin_ovog}',
+                                            '${full.suutsnii_torol}',
+                                            '${full.experience_year}',
+                                            '${full.experience_mnun_year}',
+                                            ${action_statuses.DECLINED}
+                                        )"
+                                        class="cursor-pointer delete-record text-primary-orange decline_gei">
+                                        <i class="fas fa-times"></i>
+                                    </span>
+                                {% endif %}
+                                `
+                            );
+                        },
+                    },
+                    {
+                        targets: 1,
+                        title: "#",
+                        orderable: false,
+                        render: function (data, type, full, meta) {
+                            return (
+                                meta.settings._iDisplayStart + meta.row + 1
+                            );
+                        },
+                    },
+                ],
+                order: [[3, "desc"]],
+                lengthMenu: [
+                    [10, 25, 50, 100, -1],
+                    [10, 25, 50, 100, 'Бүгд'],
+                ],
+                dom:
+                    '<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+                    '<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+                    '<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+                    ">t" +
+                    '<"d-flex justify-content-between mx-2 row mb-1"' +
+                    '<"col-sm-12 col-md-6"i>' +
+                    '<"col-sm-12 col-md-6"p>' +
+                    ">",
+                oLanguage: {
+                    sProcessing: "Ачааллаж байна. ",
+                    sSearch: "Хайх: ",
+                    sEmptyTable: "Бичлэг байхгүй",
+                    sInfoEmpty: "Нийт 0 бичлэг",
+                    sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+                    sInfoFiltered: " - _MAX_ бичлэгээс",
+                    sLengthMenu: "_MENU_ бичлэг",
+                    oPaginate: {
+                        sFirst: "Эхэнд",
+                        sLast: "Төгсгөлд",
+                        sNext: "Дараах",
+                        sPrevious: "Өмнөх",
+                    },
+                },
+                // Buttons with Dropdown
+                buttons: [
+                    {
+                        extend: "collection",
+                        className: "btn btn-outline-secondary dropdown-toggle me-2",
+                        text:
+                            feather.icons["external-link"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Export",
+                        buttons: [
+                            {
+                                extend: "print",
+                                text:
+                                    feather.icons["printer"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    }) + "Print",
+                                className: "dropdown-item",
+                                exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] },
+                            },
+                            {
+                                extend: "csv",
+                                text:
+                                    feather.icons["file-text"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    }) + "Csv",
+                                className: "dropdown-item",
+                                exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] },
+                            },
+                            {
+                                extend: "excel",
+                                text:
+                                    feather.icons["file"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    }) + "Excel",
+                                className: "dropdown-item",
+                                exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] },
+                            },
+                            {
+                                extend: "pdf",
+                                text:
+                                    feather.icons["clipboard"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    }) + "Pdf",
+                                className: "dropdown-item",
+                                exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] },
+                            },
+                            {
+                                extend: "copy",
+                                text:
+                                    feather.icons["copy"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    }) + "Copy",
+                                className: "dropdown-item",
+                                exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13] },
+                            },
+                        ],
+                        init: function (api, node, config) {
+                            $(node).removeClass("btn-secondary");
+                            $(node).parent().removeClass("btn-group");
+                            setTimeout(function () {
+                                $(node)
+                                    .removeClass("btn-group")
+                                    .addClass("d-inline-flex mt-50");
+                            }, 50);
+                        },
+                    },
+                ],
+            });
+
+        // TODO:  дахин харах
+        setTimeout(() => {
+            /* Datatable ийн үйлдэл хийх btn дээр tooltip гаргах Manual аар*/
+            var tooltipTriggerListApprove = document.getElementsByClassName('approve_gei');
+            var tooltipTriggerListDecline = document.getElementsByClassName('decline_gei');
+            const arrayElemens = new Array(...tooltipTriggerListApprove, ...tooltipTriggerListDecline)
+            arrayElemens.map(
+                (btn) =>
+                {
+                    var manualTooltip = new bootstrap.Tooltip(btn);
+                        btn.addEventListener('mouseenter', function () {
+                        manualTooltip.show();
+                    });
+
+                        btn.addEventListener('mouseleave', function () {
+                        manualTooltip.hide();
+                    });
+                }
+            )
+        }, 3000);
+
+        const approveOrDeclnie = async (...data) =>
+        {
+            const body = {
+                action_status: data[15],
+                address: data[1],
+                birthday: data[2],
+                first_name: data[3],
+                gender_name: data[4],
+                id: data[5],
+                last_name: data[6],
+                register: data[7],
+                user: data[8],
+                user_id: data[9],
+                ys_undes: data[10],
+                urgiin_ovog: data[11],
+                suutsnii_torol: data[12],
+                experience_year: data[13],
+                experience_mnun_year: data[14],
+            }
+            const { success, error } = await fetchData('/account/user-general-info-pagination-action/', body, 'PUT');
+            if(success)
+            {
+                generalInfoTable.ajax.reload(null, false)
+            }
+        }
+
+    </script>
+    <script>
+        /* ------------------------Нэмэлт мэдээллийг харуулах болон үйлдэл хийх хэсгийг код------------------------ */
+        /* ------------------------Нэмэлт мэдээллийг харуулах болон үйлдэл хийх хэсгийг код------------------------ */
+        /* ------------------------Нэмэлт мэдээллийг харуулах болон үйлдэл хийх хэсгийг код------------------------ */
+        /* ------------------------Нэмэлт мэдээллийг харуулах болон үйлдэл хийх хэсгийг код------------------------ */
+        /* ------------------------Нэмэлт мэдээллийг харуулах болон үйлдэл хийх хэсгийг код------------------------ */
+        var extraInfoTable
+            extraInfoTable = $(".user-extra-info-requests").DataTable({
+                processing: false,
+                dom: 'lBfrtip',
+                serverSide: true,
+                fixedColumns:   {
+                    left: 0,
+                    right: 1
+                },
+                ajax: { url: '/account/user-extra-info-pagination/' }, // JSON file to add data
+                columns: [
+                    // columns according to JSON
+                    { data: null },
+                    { data: null },
+                    { data: "requester" },
+                    { data: "unit1" },
+                    { data: "unit2" },
+                    { data: "emdd_number" },
+                    { data: "ndd_number" },
+                    { data: "body_height" },
+                    { data: "body_weight" },
+                    { data: "blood_type" },
+                    { data: "is_pension" },
+                    { data: "is_disabled" },
+                    { data: "is_training_licence" },
+                    { data: null },
+                ],
+                columnDefs: [
+                    {
+                        // For Responsive
+                        className: "control",
+                        orderable: false,
+                        responsivePriority: 2,
+                        targets: 0,
+                        render: function (data, type, full, meta) {
+                            return "";
+                        },
+                    },
+                    {
+                        // Actions
+                        targets: -1,
+                        title: "Үйлдэл",
+                        orderable: false,
+                        render: function (data, type, full, meta) {
+                            return (
+                                `
+                                {% if 'userinfo-request-action' in request.permissions %}
+                                    <span
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        data-bs-original-title="Баталгаажуулах"
+                                        onclick="extraInfoApproveOrDeclnie(
+                                            '${full.unit1_name}',
+                                            '${full.unit2_name}',
+                                            '${full.emdd_number}',
+                                            '${full.ndd_number}',
+                                            '${full.body_height}',
+                                            '${full.body_weight}',
+                                            '${full.blood_type}',
+                                            '${full.user_id}',
+                                            '${full.id}',
+                                            '${full.user}',
+                                            '${full.is_pension}',
+                                            '${full.is_disabled}',
+                                            '${full.is_training_licence}',
+                                            ${action_statuses.APPROVED}
+                                        )"
+                                        class="cursor-pointer delete-record text-primary me-1 approve_gei">
+                                        <i class="fas fa-check"></i>
+                                    </span>
+                                    <span
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        data-bs-original-title="Цуцлах"
+                                        onclick="extraInfoApproveOrDeclnie(
+                                            '${full.unit1_name}',
+                                            '${full.unit2_name}',
+                                            '${full.emdd_number}',
+                                            '${full.ndd_number}',
+                                            '${full.body_height}',
+                                            '${full.body_weight}',
+                                            '${full.blood_type}',
+                                            '${full.user_id}',
+                                            '${full.id}',
+                                            '${full.user}',
+                                            '${full.is_pension}',
+                                            '${full.is_disabled}',
+                                            '${full.is_training_licence}',
+                                            ${action_statuses.DECLINED}
+                                        )"
+                                        class="cursor-pointer delete-record text-primary-orange decline_gei">
+                                        <i class="fas fa-times"></i>
+                                    </span>
+                                {% endif %}
+                                `
+                            );
+                        },
+                    },
+                    {
+                        targets: 1,
+                        title: "#",
+                        orderable: false,
+                        render: function (data, type, full, meta) {
+                            return (
+                                meta.settings._iDisplayStart + meta.row + 1
+                            );
+                        },
+                    },
+                    {
+                        targets: 10,
+                        orderable: false,
+                        render: function (data, type, full, meta) {
+                            if (data) return 'Тийм'
+                            else return 'Үгүй'
+                            return ''
+                        },
+                    },
+                    {
+                        targets: 11,
+                        orderable: false,
+                        render: function (data, type, full, meta) {
+                            if (data) return 'Тийм'
+                            else return 'Үгүй'
+                            return ''
+                        },
+                    },
+                    {
+                        targets: 12,
+                        orderable: false,
+                        render: function (data, type, full, meta) {
+                            if (data) return 'Тийм'
+                            else return 'Үгүй'
+                            return ''
+                        },
+                    },
+                ],
+                order: [[3, "desc"]],
+                lengthMenu: [
+                    [10, 25, 50, 100, -1],
+                    [10, 25, 50, 100, 'Бүгд'],
+                ],
+                dom:
+                    '<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+                    '<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+                    '<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+                    ">t" +
+                    '<"d-flex justify-content-between mx-2 row mb-1"' +
+                    '<"col-sm-12 col-md-6"i>' +
+                    '<"col-sm-12 col-md-6"p>' +
+                    ">",
+                oLanguage: {
+                    sProcessing: "Ачааллаж байна. ",
+                    sSearch: "Хайх: ",
+                    sEmptyTable: "Бичлэг байхгүй",
+                    sInfoEmpty: "Нийт 0 бичлэг",
+                    sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+                    sInfoFiltered: " - _MAX_ бичлэгээс",
+                    sLengthMenu: "_MENU_ бичлэг",
+                    oPaginate: {
+                        sFirst: "Эхэнд",
+                        sLast: "Төгсгөлд",
+                        sNext: "Дараах",
+                        sPrevious: "Өмнөх",
+                    },
+                },
+                // Buttons with Dropdown
+                buttons: [
+                    {
+                        extend: "collection",
+                        className: "btn btn-outline-secondary dropdown-toggle me-2",
+                        text:
+                            feather.icons["external-link"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Export",
+                        buttons: [
+                            {
+                                extend: "print",
+                                text:
+                                    feather.icons["printer"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    }) + "Print",
+                                className: "dropdown-item",
+                                exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] },
+                            },
+                            {
+                                extend: "csv",
+                                text:
+                                    feather.icons["file-text"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    }) + "Csv",
+                                className: "dropdown-item",
+                                exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] },
+                            },
+                            {
+                                extend: "excel",
+                                text:
+                                    feather.icons["file"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    }) + "Excel",
+                                className: "dropdown-item",
+                                exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] },
+                            },
+                            {
+                                extend: "pdf",
+                                text:
+                                    feather.icons["clipboard"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    }) + "Pdf",
+                                className: "dropdown-item",
+                                exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] },
+                            },
+                            {
+                                extend: "copy",
+                                text:
+                                    feather.icons["copy"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    }) + "Copy",
+                                className: "dropdown-item",
+                                exportOptions: { columns: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] },
+                            },
+                        ],
+                        init: function (api, node, config) {
+                            $(node).removeClass("btn-secondary");
+                            $(node).parent().removeClass("btn-group");
+                            setTimeout(function () {
+                                $(node)
+                                    .removeClass("btn-group")
+                                    .addClass("d-inline-flex mt-50");
+                            }, 50);
+                        },
+                    },
+                ],
+            });
+
+        const extraInfoApproveOrDeclnie = async (...data) =>
+        {
+            const body = {
+                unit1: data[0],
+                unit2: data[1],
+                emdd_number: data[2],
+                ndd_number: data[3],
+                body_height: data[4],
+                body_weight: data[5],
+                blood_type_name: data[6],
+                user_id: data[7],
+                id: data[8],
+                user: data[9],
+                is_pension: data[10],
+                is_disabled: data[11],
+                is_training_licence: data[12],
+                action_status: data[13]
+            }
+            const { success, error } = await fetchData('/account/user-extra-info-pagination-action/', body, 'PUT');
+            if(success)
+            {
+                extraInfoTable.ajax.reload(null, false)
+            }
+        }
+
+    </script>
+    <script>
+        /* ------------------------Холбоо барих мэдээллийг харуулах болон үйлдэл хийх хэсгийг код------------------------ */
+        /* ------------------------Холбоо барих мэдээллийг харуулах болон үйлдэл хийх хэсгийг код------------------------ */
+        /* ------------------------Холбоо барих мэдээллийг харуулах болон үйлдэл хийх хэсгийг код------------------------ */
+        /* ------------------------Холбоо барих мэдээллийг харуулах болон үйлдэл хийх хэсгийг код------------------------ */
+        /* ------------------------Холбоо барих мэдээллийг харуулах болон үйлдэл хийх хэсгийг код------------------------ */
+
+        var contactInfoTable
+
+            contactInfoTable = $(".user-contact-info-requests").DataTable({
+                fixedColumns:   {
+                    left: 0,
+                    right: 1
+                },
+                processing: false,
+                dom: 'lBfrtip',
+                serverSide: true,
+                ajax: { url: '/account/user-contact-info-pagination/' }, // JSON file to add data
+                columns: [
+                    // columns according to JSON
+                    { data: null },
+                    { data: null },
+                    { data: "requester" },
+                    { data: "email" },
+                    { data: "phone_number" },
+                    { data: "home_phone" },
+                    { data: null },
+                ],
+                columnDefs: [
+                    {
+                        // For Responsive
+                        className: "control",
+                        orderable: false,
+                        responsivePriority: 2,
+                        targets: 0,
+                        render: function (data, type, full, meta) {
+                            return "";
+                        },
+                    },
+                    {
+                        // Actions
+                        targets: -1,
+                        title: "Үйлдэл",
+                        orderable: false,
+                        render: function (data, type, full, meta) {
+                            return (
+                                `
+                                    {% if 'userinfo-request-action' in request.permissions %}
+                                        <span
+                                            data-bs-toggle="tooltip"
+                                            data-bs-placement="top"
+                                            data-bs-original-title="Баталгаажуулах"
+                                            onclick="approveOrDeclineBankAccount(
+                                                '${full.email}',
+                                                '${full.phone_number}',
+                                                '${full.home_phone}',
+                                                '${full.user}',
+                                                '${full.id}',
+                                                ${action_statuses.APPROVED}
+                                            )"
+                                            class="cursor-pointer delete-record text-primary me-1 approve_gei">
+                                            <i class="fas fa-check"></i>
+                                        </span>
+                                        <span
+                                            data-bs-toggle="tooltip"
+                                            data-bs-placement="top"
+                                            data-bs-original-title="Цуцлах"
+                                            onclick="approveOrDeclineBankAccount(
+                                                '${full.email}',
+                                                '${full.phone_number}',
+                                                '${full.home_phone}',
+                                                '${full.user}',
+                                                '${full.id}',
+                                                ${action_statuses.DECLINED}
+                                            )"
+                                            class="cursor-pointer delete-record text-primary-orange decline_gei">
+                                            <i class="fas fa-times"></i>
+                                        </span>
+                                    {% endif %}
+                                `
+                            );
+                        },
+                    },
+                    {
+                        targets: 1,
+                        title: "#",
+                        orderable: false,
+                        render: function (data, type, full, meta) {
+                            return (
+                                meta.settings._iDisplayStart + meta.row + 1
+                            );
+                        },
+                    },
+                ],
+                order: [[3, "desc"]],
+                lengthMenu: [
+                    [10, 25, 50, 100, -1],
+                    [10, 25, 50, 100, 'Бүгд'],
+                ],
+                dom:
+                    '<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+                    '<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+                    '<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+                    ">t" +
+                    '<"d-flex justify-content-between mx-2 row mb-1"' +
+                    '<"col-sm-12 col-md-6"i>' +
+                    '<"col-sm-12 col-md-6"p>' +
+                    ">",
+                oLanguage: {
+                    sProcessing: "Ачааллаж байна. ",
+                    sSearch: "Хайх: ",
+                    sEmptyTable: "Бичлэг байхгүй",
+                    sInfoEmpty: "Нийт 0 бичлэг",
+                    sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+                    sInfoFiltered: " - _MAX_ бичлэгээс",
+                    sLengthMenu: "_MENU_ бичлэг",
+                    oPaginate: {
+                        sFirst: "Эхэнд",
+                        sLast: "Төгсгөлд",
+                        sNext: "Дараах",
+                        sPrevious: "Өмнөх",
+                    },
+                },
+                // Buttons with Dropdown
+                buttons: [
+                    {
+                        extend: "collection",
+                        className: "btn btn-outline-secondary dropdown-toggle me-2",
+                        text:
+                            feather.icons["external-link"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Export",
+                        buttons: [
+                            {
+                                extend: "print",
+                                text:
+                                    feather.icons["printer"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    }) + "Print",
+                                className: "dropdown-item",
+                                exportOptions: { columns: [1, 2, 3, 4, 5] },
+                            },
+                            {
+                                extend: "csv",
+                                text:
+                                    feather.icons["file-text"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    }) + "Csv",
+                                className: "dropdown-item",
+                                exportOptions: { columns: [1, 2, 3, 4, 5] },
+                            },
+                            {
+                                extend: "excel",
+                                text:
+                                    feather.icons["file"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    }) + "Excel",
+                                className: "dropdown-item",
+                                exportOptions: { columns: [1, 2, 3, 4, 5] },
+                            },
+                            {
+                                extend: "pdf",
+                                text:
+                                    feather.icons["clipboard"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    }) + "Pdf",
+                                className: "dropdown-item",
+                                exportOptions: { columns: [1, 2, 3, 4, 5] },
+                            },
+                            {
+                                extend: "copy",
+                                text:
+                                    feather.icons["copy"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    }) + "Copy",
+                                className: "dropdown-item",
+                                exportOptions: { columns: [1, 2, 3, 4, 5] },
+                            },
+                        ],
+                        init: function (api, node, config) {
+                            $(node).removeClass("btn-secondary");
+                            $(node).parent().removeClass("btn-group");
+                            setTimeout(function () {
+                                $(node)
+                                    .removeClass("btn-group")
+                                    .addClass("d-inline-flex mt-50");
+                            }, 50);
+                        },
+                    },
+                ],
+            });
+
+        const approveOrDeclineContact = async (...data) =>
+        {
+            const body = {
+                email: data[0],
+                phone_number: data[1],
+                home_phone: data[2] !== 'null' ? data[2] : null,
+                user_id: data[3],
+                id: data[4],
+                action_status: data[5],
+            }
+            const { success, error } = await fetchData('/account/user-contact-info-pagination-action/', body, 'PUT');
+            if(success)
+            {
+                contactInfoTable.ajax.reload(null, false)
+            }
+        }
+
+    </script>
+
+<script>
+    /* ------------------------Дансны мэдээллийг харуулах болон үйлдэл хийх хэсгийг код------------------------ */
+    /* ------------------------Дансны мэдээллийг харуулах болон үйлдэл хийх хэсгийг код------------------------ */
+    /* ------------------------Дансны мэдээллийг харуулах болон үйлдэл хийх хэсгийг код------------------------ */
+    /* ------------------------Дансны мэдээллийг харуулах болон үйлдэл хийх хэсгийг код------------------------ */
+    /* ------------------------Дансны мэдээллийг харуулах болон үйлдэл хийх хэсгийг код------------------------ */
+
+    var bankAccountInfoTable
+
+        cloneFooter(
+            ".bank-account-info-requests",
+            [
+                2, 3, 4, 5
+            ]
+        )
+        bankAccountInfoTable = $(".bank-account-info-requests").DataTable({
+            fixedColumns:   {
+                left: 0,
+                right: 1
+            },
+            processing: false,
+            dom: 'lBfrtip',
+            serverSide: true,
+            ajax: { url: '/bank/bank-account-info-pagination/' }, // JSON file to add data
+            columns: [
+                // columns according to JSON
+                { data: null },
+                { data: null },
+                { data: "full_name" },
+                { data: "bank_name" },
+                { data: "number" },
+                { data: "state_display" },
+                { data: null },
+            ],
+            columnDefs: [
+                {
+                    // For Responsive
+                    className: "control",
+                    orderable: false,
+                    responsivePriority: 2,
+                    targets: 0,
+                    render: function (data, type, full, meta) {
+                        return "";
+                    },
+                },
+                {
+                    // Actions
+                    targets: -1,
+                    title: "Үйлдэл",
+                    orderable: false,
+                    render: function (data, type, full, meta) {
+                        return (
+                            `
+                                {% if 'userinfo-request-action' in request.permissions %}
+                                    <span
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        data-bs-original-title="Баталгаажуулах"
+                                        onclick="approveOrDeclineBankAccount(
+                                            '${full.employee}',
+                                            '${full.bank_account}',
+                                            '${full.id}',
+                                            '${full.state}',
+                                            '${full.number}',
+                                            '${full.bank}',
+                                            ${bank_statuses.APPROVED}
+                                        )"
+                                        class="cursor-pointer delete-record text-primary me-1 approve_gei">
+                                        <i class="fas fa-check"></i>
+                                    </span>
+                                    <span
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        data-bs-original-title="Цуцлах"
+                                        onclick="approveOrDeclineBankAccount(
+                                            '${full.employee}',
+                                            '${full.bank_account}',
+                                            '${full.id}',
+                                            '${full.state}',
+                                            '${full.number}',
+                                            '${full.bank}',
+                                            ${bank_statuses.DECLINED}
+                                        )"
+                                        class="cursor-pointer delete-record text-primary-orange decline_gei">
+                                        <i class="fas fa-times"></i>
+                                    </span>
+                                {% endif %}
+                            `
+                        );
+                    },
+                },
+                {
+                    targets: 1,
+                    title: "#",
+                    orderable: false,
+                    render: function (data, type, full, meta) {
+                        return (
+                            meta.settings._iDisplayStart + meta.row + 1
+                        );
+                    },
+                },
+                {
+                    targets: 5,
+                    render: function (data, type, full, meta) {
+                        if(full.state === bank_statuses.UPDATE)
+                            className = 'badge rounded-pill badge-light-warning me-1'
+                        else if(full.state === bank_statuses.CREATE)
+                            className = 'badge rounded-pill badge-light-success me-1'
+                        else
+                        {
+                            className = 'badge rounded-pill badge-light-danger me-1'
+                        }
+                        return (`<span class="${className}">${full.state_display}</span>`);
+                    },
+                },
+            ],
+            order: [[3, "desc"]],
+            lengthMenu: [
+                [10, 25, 50, 100, -1],
+                [10, 25, 50, 100, 'Бүгд'],
+            ],
+            dom:
+                '<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+                '<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+                '<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+                ">t" +
+                '<"d-flex justify-content-between mx-2 row mb-1"' +
+                '<"col-sm-12 col-md-6"i>' +
+                '<"col-sm-12 col-md-6"p>' +
+                ">",
+            oLanguage: {
+                sProcessing: "Ачааллаж байна. ",
+                sSearch: "Хайх: ",
+                sEmptyTable: "Бичлэг байхгүй",
+                sInfoEmpty: "Нийт 0 бичлэг",
+                sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+                sInfoFiltered: " - _MAX_ бичлэгээс",
+                sLengthMenu: "_MENU_ бичлэг",
+                oPaginate: {
+                    sFirst: "Эхэнд",
+                    sLast: "Төгсгөлд",
+                    sNext: "Дараах",
+                    sPrevious: "Өмнөх",
+                },
+            },
+            // Buttons with Dropdown
+            buttons: [
+                {
+                    extend: "collection",
+                    className: "btn btn-outline-secondary dropdown-toggle me-2",
+                    text:
+                        feather.icons["external-link"].toSvg({
+                            class: "font-small-4 me-50",
+                        }) + "Export",
+                    buttons: [
+                        {
+                            extend: "print",
+                            text:
+                                feather.icons["printer"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Print",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [1, 2, 3, 4, 5] },
+                        },
+                        {
+                            extend: "csv",
+                            text:
+                                feather.icons["file-text"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Csv",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [1, 2, 3, 4, 5] },
+                        },
+                        {
+                            extend: "excel",
+                            text:
+                                feather.icons["file"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Excel",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [1, 2, 3, 4, 5] },
+                        },
+                        {
+                            extend: "pdf",
+                            text:
+                                feather.icons["clipboard"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Pdf",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [1, 2, 3, 4, 5] },
+                        },
+                        {
+                            extend: "copy",
+                            text:
+                                feather.icons["copy"].toSvg({
+                                    class: "font-small-4 me-50",
+                                }) + "Copy",
+                            className: "dropdown-item",
+                            exportOptions: { columns: [1, 2, 3, 4, 5] },
+                        },
+                    ],
+                    init: function (api, node, config) {
+                        $(node).removeClass("btn-secondary");
+                        $(node).parent().removeClass("btn-group");
+                        setTimeout(function () {
+                            $(node)
+                                .removeClass("btn-group")
+                                .addClass("d-inline-flex mt-50");
+                        }, 50);
+                    },
+                },
+            ],
+        });
+        searchFooter(bankAccountInfoTable)
+
+    const approveOrDeclineBankAccount = async (...data) =>
+    {
+        const body = {
+            employee: data[0],
+            bank_account: data[1],
+            id: data[2],
+            state: data[3],
+            number: data[4],
+            bank: data[5],
+            action_status: data[6],
+        }
+
+        const { success, error } = await fetchData('/bank/bank-account-info-pagination-action/', body, 'PUT');
+        if(success)
+        {
+            bankAccountInfoTable.ajax.reload(null, false)
+        }
+    }
+
+</script>
+
+{% endblock js %}

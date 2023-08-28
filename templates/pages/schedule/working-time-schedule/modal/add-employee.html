@@ -1,0 +1,113 @@
+
+<!--
+    URL: /schedule/working-time-schedule/
+    Нэр: Цагийн хуваарийн төрөл ажилтан нэмэх
+    Төрөл: Modal
+    Дэлгэрэнгүй: Ажилтан нэсэх дарахад гарж ирэх modal
+-->
+
+<div class="modal fade" id="{{id}}" tabindex="-1" aria-hidden="true" keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-xl">
+        <div class="modal-content row" >
+            <div class="modal-header">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-center" id="modalbody">
+                <div class="text-center">
+                    <i class="fas fa-plus fs-40"></i>
+                </div>
+                <div style="margin-top: 10px">
+                    Ажилчдийн дэлгэрэнгүй мэдээлэл
+                </div>
+            </div>
+            <div class="mb-1">
+                <span id="loaderwts-employee"></span>
+                <div class="modal-body row text-center" id="employee_loader_display" style="display: block;">
+                    Уншиж байна...
+                </div>
+
+                <div class="modal-body row" id="employee_main_display" style="display: none;">
+                    <div class="row">
+                        <div class="col-12 col-xl-6">
+                            <form id="employee-table-wts-remove-form">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4 class="card-title">Бүртгэгдсэн ажилчид</h4>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <div class="card-datatable table-responsive pt-0" id="minusEmployeeTableLoader">
+                                            <table class="remove-employee-table-wts table text-center">
+                                                <thead class="table-light">
+                                                    <tr class="filter-container"></tr>
+                                                    <tr>
+                                                        <th><input class="form-check-input" value="1" id="employee-table-wts-select-all" type="checkbox" /></th>
+                                                        <th>ID</th>
+                                                        <th>Нэр</th>
+                                                        <th>Регистр</th>
+                                                        <th>Тэнхим</th>
+                                                        <th>Үйлдэл</th>
+                                                    </tr>
+                                                </thead>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th></th>
+                                                        <th>Нэр</th>
+                                                        <th>Регистр</th>
+                                                        <th>Тэнхим</th>
+                                                        <th>Үйлдэл</th>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col-12 col-xl-6">
+                            <form id="employee-table-wts-add-form">
+                                <div class="card">
+                                    <div class="card-header">
+                                        <h4 class="card-title">Бүртгэлгүй ажилчид</h4>
+                                    </div>
+                                    <div class="table-responsive">
+                                        <div class="card-datatable table-responsive pt-0"  id="addEmployeeTableLoader">
+                                            <table class="add-employee-table-wts table text-center">
+                                                <thead class="table-light">
+                                                    <tr class="filter-container"></tr>
+                                                    <tr>
+                                                        <th><input class="form-check-input" value="1" id="employee-table-remove-wts-select-all" type="checkbox" /></th>
+                                                        <th>ID</th>
+                                                        <th>Нэр</th>
+                                                        <th>Регистр</th>
+                                                        <th>Тэнхим</th>
+                                                        <th>Үйлдэл</th>
+                                                    </tr>
+                                                </thead>
+                                                <tfoot>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th></th>
+                                                        <th>Нэр</th>
+                                                        <th>Регистр</th>
+                                                        <th>Тэнхим</th>
+                                                        <th>Үйлдэл</th>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal" aria-label="Close">
+                    Болих
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

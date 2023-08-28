@@ -1,0 +1,526 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+{% block content %}
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/forms/select/select2.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/extensions/jstree.min.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/extensions/ext-component-tree.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/vendors.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/pickadate/pickadate.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-pickadate.css' %}" />
+
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}"
+/>
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}"
+/>
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="{% static 'app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css' %}"
+/>
+<link
+	rel="stylesheet"
+	type="text/css"
+	href="{% static 'app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css' %}"
+/>
+
+{% endblock css %}
+
+<div class="content-body">
+    <div class="row">
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">
+                        Бүртгэгдсэн албан тушаалууд
+                    </h4>
+                </div>
+                <div class="card-body" style="width: 100%; overflow-x: scroll">
+                    <div id="positions-menu"></div>
+                </div>
+            </div>
+        </div>
+		{% if org_position %}
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">
+                    <h4 class="card-title">
+                        Ангилалууд ({{ org_position_name }})
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-sm table-bordered" id="kpi-indicator-datatable">
+                            <thead style="font-size: 5px !important;">
+                                <tr class="filter-container"></tr>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Нэр</th>
+                                    <th>Өгөгдлийн төрөл</th>
+                                    <th>Төлөвлөгөө</th>
+                                    <th>Тайлбар</th>
+                                    <th>Үйлдэл</th>
+                                </tr>
+                            </thead>
+                            <tfoot>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Нэр</th>
+                                    <th>Өгөгдлийн төрөл</th>
+                                    <th>Төлөвлөгөө</th>
+                                    <th>Тайлбар</th>
+                                    <th>Үйлдэл</th>
+                                </tr>
+                            </tfoot>
+                            <tbody style="font-size: 12px;"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+		{% endif %}
+    </div>
+</div>
+
+<!-- Form -->
+{% include "pages/kpi/kpi-register/form.html" %}
+
+{% include "pages/kpi/kpi-register/modal/delete.html" with id="userReward" deletebtn="deletebtn" %}
+
+{% endblock content %}
+
+{% block js %}
+
+<script src="{% static 'app-assets/vendors/js/forms/select/select2.full.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/forms/form-select2.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/extensions/jstree.min.js' %}"></script>
+<script src="{% static 'app-assets/js/scripts/extensions/ext-component-tree.js' %}"></script>
+
+<script src="{% static 'app-assets/js/scripts/components/components-tooltips.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.date.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.time.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/legacy.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+
+<script src="{% static 'app-assets/js/scripts/forms/pickers/form-pickers.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/forms/repeater/jquery.repeater.min.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.buttons.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jszip.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/pdfmake.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/vfs_fonts.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.html5.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.print.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js' %}"></script>
+
+<script>
+
+(function (window, undefined) {
+        'use strict';
+
+        let wtf = []
+
+        let treeElement = $("#positions-menu")
+        let croles = $("select[name='croles']")
+        let removePerm = $("select[name='removed_perms']")
+
+        /** Дэд байгууллагын албан тушаал хамаарсан мод хэлбэрийн json авах */
+        async function getData()
+        {
+            const rsp = await fetch(
+                "/kpi/org-positions/",
+                {
+                    method: "GET"
+                }
+            ).catch(err => alert("aldaa"))
+            if (rsp.ok) {
+                return rsp.json()
+            }
+            return rsp
+        }
+
+        if (treeElement.length)
+        {
+            getData()
+                .then(rsp =>
+                    {
+                        treeElement.jstree({
+                            core: {
+                                data: rsp
+                            },
+                            plugins: ['types', 'contextmenu', 'state'],
+                            types: {
+                                default: {
+                                    icon: 'fas fa-briefcase text-primary-green'
+                                },
+                                sub: {
+                                    icon: 'fas fa-landmark text-primary'
+                                },
+                                sub1: {
+                                    icon: 'far fa-circle text-success'
+                                },
+                                sub2: {
+                                    icon: "far fa-circle text-success"
+                                },
+                                sub3: {
+                                    icon: 'far fa-circle text-success'
+                                }
+                            }
+                        });
+                        treeElement.bind(
+                            "select_node.jstree",
+                            function (e, data)
+                            {
+                                if (data.node.parent === '#' && data.node.a_attr.href !== window.location.pathname && wtf.length > 0)
+                                {
+                                    window.location.href = data.node.a_attr.href
+                                }
+                                wtf.push(data.node.a_attr.href)
+                            }
+                        )
+                    })
+        }
+
+        async function getRmPermOptions(values)
+        {
+            const { success, data, errors } = await fetchData("{% url 'role-perms' %}", { 'role_ids': values, "pos_id": "{{pk}}" }, 'POST')
+            if (success)
+            {
+                removePerm.html("")
+                const { perms, removed_pos } = data
+                perms.map(
+                    (opt, idx) =>
+                    {
+                        removePerm.append(`<option value="${opt.cid}" ${removed_pos.includes(opt.cid) ? "selected" : ""}>${opt.cdesc} - ${opt.cname}</option>`)
+                    }
+                )
+            }
+        }
+
+        croles.on("change", (event) =>
+            {
+                useLoader(getRmPermOptions(croles.val()), removePerm.parent())
+            }
+        )
+
+        if ("{{pk}}")
+        {
+            croles.change()
+        }
+
+    })(window);
+
+</script>
+
+<script>
+
+    /** Datatable */
+    /**  Header дээр input ийг clone хийж гаргах нь */
+	cloneFooter('#kpi-indicator-datatable', [ ])
+	/** DATATABLE */
+	const dataTable = $("#kpi-indicator-datatable")
+		// .on('preXhr.dt', function ()
+		// {
+		// 	addLoader($('#app-user-list'))
+		// })
+		// .on( 'draw.dt', function () {
+		// 	rmLoader($('#app-user-list'))
+        // })
+		.DataTable({
+			processing: false,
+			dom: 'lBfrtip',
+			serverSide: true,
+			ajax: {
+                url: `{% url 'register-json' %}{{ org_position }}`,
+                type: 'GET'
+            },
+			columns: [
+				// columns according to JSON
+				{ data: "id" },
+				{ data: "name" },
+				{ data: "ogogdliin_torol" },
+				{ data: "tolovlogoo" },
+				{ data: "tailbar" },
+				{ data: "" },
+			],
+			bFilter: true,
+			columnDefs: [
+				{
+					// Actions
+					targets: -1,
+					title: "Үйлдэл",
+					orderable: false,
+					render: function (data, type, full, meta)
+					{
+
+						var url = `{% url 'work-time-type' %}`
+						return (
+							`<a
+								data-toggle="tooltip"
+								title="Засах"
+								onclick="kpiUpdate(${full.id})"
+								class="text-primary delete-record"
+							>` +
+							feather.icons["edit-3"].toSvg(
+							{
+								class: "font-small-4 me-50",
+							}) +
+							"</a>" +
+							`<a
+								data-toggle="tooltip"
+								title="Устгах"
+								data-bs-toggle="modal"
+								data-bs-target="{% if 'work-time-type-delete' in request.permissions %} #userReward {% else %} #warning-modal {% endif %}"
+								onclick=(changeChoosedId(function(){deletekpi(${full.id})}))
+								class="text-primary-orange delete-record mt-1"
+							>` +
+							feather.icons["trash-2"].toSvg(
+							{
+								class: "font-small-4 me-50",
+							}) +
+							"</a>"
+						);
+					},
+				},
+				{
+					targets: 0,
+					title: "#",
+					orderable: false,
+					render: function (data, type, full, meta) {
+						return (
+							meta.settings._iDisplayStart + meta.row + 1
+						);
+					},
+				},
+				{
+					targets: [0, 1, 2, 3, 4],
+					orderable: false
+				}
+			],
+			order: [[1, "desc"]],
+			lengthMenu: [
+                [10, 25, 50, 100, -1],
+                [10, 25, 50, 100, 'Бүгд'],
+            ],
+			dom:
+				'<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75"' +
+				'<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+				'<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+				">t" +
+				'<"d-flex justify-content-between mx-2 row mb-1"' +
+				'<"col-sm-12 col-md-6"i>' +
+				'<"col-sm-12 col-md-6"p>' +
+				">",
+			oLanguage: {
+				sProcessing: "Ачааллаж байна. ",
+				sSearch: "Хайх: ",
+				sEmptyTable: "Бичлэг байхгүй",
+				sInfoEmpty: "Нийт 0 бичлэг",
+				sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+				sInfoFiltered: " - _MAX_ бичлэгээс",
+				sLengthMenu: "_MENU_ бичлэг",
+				oPaginate: {
+					sFirst: "Эхэнд",
+					sLast: "Төгсгөлд",
+					sNext: "Дараах",
+					sPrevious: "Өмнөх",
+				},
+			},
+			// Buttons with Dropdown
+			buttons: [
+				{
+					extend: "collection",
+					className: "btn btn-outline-secondary dropdown-toggle me-2",
+					text:
+						feather.icons["external-link"].toSvg({
+							class: "font-small-4 me-50",
+						}) + "Export",
+					buttons: [
+						{
+							extend: "print",
+							text:
+								feather.icons["printer"].toSvg({
+									class: "font-small-4 me-50",
+								}) + "Print",
+							className: "dropdown-item",
+							exportOptions: { columns: [0, 1, 2, 3, 4] },
+						},
+						{
+							extend: "csv",
+							text:
+								feather.icons["file-text"].toSvg({
+									class: "font-small-4 me-50",
+								}) + "Csv",
+							className: "dropdown-item",
+							exportOptions: { columns: [0, 1, 2, 3, 4] },
+						},
+						{
+							extend: "excel",
+							text:
+								feather.icons["file"].toSvg({
+									class: "font-small-4 me-50",
+								}) + "Excel",
+							className: "dropdown-item",
+							exportOptions: { columns: [0, 1, 2, 3, 4] },
+						},
+						{
+							extend: "pdf",
+							text:
+								feather.icons["clipboard"].toSvg({
+									class: "font-small-4 me-50",
+								}) + "Pdf",
+							className: "dropdown-item",
+							exportOptions: { columns: [0, 1, 2, 3, 4] },
+						},
+						{
+							extend: "copy",
+							text:
+								feather.icons["copy"].toSvg({
+									class: "font-small-4 me-50",
+								}) + "Copy",
+							className: "dropdown-item",
+							exportOptions: { columns: [0, 1, 2, 3, 4] },
+						},
+					],
+					init: function (api, node, config) {
+						$(node).removeClass("btn-secondary");
+						$(node).parent().removeClass("btn-group");
+						setTimeout(function () {
+							$(node)
+								.closest(".dt-buttons")
+								.removeClass("btn-group")
+								.addClass("d-inline-flex mt-50");
+						}, 50);
+					},
+				},
+				{
+					text: "Шинээр бүртгэх",
+					className: "add-new btn btn-primary",
+					attr: {
+						"data-bs-toggle": "modal",
+						"data-bs-target": "{% if 'work-time-type-create' in request.permissions %} #modals-slide-in {% else %} #warning-modal {% endif %}",
+						"onClick": "clearFormDatas()"
+					},
+					init: function (api, node, config) {
+						$(node).removeClass("btn-secondary").addClass('click_btn')
+
+					},
+				},
+			],
+		});
+	searchFooter(dataTable)
+
+</script>
+
+<script>
+
+	/** Хадгалах товч дарахад үе (submit) */
+    async function kpiRegisterSubmit(event)
+	{
+		// // validation давж чадахгүй бол буцаагаад алдаа заана
+        // if(!validate.checkForm())
+        // {
+        //     return
+        // }
+
+		// addLoader($('#createVacationTypeForm'))
+
+		/** Хэрвээ ID-тай байвал POST биш шинэчлэхгэж байгааг мэдээд утгуудаа авч хадгална */
+        if(document.getElementById('id').value)
+        {
+			/** Хуудас refresh хийлгэхгүй */
+            event.preventDefault()
+
+            /** Хэрэгтэй модалуудын утгуудыг л авна  */
+            const formData = new FormData(event.target)
+            const data = Object.fromEntries(formData)
+
+			/** csrfmiddlewaretoken устгаж байна */
+            delete data.csrfmiddlewaretoken;
+
+			/** Хүсэлтээ шидэж байна */
+            useLoader(fetchData(`/kpi/register-ajax/${document.getElementById('id').value}/`, data, 'PUT'), $(event.target)).catch(err => err)
+				.then(
+					({ success, data, errors }) =>
+					{
+						/** Амжилттай болбол Datatable refresh хийж modal-ийг хаана */
+						if (success)
+						{
+							setTimeout(function()
+							{
+								document.querySelector(".btn-close").click()
+							},
+							300)
+							dataTable.ajax.reload()
+						}
+					}
+				)
+		}
+	}
+
+	/** Устгах үйлдэл */
+    async function deletekpi(choosedId)
+    {
+		addLoader($('#app-user-list'))
+        const { success } = await fetchData(`/kpi/register-ajax/${choosedId}/`, null, 'DELETE')
+        if (success)
+        {
+            dataTable.ajax.reload(null, false)
+        }
+    }
+
+	/** Шинэчлэх */
+	async function kpiUpdate(chosedId)
+	{
+		/** SideModal нээнэ */
+        document.querySelector(".click_btn").click()
+
+		const { data } = await fetchData(`/kpi/register-ajax/${chosedId}/`, null, 'GET')
+
+		if (data)
+		{
+			document.getElementById("id").value = data.id
+			document.getElementById("name").value = data.name
+			document.getElementById("ogogdliin_torol").value = data.ogogdliin_torol
+			document.getElementById("tolovlogoo").value = data.tolovlogoo
+			document.getElementById("tailbar").value = data.tailbar
+		}
+	}
+
+	/** Form цэвэрлэх */
+	function clearFormDatas()
+	{
+		document.getElementById("id").value = ''
+		document.getElementById("name").value = ''
+		document.getElementById("ogogdliin_torol").value = ''
+		document.getElementById("tolovlogoo").value = ''
+		document.getElementById("tailbar").value = ''
+	}
+
+</script>
+
+{% endblock js %}

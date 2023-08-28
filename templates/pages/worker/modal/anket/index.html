@@ -1,0 +1,85 @@
+<div class="modal fade text-start" id="largeModal" tabindex="-1" aria-labelledby="myModalLabel17" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-fullscreen modal-dialog-scrollable">
+        <form class="modal-content" onsubmit="handleAnket(event)">
+            <div class="modal-header">
+                <h4 class="modal-title" id="myModalLabel17">Анкет бөглөх</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row mt-2 mb-2">
+                    <div class="col-lg-2">
+                        <img
+                            onerror="this.onerror=null; this.src='/media/260x260.jpg'"
+                            class="card-border d-flex align-items-center text-center p-0"
+                            style="height: 110px !important; width: 110px !important;"
+                            src="/media/{{ request.user.real_photo }}"
+                            alt="avatar"
+                        >
+                    </div>
+                    <div class="col-lg-5">
+                        <dl class="row mb-0">
+                            <dt class="col-sm-5 fw-bolder mb-1">Ургийн овог:</dt>
+                            <dd class="col-sm-7 mb-1">{{request.user.info.urgiin_ovog}}</dd>
+                            <dt class="col-sm-5 fw-bolder mb-1">Эцэг/Эх-ийн нэр:</dt>
+                            <dd class="col-sm-7 mb-1">{{request.user.info.last_name}}</dd>
+                            <dt class="col-sm-5 fw-bolder mb-1">Өөрийн нэр:</dt>
+                            <dd class="col-sm-7 mb-1">{{request.user.info.first_name}}</dd>
+                            <dt class="col-sm-5 fw-bolder mb-1">Регистрийн дугаар:</dt>
+                            <dd class="col-sm-7 mb-1">{{request.user.info.register}}</dd>
+                        </dl>
+                    </div>
+                    <div class="col-lg-5">
+                        <dl class="row mb-0">
+                            <dt class="col-sm-5 fw-bolder mb-1">Төрсөн огноо:</dt>
+                            <dd class="col-sm-7 mb-1">{% if request.user.info.birthday %}{{request.user.info.birthday|date:"Y" }}-{{request.user.info.birthday|date:"m" }}-{{request.user.info.birthday|date:"d" }}{%else%}Хоосон{%endif%}</dd>
+                            <dt class="col-sm-5 fw-bolder mb-1">Хүйс:</dt>
+                            <dd class="col-sm-7 mb-1">{{request.user.info.get_gender_display}}</dd>
+                            <dt class="col-sm-5 fw-bolder mb-1">Яс үндэс:</dt>
+                            <dd class="col-sm-7 mb-1">{{request.user.info.ys_undes}}</dd>
+                        </dl>
+                    </div>
+                </div>
+
+                <span class="badge bg-light-warning"><i data-feather='alert-circle'></i> Ерөнхий мэдээллийг системээс авсан болно.</span>
+                <div class="card-border mt-1 mb-1 cursor-pointer" data-bs-toggle="collapse"  href="#colfamily" aria-expanded="false" aria-controls="colfamily" style="height: unset;">
+                    1. Хувь хүний мэдээлэл
+                </div>
+                <div class="collapse" id="colfamily">
+                    {% include './yours.html' %}
+                </div>
+
+                <div class="card-border mb-1 cursor-pointer mt-1" data-bs-toggle="collapse"  href="#collapseExample" aria-expanded="false" aria-controls="collapseExample" style="height: unset;">
+                    2. Боловсролын талаархи мэдээлэл
+                </div>
+                <div class="collapse" id="collapseExample">
+                    {% include './education.html' %}
+                </div>
+
+                <div class="card-border mt-1 mb-1 cursor-pointer" data-bs-toggle="collapse"  href="#collmergeshil" aria-expanded="false" aria-controls="collmergeshil" style="height: unset;">
+                    3. Мэргэшлийн бэлтгэлийн талаарх мэдээлэл
+                </div>
+                <div class="collapse" id="collmergeshil">
+                    {% include './mergeshliin-beltgel.html' %}
+                </div>
+
+                <div class="card-border mt-1 mb-1 cursor-pointer" data-bs-toggle="collapse"  href="#colurchadwar" aria-expanded="false" aria-controls="colurchadwar" style="height: unset;">
+                    4. Ур чадварын талаарх мэдээлэл
+                </div>
+                <div class="collapse" id="colurchadwar">
+                    {% include './ur-chadwar.html' %}
+                </div>
+
+                <div class="card-border mt-1 mb-1 cursor-pointer" data-bs-toggle="collapse"  href="#colexperience" aria-expanded="false" aria-controls="colexperience" style="height: unset;">
+                    5. Туршлагын талаарх мэдээлэл
+                </div>
+                <div class="collapse" id="colexperience">
+                    {% include './experience.html' %}
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Илгээх</button>
+            </div>
+        </form>
+    </div>
+</div>

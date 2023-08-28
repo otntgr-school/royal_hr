@@ -1,0 +1,547 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/vendors.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/dataTables.bootstrap5.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/responsive.bootstrap5.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/buttons.bootstrap5.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/tables/datatable/rowGroup.bootstrap5.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/pickadate/pickadate.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-pickadate.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+
+{% endblock css %}
+<!--prettier-ignore-->
+{% block content %}
+<!-- fixed column -->
+<div class="content-body">
+    <section class="app-user-view-connections">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Тэтгэмж, буцалтгүй тусламж</h4>
+                    </div>
+                    <div class="table-body">
+                        <div class="table-responsive card-datatable">
+                            <table class="table allowance-table ">
+                                <thead class="table-light">
+                                    <tr class="filter-container"></tr>
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th>Ажилтан</th>
+                                        <th>Тусламжийн төрөл</th>
+                                        <th>Тайлбар</th>
+                                        <th>Огноо</th>
+                                        <th>Нийт үнийн дүн</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tfoot class="d-none">
+                                    <tr>
+                                        <th></th>
+                                        <th></th>
+                                        <th>Ажилтан</th>
+                                        <th>Тусламжийн төрөл</th>
+                                        <th>Тайлбар</th>
+                                        <th>Огноо</th>
+                                        <th>Нийт үнийн дүн</th>
+                                        <th></th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal modal-slide-in new-user-modal fade" id="modals-slide-in">
+                    <div class="modal-dialog custom-50">
+                        <form onsubmit="actionDonation(event)" id="donationForm" class="add-new-user modal-content pt-0">
+                            <button
+                                type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"
+                            >
+                                ×
+                            </button>
+                            <div class="modal-header mb-1">
+                                <h5 class="modal-title" id="exampleModalLabel">
+                                    Тэтгэмж, буцалтгүй тусламжийг бүртгэх
+                                </h5>
+                            </div>
+                            <div class="modal-body flex-grow-1">
+                                <div class="mb-1">
+                                    <label class="form-label">Ажилтан сонгох</label>
+                                    <select id="employee" name="employee" class="select2-async form-select" data-msg="Cонгоно уу">
+                                        <option>
+                                            --------------------------
+                                        </option>
+                                        {% for emplo in employees %}
+                                            <option value="{{ emplo.id }}">
+                                                {{ emplo.user.info.last_name }} {{ emplo.user.info.first_name }}
+                                            </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="mb-1">
+                                    <label class="form-label">Төрөл сонгох</label>
+                                    <select id="type" name="type" class="select2 form-select" data-msg="Cонгоно уу">
+                                        <option>
+                                            --------------------------
+                                        </option>
+                                        <option value="1">
+                                            Тэтгэмж
+                                        </option>
+                                        <option value="2">
+                                            Буцалтгүй тусламж
+                                        </option>
+                                    </select>
+                                </div>
+                                <div class="mb-1 position-relative">
+                                    <label class="form-label">Огноо</label>
+                                    <input type="text" id="donate_date" name="donate_date" class="form-control pickadate-months-year-00-30 flatpickr-input" placeholder="YYYY-MM-DD" data-msg="Хугацаа сонгоно уу" />
+                                </div>
+                                <div class="mb-1">
+                                    <label class="form-label">Нийт үнийн дүн</label>
+                                    <input id="total_cost" name="total_cost" value="0" type="text" class="form-control" placeholder="500000" data-msg="Энэ талбарыг бөглөнө үү" />
+                                </div>
+                                <div class="mb-1">
+                                    <label class="form-label">Тайлбар</label>
+                                    <textarea id="description" name="description" class="form-control" rows="3" data-msg="Энэ талбарыг бөглөнө үү" ></textarea>
+                                </div>
+                                <button type="submit" class="btn btn-primary me-1 data-submit">Хадгалах</button>
+                                <button id="modalCancelBtn" type="reset" class="btn btn-outline-secondary" data-bs-dismiss="modal">Болих</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="modal fade" id="warning-modal" tabindex="-1" aria-hidden="true">
+		<div class="modal-dialog modal-sm modal-dialog-centered modal-edit-user">
+			<div class="modal-content">
+				<div class="modal-header bg-transparent">
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body text-center">
+					<div class="text-center">
+						<i class="fas fa-exclamation-circle text-warning fs-40"></i>
+					</div>
+					<h6 class="mt-1 mb-1 fw-bolder">Анхааруулга<h6>
+					Та устгахдаа итгэлтэй байна уу
+				</div>
+				<div class="modal-footer">
+					<button
+						class="btn btn-primary"
+						data-bs-dismiss="modal"
+						type="button"
+						onclick="deleteOneDonate(event)"
+					>
+						<span>Тийм</span>
+					</button>
+					<button
+						class="btn btn-outline-secondary"
+						data-bs-dismiss="modal"
+					>
+						Үгүй
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock content %}
+{% block js %}
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.bootstrap5.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/responsive.bootstrap5.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.checkboxes.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/datatables.buttons.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/jszip.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/pdfmake.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/vfs_fonts.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.html5.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/buttons.print.min.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/tables/datatable/dataTables.rowGroup.min.js' %}"></script>
+
+    <script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.date.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.time.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/pickers/pickadate/legacy.js' %}"></script>
+    <script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+
+    <script src="{% static 'app-assets/js/scripts/tables/table-datatables-basic.js' %}"></script>
+    <script src="{% static 'app-assets/js/scripts/tables/table-datatables-fixedColumns.min.js' %}"></script>
+
+    <script src="{% static 'app-assets/js/scripts/forms/pickers/form-pickers.js' %}"></script>
+    <script>
+        var donateTable
+        const displayCreateBtn = () =>
+        {
+            const hasPremission = "{% if 'donate-create' in request.permissions %}yes{% endif %}"
+            if(hasPremission === 'yes')
+            {
+                return(
+                    {
+                            text: "Шинээр бүртгэх",
+                            className: "add-new btn btn-primary",
+                            attr: {
+                                "id": "modalToggler",
+                                "data-bs-toggle": "modal",
+                                "data-bs-target": "#modals-slide-in",
+                                "onclick": "clearAllInputsDonate()"
+                            },
+                            init: function (api, node, config) {
+                                $(node).removeClass("btn-secondary");
+                            },
+                    }
+                )
+            }
+        }
+
+        "{% if 'donate-read' in request.permissions %}"
+	        cloneFooter('.allowance-table', [2, 3, 4, 5, 6])
+            donateTable = $(".allowance-table").DataTable({
+                fixedColumns:   {
+                    left: 0,
+                    right: 1
+                },
+                processing: false,
+                dom: 'lBfrtip',
+                serverSide: true,
+                ajax: { url: '/worker/donations/' }, // JSON file to add data
+                columns: [
+                // <th>Ажилтан</th>
+                // <th>Тусламжийн төрөл</th>
+                // <th>Тайлбар</th>
+                // <th>Нийт үнийн дүн</th>
+                    // columns according to JSON
+                    { data: null },
+                    { data: null },
+                    { data: "full_name" },
+                    { data: "ctype" },
+                    { data: "description" },
+                    { data: "donate_date" },
+                    { data: "total_cost" },
+                    { data: null },
+                ],
+                columnDefs: [
+                    {
+                        // For Responsive
+                        className: "control",
+                        orderable: false,
+                        responsivePriority: 2,
+                        targets: 0,
+                        render: function (data, type, full, meta) {
+                            return "";
+                        },
+                    },
+                    {
+                        // Actions
+                        targets: -1,
+                        title: "Үйлдэл",
+                        orderable: false,
+                        render: function (data, type, full, meta) {
+                            return (
+                                `
+                                {% if 'donate-update' in request.permissions %}
+                                    <span
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        data-bs-original-title="Засах"
+                                        onclick="getOneDonate(${full.id})"
+                                        class="cursor-pointer delete-record text-primary me-1 approve_gei"
+                                    >
+                                        ${feather.icons["edit-3"].toSvg({
+                                            class: "font-small-4 me-50",
+                                        })}
+                                    </span>
+                                {% endif %}
+                                {% if 'donate-delete' in request.permissions %}
+                                    <span
+                                        data-bs-toggle="tooltip"
+                                        data-bs-placement="top"
+                                        data-bs-original-title="Устгах"
+                                        onclick="showWarningModal(event, ${full.id})"
+                                        class="cursor-pointer delete-record text-primary-orange decline_gei"
+                                    >
+                                        ${feather.icons["trash-2"].toSvg({
+                                            class: "font-small-4 me-50",
+                                        })}
+                                    </span>
+                                {% endif %}
+                                `
+                            );
+                        },
+                    },
+                    {
+                        targets: 6,
+                        orderable: false,
+                        render: function (data, type, full, meta) {
+                            return quantityFormat(full.total_cost);
+                        },
+                    },
+                    {
+                        targets: 1,
+                        title: "#",
+                        orderable: false,
+                        render: function (data, type, full, meta) {
+                            return (
+                                meta.settings._iDisplayStart + meta.row + 1
+                            );
+                        },
+                    },
+                ],
+                order: [[5, "desc"]],
+                lengthMenu: [
+                    [10, 25, 50, 100, -1],
+                    [10, 25, 50, 100, 'Бүгд'],
+                ],
+                dom:
+                '<"d-flex justify-content-between align-items-center header-actions mx-2 row mt-75 float-right"' +
+                    '<"col-sm-12 col-lg-4 d-flex justify-content-center justify-content-lg-start" l>' +
+                    '<"col-sm-12 col-lg-8 ps-xl-75 ps-0"<"dt-action-buttons d-flex align-items-center justify-content-center justify-content-lg-end flex-lg-nowrap flex-wrap"<"me-1">B>>' +
+                    ">t" +
+                    '<"d-flex justify-content-between mx-2 row mb-1"' +
+                    '<"col-sm-12 col-md-6"i>' +
+                    '<"col-sm-12 col-md-6"p>' +
+                    ">",
+                oLanguage: {
+                    sProcessing: "Ачааллаж байна. ",
+                    sSearch: "Хайх: ",
+                    sEmptyTable: "Бичлэг байхгүй",
+                    sInfoEmpty: "Нийт 0 бичлэг",
+                    sInfo: "Дэлгэцэнд: _START_ - _END_ Нийт: _TOTAL_ бичлэг",
+                    sInfoFiltered: " - _MAX_ бичлэгээс",
+                    sLengthMenu: "_MENU_ бичлэг",
+                    oPaginate: {
+                        sFirst: "Эхэнд",
+                        sLast: "Төгсгөлд",
+                        sNext: "Дараах",
+                        sPrevious: "Өмнөх",
+                    },
+                },
+                // Buttons with Dropdown
+                buttons: [
+                    {
+                        extend: "collection",
+                        className: "btn btn-outline-secondary dropdown-toggle me-2",
+                        text:
+                            feather.icons["external-link"].toSvg({
+                                class: "font-small-4 me-50",
+                            }) + "Export",
+                        buttons: [
+                            {
+                                extend: "print",
+                                text:
+                                    feather.icons["printer"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    }) + "Print",
+                                className: "dropdown-item",
+                                exportOptions: { columns: [1, 2, 3, 4, 5, 6] },
+                            },
+                            {
+                                extend: "csv",
+                                text:
+                                    feather.icons["file-text"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    }) + "Csv",
+                                className: "dropdown-item",
+                                exportOptions: { columns: [1, 2, 3, 4, 5, 6] },
+                            },
+                            {
+                                extend: "excel",
+                                text:
+                                    feather.icons["file"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    }) + "Excel",
+                                className: "dropdown-item",
+                                exportOptions: { columns: [1, 2, 3, 4, 5, 6] },
+                            },
+                            {
+                                extend: "pdf",
+                                text:
+                                    feather.icons["clipboard"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    }) + "Pdf",
+                                className: "dropdown-item",
+                                exportOptions: { columns: [1, 2, 3, 4, 5, 6] },
+                            },
+                            {
+                                extend: "copy",
+                                text:
+                                    feather.icons["copy"].toSvg({
+                                        class: "font-small-4 me-50",
+                                    }) + "Copy",
+                                className: "dropdown-item",
+                                exportOptions: { columns: [1, 2, 3, 4, 5, 6] },
+                            },
+                        ],
+                        init: function (api, node, config) {
+                            $(node).removeClass("btn-secondary");
+                            $(node).parent().removeClass("btn-group");
+                            setTimeout(function () {
+                                $(node)
+                                    .closest(".dt-buttons")
+                                    .removeClass("btn-group")
+                                    .addClass("d-inline-flex mt-50");
+                            }, 50);
+                        },
+                    },
+                    displayCreateBtn()
+                ],
+            });
+        	searchFooter(donateTable)
+        "{% endif %}"
+
+        var donationJqForm = $('#donationForm')
+        var warningModal = $("#warning-modal")
+        let actionType = 'create'
+        const donationInputs = [ 'employee', 'type', 'total_cost', 'description', 'donate_date' ]
+
+        let validateDonation
+        if (donationJqForm.length) {
+            validateDonation = donationJqForm.validate({
+                rules: {
+                    "description": {
+                        required: true
+                    },
+                    "employee": {
+                        required: true
+                    },
+                    "type": {
+                        required: true
+                    },
+                }
+            })
+        }
+
+        const clearAllInputsDonate = () =>
+        {
+            actionType = 'create'
+            donationInputs.map(
+                (input) =>
+                {
+                    if(input === 'employee' || input === 'type')
+                    {
+                        $(`#${input}`).val(null).trigger('change');
+                        return
+                    }
+                    if(input === 'total_cost')
+                    {
+                        document.getElementById(input).value = 0
+                        return
+                    }
+                    document.getElementById(input).value = ''
+                }
+            )
+        }
+
+        function showWarningModal(event, id)
+        {
+            actionType = id
+            warningModal.modal("show")
+        }
+
+        const deleteOneDonate = async (id) =>
+        {
+            const { success, data } = await fetchData(`/worker/donations/${actionType}/`, null, 'DELETE')
+            if(success)
+            {
+                donationInputs.map(
+                    (input) =>
+                    {
+                        actionType = 'create'
+                        donateTable.ajax.reload(null, false)
+                    }
+                )
+            }
+        }
+
+        const getOneDonate = async (id) =>
+        {
+            actionType = id
+            $("#modals-slide-in").modal('show')
+            const { success, data } = await fetchData(`/worker/donations/${id}/`, null, 'GET')
+            if(success)
+            {
+                donationInputs.map(
+                    (input) =>
+                    {
+                        if(input === 'employee' || input === 'type')
+                        {
+                            $(`#${input}`).val(data[input]).trigger('change');
+                            return
+                        }
+                        document.getElementById(input).value = data[input]
+                    }
+                )
+            }
+        }
+
+        const actionDonation = async (event) =>
+        {
+            event.preventDefault();
+            if(!donationJqForm.valid())
+            {
+                return
+            }
+
+            const body = {}
+
+            donationInputs.map(
+                (input) =>
+                {
+                    const value = document.getElementById(input).value
+                    if(input === 'total_cost' && value === "")
+                    {
+                        body[input] = 0
+                        return
+                    }
+                    body[input] = value
+                }
+            )
+
+            if(actionType === 'create')
+            {
+                const { success, errors } = await fetchData('/worker/donations/', body, "POST")
+                if(success)
+                {
+                    actionType = 'create'
+                    $("#modals-slide-in").modal('hide')
+                    donateTable.ajax.reload(null, false)
+                    clearAllInputsDonate()
+
+                }
+                return
+            }
+            else
+            {
+                const { success, errors } = await fetchData(`/worker/donations/${actionType}/`, body, "PUT")
+                if(success)
+                {
+                    actionType = 'create'
+                    $("#modals-slide-in").modal('hide')
+                    donateTable.ajax.reload(null, false)
+                    clearAllInputsDonate()
+                }
+                return
+            }
+        }
+    </script>
+{% endblock js %}

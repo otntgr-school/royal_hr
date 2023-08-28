@@ -1,0 +1,161 @@
+{% extends 'base.html' %}
+<!--prettier-ignore-->
+{% load static %}
+<!--prettier-ignore-->
+{% block content %}
+
+{% block css %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-flat-pickr.css' %}" />
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/pickers/form-pickadate.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/pickadate/pickadate.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/pickers/flatpickr/flatpickr.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/components.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/fonts/font-awesome/css/font-awesome.min.css' %}" />
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/editors/quill/katex.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/editors/quill/monokai-sublime.min.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/jkanban/jkanban.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/pages/app-kanban.css' %}">
+
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/charts/apexcharts.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/forms/wizard/bs-stepper.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/forms/form-wizard.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/extensions/jquery.rateyo.min.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/css/plugins/extensions/ext-component-ratings.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/extensions/jstree.min.css' %}" />
+
+{% endblock css %}
+
+<div class="content-body">
+
+    <h4 class="card-title">Судалгааны бүртгэл</h4>
+    <div class="mb-2 d-flex">
+        <button data-bs-toggle="modal" data-bs-target="#modals-slide-in" class="btn btn-icon btn-outline-secondary waves-effect me-1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Шинээр үүсгэх">
+            <i data-feather='plus'></i>
+        </button>
+        <button class="btn btn-icon btn-outline-secondary waves-effect" onclick="rejectSurvey(event)" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="Устгах">
+            <i data-feather='trash-2'></i>
+        </button>
+        <div class="w-25 ms-1">
+            <select class="select2 form-select" id="state-filter">
+                <option value="all">Бүгд</option>
+                <option value="waiting">Эхлэх хугацаа болоогүй</option>
+                <option value="progressing">Одоо явагдаж байгаа</option>
+                <option value="finish">Явагдах хугацаа дууссан</option>
+            </select>
+        </div>
+    </div>
+
+    <!-- Survey жагсаалт -->
+    <div id="info">
+
+    </div>
+
+    <div class="modal fade" id="warning-reject-modal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-edit-user">
+            <div class="modal-content">
+                <div class="modal-header bg-transparent">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <div class="text-center">
+                        <i class="fas fa-exclamation-circle text-warning fs-40"></i>
+                    </div>
+                    <h6 class="mt-1 mb-1 fw-bolder">Анхааруулга<h6>
+                    Та цуцлахдаа итгэлтэй байна уу
+                </div>
+                <div class="modal-footer">
+                    <button
+                        class="btn btn-primary"
+                        data-bs-dismiss="modal"
+                        type="button"
+                        onclick="successReject(event)"
+                    >
+                        <span>Тийм</span>
+                    </button>
+                    <button
+                        class="btn btn-outline-secondary"
+                        data-bs-dismiss="modal"
+                    >
+                        Үгүй
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="section survey-list-grid">
+    </section>
+    <div class="d-flex justify-content-center d-none no-res">
+        <h5>Бүртгэлтэй судалгаа байхгүй байна</h5>
+    </div>
+    <!-- <div class="d-flex justify-content-center">
+        <nav aria-label="Page navigation">
+            <ul class="pagination mt-5 text-center">
+                <li class="page-item prev"><a class="page-link" href="#">Prev</a></li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item active"><a class="page-link" href="#">3</a></li>
+                <li class="page-item"><a class="page-link" href="#">4</a></li>
+                <li class="page-item"><a class="page-link" href="#">5</a></li>
+                <li class="page-item next"><a class="page-link" href="#">Next</a></li>
+            </ul>
+        </nav>
+    </div> -->
+
+    <!-- Survey жагсаалт -->
+    {% include './modal/detail.html' %}
+
+    <!-- Survey бүртгэл -->
+    {% include './modal/main-form.html' %}
+</div>
+
+{% endblock content %}
+
+{% block js %}
+
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/tables/datatable/jszip.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/pdfmake.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/tables/datatable/vfs_fonts.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/cleave.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/cleave/addons/cleave-phone.us.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.date.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/picker.time.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/pickadate/legacy.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/pickers/flatpickr/flatpickr.min.js' %}"></script>
+
+<script src="{% static 'app-assets/js/scripts/forms/pickers/form-pickers.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/editors/quill/katex.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/editors/quill/highlight.min.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/jkanban/jkanban.min.js' %}"></script>
+
+<script src="{% static 'app-assets/vendors/js/charts/apexcharts.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/wizard/bs-stepper.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/forms/repeater/jquery.repeater.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/extensions/jquery.rateyo.min.js' %}"></script>
+<script src="{% static 'app-assets/vendors/js/extensions/jstree.min.js' %}"></script>
+
+<script src="{% static 'assets/js/browser.js' %}"></script>
+<script src="{% static 'assets/js/print.min.js' %}"></script>
+<script>
+    const LIST_PAGE_AJAX_URL = "{% url 'org-to-employee' %}"
+    const QUESTTION_KINDS = [{% for id, name in question_kinds %}["{{id}}", "{{name}}"], {% endfor %}]
+    const HAMRAH_HUREES = [{% for id, name in hamrah_hurees %}["{{id}}", "{{name}}"], {% endfor %}]
+    const SURVEY_LIST_URL = "{% url 'survey-list' %}"
+</script>
+<script src="{% static 'assets/js/pages/survey/scripts.js' %}"></script>
+<script src="{% static 'assets/js/pages/survey/process-charts.js' %}"></script>
+<script src="{% static 'assets/js/pages/survey/list.js' %}"></script>
+
+{% endblock js %}
