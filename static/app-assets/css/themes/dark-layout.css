@@ -388,11 +388,11 @@ body.dark-layout {
 
 .dark-layout .dropdown-menu .dropdown-item:hover, .dark-layout .dropdown-menu .dropdown-item:focus {
   background: rgba(3, 108, 134, 0.12);
-  color: #036c86 ; }
+  color: #097A7D ; }
 
 .dark-layout .dropdown-menu .dropdown-item:active, .dark-layout .dropdown-menu .dropdown-item.active {
   color: #fff;
-  background-color: #036c86 ; }
+  background-color: #097A7D ; }
 
 .dark-layout .dropdown-menu .dropdown-item.disabled, .dark-layout .dropdown-menu .dropdown-item:disabled {
   color: #676d7d; }
@@ -748,7 +748,7 @@ body.dark-layout {
 
 .dark-layout .input-group:focus-within .form-control,
 .dark-layout .input-group:focus-within .input-group-text {
-  border-color: #036c86;
+  border-color: #097A7D;
   box-shadow: none; }
 
 .dark-layout .form-label-group > input:not(:focus):not(:placeholder-shown) ~ label,
@@ -845,7 +845,7 @@ body.dark-layout {
 .dark-layout .dataTables_wrapper .dt-buttons .buttons-print:active,
 .dark-layout .dataTables_wrapper .dt-buttons .btn-secondary:active,
 .dark-layout .dataTables_wrapper .dt-buttons .dt-button-collection [class*='buttons-']:active {
-  background-color: #036c86 !important;
+  background-color: #097A7D !important;
   color: #fff; }
 
 .dark-layout .dataTables_wrapper .dt-button-collection > div[role='menu'] {
@@ -1329,7 +1329,7 @@ body.dark-layout {
   background-color: #283046; }
 
 .dark-layout .app-user-view .plan-card {
-  border-color: #036c86 !important; }
+  border-color: #097A7D !important; }
 
 .dark-layout .customizer {
   background-color: #283046; }

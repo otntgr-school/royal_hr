@@ -297,7 +297,7 @@ input:focus ~ .bg-light {
   border-color: rgb(142, 202, 230, 0.4); }
 
 .bg-light-primary .fc-list-event-dot {
-  border-color: #036c86 !important; }
+  border-color: #097A7D !important; }
 
 .bg-light-primary.fc-list-event:hover td {
   background: rgb(142, 202, 230, 0.4) !important; }
@@ -306,47 +306,47 @@ input:focus ~ .bg-light {
   color: #6e6b7b; }
 
 .avatar.bg-light-primary {
-  color: #036c86 !important; }
+  color: #097A7D !important; }
 
 .border-primary {
-  border: 1px solid #036c86 !important; }
+  border: 1px solid #097A7D !important; }
 
 .border-top-primary {
-  border-top: 1px solid #036c86; }
+  border-top: 1px solid #097A7D; }
 
 .border-bottom-primary {
-  border-bottom: 1px solid #036c86; }
+  border-bottom: 1px solid #097A7D; }
 
 .border-start-primary {
-  border-left: 1px solid #036c86; }
+  border-left: 1px solid #097A7D; }
 
 .border-end-primary {
-  border-right: 1px solid #036c86; }
+  border-right: 1px solid #097A7D; }
 
 .bg-primary.badge-glow,
 .border-primary.badge-glow {
-  box-shadow: 0px 0px 10px #036c86; }
+  box-shadow: 0px 0px 10px #097A7D; }
 
 .badge.badge-light-primary {
   background-color: rgba(4, 96, 112, 0.12);
-  color: #036c86 !important; }
+  color: #097A7D !important; }
 
 .overlay-primary {
-  background: #036c86;
+  background: #097A7D;
   /* The Fallback */
   background: rgba(115, 103, 240, 0.6); }
 
 .btn-primary {
-  border-color: #036c86 !important;
-  background-color: #036c86 !important;
+  border-color: #097A7D !important;
+  background-color: #097A7D !important;
   color: #fff !important; }
 
 .btn-primary:focus, .btn-primary:active, .btn-primary.active {
   color: #fff;
-  background-color: #036c86 !important; }
+  background-color: #097A7D !important; }
 
 .btn-primary:hover:not(.disabled):not(:disabled) {
-  box-shadow: 0 8px 25px -8px #036c86; }
+  box-shadow: 0 8px 25px -8px #097A7D; }
 
 .btn-primary:not(:disabled):not(.disabled):active:focus {
   box-shadow: none; }
@@ -393,13 +393,13 @@ input:focus ~ .bg-light {
   transform: translateY(3px); }
 
 .btn-outline-primary {
-  border: 1px solid #036c86 !important;
+  border: 1px solid #097A7D !important;
   background-color: transparent;
-  color: #036c86; }
+  color: #097A7D; }
 
 .btn-outline-primary:hover:not(.disabled):not(:disabled) {
   background-color: rgba(4, 96, 112, 0.04);
-  color: #036c86; }
+  color: #097A7D; }
 
 .btn-outline-primary:not(:disabled):not(.disabled):active:focus {
   box-shadow: none; }
@@ -413,7 +413,7 @@ input:focus ~ .bg-light {
 
 .btn-outline-primary.show.dropdown-toggle {
   background-color: rgba(3, 108, 134, 0.2);
-  color: #036c86 ; }
+  color: #097A7D ; }
 
 .btn-check:checked + .btn-outline-primary, .btn-check:active + .btn-outline-primary {
   color: #7367f0;
@@ -425,7 +425,7 @@ input:focus ~ .bg-light {
 }
 
 .bullet.bullet-primary {
-  background-color: #036c86; }
+  background-color: #097A7D; }
 
 .modal.modal-primary .modal-header .modal-title {
   color: #7367f0; }
@@ -435,14 +435,14 @@ input:focus ~ .bg-light {
   color: #7367f0 !important; }
 
 .pagination-primary .page-item.active .page-link {
-  background: #036c86 !important;
+  background: #097A7D !important;
   color: #fff; }
 
 .pagination-primary .page-item.active .page-link:hover {
   color: #fff; }
 
 .pagination-primary .page-item .page-link:hover {
-  color: #036c86 ; }
+  color: #097A7D ; }
 
 .pagination-primary .page-item.prev-item .page-link:hover, .pagination-primary .page-item.next-item .page-link:hover {
   background: #7367f0;
@@ -480,17 +480,17 @@ input:focus ~ .bg-light {
   background: rgba(115, 103, 240, 0.12) !important; }
 
 .divider.divider-primary .divider-text:before, .divider.divider-primary .divider-text:after {
-  border-color: #036c86 !important; }
+  border-color: #097A7D !important; }
 
 input:focus ~ .bg-primary {
   box-shadow: 0 0 0 0.075rem #fff, 0 0 0 0.21rem #7367f0 !important; }
 
 .form-check-primary .form-check-input:checked {
-  border-color: #036c86;
-  background-color: #036c86; }
+  border-color: #097A7D;
+  background-color: #097A7D; }
 
 .form-check-primary .form-check-input:not(:disabled):checked, .form-check-primary .form-check-input:not(:disabled):focus {
-  border-color: #036c86;
+  border-color: #097A7D;
   box-shadow: 0 2px 4px 0 rgba(115, 103, 240, 0.4); }
 
 .select2-primary .select2-container--default .select2-selection--multiple .select2-selection__choice {

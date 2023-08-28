@@ -292,7 +292,7 @@ html.light-layout div.dtfc-right-top-blocker {
 	position: relative;
 	border: 8px solid #03a3a2;
 	border-radius: 50%;
-	/* 036c86 */
+	/* 097A7D */
   }
   .circle .face {
 	width: 100%;
@@ -316,7 +316,7 @@ html.light-layout div.dtfc-right-top-blocker {
 	position: absolute;
 	top: 50%;
 	left: 50%;
-	background: #036c86;
+	background: #097A7D;
 	border-radius: 4px 0 0 4px;
   }
   .circle .face .minute, .circle .face .second {
@@ -564,7 +564,7 @@ html.light-layout div.dtfc-right-top-blocker {
 	display: inline-block;
 	position: relative;
 	border: 2px solid;
-	border-color: #036C86 #036C86 transparent;
+	border-color: #097A7D #097A7D transparent;
 	box-sizing: border-box;
 	animation: rotation 1s linear infinite;
 }

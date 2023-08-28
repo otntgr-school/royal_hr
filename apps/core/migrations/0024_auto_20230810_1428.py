@@ -80,7 +80,7 @@ class Migration(migrations.Migration):
         print(Back.GREEN + Fore.BLACK + "PropertyType, EducationalInstitutionCategory үүсж дууслаа!")
 
     dependencies = [
-        ('core', '0050_educationalinstitutioncategory_propertytype_and_more'),
+        ('core', '0023_auto_20221206_1427'),
     ]
 
     operations = [

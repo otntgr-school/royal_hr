@@ -4233,7 +4233,7 @@ textarea.form-control-lg {
 
 .dropdown-menu-dark .dropdown-item.active, .dropdown-menu-dark .dropdown-item:active {
   color : #FFFFFF;
-  background-color : #036c86;
+  background-color : #097A7D;
 }
 
 .dropdown-menu-dark .dropdown-item.disabled, .dropdown-menu-dark .dropdown-item:disabled {
@@ -7970,7 +7970,7 @@ textarea.form-control-lg {
 }
 
 .border-primary {
-  border-color : #036c86  !important;
+  border-color : #097A7D  !important;
 }
 
 .border-secondary {

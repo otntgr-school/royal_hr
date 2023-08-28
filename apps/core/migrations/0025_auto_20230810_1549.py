@@ -179,7 +179,7 @@ class Migration(migrations.Migration):
         print(Back.GREEN + Fore.BLACK + "MainPosition үүсж дууслаа!")
 
     dependencies = [
-        ('core', '0052_mainposition_orgposition_main_position'),
+        ('core', '0024_auto_20230810_1428'),
     ]
 
     operations = [

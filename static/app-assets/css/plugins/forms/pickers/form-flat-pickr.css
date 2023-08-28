@@ -2,16 +2,16 @@
   color: #6e6b7b; }
 
 .flatpickr-calendar .flatpickr-day.today {
-  border-color: #036c86; }
+  border-color: #097A7D; }
 
 .flatpickr-calendar .flatpickr-day.today:hover {
   background: transparent;
   color: #6e6b7b; }
 
 .flatpickr-calendar .flatpickr-day.selected, .flatpickr-calendar .flatpickr-day.selected:hover {
-  background: #036c86;
+  background: #097A7D;
   color: #fff;
-  border-color: #036c86; }
+  border-color: #097A7D; }
 
 .flatpickr-calendar .flatpickr-day.inRange, .flatpickr-calendar .flatpickr-day.inRange:hover {
   background: #f3f2fe;

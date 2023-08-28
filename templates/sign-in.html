@@ -42,6 +42,42 @@
         <link rel="stylesheet" type="text/css" href="{% static 'assets/css/style.css' %}" />
         <!-- END: Custom CSS-->
 
+        <style>
+            @media screen and (min-width: 1400px) {
+                .paddingStyle {
+                    padding-left: 150px !important;
+                }
+            }
+
+            input[type='text'], input[type='text']:focus {
+                background-color: #EEF7F6;
+                padding-block: 10px;
+            }
+
+            input[type='text']::placeholder {
+                font-size: 14px;
+                color: rgb(139, 139, 139);
+            }
+
+            input[type='password'], input[type='password']:focus {
+                background-color: #EEF7F6;
+                padding-block: 10px;
+            }
+
+            input[type='password']::placeholder {
+                font-size: 14px;
+                color: rgb(139, 139, 139);
+            }
+
+            input:-webkit-autofill,
+            input:-webkit-autofill:hover,
+            input:-webkit-autofill:focus,
+            input:-webkit-autofill:active{
+                -webkit-box-shadow: 0 0 0 30px #EEF7F6 inset !important;
+            }
+
+        </style>
+
     </head>
     <body class="vertical-layout vertical-menu-modern blank-page navbar-floating footer-static  " data-open="click" data-menu="vertical-menu-modern" data-col="blank-page">
         {% include './message/messages.html' %}
@@ -54,22 +90,17 @@
                 <div class="content-body">
                     <div class="auth-wrapper auth-cover">
                         <div class="auth-inner row m-0">
-                            <div class="brand-logo d-flex align-items-center">
-                                <img style="width: 80px" src="{% static 'app-assets/images/logo/muis_vacation_logo.png' %}"/>
-                                <h2 style="color: #e35728 !important" class="brand-text text-primary ms-1 mb-0">Хүний нөөцийн систем</h2>
-                            </div>
-                            <div class="d-none d-lg-flex col-lg-8 align-items-center p-5">
-                                <div class="w-100 d-lg-flex align-items-center justify-content-center px-5">
-                                    <img class="img-fluid" src="{% static 'app-assets/images/pages/login-v2.svg' %}" alt="Login V2" />
-                                </div>
-                            </div>
-                            <div class="d-flex col-lg-4 align-items-center auth-bg px-2 p-lg-5">
-                                <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-xl-2 mx-auto">
-                                    <h2 class="card-title fw-bold mb-1">Системд нэвтрэх</h2>
+                            <div class="d-flex col-lg-5 align-items-center auth-bg px-5 p-lg-5 mb-5">
+                                <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-0 px-sm-0 ps-lg-5 mx-auto paddingStyle" >
+                                    <div class="d-flex align-items-center me-5">
+                                        <img style="width: 60px" src="{% static 'app-assets/images/logo/sus_logo.png' %}"/>
+                                        <h1 style="color: black !important" class="brand-text text-primary ms-1 mb-0 fw-bolder">SMART UNIVERSITY <br>SYSTEM</h1>
+                                    </div>
+                                    <p class="text-secondary fw-bold my-3">Боловсролын сургалтын байгууллагын болон суралцахуйн удирдлагын цогц системд тавтай морилно уу.</p>
+                                    <h1 class="card-title fw-bolder mb-1 text-primary">НЭВТРЭХ</h1>
                                     <form class="form-inline" action="{% url 'account-user-login' %}" method="post" novalidate>
                                         {% csrf_token %}
-                                        <div class="mb-1">
-                                            <label class="form-label" for="login-email">И-мэйл эсвэл утасны дугаар</label>
+                                        <div class="mb-2">
                                             <input
                                                 class="form-control"
                                                 name="email"
@@ -83,53 +114,40 @@
                                             />
                                         </div>
                                         <div class="mb-1">
-                                            <div class="d-flex justify-content-between">
-                                                <label class="form-label" for="login-password">Нууц үг</label><a href="{% url 'forgot-password'%}"><small>Нууц үг мартсан?</small></a>
-                                            </div>
                                             <div class="input-group input-group-merge form-password-toggle">
                                                 <input
                                                     class="form-control form-control-merge"
                                                     type="password"
                                                     name="cpassword"
-                                                    placeholder="············"
+                                                    placeholder="Нууц үг"
                                                     aria-describedby="login-password"
                                                     tabindex="2"
-                                                    autocomplete="on"
                                                     {% if email %} autofocus {% endif %}
                                                 />
-                                                <span class="input-group-text cursor-pointer">
+                                                <span class="input-group-text cursor-pointer" style="background-color: #EEF7F6;">
                                                     <i data-feather="eye"></i>
                                                 </span>
                                             </div>
                                         </div>
-                                        <div class="mb-1">
-                                            <div class="form-check">
-                                                <input
-                                                    class="form-check-input"
-                                                    id="remember-me"
-                                                    name="remember"
-                                                    type="checkbox"
-                                                    tabindex="3"
-                                                    {% if email %} checked {% endif %}
-                                                />
-                                                <label class="form-check-label" for="remember-me"> Намайг сана</label>
-                                            </div>
+                                        <div class="text-end">
+                                            <a style="color: #097A7D; font-size: 12px;" class="fw-bolder" href="#">Нууц үгээ мартсан уу?</a>
                                         </div>
                                         <div class="col-xl-12 col-md-12 col-12 mt-2">
-                                            <button class="btn btn-primary w-100" type="submit" tabindex="4">Нэвтрэх</button>
+                                            <button class="btn btn-primary w-100 rounded-3" type="submit" tabindex="4">Нэвтрэх</button>
+                                        </div>
+                                        <div class="text-end mt-2">
+                                            <span class="fw-bold" style="font-size: 12px;">Шинэ хэрэглэгчээр </span><a style="color: #097A7D; font-size: 12px;" class="fw-bolder" href="#">бүртгүүлэх</a>
                                         </div>
                                     </form>
-                                    <!-- <p class="text-center mt-2"><span>Бүртгэлгүй бол</span><a href="{% url 'user-register' %}"><span>&nbsp;Бүртгүүлэх</span></a></p> -->
-                                    <!-- <div class="divider my-2">
-                                        <div class="divider-text">Эсвэл</div>
-                                    </div>
-                                    <div class="auth-footer-btn">
-                                        <button class="btn btn-outline-primary w-100">
-                                            ДАН-аар нэвтрэх
-                                        </button>
-                                    </div> -->
                                 </div>
                             </div>
+
+                            <div class="d-none d-lg-flex col-lg-7 align-items-center p-0 bg-white">
+                                <div class="w-100 d-lg-flex align-items-center justify-content-end ps-5">
+                                    <img class="img-fluid opacity-0" style="transition: 1.5s;" id="main-photo" src="{% static 'app-assets/images/logo/group_1.png' %}" alt="Login V2" />
+                                </div>
+                            </div>
+
                         </div>
                     </div>
                 </div>
@@ -144,6 +162,7 @@
         <script>
             $(window).on("load", function ()
             {
+                document.getElementById('main-photo').classList.add('opacity-100')
                 if (feather)
                 {
                     feather.replace({
