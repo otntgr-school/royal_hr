@@ -1325,7 +1325,7 @@ input:focus ~ .bg-info {
   background: radial-gradient(rgba(255, 159, 67, 0.2) 0, rgba(255, 159, 67, 0.3) 40%, rgba(255, 159, 67, 0.4) 50%, rgba(255, 159, 67, 0.5) 60%, rgba(255, 255, 255, 0) 70%); }
 
 .bullet.bullet-warning {
-  background-color: #f15c2b; }
+  background-color: #097A7D; }
 
 .modal.modal-warning .modal-header .modal-title {
   color: #ff9f43; }

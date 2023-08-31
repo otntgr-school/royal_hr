@@ -10,12 +10,12 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=0,minimal-ui" />
-		<meta name="description" content="HR - Монголын үндэсний их сургууль" />
+		<meta name="description" content="HR - Хүний нөөцийн систем" />
 		<meta name="keywords" content="admin template, Vuexy admin template, dashboard template, flat admin template, responsive admin template, web app"/>
 		<meta name="author" content="PIXINVENT" />
-		<title>HR - Монголын үндэсний их сургууль</title>
+		<title>HR - Хүний нөөцийн систем</title>
         <link rel="apple-touch-icon" href="{% static 'app-assets/images/ico/apple-icon-120.png' %}" />
-        <link rel="shortcut icon" type="image/x-icon" href="{% static 'app-assets/images/logo/favicon.png' %}" />
+        <link rel="shortcut icon" type="image/x-icon" href="{% static 'app-assets/images/logo/sus_logo_shurtcut.png' %}" />
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,300;0,400;0,500;0,600;1,400;1,500;1,600" rel="stylesheet" />
 
         <link rel="stylesheet" type="text/css" href="{% static 'app-assets/vendors/css/vendors.min.css' %}" />
@@ -49,22 +49,17 @@
                 }
             }
 
-            input[type='text'], input[type='text']:focus {
-                background-color: #EEF7F6;
+            input.form-control {
+                color: rgb(78, 78, 78) !important;
+            }
+
+            input[type='text'], input[type='text']:focus, input[type='password'], input[type='password']:focus {
+                background-color: #EEF7F6 !important;
                 padding-block: 10px;
+                color: rgb(78, 78, 78);
             }
 
-            input[type='text']::placeholder {
-                font-size: 14px;
-                color: rgb(139, 139, 139);
-            }
-
-            input[type='password'], input[type='password']:focus {
-                background-color: #EEF7F6;
-                padding-block: 10px;
-            }
-
-            input[type='password']::placeholder {
+            input[type='text']::placeholder, input[type='password']::placeholder {
                 font-size: 14px;
                 color: rgb(139, 139, 139);
             }
@@ -74,6 +69,12 @@
             input:-webkit-autofill:focus,
             input:-webkit-autofill:active{
                 -webkit-box-shadow: 0 0 0 30px #EEF7F6 inset !important;
+            }
+
+            .dark-layout input:-webkit-autofill, .dark-layout textarea:-webkit-autofill, .dark-layout select:-webkit-autofill {
+                -webkit-box-shadow: 0 0 0 30px #EEF7F6 inset !important;
+                -webkit-text-fill-color: #b4b7bd !important;
+                color: rgb(214, 21, 21);
             }
 
         </style>
@@ -89,9 +90,9 @@
                 </div>
                 <div class="content-body">
                     <div class="auth-wrapper auth-cover">
-                        <div class="auth-inner row m-0">
-                            <div class="d-flex col-lg-5 align-items-center auth-bg px-5 p-lg-5 mb-5">
-                                <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-0 px-sm-0 ps-lg-5 mx-auto paddingStyle" >
+                        <div class="auth-inner row m-0 bg-white">
+                            <div class="d-flex col-lg-5 align-items-center auth-bg px-5 p-lg-5 bg-white">
+                                <div class="col-12 col-sm-8 col-md-6 col-lg-12 px-0 px-sm-0 ps-lg-5 mx-auto paddingStyle" style="z-index: 100; margin-top: -30px;">
                                     <div class="d-flex align-items-center me-5">
                                         <img style="width: 60px" src="{% static 'app-assets/images/logo/sus_logo.png' %}"/>
                                         <h1 style="color: black !important" class="brand-text text-primary ms-1 mb-0 fw-bolder">SMART UNIVERSITY <br>SYSTEM</h1>
@@ -122,6 +123,7 @@
                                                     placeholder="Нууц үг"
                                                     aria-describedby="login-password"
                                                     tabindex="2"
+                                                    autocomplete="on"
                                                     {% if email %} autofocus {% endif %}
                                                 />
                                                 <span class="input-group-text cursor-pointer" style="background-color: #EEF7F6;">
@@ -142,9 +144,9 @@
                                 </div>
                             </div>
 
-                            <div class="d-none d-lg-flex col-lg-7 align-items-center p-0 bg-white">
-                                <div class="w-100 d-lg-flex align-items-center justify-content-end ps-5">
-                                    <img class="img-fluid opacity-0" style="transition: 1.5s;" id="main-photo" src="{% static 'app-assets/images/logo/group_1.png' %}" alt="Login V2" />
+                            <div class="d-none d-lg-block col-lg-7 p-0 bg-white">
+                                <div class="vh-100 d-lg-flex align-items-center justify-content-end ps-5">
+                                    <img class="vh-100 opacity-0" style="transition: 1.5s;" id="main-photo" src="{% static 'app-assets/images/logo/group_2.png' %}" alt="Login V2" />
                                 </div>
                             </div>
 
@@ -163,6 +165,7 @@
             $(window).on("load", function ()
             {
                 document.getElementById('main-photo').classList.add('opacity-100')
+
                 if (feather)
                 {
                     feather.replace({

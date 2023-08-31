@@ -12,7 +12,7 @@ window.colors = {
     secondary: '#82868b',
     success: '#28C76F',
     info: '#00cfe8',
-    warning: '#f15c2b',
+    warning: '#097A7D',
     danger: '#EA5455',
     dark: '#4b4b4b',
     black: '#000',
@@ -24,7 +24,7 @@ window.colors = {
     secondary: '#82868b1a',
     success: '#28C76F1a',
     info: '#00cfe81a',
-    warning: '#f15c2b',
+    warning: '#097A7D',
     danger: '#EA54551a',
     dark: '#4b4b4b1a'
   }

@@ -245,7 +245,7 @@ body.dark-layout {
   background-color: #161d31; }
 
 .dark-layout .main-menu .collapse-toggle-icon {
-  color: #f15c2b !important; }
+  color: #097A7D !important; }
 
 .dark-layout .ps__thumb-x,
 .dark-layout .ps__thumb-y {
@@ -428,7 +428,7 @@ body.dark-layout {
   background-color: #242b3d; }
 
 .dark-layout .pagination:not([class*='pagination-']) .page-item.active .page-link {
-  background-color: #f15c2b; }
+  background-color: #097A7D; }
 
 .dark-layout .pagination:not([class*='pagination-']) .page-item.active .page-link:hover {
   color: #fff; }
@@ -438,7 +438,7 @@ body.dark-layout {
   color: #b4b7bd; }
 
 .dark-layout .pagination:not([class*='pagination-']) .page-item .page-link:hover {
-  color: #f15c2b; }
+  color: #097A7D; }
 
 .dark-layout .pagination:not([class*='pagination-']) .page-item.prev-item .page-link:hover, .dark-layout .pagination:not([class*='pagination-']) .page-item.next-item .page-link:hover {
   color: #fff; }
