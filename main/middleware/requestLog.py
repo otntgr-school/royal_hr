@@ -128,5 +128,6 @@ class RequestLogMiddleware(MiddlewareMixin):
             'DELETE': create_log_delete,
         }
         self.data['status_code'] = response.status_code
+        print('request.META', request.META['REQUEST_METHOD'])
         log_methods[request.META['REQUEST_METHOD']](self.data, self.body)
         return response
