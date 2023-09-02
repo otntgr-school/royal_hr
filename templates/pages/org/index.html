@@ -263,7 +263,7 @@
                                         {% if 'org-update' in request.permissions or not 'org-update' in request.permissions and not 'org-delete' in request.permissions %}
                                         <button type="submit" id="salbar-btn" class="btn btn-primary">Засах</button>
                                         {% if request.user.is_superuser%}
-                                            <a href="{% url 'org-superuser' pk %}" class="btn btn-success">Бүртгүүлэх</a>
+                                            <!-- <a href="{% url 'org-superuser' pk %}" class="btn btn-success">Бүртгүүлэх</a> -->
                                             <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#userRegister">
                                                 Ажилтан бүртгэх
                                             </button>
