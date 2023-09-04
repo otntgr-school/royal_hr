@@ -459,12 +459,11 @@
 							{% endif %}
 						{% endif %}
 
-						<li class="navigation-header">
+						<!-- <li class="navigation-header">
 							<span data-i18n="Apps &amp; Pages">Анкет</span
 							><i data-feather="more-horizontal"></i>
 						</li>
 
-						<!-- TODO: PERMISSION нэмэх -->
 						<li
 							class="nav-item {% if url_name == 'anket' %} active {% endif %}"
 						>
@@ -481,7 +480,6 @@
 							>
 						</li>
 
-						<!-- TODO: PERMISSION нэмэх -->
 						<li
 							class="nav-item {% if url_name == 'anket-register' %} active {% endif %}"
 						>
@@ -511,9 +509,9 @@
 									>Шинэ ажилтны бүртгэлийн хуудас бөглөх</span
 								></a
 							>
-						</li>
+						</li> -->
 
-						<li class="nav-item">
+						<!-- <li class="nav-item">
 							<a class="d-flex align-items-center" href="#">
 								<i data-feather='check-circle'></i>
 								<span
@@ -559,7 +557,7 @@
 									</a>
 								</li>
 							</ul>
-						</li>
+						</li> -->
 
 						{% if request.permissions|has_perm:'tomilolt-read, tomilolt-type-read, work-adsense-read, donate-read, work-time-read, request-read, request-solve-read, time-schedule-read, work-time-type-read, working-time-schedule-read, new-employee-lesson-read' %}
 							<li class="navigation-header">
@@ -1047,7 +1045,7 @@
 
 									</ul>
 
-									<li
+									<!-- <li
 										class="{% if url_name == 'violation-registration' %} active {% endif %}"
 									>
 										<a
@@ -1091,7 +1089,7 @@
 												>Зөрчил бүртгэх хуудас</span
 											></a
 										>
-									</li>
+									</li> -->
 								</li>
 							{% endif %}
 						{% endif %}
