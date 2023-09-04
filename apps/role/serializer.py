@@ -185,7 +185,10 @@ class OrgPositionSerializer(serializers.ModelSerializer):
             main_position_qs = MainPosition.objects.get(pk=self.context.get("main_position"))
             validated_data['main_position'] = main_position_qs
 
+        del validated_data['main_position']
+
         instance = super().create(validated_data)
+
         return instance
 
     def update(self, instance, validated_data):
@@ -197,6 +200,9 @@ class OrgPositionSerializer(serializers.ModelSerializer):
 
         removed_perms = self.context.get("removed_perms")
         validated_data['removed_perms'] = removed_perms
+
+        del validated_data['main_position']
+
         instance = super().update(instance, validated_data)
         return instance
 
