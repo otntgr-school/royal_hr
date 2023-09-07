@@ -18,6 +18,7 @@ media/*
 !media/*png
 
 node_modules
-/node_modules
 package-lock.json
 122.201.25.246
+
+/node_modules
